@@ -27,6 +27,7 @@ using RageLib.GTA5.RBF;
 using RageLib.GTA5.RBFWrappers;
 using RageLib.GTA5.ResourceWrappers.PC.Meta;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
+using RageLib.GTA5.Services;
 using RageLib.Hash;
 using RageLib.Resources.GTA5;
 using System;
@@ -131,7 +132,7 @@ namespace MetaTool
             var reader = new MetaReader();
             var meta = reader.Read(inputFileName);
             var exporter = new MetaXmlExporter();
-            exporter.HashMapping = new Dictionary<int, string>();
+            exporter.HashMapping = new JenkinsDictionary();
             AddHashForStrings(exporter, "MetaTool.Lists.FileNames.txt");
             AddHashForStrings(exporter, "MetaTool.Lists.MetaNames.txt");
             exporter.Export(meta, outputFileName);
@@ -145,7 +146,7 @@ namespace MetaTool
             var reader = new PsoReader();
             var meta = reader.Read(inputFileName);
             var exporter = new PsoXmlExporter();
-            exporter.HashMapping = new Dictionary<int, string>();
+            exporter.HashMapping = new JenkinsDictionary();
             AddHashForStrings(exporter, "MetaTool.Lists.PsoTypeNames.txt");
             AddHashForStrings(exporter, "MetaTool.Lists.PsoFieldNames.txt");
             AddHashForStrings(exporter, "MetaTool.Lists.PsoEnumValues.txt");
@@ -173,11 +174,8 @@ namespace MetaTool
                 while (!namesReader.EndOfStream)
                 {
                     string name = namesReader.ReadLine();
-                    uint hash = Jenkins.Hash(name);
-                    if (!exporter.HashMapping.ContainsKey((int)hash))
-                    {
-                        exporter.HashMapping.Add((int)hash, name);
-                    }
+                    
+                    exporter.HashMapping.TryAdd(name);
                 }
             }
         }
@@ -191,11 +189,8 @@ namespace MetaTool
                 while (!namesReader.EndOfStream)
                 {
                     string name = namesReader.ReadLine();
-                    uint hash = Jenkins.Hash(name);
-                    if (!exporter.HashMapping.ContainsKey((int)hash))
-                    {
-                        exporter.HashMapping.Add((int)hash, name);
-                    }
+                    
+                    exporter.HashMapping.TryAdd(name);
                 }
             }
         }

@@ -21,6 +21,7 @@
 */
 
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
+using RageLib.GTA5.Services;
 using RageLib.Resources.GTA5.PC.Meta;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,11 +33,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 {
     public class MetaXmlExporter
     {
-        public Dictionary<int, string> HashMapping { get; set; }
+        public JenkinsDictionary HashMapping { get; set; }
 
         public MetaXmlExporter()
         {
-            HashMapping = new Dictionary<int, string>();
+            HashMapping = new JenkinsDictionary();
         }
 
         public void Export(IMetaValue value, string xmlFileName)
@@ -513,31 +514,22 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         private string GetNameForHash(int hash)
         {
-            if (HashMapping.ContainsKey(hash))
-            {
-                var ss = HashMapping[hash];
-                return ss;
-            }
+            if (HashMapping.TryGetValue((uint)hash, out string data))
+                return data;
             return "hash_" + hash.ToString("X8");
         }
 
         private string GetEnumNameForHash(int hash)
         {
-            if (HashMapping.ContainsKey(hash))
-            {
-                var ss = HashMapping[hash];
-                return ss;
-            }
+            if (HashMapping.TryGetValue((uint)hash, out string data))
+                return data;
             return "enum_hash_" + hash.ToString("X8");
         }
 
         private string GetFlagNameForHash(int hash)
         {
-            if (HashMapping.ContainsKey(hash))
-            {
-                var ss = HashMapping[hash];
-                return ss;
-            }
+            if (HashMapping.TryGetValue((uint)hash, out string data))
+                return data;
             return "flag_hash_" + hash.ToString("X8");
         }
 
