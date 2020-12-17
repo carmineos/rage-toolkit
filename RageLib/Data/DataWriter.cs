@@ -86,26 +86,20 @@ namespace RageLib.Data
         /// Writes data to the underlying stream. This is the only method that directly accesses
         /// the data in the underlying stream.
         /// </summary>
-        protected virtual void WriteToStream(byte[] value, bool ignoreEndianess = false)
+        protected virtual void WriteToStream(Span<byte> value, bool ignoreEndianess = false)
         {
             if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-            {
-                var buffer = (byte[])value.Clone();
-                Array.Reverse(buffer);
-                baseStream.Write(buffer, 0, buffer.Length);
-            }
-            else
-            {
-                baseStream.Write(value, 0, value.Length);
-            }
+                value.Reverse();
+
+            baseStream.Write(value);
         }
-        
+
         /// <summary>
         /// Writes a byte.
         /// </summary>
         public void Write(byte value)
         {
-            WriteToStream(new byte[] { value });
+            WriteToStream(MemoryMarshal.CreateSpan(ref value,1));
         }
 
         /// <summary>
@@ -261,11 +255,11 @@ namespace RageLib.Data
 
         public void WriteArray<T>(T[] items) where T : unmanaged
         {
-            if (items == null) 
-                return;
-
             Span<byte> span = MemoryMarshal.Cast<T, byte>(items.AsSpan());
-            Write(span.ToArray());
+
+            // TODO: use Buffer<T> to pass single element (so it's a copy which can be reversed safely)
+            for (int i = 0; i < items.Length; i++)
+                WriteToStream(span.Slice(i * Unsafe.SizeOf<T>(), Unsafe.SizeOf<T>()).ToArray());
         }
     }
 }

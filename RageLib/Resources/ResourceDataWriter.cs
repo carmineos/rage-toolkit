@@ -71,53 +71,37 @@ namespace RageLib.Resources
         /// Writes data to the underlying stream. This is the only method that directly accesses
         /// the data in the underlying stream.
         /// </summary>
-        protected override void WriteToStream(byte[] value, bool ignoreEndianess = true)
+        protected override void WriteToStream(Span<byte> value, bool ignoreEndianess = true)
         {
+            Stream stream;
+            long basePosition;
+
             if ((Position & VIRTUAL_BASE) == VIRTUAL_BASE)
             {
                 // write to virtual stream...
-
-                virtualStream.Position = Position & ~VIRTUAL_BASE;
-
-                // handle endianess
-                if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-                {
-                    var buf = (byte[])value.Clone();
-                    Array.Reverse(buf);
-                    virtualStream.Write(buf, 0, buf.Length);
-                }
-                else
-                {
-                    virtualStream.Write(value, 0, value.Length);
-                }
-
-                Position = virtualStream.Position | 0x50000000;
-                return;
-
+                stream = virtualStream;
+                basePosition = VIRTUAL_BASE;
             }
-            if ((Position & PHYSICAL_BASE) == PHYSICAL_BASE)
+            else if ((Position & PHYSICAL_BASE) == PHYSICAL_BASE)
             {
                 // write to physical stream...
-
-                physicalStream.Position = Position & ~PHYSICAL_BASE;
-
-                // handle endianess
-                if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-                {
-                    var buf = (byte[])value.Clone();
-                    Array.Reverse(buf);
-                    physicalStream.Write(buf, 0, buf.Length);
-                }
-                else
-                {
-                    physicalStream.Write(value, 0, value.Length);
-                }
-
-                Position = physicalStream.Position | 0x60000000;
-                return;
+                stream = physicalStream;
+                basePosition = PHYSICAL_BASE;
             }
+            else
+                throw new Exception("illegal position!");
 
-            throw new Exception("illegal position!");
+            // handle endianess
+            if (!ignoreEndianess && !endianessEqualsHostArchitecture)
+                value.Reverse();
+
+            // write to virtual stream...
+            stream.Position = Position & ~basePosition;
+
+            stream.Write(value);
+
+            Position = stream.Position | basePosition;
+            return;
         }
 
         /// <summary>

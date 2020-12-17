@@ -77,46 +77,37 @@ namespace RageLib.Resources
         /// Reads data from the underlying stream. This is the only method that directly accesses
         /// the data in the underlying stream.
         /// </summary>
-        protected override byte[] ReadFromStream(int count, bool ignoreEndianess = false)
+        protected override Buffer<T> ReadFromStream<T>(int count, bool ignoreEndianess = false)
         {
+            Stream stream;
+            long basePosition;
+
             if ((Position & VIRTUAL_BASE) == VIRTUAL_BASE)
             {
                 // read from virtual stream...
-
-                virtualStream.Position = Position & ~0x50000000;
-
-                var buffer = new byte[count];
-                virtualStream.Read(buffer, 0, count);
-
-                // handle endianess
-                if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-                {
-                    Array.Reverse(buffer);
-                }
-
-                Position = virtualStream.Position | 0x50000000;
-                return buffer;
-
+                stream = virtualStream;
+                basePosition = VIRTUAL_BASE;
             }
-            if ((Position & PHYSICAL_BASE) == PHYSICAL_BASE)
+            else if ((Position & PHYSICAL_BASE) == PHYSICAL_BASE)
             {
                 // read from physical stream...
-
-                physicalStream.Position = Position & ~0x60000000;
-
-                var buffer = new byte[count];
-                physicalStream.Read(buffer, 0, count);
-
-                // handle endianess
-                if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-                {
-                    Array.Reverse(buffer);
-                }
-
-                Position = physicalStream.Position | 0x60000000;
-                return buffer;
+                stream = physicalStream;
+                basePosition = PHYSICAL_BASE;
             }
-            throw new Exception("illegal position!");
+            else
+                throw new Exception("illegal position!");
+
+            stream.Position = Position & ~basePosition;
+
+            Buffer<T> buffer = new Buffer<T>(count);
+            stream.Read(buffer.Bytes, 0, buffer.Size);
+
+            // handle endianess
+            if (!ignoreEndianess && !endianessEqualsHostArchitecture)
+                buffer.Reverse();
+
+            Position = stream.Position | basePosition;
+            return buffer;
         }
 
         /// <summary>

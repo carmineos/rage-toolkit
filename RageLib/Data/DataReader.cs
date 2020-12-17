@@ -21,8 +21,10 @@
 */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -35,6 +37,44 @@ namespace RageLib.Data
     /// </summary>
     public class DataReader
     {
+        protected readonly ref struct Buffer<T> where T : unmanaged
+        {
+            public readonly byte[] Bytes;
+
+            public readonly int Size;
+
+            public readonly int Count;
+
+            public Buffer(int count)
+            {
+                Size = count * Unsafe.SizeOf<T>();
+                Bytes = ArrayPool<byte>.Shared.Rent(Size);
+                Count = count;
+            }
+
+            public Span<T> Span
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => MemoryMarshal.Cast<byte, T>(Bytes.AsSpan(0, Size));
+            }
+
+            public void Dispose()
+            {
+                ArrayPool<byte>.Shared.Return(Bytes);
+            }
+
+            public void Reverse()
+            {
+                if (Unsafe.SizeOf<T>() > 1 && Count > 1)
+                {
+                    for (int i = 0; i < Count; i++)
+                        Bytes.AsSpan(i * Unsafe.SizeOf<T>(), Unsafe.SizeOf<T>()).Reverse();
+                }
+                else
+                    Bytes.AsSpan(0, Size).Reverse();
+            }
+        }
+
         private Stream baseStream;
 
         public readonly bool endianessEqualsHostArchitecture;
@@ -88,16 +128,14 @@ namespace RageLib.Data
         /// Reads data from the underlying stream. This is the only method that directly accesses
         /// the data in the underlying stream.
         /// </summary>
-        protected virtual byte[] ReadFromStream(int count, bool ignoreEndianess = false)
+        protected virtual Buffer<T> ReadFromStream<T>(int count, bool ignoreEndianess = false) where T : unmanaged
         {
-            var buffer = new byte[count];
-            baseStream.Read(buffer, 0, count);
+            Buffer<T> buffer = new Buffer<T>(count);
+            baseStream.Read(buffer.Bytes, 0, buffer.Size);
 
             // handle endianess
             if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-            {
-                Array.Reverse(buffer);
-            }
+                buffer.Reverse();
 
             return buffer;
         }
@@ -107,7 +145,8 @@ namespace RageLib.Data
         /// </summary>
         public byte ReadByte()
         {
-            return ReadFromStream(1)[0];
+            using Buffer<byte> buffer = ReadFromStream<byte>(1);
+            return buffer.Span[0];
         }
 
         /// <summary>
@@ -115,7 +154,8 @@ namespace RageLib.Data
         /// </summary>
         public byte[] ReadBytes(int count)
         {
-            return ReadFromStream(count, true);
+            using Buffer<byte> buffer = ReadFromStream<byte>(count, true);
+            return buffer.Span.ToArray();
         }
 
         /// <summary>
@@ -123,7 +163,8 @@ namespace RageLib.Data
         /// </summary>
         public short ReadInt16()
         {
-            return BitConverter.ToInt16(ReadFromStream(2), 0);
+            using Buffer<short> buffer = ReadFromStream<short>(1);
+            return BitConverter.ToInt16(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -131,7 +172,8 @@ namespace RageLib.Data
         /// </summary>
         public int ReadInt32()
         {
-            return BitConverter.ToInt32(ReadFromStream(4), 0);
+            using Buffer<int> buffer = ReadFromStream<int>(1);
+            return BitConverter.ToInt32(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -139,7 +181,8 @@ namespace RageLib.Data
         /// </summary>
         public long ReadInt64()
         {
-            return BitConverter.ToInt64(ReadFromStream(8), 0);
+            using Buffer<long> buffer = ReadFromStream<long>(1);
+            return BitConverter.ToInt64(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -147,7 +190,8 @@ namespace RageLib.Data
         /// </summary>
         public ushort ReadUInt16()
         {
-            return BitConverter.ToUInt16(ReadFromStream(2), 0);
+            using Buffer<ushort> buffer = ReadFromStream<ushort>(1);
+            return BitConverter.ToUInt16(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -155,7 +199,8 @@ namespace RageLib.Data
         /// </summary>
         public uint ReadUInt32()
         {
-            return BitConverter.ToUInt32(ReadFromStream(4), 0);
+            using Buffer<uint> buffer = ReadFromStream<uint>(1);
+            return BitConverter.ToUInt32(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -163,7 +208,8 @@ namespace RageLib.Data
         /// </summary>
         public ulong ReadUInt64()
         {
-            return BitConverter.ToUInt64(ReadFromStream(8), 0);
+            using Buffer<ulong> buffer = ReadFromStream<ulong>(1);
+            return BitConverter.ToUInt64(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -171,7 +217,8 @@ namespace RageLib.Data
         /// </summary>
         public float ReadSingle()
         {
-            return BitConverter.ToSingle(ReadFromStream(4), 0);
+            using Buffer<float> buffer = ReadFromStream<float>(1);
+            return BitConverter.ToSingle(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -179,7 +226,8 @@ namespace RageLib.Data
         /// </summary>
         public double ReadDouble()
         {
-            return BitConverter.ToDouble(ReadFromStream(8), 0);
+            using Buffer<double> buffer = ReadFromStream<double>(1);
+            return BitConverter.ToDouble(buffer.Bytes, 0);
         }
 
         /// <summary>
@@ -188,14 +236,12 @@ namespace RageLib.Data
         public string ReadString()
         {
             var bytes = new List<byte>();
-            var temp = ReadFromStream(1)[0];
-            while (temp != 0)
-            {
-                bytes.Add(temp);
-                temp = ReadFromStream(1)[0];
-            }
+            byte c;
+            
+            while ((c = ReadByte()) != 0)
+                bytes.Add(c);
 
-            return Encoding.UTF8.GetString(bytes.ToArray());
+            return Encoding.ASCII.GetString(bytes.ToArray());
         }
 
         /// <summary>
@@ -204,10 +250,8 @@ namespace RageLib.Data
         /// <returns></returns>
         public Vector2 ReadVector2()
         {
-            Vector2 v = new Vector2();
-            v.X = ReadSingle();
-            v.Y = ReadSingle();
-            return v;
+            using Buffer<float> buffer = ReadFromStream<float>(2);
+            return MemoryMarshal.Cast<float, Vector2>(buffer.Span)[0];
         }
 
         /// <summary>
@@ -216,11 +260,8 @@ namespace RageLib.Data
         /// <returns></returns>
         public Vector3 ReadVector3()
         {
-            Vector3 v = new Vector3();
-            v.X = ReadSingle();
-            v.Y = ReadSingle();
-            v.Z = ReadSingle();
-            return v;
+            using Buffer<float> buffer = ReadFromStream<float>(3);
+            return MemoryMarshal.Cast<float, Vector3>(buffer.Span)[0];
         }
 
         /// <summary>
@@ -229,12 +270,8 @@ namespace RageLib.Data
         /// <returns></returns>
         public Vector4 ReadVector4()
         {
-            Vector4 v = new Vector4();
-            v.X = ReadSingle();
-            v.Y = ReadSingle();
-            v.Z = ReadSingle();
-            v.W = ReadSingle();
-            return v;
+            using Buffer<float> buffer = ReadFromStream<float>(4);
+            return MemoryMarshal.Cast<float, Vector4>(buffer.Span)[0];
         }
 
         /// <summary>
@@ -243,12 +280,8 @@ namespace RageLib.Data
         /// <returns></returns>
         public Quaternion ReadQuaternion()
         {
-            Quaternion q = new Quaternion();
-            q.X = ReadSingle();
-            q.Y = ReadSingle();
-            q.Z = ReadSingle();
-            q.W = ReadSingle();
-            return q;
+            using Buffer<float> buffer = ReadFromStream<float>(4);
+            return MemoryMarshal.Cast<float, Quaternion>(buffer.Span)[0];
         }
 
         /// <summary>
@@ -257,34 +290,14 @@ namespace RageLib.Data
         /// <returns></returns>
         public Matrix4x4 ReadMatrix4x4()
         {
-            Matrix4x4 m = new Matrix4x4();
-            m.M11 = ReadSingle();
-            m.M21 = ReadSingle();
-            m.M31 = ReadSingle();
-            m.M41 = ReadSingle();
-            m.M12 = ReadSingle();
-            m.M22 = ReadSingle();
-            m.M32 = ReadSingle();
-            m.M42 = ReadSingle();
-            m.M13 = ReadSingle();
-            m.M23 = ReadSingle();
-            m.M33 = ReadSingle();
-            m.M43 = ReadSingle();
-            m.M14 = ReadSingle();
-            m.M24 = ReadSingle();
-            m.M34 = ReadSingle();
-            m.M44 = ReadSingle();
-            return m;
+            using Buffer<float> buffer = ReadFromStream<float>(16);
+            return MemoryMarshal.Cast<float, Matrix4x4>(buffer.Span)[0];
         }
 
         public T[] ReadArray<T>(int count) where T : unmanaged
         {
-            int sizeOf = Unsafe.SizeOf<T>();
-
-            byte[] data = ReadBytes(count * sizeOf);
-            Span<T> span = MemoryMarshal.Cast<byte, T>(data.AsSpan());
-
-            return span.ToArray();
+            using Buffer<T> buffer = ReadFromStream<T>(count);
+            return buffer.Span.ToArray();
         }
     }
 }

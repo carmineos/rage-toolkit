@@ -100,19 +100,13 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
             this.blockIndex = -1;
         }
 
-        protected override void WriteToStream(byte[] value, bool ignoreEndianess = true)
+        protected override void WriteToStream(Span<byte> value, bool ignoreEndianess = true)
         {
             var currentStream = blocks[BlockIndex].Stream;
             if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-            {
-                var buffer = (byte[])value.Clone();
-                Array.Reverse(buffer);
-                currentStream.Write(buffer, 0, buffer.Length);
-            }
-            else
-            {
-                currentStream.Write(value, 0, value.Length);
-            }
+                value.Reverse();
+
+            currentStream.Write(value);
         }
 
         public void SelectBlockByNameHash(int nameHash)
