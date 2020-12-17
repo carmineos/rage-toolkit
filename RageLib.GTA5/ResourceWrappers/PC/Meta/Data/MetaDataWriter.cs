@@ -24,6 +24,7 @@ using RageLib.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
 {
@@ -100,13 +101,22 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
             this.blockIndex = -1;
         }
 
-        protected override void WriteToStream(Span<byte> value, bool ignoreEndianess = true)
+        protected override void WriteToStreamRaw(Span<byte> value)
         {
             var currentStream = blocks[BlockIndex].Stream;
-            if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-                value.Reverse();
-
             currentStream.Write(value);
+        }
+
+        protected override void WriteToStream<T>(T value, bool ignoreEndianess = true)
+        {
+            var currentStream = blocks[BlockIndex].Stream;
+
+            var span = MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref value, 1));
+
+            if (!ignoreEndianess && !endianessEqualsHostArchitecture)
+                span.Reverse();
+
+            currentStream.Write(span);
         }
 
         public void SelectBlockByNameHash(int nameHash)

@@ -23,6 +23,7 @@
 using RageLib.Data;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace RageLib.Resources
 {
@@ -71,7 +72,7 @@ namespace RageLib.Resources
         /// Writes data to the underlying stream. This is the only method that directly accesses
         /// the data in the underlying stream.
         /// </summary>
-        protected override void WriteToStream(Span<byte> value, bool ignoreEndianess = true)
+        protected override void WriteToStreamRaw(Span<byte> value)
         {
             Stream stream;
             long basePosition;
@@ -91,11 +92,6 @@ namespace RageLib.Resources
             else
                 throw new Exception("illegal position!");
 
-            // handle endianess
-            if (!ignoreEndianess && !endianessEqualsHostArchitecture)
-                value.Reverse();
-
-            // write to virtual stream...
             stream.Position = Position & ~basePosition;
 
             stream.Write(value);
@@ -110,6 +106,40 @@ namespace RageLib.Resources
         public void WriteBlock(IResourceBlock value)
         {
             value.Write(this);
+        }
+
+        protected override void WriteToStream<T>(T value, bool ignoreEndianess = false)
+        {
+            Stream stream;
+            long basePosition;
+
+            if ((Position & VIRTUAL_BASE) == VIRTUAL_BASE)
+            {
+                // write to virtual stream...
+                stream = virtualStream;
+                basePosition = VIRTUAL_BASE;
+            }
+            else if ((Position & PHYSICAL_BASE) == PHYSICAL_BASE)
+            {
+                // write to physical stream...
+                stream = physicalStream;
+                basePosition = PHYSICAL_BASE;
+            }
+            else
+                throw new Exception("illegal position!");
+
+            stream.Position = Position & ~basePosition;
+
+            // handle endianess
+            var span = MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref value, 1));
+
+            if (!ignoreEndianess && !endianessEqualsHostArchitecture)
+                span.Reverse();
+
+            stream.Write(span);
+
+            Position = stream.Position | basePosition;
+            return;
         }
     }
 }
