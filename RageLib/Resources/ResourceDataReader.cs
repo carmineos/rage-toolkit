@@ -35,32 +35,22 @@ namespace RageLib.Resources
         private const long VIRTUAL_BASE = 0x50000000;
         private const long PHYSICAL_BASE = 0x60000000;
 
-        private Stream virtualStream;
-        private Stream physicalStream;
+        private readonly Stream virtualStream;
+        private readonly Stream physicalStream;
 
         // this is a dictionary that contains all the resource blocks
         // which were read from this resource reader
-        private Dictionary<long, List<IResourceBlock>> blockPool;
+        private readonly Dictionary<long, List<IResourceBlock>> blockPool;
 
         /// <summary>
         /// Gets the length of the underlying stream.
         /// </summary>
-        public override long Length
-        {
-            get
-            {
-                return -1;
-            }
-        }
+        public override long Length => -1;
 
         /// <summary>
         /// Gets or sets the position within the underlying stream.
         /// </summary>
-        public override long Position
-        {
-            get;
-            set;
-        }
+        public override long Position { get; set; }
 
         /// <summary>
         /// Initializes a new resource data reader for the specified virtual- and physical-stream.

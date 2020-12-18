@@ -33,43 +33,26 @@ namespace RageLib.Data
     /// </summary>
     public class DataWriter
     {
-        private Stream baseStream;
-
-        public readonly bool endianessEqualsHostArchitecture;
+        private readonly Stream baseStream;
+        protected readonly bool endianessEqualsHostArchitecture;
 
         /// <summary>
         /// Gets or sets the endianess of the underlying stream.
         /// </summary>
-        public Endianess Endianess
-        {
-            get;
-            set;
-        }
+        public Endianess Endianess { get; set; }
 
         /// <summary>
         /// Gets the length of the underlying stream.
         /// </summary>
-        public virtual long Length
-        {
-            get
-            {
-                return baseStream.Length;
-            }
-        }
+        public virtual long Length => baseStream.Length;
 
         /// <summary>
         /// Gets or sets the position within the underlying stream.
         /// </summary>
         public virtual long Position
         {
-            get
-            {
-                return baseStream.Position;
-            }
-            set
-            {
-                baseStream.Position = value;
-            }
+            get => baseStream.Position;
+            set => baseStream.Position = value;
         }
                 
         /// <summary>
