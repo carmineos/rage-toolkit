@@ -20,6 +20,7 @@
     THE SOFTWARE.
 */
 
+using RageLib.Resources.Common;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
@@ -30,10 +31,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0x18;
 
         // structure data
-        public ulong ShaderGroupPointer;
-
-        // reference data
-        public ShaderGroup ShaderGroup;
+        public Ref<ShaderGroup> ShaderGroup;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -43,12 +41,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Read(reader, parameters);
 
             // read structure data
-            this.ShaderGroupPointer = reader.ReadUInt64();
+            this.ShaderGroup = reader.ReadUInt64();
 
             // read reference data
-            this.ShaderGroup = reader.ReadBlockAt<ShaderGroup>(
-                this.ShaderGroupPointer // offset
-            );
+            this.ShaderGroup.ReadBlock(reader);
         }
 
         /// <summary>
@@ -58,11 +54,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.ShaderGroupPointer = (ulong)(this.ShaderGroup != null ? this.ShaderGroup.BlockPosition : 0);
-
             // write structure data
-            writer.Write(this.ShaderGroupPointer);
+            writer.Write(this.ShaderGroup);
         }
 
         /// <summary>
@@ -71,7 +64,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (ShaderGroup != null) list.Add(ShaderGroup);
+            if (ShaderGroup.Data != null) list.Add(ShaderGroup.Data);
             return list.ToArray();
         }
     }

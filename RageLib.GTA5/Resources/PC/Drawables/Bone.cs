@@ -42,16 +42,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public short NextSiblingIndex;
         public short ParentIndex;
         public uint Unknown_34h; // 0x00000000
-        public ulong NamePointer;
+        public Ref<string_r> Name;
         public BoneFlags Flags;
         public short Index;
         public ushort BoneId;
         public ushort Unknown_46h;
         public uint Unknown_48h; // 0x00000000
         public uint Unknown_4Ch; // 0x00000000
-
-        // reference data
-        public string_r Name;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -67,7 +64,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.NextSiblingIndex = reader.ReadInt16();
             this.ParentIndex = reader.ReadInt16();
             this.Unknown_34h = reader.ReadUInt32();
-            this.NamePointer = reader.ReadUInt64();
+            this.Name = reader.ReadUInt64();
             this.Flags = (BoneFlags)reader.ReadUInt16();
             this.Index = reader.ReadInt16();
             this.BoneId = reader.ReadUInt16();
@@ -76,9 +73,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.Unknown_4Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Name = reader.ReadBlockAt<string_r>(
-                this.NamePointer // offset
-            );
+            this.Name.ReadBlock(reader);
         }
 
         /// <summary>
@@ -86,9 +81,6 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         /// </summary>
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
-            // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
-
             // write structure data
             writer.Write(this.Rotation);
             writer.Write(this.Translation);
@@ -98,7 +90,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.NextSiblingIndex);
             writer.Write(this.ParentIndex);
             writer.Write(this.Unknown_34h);
-            writer.Write(this.NamePointer);
+            writer.Write(this.Name);
             writer.Write((ushort)this.Flags);
             writer.Write(this.Index);
             writer.Write(this.BoneId);
@@ -113,7 +105,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (Name != null) list.Add(Name);
+            if (Name.Data != null) list.Add(Name.Data);
             return list.ToArray();
         }
 

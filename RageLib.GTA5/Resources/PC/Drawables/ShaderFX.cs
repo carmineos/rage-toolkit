@@ -33,7 +33,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0x30;
 
         // structure data
-        public ulong ParametersPointer;
+        public Ref<ShaderParametersBlock_GTA5_pc> Parameters;
         public uint ShaderHash;
         public uint Unknown_Ch; // 0x00000000
         public byte ParameterCount;
@@ -50,18 +50,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint Unknown_28h; // 0x00000000
         public uint Unknown_2Ch; // 0x00000000
 
-        // reference data
-        //public ResourceSimpleArray<ShaderParameter_GTA5_pc> Parameters;
-        //public SimpleArrayOFFSET<uint_r> ParameterHashes;
-        public ShaderParametersBlock_GTA5_pc ParametersList;
-
         /// <summary>
         /// Reads the data-block from a stream.
         /// </summary>
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.ParametersPointer = reader.ReadUInt64();
+            this.Parameters = reader.ReadUInt64();
             this.ShaderHash = reader.ReadUInt32();
             this.Unknown_Ch = reader.ReadUInt32();
             this.ParameterCount = reader.ReadByte();
@@ -78,22 +73,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.Unknown_28h = reader.ReadUInt32();
             this.Unknown_2Ch = reader.ReadUInt32();
 
-            // read reference data
-            //this.Parameters = reader.ReadBlockAt<ResourceSimpleArray<ShaderParameter_GTA5_pc>>(
-            //	this.ParametersPointer, // offset
-            //	this.ParameterCount
-            //);
-            //this.ParameterHashes = reader.ReadBlockAt<SimpleArrayOFFSET<uint_r>>(
-            //	this.ParametersPointer, // offset
-            //	this.ParameterCount,
-            //	this.TextureParametersCount
-            //);
-
-
-            this.ParametersList = reader.ReadBlockAt<ShaderParametersBlock_GTA5_pc>(
-                this.ParametersPointer, // offset
-                this.ParameterCount
-            );
+            this.Parameters.ReadBlock(reader, ParameterCount);
         }
 
         /// <summary>
@@ -101,13 +81,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         /// </summary>
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
-            // update structure data
-            this.ParametersPointer = (ulong)(this.ParametersList != null ? this.ParametersList.BlockPosition : 0);
-            //this.ParametersPointer = (ulong)(this.Parameters != null ? this.Parameters.Position : 0);
-            //this.ParameterCount = (byte)(this.Parameters != null ? this.Parameters.Count : 0);
-
             // write structure data
-            writer.Write(this.ParametersPointer);
+            writer.Write(this.Parameters);
             writer.Write(this.ShaderHash);
             writer.Write(this.Unknown_Ch);
             writer.Write(this.ParameterCount);
@@ -125,14 +100,20 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.Unknown_2Ch);
         }
 
+        public override void Rebuild()
+        {
+            ParameterCount = (byte)(Parameters.Data is not null ? Parameters.Data.Parameters.Count : 0);
+            //ParametersTotalSize = 
+            // TODO: update size
+        }
+
         /// <summary>
         /// Returns a list of data blocks which are referenced by this block.
         /// </summary>
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (ParametersList != null) list.Add(ParametersList);
-            //		if (ParameterHashes != null) list.Add(ParameterHashes);
+            if (Parameters.Data != null) list.Add(Parameters.Data);
             return list.ToArray();
         }
 

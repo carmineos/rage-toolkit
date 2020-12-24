@@ -34,15 +34,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // structure data
         public ResourcePointerList64<DrawableGeometry> Geometries;
-        public ulong GeometriesBoundsPointer;
-        public ulong ShaderMappingPointer;
+        public Ref<ResourceSimpleArray<RAGE_AABB>> GeometriesBounds;
+        public Ref<SimpleArray<ushort>> ShaderMapping;
         public uint Unknown_28h;
         public ushort Unknown_2Ch;
         public ushort GeometriesCount;
-
-        // reference data
-        public ResourceSimpleArray<RAGE_AABB> GeometriesBounds;
-        public SimpleArray<ushort> ShaderMapping;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -53,21 +49,15 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // read structure data
             this.Geometries = reader.ReadBlock<ResourcePointerList64<DrawableGeometry>>();
-            this.GeometriesBoundsPointer = reader.ReadUInt64();
-            this.ShaderMappingPointer = reader.ReadUInt64();
+            this.GeometriesBounds = reader.ReadUInt64();
+            this.ShaderMapping = reader.ReadUInt64();
             this.Unknown_28h = reader.ReadUInt32();
             this.Unknown_2Ch = reader.ReadUInt16();
             this.GeometriesCount = reader.ReadUInt16();
 
             // read reference data
-            this.GeometriesBounds = reader.ReadBlockAt<ResourceSimpleArray<RAGE_AABB>>(
-                this.GeometriesBoundsPointer, // offset
-                this.GeometriesCount > 1 ? this.GeometriesCount + 1 : this.GeometriesCount
-            );
-            this.ShaderMapping = reader.ReadBlockAt<SimpleArray<ushort>>(
-                this.ShaderMappingPointer, // offset
-                this.GeometriesCount
-            );
+            this.GeometriesBounds.ReadBlock(reader, this.GeometriesCount > 1 ? this.GeometriesCount + 1 : this.GeometriesCount);
+            this.ShaderMapping.ReadBlock(reader, this.GeometriesCount);
         }
 
         /// <summary>
@@ -77,17 +67,18 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.GeometriesBoundsPointer = (ulong)(this.GeometriesBounds != null ? this.GeometriesBounds.BlockPosition : 0);
-            this.ShaderMappingPointer = (ulong)(this.ShaderMapping != null ? this.ShaderMapping.BlockPosition : 0);
-
             // write structure data
             writer.WriteBlock(this.Geometries);
-            writer.Write(this.GeometriesBoundsPointer);
-            writer.Write(this.ShaderMappingPointer);
+            writer.Write(this.GeometriesBounds);
+            writer.Write(this.ShaderMapping);
             writer.Write(this.Unknown_28h);
             writer.Write(this.Unknown_2Ch);
             writer.Write(this.GeometriesCount);
+        }
+
+        public override void Rebuild()
+        {
+            GeometriesCount = Geometries.EntriesCount;
         }
 
         /// <summary>
@@ -96,9 +87,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (Geometries != null) list.Add(Geometries);
-            if (GeometriesBounds != null) list.Add(GeometriesBounds);
-            if (ShaderMapping != null) list.Add(ShaderMapping);
+            if (GeometriesBounds.Data != null) list.Add(GeometriesBounds.Data);
+            if (ShaderMapping.Data != null) list.Add(ShaderMapping.Data);
             return list.ToArray();
         }
 

@@ -36,7 +36,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public uint IndicesCount;
         public uint Unknown_Ch; // 0x00000000
-        public ulong IndicesPointer;
+        public Ref<IndexData_GTA5_pc> Indices;
         public ulong Unknown_18h; // 0x0000000000000000
         public ulong Unknown_20h; // 0x0000000000000000
         public ulong Unknown_28h; // 0x0000000000000000
@@ -46,9 +46,6 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong Unknown_48h; // 0x0000000000000000
         public ulong Unknown_50h; // 0x0000000000000000
         public ulong Unknown_58h; // 0x0000000000000000
-
-        // reference data
-        public IndexData_GTA5_pc Indices;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -60,7 +57,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             // read structure data
             this.IndicesCount = reader.ReadUInt32();
             this.Unknown_Ch = reader.ReadUInt32();
-            this.IndicesPointer = reader.ReadUInt64();
+            this.Indices = reader.ReadUInt64();
             this.Unknown_18h = reader.ReadUInt64();
             this.Unknown_20h = reader.ReadUInt64();
             this.Unknown_28h = reader.ReadUInt64();
@@ -72,10 +69,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.Unknown_58h = reader.ReadUInt64();
 
             // read reference data
-            this.Indices = reader.ReadBlockAt<IndexData_GTA5_pc>(
-                this.IndicesPointer, // offset
-                this.IndicesCount
-            );
+            this.Indices.ReadBlock(reader, IndicesCount);
         }
 
         /// <summary>
@@ -85,14 +79,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.IndicesCount = (uint)(this.Indices != null ? this.Indices.BlockLength / 2 : 0);
-            this.IndicesPointer = (ulong)(this.Indices != null ? this.Indices.BlockPosition : 0);
-
             // write structure data
             writer.Write(this.IndicesCount);
             writer.Write(this.Unknown_Ch);
-            writer.Write(this.IndicesPointer);
+            writer.Write(this.Indices);
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_20h);
             writer.Write(this.Unknown_28h);
@@ -104,13 +94,18 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.Unknown_58h);
         }
 
+        public override void Rebuild()
+        {
+            IndicesCount = (ushort)(Indices.Data is not null ? Indices.Data.Data.Length / 2 : 0);
+        }
+
         /// <summary>
         /// Returns a list of data blocks which are referenced by this block.
         /// </summary>
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (Indices != null) list.Add(Indices);
+            if (Indices.Data != null) list.Add(Indices.Data);
             return list.ToArray();
         }
     }

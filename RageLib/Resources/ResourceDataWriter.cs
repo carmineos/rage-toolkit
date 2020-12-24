@@ -21,6 +21,7 @@
 */
 
 using RageLib.Data;
+using RageLib.Resources.Common;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -130,6 +131,12 @@ namespace RageLib.Resources
 
             Position = stream.Position | basePosition;
             return;
+        }
+
+        public void Write<T>(Ref<T> value) where T : IResourceBlock, new()
+        {
+            value.Pointer = (ulong)(value.Data is not null ? value.Data.BlockPosition : 0);
+            Write(value.Pointer);
         }
     }
 }

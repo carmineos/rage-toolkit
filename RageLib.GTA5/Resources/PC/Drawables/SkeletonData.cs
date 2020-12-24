@@ -186,7 +186,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
                     continue;
                 }
 
-                string name = bone.Name?.Value;
+                string name = bone.Name.Data?.Value;
 
                 if (string.IsNullOrEmpty(name))
                     bone.BoneId = 0;

@@ -20,6 +20,7 @@
     THE SOFTWARE.
 */
 
+using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
 
@@ -36,12 +37,12 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ushort VertexStride;
         public ushort Unknown_Ah;
         public uint Unknown_Ch; // 0x00000000
-        public ulong DataPointer1;
+        public Ref<VertexData_GTA5_pc> Data1;
         public uint VertexCount;
         public uint Unknown_1Ch; // 0x00000000
-        public ulong DataPointer2;
+        public Ref<VertexData_GTA5_pc> Data2;
         public ulong Unknown_28h; // 0x0000000000000000
-        public ulong InfoPointer;
+        public Ref<VertexDeclaration> Info;
         public ulong Unknown_38h; // 0x0000000000000000
         public ulong Unknown_40h; // 0x0000000000000000
         public ulong Unknown_48h; // 0x0000000000000000
@@ -51,11 +52,6 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong Unknown_68h; // 0x0000000000000000
         public ulong Unknown_70h; // 0x0000000000000000
         public ulong Unknown_78h; // 0x0000000000000000
-
-        // reference data
-        public VertexData_GTA5_pc Data1;
-        public VertexData_GTA5_pc Data2;
-        public VertexDeclaration Info;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -68,12 +64,12 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.VertexStride = reader.ReadUInt16();
             this.Unknown_Ah = reader.ReadUInt16();
             this.Unknown_Ch = reader.ReadUInt32();
-            this.DataPointer1 = reader.ReadUInt64();
+            this.Data1 = reader.ReadUInt64();
             this.VertexCount = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
-            this.DataPointer2 = reader.ReadUInt64();
+            this.Data2 = reader.ReadUInt64();
             this.Unknown_28h = reader.ReadUInt64();
-            this.InfoPointer = reader.ReadUInt64();
+            this.Info = reader.ReadUInt64();
             this.Unknown_38h = reader.ReadUInt64();
             this.Unknown_40h = reader.ReadUInt64();
             this.Unknown_48h = reader.ReadUInt64();
@@ -85,21 +81,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.Unknown_78h = reader.ReadUInt64();
 
             // read reference data
-            this.Info = reader.ReadBlockAt<VertexDeclaration>(
-                this.InfoPointer // offset
-            );
-            this.Data1 = reader.ReadBlockAt<VertexData_GTA5_pc>(
-                this.DataPointer1, // offset
-                this.VertexStride,
-                this.VertexCount,
-                this.Info
-            );
-            this.Data2 = reader.ReadBlockAt<VertexData_GTA5_pc>(
-                this.DataPointer2, // offset
-                this.VertexStride,
-                this.VertexCount,
-                this.Info
-            );
+            this.Info.ReadBlock(reader);
+            this.Data1.ReadBlock(reader, this.VertexStride, this.VertexCount);
+            this.Data2.ReadBlock(reader, this.VertexStride, this.VertexCount);
         }
 
         /// <summary>
@@ -109,21 +93,16 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.DataPointer1 = (ulong)(this.Data1 != null ? this.Data1.BlockPosition : 0);
-            this.DataPointer2 = (ulong)(this.Data2 != null ? this.Data2.BlockPosition : 0);
-            this.InfoPointer = (ulong)(this.Info != null ? this.Info.BlockPosition : 0);
-
             // write structure data
             writer.Write(this.VertexStride);
             writer.Write(this.Unknown_Ah);
             writer.Write(this.Unknown_Ch);
-            writer.Write(this.DataPointer1);
+            writer.Write(this.Data1);
             writer.Write(this.VertexCount);
             writer.Write(this.Unknown_1Ch);
-            writer.Write(this.DataPointer2);
+            writer.Write(this.Data2);
             writer.Write(this.Unknown_28h);
-            writer.Write(this.InfoPointer);
+            writer.Write(this.Info);
             writer.Write(this.Unknown_38h);
             writer.Write(this.Unknown_40h);
             writer.Write(this.Unknown_48h);
@@ -135,15 +114,20 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.Unknown_78h);
         }
 
+        public override void Rebuild()
+        {
+            // TODO: //
+        }
+
         /// <summary>
         /// Returns a list of data blocks which are referenced by this block.
         /// </summary>
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (Data1 != null) list.Add(Data1);
-            if (Data2 != null) list.Add(Data2);
-            if (Info != null) list.Add(Info);
+            if (Data1.Data != null) list.Add(Data1.Data);
+            if (Data2.Data != null) list.Add(Data2.Data);
+            if (Info.Data != null) list.Add(Info.Data);
             return list.ToArray();
         }
     }
