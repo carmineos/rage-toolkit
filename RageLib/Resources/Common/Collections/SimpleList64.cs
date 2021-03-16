@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RageLib.Data;
+using System;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.Common
@@ -59,6 +60,26 @@ namespace RageLib.Resources.Common
         public override IResourceBlock[] GetReferences()
         {
             return Entries == null ? Array.Empty<IResourceBlock>() : new IResourceBlock[] { Entries };
+        }
+    }
+
+    public struct ArrayHeader64<T> : IResourceStruct<ArrayHeader64<T>> where T : unmanaged
+    {
+        // structure data
+        public ulong EntriesPointer;
+        public ushort EntriesCount;
+        public ushort EntriesCapacity;
+        public uint Unknown_Ch;
+
+        public ArrayHeader64<T> ReverseEndianness()
+        {
+            return new ArrayHeader64<T>()
+            {
+                EntriesPointer = EndiannessExtensions.ReverseEndianness(EntriesPointer),
+                EntriesCount = EndiannessExtensions.ReverseEndianness(EntriesCount),
+                EntriesCapacity = EndiannessExtensions.ReverseEndianness(EntriesCapacity),
+                Unknown_Ch = EndiannessExtensions.ReverseEndianness(Unknown_Ch),
+            };
         }
     }
 }

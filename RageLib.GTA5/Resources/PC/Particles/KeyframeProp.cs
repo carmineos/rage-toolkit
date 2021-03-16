@@ -22,6 +22,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Particles
 {
@@ -46,9 +47,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public ulong Unknown_60h; // 0x0000000000000000
         public uint Unknown_68h;
         public uint Unknown_6Ch;
-        public SimpleList64<Unknown_P_009> Unknown_70h;
+        public ArrayHeader64<Unknown_P_009> Unknown_70h_Header;
         public ulong Unknown_80h; // 0x0000000000000000
         public ulong Unknown_88h; // 0x0000000000000000
+
+        // reference data
+        public SimpleArray<Unknown_P_009> Unknown_70h_Data;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -72,9 +76,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.Unknown_60h = reader.ReadUInt64();
             this.Unknown_68h = reader.ReadUInt32();
             this.Unknown_6Ch = reader.ReadUInt32();
-            this.Unknown_70h = reader.ReadBlock<SimpleList64<Unknown_P_009>>();
+            this.Unknown_70h_Header = reader.ReadStruct<ArrayHeader64<Unknown_P_009>>();
             this.Unknown_80h = reader.ReadUInt64();
             this.Unknown_88h = reader.ReadUInt64();
+
+            // read reference data
+            this.Unknown_70h_Data = reader.ReadBlockAt<SimpleArray<Unknown_P_009>>(Unknown_70h_Header.EntriesPointer, Unknown_70h_Header.EntriesCount);
         }
 
         /// <summary>
@@ -83,6 +90,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             base.Write(writer, parameters);
+
+            // update structure data
+            this.Unknown_70h_Header.EntriesPointer = (ulong)(this.Unknown_70h_Data != null ? this.Unknown_70h_Data.BlockPosition : 0);
+            this.Unknown_70h_Header.EntriesCount = (ushort)(this.Unknown_70h_Data != null ? this.Unknown_70h_Data.Count : 0);
+            this.Unknown_70h_Header.EntriesCapacity = (ushort)(this.Unknown_70h_Data != null ? this.Unknown_70h_Data.Count : 0);
 
             // write structure data
             writer.Write(this.Unknown_8h);
@@ -99,16 +111,19 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.Write(this.Unknown_60h);
             writer.Write(this.Unknown_68h);
             writer.Write(this.Unknown_6Ch);
-            writer.WriteBlock(this.Unknown_70h);
+            writer.WriteStruct(this.Unknown_70h_Header);
             writer.Write(this.Unknown_80h);
             writer.Write(this.Unknown_88h);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        /// <summary>
+        /// Returns a list of data blocks which are referenced by this block.
+        /// </summary>
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x70, Unknown_70h)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Unknown_70h_Data != null) list.Add(Unknown_70h_Data);
+            return list.ToArray();
         }
     }
 }

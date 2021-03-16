@@ -22,6 +22,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Particles
 {
@@ -34,10 +35,13 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public uint Unknown_18h;
         public uint Unknown_1Ch; // 0x00000001
         public ulong Unknown_20h; // 0x0000000000000000
-        public SimpleList64<Unknown_P_009> Unknown_28h;
+        public ArrayHeader64<Unknown_P_009> Unknown_28h_Header;
         public ulong Unknown_38h; // 0x0000000000000000
         public ulong Unknown_40h; // 0x0000000000000000
         public ulong Unknown_48h; // 0x0000000000000000
+
+        // reference data
+        public SimpleArray<Unknown_P_009> Unknown_28h_Data;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -50,10 +54,13 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.Unknown_18h = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
             this.Unknown_20h = reader.ReadUInt64();
-            this.Unknown_28h = reader.ReadBlock<SimpleList64<Unknown_P_009>>();
+            this.Unknown_28h_Header = reader.ReadStruct<ArrayHeader64<Unknown_P_009>>();
             this.Unknown_38h = reader.ReadUInt64();
             this.Unknown_40h = reader.ReadUInt64();
             this.Unknown_48h = reader.ReadUInt64();
+
+            // read reference data
+            this.Unknown_28h_Data = reader.ReadBlockAt<SimpleArray<Unknown_P_009>>(Unknown_28h_Header.EntriesPointer, Unknown_28h_Header.EntriesCount);
         }
 
         /// <summary>
@@ -63,21 +70,29 @@ namespace RageLib.Resources.GTA5.PC.Particles
         {
             base.Write(writer, parameters);
 
+            // update structure data
+            this.Unknown_28h_Header.EntriesPointer = (ulong)(this.Unknown_28h_Data != null ? this.Unknown_28h_Data.BlockPosition : 0);
+            this.Unknown_28h_Header.EntriesCount = (ushort)(this.Unknown_28h_Data != null ? this.Unknown_28h_Data.Count : 0);
+            this.Unknown_28h_Header.EntriesCapacity = (ushort)(this.Unknown_28h_Data != null ? this.Unknown_28h_Data.Count : 0);
+
             // write structure data
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_1Ch);
             writer.Write(this.Unknown_20h);
-            writer.WriteBlock(this.Unknown_28h);
+            writer.WriteStruct(this.Unknown_28h_Header);
             writer.Write(this.Unknown_38h);
             writer.Write(this.Unknown_40h);
             writer.Write(this.Unknown_48h);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        /// <summary>
+        /// Returns a list of data blocks which are referenced by this block.
+        /// </summary>
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x28, Unknown_28h)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Unknown_28h_Data != null) list.Add(Unknown_28h_Data);
+            return list.ToArray();
         }
     }
 }
