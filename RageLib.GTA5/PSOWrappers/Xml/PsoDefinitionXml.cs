@@ -155,7 +155,7 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         {
             if (value.StartsWith("0x"))
             {
-                return int.Parse(value.Substring(2), NumberStyles.HexNumber);
+                return int.Parse(value.AsSpan(2), NumberStyles.HexNumber);
             }
             else
             {

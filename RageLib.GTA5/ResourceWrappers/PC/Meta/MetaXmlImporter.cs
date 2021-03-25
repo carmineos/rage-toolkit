@@ -395,7 +395,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 if (x.NameHash == enumNameHash)
                     enumInfo = x;
             }
-
+            // TODO: Parse using Span
             var keyStrings = node.InnerText.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var x in keyStrings)
             {
@@ -420,7 +420,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 if (x.NameHash == enumNameHash)
                     enumInfo = x;
             }
-
+            // TODO: Parse using Span
             var keyStrings = node.InnerText.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var x in keyStrings)
             {
@@ -441,10 +441,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
             if (enumNameHash == 0)
             {
+                // TODO: Parse using Span
                 var keyStrings = node.InnerText.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var x in keyStrings)
                 {
-                    var enumIdx = int.Parse(x.Substring(11));
+                    var enumIdx = int.Parse(x.AsSpan(11));
                     intFlags.Value += (uint)(1 << enumIdx);
                 }
             }
@@ -456,6 +457,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     if (x.NameHash == enumNameHash)
                         enumInfo = x;
                 }
+                // TODO: Parse using Span
                 var keyStrings = node.InnerText.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var x in keyStrings)
                 {
@@ -524,6 +526,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             if (!string.IsNullOrEmpty(v))
             {
                 arrayValue.Entries = new List<IMetaValue>();
+                // TODO: Parse using Span
                 string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var kkk in k)
                 {
@@ -540,7 +543,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             if (!string.IsNullOrEmpty(v))
             {
                 arrayValue.Entries = new List<Types.IMetaValue>();
-
+                // TODO: Parse using Span
                 string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var kkk in k)
                 {
@@ -558,7 +561,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             if (!string.IsNullOrEmpty(v))
             {
                 arrayValue.Entries = new List<Types.IMetaValue>();
-
+                // TODO: Parse using Span
                 string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var kkk in k)
                 {
@@ -576,7 +579,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             if (!string.IsNullOrEmpty(v))
             {
                 arrayValue.Entries = new List<Types.IMetaValue>();
-
+                // TODO: Parse using Span
                 string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var kkk in k)
                 {
@@ -594,7 +597,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             if (!string.IsNullOrEmpty(v))
             {
                 arrayValue.Entries = new List<Types.IMetaValue>();
-
+                // TODO: Parse using Span
                 string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                 int iii = 0;
@@ -642,8 +645,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         {
             if (hashName.StartsWith("enum_hash_", StringComparison.OrdinalIgnoreCase))
             {
-                var x = hashName.Substring(10);
-                int intAgain = int.Parse(x, NumberStyles.HexNumber);
+                int intAgain = int.Parse(hashName.AsSpan(10), NumberStyles.HexNumber);
                 return intAgain;
             }
             else
@@ -656,8 +658,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         {
             if (hashName.StartsWith("flag_hash_", StringComparison.OrdinalIgnoreCase))
             {
-                var x = hashName.Substring(10);
-                int intAgain = int.Parse(x, NumberStyles.HexNumber);
+                int intAgain = int.Parse(hashName.AsSpan(10), NumberStyles.HexNumber);
                 return intAgain;
             }
             else
@@ -668,6 +669,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public byte[] ByteFromString(string str)
         {
+            // TODO: Parse using Span
             string[] ss = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             byte[] res = new byte[ss.Length];
             for (int i = 0; i < ss.Length; i++)
@@ -681,8 +683,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         {
             if (hashName.StartsWith("hash_", StringComparison.OrdinalIgnoreCase))
             {
-                var x = hashName.Substring(5);
-                int intAgain = int.Parse(x, NumberStyles.HexNumber);
+                int intAgain = int.Parse(hashName.AsSpan(5), NumberStyles.HexNumber);
                 return intAgain;
             }
             else
