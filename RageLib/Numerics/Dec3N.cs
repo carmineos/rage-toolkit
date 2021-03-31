@@ -20,16 +20,16 @@ namespace RageLib.Numerics
             ushort y = SetComponentTwoComplement10Bits(fy);
             ushort z = SetComponentTwoComplement10Bits(fz);
             byte w = SetComponentTwoComplement2Bits(fw);
-            packedData = (uint)((w << 30) | (z << 20) | (y << 10) | x);
+            packedData = (uint)((x << 22) | (y << 12) | (z << 2) | w);
         }
 
-        public readonly float X => GetComponentTwoComplement10Bits(packedData);
+        public readonly float X => GetComponentTwoComplement10Bits(packedData >> 22);
 
-        public readonly float Y => GetComponentTwoComplement10Bits(packedData >> 10);
+        public readonly float Y => GetComponentTwoComplement10Bits(packedData >> 12);
 
-        public readonly float Z => GetComponentTwoComplement10Bits(packedData >> 20);
+        public readonly float Z => GetComponentTwoComplement10Bits(packedData >> 2);
 
-        public readonly float W => GetComponentTwoComplement2Bits(packedData >> 30);
+        public readonly float W => GetComponentTwoComplement2Bits(packedData);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float GetComponentTwoComplement10Bits(uint value)
@@ -61,7 +61,7 @@ namespace RageLib.Numerics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static byte SetComponentTwoComplement2Bits(float value)
         {
-            return (byte)MathF.Round(Math.Clamp(value, -2.0f, 1.0f));
+            return (byte)(((uint)MathF.Round(Math.Clamp(value, -2.0f, 1.0f))) & 0x3);
         }
 
         public bool Equals(Dec3N other) => this == other;
