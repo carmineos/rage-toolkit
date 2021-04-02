@@ -23,7 +23,6 @@
 using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -46,7 +45,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public Vector3 Offset;
         public float Unknown_ACh;
         public ulong VerticesPointer;
-        public ulong Unknown_B8h_Pointer;
+        public ulong VerticesColorsPointer;
         public ulong Unknown_C0h_Pointer;
         public ulong Unknown_C8h_Pointer;
         public uint VerticesCount2;
@@ -59,7 +58,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public SimpleArray<BoundVertex> ShrunkVertices;
         public SimpleArray<BoundPrimitive> Primitives;
         public SimpleArray<BoundVertex> Vertices;
-        public SimpleArray<uint> Unknown_B8h_Data;
+        public SimpleArray<uint> VerticesColors;
         public SimpleArray<uint> Unknown_C0h_Data;
         public SimpleArrayArray64<uint> Unknown_C8h_Data;
 
@@ -82,7 +81,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             this.Offset = reader.ReadVector3();
             this.Unknown_ACh = reader.ReadSingle();
             this.VerticesPointer = reader.ReadUInt64();
-            this.Unknown_B8h_Pointer = reader.ReadUInt64();
+            this.VerticesColorsPointer = reader.ReadUInt64();
             this.Unknown_C0h_Pointer = reader.ReadUInt64();
             this.Unknown_C8h_Pointer = reader.ReadUInt64();
             this.VerticesCount2 = reader.ReadUInt32();
@@ -104,8 +103,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
                 this.VerticesPointer, // offset
                 this.VerticesCount2
             );
-            this.Unknown_B8h_Data = reader.ReadBlockAt<SimpleArray<uint>>(
-                this.Unknown_B8h_Pointer, // offset
+            this.VerticesColors = reader.ReadBlockAt<SimpleArray<uint>>(
+                this.VerticesColorsPointer, // offset
                 this.VerticesCount2
             );
             this.Unknown_C0h_Data = reader.ReadBlockAt<SimpleArray<uint>>(
@@ -131,7 +130,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             this.VerticesCount1 = (uint)(this.Vertices != null ? this.Vertices.Count : 0);
             this.PrimitivesPointer = (ulong)(this.Primitives != null ? this.Primitives.BlockPosition : 0);
             this.VerticesPointer = (ulong)(this.Vertices != null ? this.Vertices.BlockPosition : 0);
-            this.Unknown_B8h_Pointer = (ulong)(this.Unknown_B8h_Data != null ? this.Unknown_B8h_Data.BlockPosition : 0);
+            this.VerticesColorsPointer = (ulong)(this.VerticesColors != null ? this.VerticesColors.BlockPosition : 0);
             this.Unknown_C0h_Pointer = (ulong)(this.Unknown_C0h_Data != null ? this.Unknown_C0h_Data.BlockPosition : 0);
             this.Unknown_C8h_Pointer = (ulong)(this.Unknown_C8h_Data != null ? this.Unknown_C8h_Data.BlockPosition : 0);
             this.VerticesCount2 = (uint)(this.Vertices != null ? this.Vertices.Count : 0);
@@ -149,7 +148,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             writer.Write(this.Offset);
             writer.Write(this.Unknown_ACh);
             writer.Write(this.VerticesPointer);
-            writer.Write(this.Unknown_B8h_Pointer);
+            writer.Write(this.VerticesColorsPointer);
             writer.Write(this.Unknown_C0h_Pointer);
             writer.Write(this.Unknown_C8h_Pointer);
             writer.Write(this.VerticesCount2);
@@ -168,7 +167,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             if (ShrunkVertices != null) list.Add(ShrunkVertices);
             if (Primitives != null) list.Add(Primitives);
             if (Vertices != null) list.Add(Vertices);
-            if (Unknown_B8h_Data != null) list.Add(Unknown_B8h_Data);
+            if (VerticesColors != null) list.Add(VerticesColors);
             if (Unknown_C0h_Data != null) list.Add(Unknown_C0h_Data);
             if (Unknown_C8h_Data != null) list.Add(Unknown_C8h_Data);
             return list.ToArray();
@@ -215,19 +214,27 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         public override void Rebuild()
         {
-            // Test
-            TestQuantum();
-            TestTriangleArea();
-            TestTriangleNeighbors();
-            TestShrunkVertices();
+            base.Rebuild();
+
+            if(Vertices is null || Primitives is null)
+            {
+                return;
+            }
+
+            Quantum = CalculateQuantum();
+            ComputeTrianglesArea();
+            ComputeTrianglesNeighbors();
+
+            //ComputeShrunkVertices();
         }
 
-        public void TestShrunkVertices()
+        public void ComputeShrunkVertices()
         {
             if (ShrunkVertices is null)
                 return;
 
             // Margin is used to shrink vertices
+            // For triangles, they seem to be shrink along their average normal
             // OctantMap only seems to be present if ShrunkVertices are present too
             for (int i = 0; i < VerticesCount2; i++)
             {
@@ -238,15 +245,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             }
         }
 
-        public void TestQuantum()
-        {
-            var quantum = CalculateQuantum();
-            Debug.Assert(MathF.Abs(quantum.X - Quantum.X) < 0.0001f);
-            Debug.Assert(MathF.Abs(quantum.Y - Quantum.Y) < 0.0001f);
-            Debug.Assert(MathF.Abs(quantum.Z - Quantum.Z) < 0.0001f);
-        }
-
-        public void TestTriangleArea()
+        public void ComputeTrianglesArea()
         {
             var primitivesSpan = Primitives.AsSpan();
 
@@ -261,30 +260,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
                 var vertex2 = GetVertex(Vertices[triangle.VertexIndex2]);
                 var vertex3 = GetVertex(Vertices[triangle.VertexIndex3]);
 
-                var triangleArea = Vector3.Cross(vertex2 - vertex1, vertex3 - vertex1).Length() * 0.5f;
-
-                Debug.Assert(MathF.Abs(triangleArea - triangle.Area) < 0.0001f);
-
-                triangle.Area = triangleArea;
+                triangle.Area = Vector3.Cross(vertex2 - vertex1, vertex3 - vertex1).Length() * 0.5f;
             }
         }
 
-        public void TestTriangleNeighbors()
+        public void ComputeTrianglesNeighbors()
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static ValueTuple<ushort, ushort> GetEdge(ushort vertexIndex1, ushort vertexIndex2)
-            {
-                return vertexIndex1 < vertexIndex2 ?
-                    (vertexIndex1, vertexIndex2) :
-                    (vertexIndex2, vertexIndex1);
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static int ChooseEdge(ValueTuple<int, int> edge, int i)
-            {
-                return edge.Item2 != i ? edge.Item2 : edge.Item1 != i ? edge.Item1 : -1;
-            }
-
             // Key: (vertex1, vertex2) 
             // Value: (triangle1, triangle2)
             Dictionary <ValueTuple<ushort, ushort>, ValueTuple<int, int>> edgesMap = new();
@@ -327,18 +308,22 @@ namespace RageLib.Resources.GTA5.PC.Bounds
                 var edge2 = edgesMap[GetEdge(triangle.VertexIndex2, triangle.VertexIndex3)];
                 var edge3 = edgesMap[GetEdge(triangle.VertexIndex3, triangle.VertexIndex1)];
 
-                var edgeIndex1 = (short)ChooseEdge(edge1, i);
-                var edgeIndex2 = (short)ChooseEdge(edge2, i);
-                var edgeIndex3 = (short)ChooseEdge(edge3, i);
-
-                Debug.Assert(edgeIndex1 == triangle.NeighborIndex1);
-                Debug.Assert(edgeIndex2 == triangle.NeighborIndex2);
-                Debug.Assert(edgeIndex3 == triangle.NeighborIndex3);
-
-                triangle.NeighborIndex1 = edgeIndex1;
-                triangle.NeighborIndex2 = edgeIndex2;
-                triangle.NeighborIndex3 = edgeIndex3;
+                triangle.NeighborIndex1 = (short)ChooseEdge(edge1, i);
+                triangle.NeighborIndex2 = (short)ChooseEdge(edge2, i);
+                triangle.NeighborIndex3 = (short)ChooseEdge(edge3, i);
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static ValueTuple<ushort, ushort> GetEdge(ushort vertexIndex1, ushort vertexIndex2)
+        {
+            return vertexIndex1 < vertexIndex2 ? (vertexIndex1, vertexIndex2) : (vertexIndex2, vertexIndex1);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int ChooseEdge(ValueTuple<int, int> edge, int i)
+        {
+            return edge.Item2 != i ? edge.Item2 : edge.Item1 != i ? edge.Item1 : -1;
         }
     }
 }
