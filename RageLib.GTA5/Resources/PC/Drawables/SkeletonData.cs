@@ -38,8 +38,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public HashMap BoneMap;
         public ulong BoneDataPointer; // why this points to the array directly ?
-        public ulong TransformationsInvertedPointer;
-        public ulong TransformationsPointer;
+        public ulong InverseBindPoseMatricesPointer;
+        public ulong DefaultPoseMatricesPointer;
         public ulong ParentIndicesPointer;
         public ulong ChildrenIndicesPointer;
         public ulong Unknown_48h; // 0x0000000000000000
@@ -55,8 +55,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // reference data
         public BoneData BoneData;
-        public SimpleArray<Matrix4x4> TransformationsInverted;
-        public SimpleArray<Matrix4x4> Transformations;
+        public SimpleArray<Matrix4x4> InverseBindPoseMatrices;
+        public SimpleArray<Matrix4x4> DefaultPoseMatrices;
         public SimpleArray<short> ParentIndices;
         public SimpleArray<short> ChildrenIndices;
 
@@ -70,8 +70,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             // read structure data
             this.BoneMap = reader.ReadBlock<HashMap>();
             this.BoneDataPointer = reader.ReadUInt64();
-            this.TransformationsInvertedPointer = reader.ReadUInt64();
-            this.TransformationsPointer = reader.ReadUInt64();
+            this.InverseBindPoseMatricesPointer = reader.ReadUInt64();
+            this.DefaultPoseMatricesPointer = reader.ReadUInt64();
             this.ParentIndicesPointer = reader.ReadUInt64();
             this.ChildrenIndicesPointer = reader.ReadUInt64();
             this.Unknown_48h = reader.ReadUInt64();
@@ -90,12 +90,12 @@ namespace RageLib.Resources.GTA5.PC.Drawables
                 this.BoneDataPointer - 16, // offset
                 this.BonesCount
             );
-            this.TransformationsInverted = reader.ReadBlockAt<SimpleArray<Matrix4x4>>(
-                this.TransformationsInvertedPointer, // offset
+            this.InverseBindPoseMatrices = reader.ReadBlockAt<SimpleArray<Matrix4x4>>(
+                this.InverseBindPoseMatricesPointer, // offset
                 this.BonesCount
             );
-            this.Transformations = reader.ReadBlockAt<SimpleArray<Matrix4x4>>(
-                this.TransformationsPointer, // offset
+            this.DefaultPoseMatrices = reader.ReadBlockAt<SimpleArray<Matrix4x4>>(
+                this.DefaultPoseMatricesPointer, // offset
                 this.BonesCount
             );
             this.ParentIndices = reader.ReadBlockAt<SimpleArray<short>>(
@@ -117,8 +117,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // update structure data
             this.BoneDataPointer = (ulong)(this.BoneData != null ? this.BoneData.BlockPosition + 16 : 0);
-            this.TransformationsInvertedPointer = (ulong)(this.TransformationsInverted != null ? this.TransformationsInverted.BlockPosition : 0);
-            this.TransformationsPointer = (ulong)(this.Transformations != null ? this.Transformations.BlockPosition : 0);
+            this.InverseBindPoseMatricesPointer = (ulong)(this.InverseBindPoseMatrices != null ? this.InverseBindPoseMatrices.BlockPosition : 0);
+            this.DefaultPoseMatricesPointer = (ulong)(this.DefaultPoseMatrices != null ? this.DefaultPoseMatrices.BlockPosition : 0);
             this.ParentIndicesPointer = (ulong)(this.ParentIndices != null ? this.ParentIndices.BlockPosition : 0);
             this.ChildrenIndicesPointer = (ulong)(this.ChildrenIndices != null ? this.ChildrenIndices.BlockPosition : 0);
             this.BonesCount = (ushort)(this.BoneData?.BonesCount ?? 0);
@@ -127,8 +127,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             // write structure data
             writer.WriteBlock(this.BoneMap);
             writer.Write(this.BoneDataPointer);
-            writer.Write(this.TransformationsInvertedPointer);
-            writer.Write(this.TransformationsPointer);
+            writer.Write(this.InverseBindPoseMatricesPointer);
+            writer.Write(this.DefaultPoseMatricesPointer);
             writer.Write(this.ParentIndicesPointer);
             writer.Write(this.ChildrenIndicesPointer);
             writer.Write(this.Unknown_48h);
@@ -150,8 +150,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             var list = new List<IResourceBlock>(base.GetReferences());
             if (BoneData != null) list.Add(BoneData);
-            if (TransformationsInverted != null) list.Add(TransformationsInverted);
-            if (Transformations != null) list.Add(Transformations);
+            if (InverseBindPoseMatrices != null) list.Add(InverseBindPoseMatrices);
+            if (DefaultPoseMatrices != null) list.Add(DefaultPoseMatrices);
             if (ParentIndices != null) list.Add(ParentIndices);
             if (ChildrenIndices != null) list.Add(ChildrenIndices);
             return list.ToArray();
@@ -166,15 +166,28 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         public override void Rebuild()
         {
-            UpdateBoneIds();
-            UpdateBoneMap();
-            UpdateIndices();
-            UpdateBoneTransformations();
+            base.Rebuild();
+
+            if(BoneData is null || BoneData.Bones is null)
+            {
+                BonesCount = 0;
+                ChildrenIndicesCount = 0;
+                InverseBindPoseMatrices = null;
+                DefaultPoseMatrices = null;
+                ParentIndices = null;
+                ChildrenIndices = null;
+                return;
+            }
+
+            ComputeBonesId();
+            ComputeBoneMap();
+            ComputeIndices();
+            ComputeBoneTransformations();
         }
 
-        private void UpdateBoneIds()
+        private void ComputeBonesId()
         {
-            if (BoneData == null)
+            if (BoneData is null || BoneData.Bones is null)
                 return;
 
             foreach (var bone in BoneData.Bones)
@@ -195,9 +208,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             }
         }
 
-        private void UpdateBoneMap()
+        private void ComputeBoneMap()
         {
-            if (BoneData == null)
+            if (BoneData is null || BoneData.Bones is null)
                 return;
 
             List<KeyValuePair<uint, uint>> bonesIndexId = new List<KeyValuePair<uint, uint>>((int)BoneData.BonesCount);
@@ -208,23 +221,17 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             BoneMap = new HashMap(bonesIndexId);
         }
 
-        public void UpdateIndices()
+        public void ComputeIndices()
         {
-            var bones = BoneData?.Bones;
-
-            if (bones == null)
-            {
-                ParentIndices = null;
-                ChildrenIndices = null;
+            if (BoneData is null || BoneData.Bones is null)
                 return;
-            }
 
             // Build ParentIndices array
             var parentIndices = new short[BonesCount];
 
             for (int i = 0; i < BonesCount; i++)
             {
-                var bone = bones[i];
+                var bone = BoneData.Bones[i];
                 parentIndices[i] = bone.ParentIndex;
                 Debug.Assert(parentIndices[i] == ParentIndices[i]);
             }
@@ -247,23 +254,17 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             ChildrenIndices = new SimpleArray<short>(childrenIndices.ToArray());
         }
 
-        public void UpdateBoneTransformations()
+        public void ComputeBoneTransformations()
         {
-            var bones = BoneData?.Bones;
-
-            if (bones == null)
-            {
-                Transformations = null;
-                TransformationsInverted = null;
+            if (BoneData is null || BoneData.Bones is null)
                 return;
-            }
 
-            var worldTransformations = new Matrix4x4[BonesCount];
+            var localTransformations = new Matrix4x4[BonesCount];
             var worldTransformationsInverted = new Matrix4x4[BonesCount];
 
             for (int i = 0; i < BonesCount; i++)
             {
-                var bone = bones[i];
+                var bone = BoneData.Bones[i];
 
                 // Get Local Transform Matrix
                 var localMatrix = GetLocalMatrix(bone);
@@ -274,6 +275,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
                 // TODO: Find out how 4th column is calculated
                 //       In some cases M24 and M34 aren't accurate
+                // EDIT: This might be just junk data which comes
+                //       out of SIMD instructions with the data being just a Matrix4x3
+                //       since Translation and Scale are padded to Vector4 in Bone
                 localMatrix.M14 = 0f;
                 localMatrix.M24 = 4f;
                 localMatrix.M34 = -3f;
@@ -283,11 +287,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
                 worldMatrixInverted.M34 = 0f;
                 worldMatrixInverted.M44 = 0f;
 
-                worldTransformations[i] = localMatrix;
+                localTransformations[i] = localMatrix;
                 worldTransformationsInverted[i] = worldMatrixInverted;
 
-                //var oldMat = Transformations[i];
-                //var oldMatInv = TransformationsInverted[i];
+                //var oldMat = DefaultPoseMatrices[i];
+                //var oldMatInv = InverseBindMatrices[i];
                 //Debug.Assert(MatrixAlmostEquals(localMatrix, oldMat));
                 //Debug.Assert(MatrixAlmostEquals(worldMatrix, oldMat));
                 //Debug.Assert(MatrixAlmostEquals(worldMatrixInverted, oldMatInv));
@@ -314,8 +318,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
                 //}
             }
 
-            Transformations = new SimpleArray<Matrix4x4>(worldTransformations);
-            TransformationsInverted = new SimpleArray<Matrix4x4>(worldTransformationsInverted);
+            DefaultPoseMatrices = new SimpleArray<Matrix4x4>(localTransformations);
+            InverseBindPoseMatrices = new SimpleArray<Matrix4x4>(worldTransformationsInverted);
         }
 
         // TODO: Use a wrapper class to cache transforms and parent of each Bone
