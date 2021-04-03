@@ -34,7 +34,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
         // structure data
         public ushort Width;
         public ushort Height;
-        public ushort Unknown_54h; // 0x0001
+        public ushort Depth; // 0x0001
         public ushort Stride;
         public uint Format;
         public byte Unknown_5Ch; // 0x00
@@ -65,7 +65,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
             // read structure data
             this.Width = reader.ReadUInt16();
             this.Height = reader.ReadUInt16();
-            this.Unknown_54h = reader.ReadUInt16();
+            this.Depth = reader.ReadUInt16();
             this.Stride = reader.ReadUInt16();
             this.Format = reader.ReadUInt32();
             this.Unknown_5Ch = reader.ReadByte();
@@ -106,7 +106,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
             // write structure data
             writer.Write(this.Width);
             writer.Write(this.Height);
-            writer.Write(this.Unknown_54h);
+            writer.Write(this.Depth);
             writer.Write(this.Stride);
             writer.Write(this.Format);
             writer.Write(this.Unknown_5Ch);

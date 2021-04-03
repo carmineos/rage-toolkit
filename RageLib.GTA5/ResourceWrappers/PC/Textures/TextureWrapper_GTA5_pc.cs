@@ -317,7 +317,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Textures
             texture.Unknown_44h = 0x00000000;
             texture.Unknown_48h = 0x00000000;
             texture.Unknown_4Ch = 0x00000000;
-            texture.Unknown_54h = 0x0001;
+            texture.Depth = 0x0001;
             texture.Unknown_5Ch = 0x00;
             texture.Unknown_5Eh = 0x0000;
             texture.Unknown_60h = 0x00000000;
