@@ -89,10 +89,10 @@ namespace RageLib.Resources.GTA5.PC.Bounds
     public struct BoundPrimitiveTriangle : IBoundPrimitive, IResourceStruct<BoundPrimitiveTriangle>
     {
         // structure data
-        public int triArea;
-        public ushort triIndex1;
-        public ushort triIndex2;
-        public ushort triIndex3;
+        public int TypeAndArea;
+        public ushort VertexIndexAndFlag1;
+        public ushort VertexIndexAndFlag2;
+        public ushort VertexIndexAndFlag3;
         public short NeighborIndex1;
         public short NeighborIndex2;
         public short NeighborIndex3;
@@ -102,61 +102,61 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         public float Area
         {
-            get => BitConverter.Int32BitsToSingle((int)(triArea & 0xFFFFFFF8));
-            set => triArea = (int)(BitConverter.SingleToInt32Bits(value) & 0xFFFFFFF8);
+            get => BitConverter.Int32BitsToSingle((int)(TypeAndArea & 0xFFFFFFF8));
+            set => TypeAndArea = (int)(BitConverter.SingleToInt32Bits(value) & 0xFFFFFFF8);
         }
 
         public ushort VertexIndex1
         {
-            get => (ushort)(triIndex1 & 0x7FFF);
-            set => triIndex1 = (ushort)((triIndex1 & 0x8000) | (value & 0x7FFF));
+            get => (ushort)(VertexIndexAndFlag1 & 0x7FFF);
+            set => VertexIndexAndFlag1 = (ushort)((VertexIndexAndFlag1 & 0x8000) | (value & 0x7FFF));
         }
 
         public ushort VertexIndex2
         {
-            get => (ushort)(triIndex2 & 0x7FFF);
-            set => triIndex2 = (ushort)((triIndex2 & 0x8000) | (value & 0x7FFF));
+            get => (ushort)(VertexIndexAndFlag2 & 0x7FFF);
+            set => VertexIndexAndFlag2 = (ushort)((VertexIndexAndFlag2 & 0x8000) | (value & 0x7FFF));
         }
 
         public ushort VertexIndex3
         {
-            get => (ushort)(triIndex3 & 0x7FFF);
-            set => triIndex3 = (ushort)((triIndex3 & 0x8000) | (value & 0x7FFF));
+            get => (ushort)(VertexIndexAndFlag3 & 0x7FFF);
+            set => VertexIndexAndFlag3 = (ushort)((VertexIndexAndFlag3 & 0x8000) | (value & 0x7FFF));
         }
 
         public bool VertexFlag1
         {
-            get => (triIndex1 & 0x8000) == 0x8000;
+            get => (VertexIndexAndFlag1 & 0x8000) == 0x8000;
             set
             {
                 if (value)
-                    triIndex1 |= 0x8000;
+                    VertexIndexAndFlag1 |= 0x8000;
                 else
-                    triIndex1 &= 0x7FFF;
+                    VertexIndexAndFlag1 &= 0x7FFF;
             }
         }
 
         public bool VertexFlag2
         {
-            get => (triIndex2 & 0x8000) == 0x8000;
+            get => (VertexIndexAndFlag2 & 0x8000) == 0x8000;
             set
             {
                 if (value)
-                    triIndex2 |= 0x8000;
+                    VertexIndexAndFlag2 |= 0x8000;
                 else
-                    triIndex2 &= 0x7FFF;
+                    VertexIndexAndFlag2 &= 0x7FFF;
             }
         }
 
         public bool VertexFlag3
         {
-            get => (triIndex3 & 0x8000) == 0x8000;
+            get => (VertexIndexAndFlag3 & 0x8000) == 0x8000;
             set
             {
                 if (value)
-                    triIndex3 |= 0x8000;
+                    VertexIndexAndFlag3 |= 0x8000;
                 else
-                    triIndex3 &= 0x7FFF;
+                    VertexIndexAndFlag3 &= 0x7FFF;
             }
         }
 
@@ -164,10 +164,10 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             return new BoundPrimitiveTriangle()
             {
-                triArea = EndiannessExtensions.ReverseEndianness(triArea),
-                triIndex1 = EndiannessExtensions.ReverseEndianness(triIndex1),
-                triIndex2 = EndiannessExtensions.ReverseEndianness(triIndex2),
-                triIndex3 = EndiannessExtensions.ReverseEndianness(triIndex3),
+                TypeAndArea = EndiannessExtensions.ReverseEndianness(TypeAndArea),
+                VertexIndexAndFlag1 = EndiannessExtensions.ReverseEndianness(VertexIndexAndFlag1),
+                VertexIndexAndFlag2 = EndiannessExtensions.ReverseEndianness(VertexIndexAndFlag2),
+                VertexIndexAndFlag3 = EndiannessExtensions.ReverseEndianness(VertexIndexAndFlag3),
                 NeighborIndex1 = EndiannessExtensions.ReverseEndianness(NeighborIndex1),
                 NeighborIndex2 = EndiannessExtensions.ReverseEndianness(NeighborIndex2),
                 NeighborIndex3 = EndiannessExtensions.ReverseEndianness(NeighborIndex3),
@@ -179,11 +179,11 @@ namespace RageLib.Resources.GTA5.PC.Bounds
     public struct BoundPrimitiveSphere : IBoundPrimitive, IResourceStruct<BoundPrimitiveSphere>
     {
         // structure data
-        public ushort sphereType;
-        public ushort sphereIndex;
-        public float sphereRadius;
-        public uint unused0;
-        public uint unused1;
+        public ushort Type;
+        public ushort VertexIndex;
+        public float Radius;
+        public uint Unknown_8h;
+        public uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
@@ -192,11 +192,11 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             return new BoundPrimitiveSphere()
             {
-                sphereType = EndiannessExtensions.ReverseEndianness(sphereType),
-                sphereIndex = EndiannessExtensions.ReverseEndianness(sphereIndex),
-                sphereRadius = EndiannessExtensions.ReverseEndianness(sphereRadius),
-                unused0 = EndiannessExtensions.ReverseEndianness(unused0),
-                unused1 = EndiannessExtensions.ReverseEndianness(unused1),
+                Type = EndiannessExtensions.ReverseEndianness(Type),
+                VertexIndex = EndiannessExtensions.ReverseEndianness(VertexIndex),
+                Radius = EndiannessExtensions.ReverseEndianness(Radius),
+                Unknown_8h = EndiannessExtensions.ReverseEndianness(Unknown_8h),
+                Unknown_Ch = EndiannessExtensions.ReverseEndianness(Unknown_Ch),
             };
         }
     }
@@ -205,12 +205,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
     public struct BoundPrimitiveCapsule : IBoundPrimitive, IResourceStruct<BoundPrimitiveCapsule>
     {
         // structure data
-        public ushort capsuleType;
-        public ushort capsuleIndex1;
-        public float capsuleRadius;
-        public ushort capsuleIndex2;
-        public ushort unused0;
-        public uint unused1;
+        public ushort Type;
+        public ushort VertexIndex1;
+        public float Radius;
+        public ushort VertexIndex2;
+        public ushort Unknown_Ah;
+        public uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
@@ -219,12 +219,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             return new BoundPrimitiveCapsule()
             {
-                capsuleType = EndiannessExtensions.ReverseEndianness(capsuleType),
-                capsuleIndex1 = EndiannessExtensions.ReverseEndianness(capsuleIndex1),
-                capsuleRadius = EndiannessExtensions.ReverseEndianness(capsuleRadius),
-                capsuleIndex2 = EndiannessExtensions.ReverseEndianness(capsuleIndex2),
-                unused0 = EndiannessExtensions.ReverseEndianness(unused0),
-                unused1 = EndiannessExtensions.ReverseEndianness(unused1),
+                Type = EndiannessExtensions.ReverseEndianness(Type),
+                VertexIndex1 = EndiannessExtensions.ReverseEndianness(VertexIndex1),
+                Radius = EndiannessExtensions.ReverseEndianness(Radius),
+                VertexIndex2 = EndiannessExtensions.ReverseEndianness(VertexIndex2),
+                Unknown_Ah = EndiannessExtensions.ReverseEndianness(Unknown_Ah),
+                Unknown_Ch = EndiannessExtensions.ReverseEndianness(Unknown_Ch),
             };
         }
     }
@@ -233,12 +233,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
     public struct BoundPrimitiveBox : IBoundPrimitive, IResourceStruct<BoundPrimitiveBox>
     {
         // structure data
-        public uint boxType;
-        public short boxIndex1;
-        public short boxIndex2;
-        public short boxIndex3;
-        public short boxIndex4;
-        public uint unused0;
+        public uint Type;
+        public short VertexIndex1;
+        public short VertexIndex2;
+        public short VertexIndex3;
+        public short VertexIndex4;
+        public uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
@@ -247,12 +247,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             return new BoundPrimitiveBox()
             {
-                boxType = EndiannessExtensions.ReverseEndianness(boxType),
-                boxIndex1 = EndiannessExtensions.ReverseEndianness(boxIndex1),
-                boxIndex2 = EndiannessExtensions.ReverseEndianness(boxIndex2),
-                boxIndex3 = EndiannessExtensions.ReverseEndianness(boxIndex3),
-                boxIndex4 = EndiannessExtensions.ReverseEndianness(boxIndex4),
-                unused0 = EndiannessExtensions.ReverseEndianness(unused0),
+                Type = EndiannessExtensions.ReverseEndianness(Type),
+                VertexIndex1 = EndiannessExtensions.ReverseEndianness(VertexIndex1),
+                VertexIndex2 = EndiannessExtensions.ReverseEndianness(VertexIndex2),
+                VertexIndex3 = EndiannessExtensions.ReverseEndianness(VertexIndex3),
+                VertexIndex4 = EndiannessExtensions.ReverseEndianness(VertexIndex4),
+                Unknown_Ch = EndiannessExtensions.ReverseEndianness(Unknown_Ch),
             };
         }
     }
@@ -261,12 +261,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
     public struct BoundPrimitiveCylinder : IBoundPrimitive, IResourceStruct<BoundPrimitiveCylinder>
     {
         // structure data
-        public ushort cylinderType;
-        public ushort cylinderIndex1;
-        public float cylinderRadius;
-        public ushort cylinderIndex2;
-        public ushort unused0;
-        public uint unused1;
+        public ushort Type;
+        public ushort VertexIndex1;
+        public float Radius;
+        public ushort VertexIndex2;
+        public ushort Unknown_Ah;
+        public uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
@@ -275,12 +275,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             return new BoundPrimitiveCylinder()
             {
-                cylinderType = EndiannessExtensions.ReverseEndianness(cylinderType),
-                cylinderIndex1 = EndiannessExtensions.ReverseEndianness(cylinderIndex1),
-                cylinderRadius = EndiannessExtensions.ReverseEndianness(cylinderRadius),
-                cylinderIndex2 = EndiannessExtensions.ReverseEndianness(cylinderIndex2),
-                unused0 = EndiannessExtensions.ReverseEndianness(unused0),
-                unused1 = EndiannessExtensions.ReverseEndianness(unused1),
+                Type = EndiannessExtensions.ReverseEndianness(Type),
+                VertexIndex1 = EndiannessExtensions.ReverseEndianness(VertexIndex1),
+                Radius = EndiannessExtensions.ReverseEndianness(Radius),
+                VertexIndex2 = EndiannessExtensions.ReverseEndianness(VertexIndex2),
+                Unknown_Ah = EndiannessExtensions.ReverseEndianness(Unknown_Ah),
+                Unknown_Ch = EndiannessExtensions.ReverseEndianness(Unknown_Ch),
             };
         }
     }

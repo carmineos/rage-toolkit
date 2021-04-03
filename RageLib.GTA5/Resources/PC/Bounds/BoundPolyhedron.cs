@@ -180,6 +180,19 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector3 GetVertex(int index)
+        {
+            var quantizedVertex = Vertices[index];
+            return new Vector3(quantizedVertex.X * Quantum.X, quantizedVertex.Y * Quantum.Y, quantizedVertex.Z * Quantum.Z);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector3 GetVertexOffset(int index)
+        {
+            return GetVertex(index) + Offset;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector3 GetVertexOffset(Vector3 vertex)
         {
             return vertex + Offset;
