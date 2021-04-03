@@ -119,7 +119,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         public static ushort CalculateBoneIdFromName(string boneName)
         {
-            return (ushort)(Elf.Hash(boneName.ToUpperInvariant()) % 0xFE8F + 0x170);
+            return (ushort)(Elf.HashUppercased(boneName) % 0xFE8F + 0x170);
         }
     }
 
