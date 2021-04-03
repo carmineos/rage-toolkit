@@ -36,8 +36,12 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ResourcePointerList64<DrawableGeometry> Geometries;
         public ulong GeometriesBoundsPointer;
         public ulong ShaderMappingPointer;
-        public uint Unknown_28h;
-        public ushort Unknown_2Ch;
+        public byte Unknown_28h;
+        public byte IsSkinned;
+        public byte Unknown_2Ah;
+        public byte RootBoneIndex;
+        public byte Mask;
+        public byte Unknown_2Dh;
         public ushort GeometriesCount;
 
         // reference data
@@ -55,8 +59,12 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.Geometries = reader.ReadBlock<ResourcePointerList64<DrawableGeometry>>();
             this.GeometriesBoundsPointer = reader.ReadUInt64();
             this.ShaderMappingPointer = reader.ReadUInt64();
-            this.Unknown_28h = reader.ReadUInt32();
-            this.Unknown_2Ch = reader.ReadUInt16();
+            this.Unknown_28h = reader.ReadByte();
+            this.IsSkinned = reader.ReadByte();
+            this.Unknown_2Ah = reader.ReadByte();
+            this.RootBoneIndex = reader.ReadByte();
+            this.Mask = reader.ReadByte();
+            this.Unknown_2Dh = reader.ReadByte();
             this.GeometriesCount = reader.ReadUInt16();
 
             // read reference data
@@ -86,7 +94,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.GeometriesBoundsPointer);
             writer.Write(this.ShaderMappingPointer);
             writer.Write(this.Unknown_28h);
-            writer.Write(this.Unknown_2Ch);
+            writer.Write(this.IsSkinned);
+            writer.Write(this.Unknown_2Ah);
+            writer.Write(this.RootBoneIndex);
+            writer.Write(this.Mask);
+            writer.Write(this.Unknown_2Dh);
             writer.Write(this.GeometriesCount);
         }
 
