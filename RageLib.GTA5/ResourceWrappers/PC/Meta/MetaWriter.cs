@@ -71,6 +71,32 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 }
             }
 
+            // TODO: refactor this hacky way to remove unused EnumInfos
+            for (int e = meta.EnumInfos.Count - 1; e >= 0; e--)
+            {
+                bool required = false;
+
+                for (int s = 0; s < meta.StructureInfos.Count; s++)
+                {
+                    var entries = meta.StructureInfos[s].Entries;
+
+                    foreach (var entry in entries)
+                    {
+                        if (entry.ReferenceKey == meta.EnumInfos[e].EnumNameHash)
+                        {
+                            required = true;
+                            break;
+                        }
+                    }
+
+                    if (required)
+                        break;
+                }
+
+                if (!required)
+                    meta.EnumInfos.RemoveAt(e);
+            }
+
             meta.DataBlocks = new ResourceSimpleArray<DataBlock>();
             foreach (var block in writer.Blocks)
             {
