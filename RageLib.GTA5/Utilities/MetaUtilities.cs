@@ -287,5 +287,118 @@ namespace RageLib.GTA5.Utilities
             }
             return matchingStrings;
         }
+
+        public static Tuple<Dictionary<int, StructureInfo>, Dictionary<int, EnumInfo>> GetAllStructureInfoAndEnumInfoFromMetas(string gameDirectoryName)
+        {
+            Dictionary<int, StructureInfo> structureInfos = new Dictionary<int, StructureInfo>();
+            Dictionary<int, EnumInfo> enumInfos = new Dictionary<int, EnumInfo>();
+
+            ArchiveUtilities.ForEachResourceFile(gameDirectoryName, (fullFileName, file, encryption) =>
+            {
+                if (file.Name.EndsWith(ResourceFileTypes_GTA5_pc.Meta.Extension, StringComparison.OrdinalIgnoreCase) ||
+                file.Name.EndsWith(ResourceFileTypes_GTA5_pc.Types.Extension, StringComparison.OrdinalIgnoreCase) ||
+                file.Name.EndsWith(ResourceFileTypes_GTA5_pc.Maps.Extension, StringComparison.OrdinalIgnoreCase)
+                )
+                {
+                    var stream = new MemoryStream();
+                    file.Export(stream);
+                    stream.Position = 0;
+
+                    var resource = new ResourceFile_GTA5_pc<MetaFile>();
+                    resource.Load(stream);
+
+                    var meta = resource.ResourceData;
+
+                    if (meta.StructureInfos != null)
+                    {
+                        foreach (var structureInfo in meta.StructureInfos)
+                        {
+                            structureInfos.TryAdd(structureInfo.StructureKey, structureInfo);
+                        }
+                    }
+
+                    if (meta.EnumInfos != null)
+                    {
+                        foreach (var enumInfo in meta.EnumInfos)
+                        {
+                            enumInfos.TryAdd(enumInfo.EnumKey, enumInfo);
+                        }
+                    }
+
+                    Console.WriteLine(file.Name);
+                }
+            });
+
+            return new Tuple<Dictionary<int, StructureInfo>, Dictionary<int, EnumInfo>>(structureInfos, enumInfos);
+        }
+
+        public static Tuple<Dictionary<int, PsoStructureInfo>, Dictionary<int, PsoEnumInfo>> GetAllStructureInfoAndEnumInfoFromPsoMetas(string gameDirectoryName)
+        {
+            Dictionary<int, PsoStructureInfo> structureInfos = new Dictionary<int, PsoStructureInfo>();
+            Dictionary<int, PsoEnumInfo> enumInfos = new Dictionary<int, PsoEnumInfo>();
+
+            ArchiveUtilities.ForEachBinaryFile(gameDirectoryName, (fullFileName, file, encryption) =>
+            {
+                if (file.Name.EndsWith(".ymf") || file.Name.EndsWith(".ymt"))
+                {
+                    var stream = new MemoryStream();
+                    file.Export(stream);
+
+                    var buf = new byte[stream.Length];
+                    stream.Position = 0;
+                    stream.Read(buf, 0, buf.Length);
+
+                    if (file.IsEncrypted)
+                    {
+                        if (encryption == RageArchiveEncryption7.AES)
+                        {
+                            buf = AesEncryption.DecryptData(buf, GTA5Constants.PC_AES_KEY);
+                        }
+                        else
+                        {
+                            var qq = GTA5Hash.CalculateHash(file.Name);
+                            var gg = (qq + (uint)file.UncompressedSize + (101 - 40)) % 0x65;
+                            buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[gg]);
+                        }
+                    }
+
+                    if (file.IsCompressed)
+                    {
+                        var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
+                        var bufnew = new byte[file.UncompressedSize];
+                        def.Read(bufnew, 0, (int)file.UncompressedSize);
+                        buf = bufnew;
+                    }
+
+                    var cleanStream = new MemoryStream(buf);
+                    if (PsoFile.IsPSO(cleanStream))
+                    {
+                        PsoFile pso = new PsoFile();
+                        pso.Load(cleanStream);
+
+                        for (int i = 0; i < pso.DefinitionSection.Count; i++)
+                        {
+                            var id = pso.DefinitionSection.EntriesIdx[i];
+
+                            var info = pso.DefinitionSection.Entries[i];
+
+                            if (info is PsoStructureInfo structureInfo)
+                            {
+                                structureInfos.TryAdd(id.NameHash, structureInfo);
+                            }
+
+                            if (info is PsoEnumInfo enumInfo)
+                            {
+                                enumInfos.TryAdd(id.NameHash, enumInfo);
+                            }
+                        }
+
+                        Console.WriteLine(file.Name);
+                    }
+                }
+            });
+
+            return new Tuple<Dictionary<int, PsoStructureInfo>, Dictionary<int, PsoEnumInfo>>(structureInfos, enumInfos);
+        }
     }
 }
