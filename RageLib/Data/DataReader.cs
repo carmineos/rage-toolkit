@@ -168,6 +168,15 @@ namespace RageLib.Data
         }
 
         /// <summary>
+        /// Reads a half precision floating point value.
+        /// </summary>
+        public Half ReadHalf()
+        {
+            using Buffer<Half> buffer = ReadFromStream<Half>(1);
+            return buffer.Span[0];
+        }
+
+        /// <summary>
         /// Reads a single precision floating point value.
         /// </summary>
         public float ReadSingle()

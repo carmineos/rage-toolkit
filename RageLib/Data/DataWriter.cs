@@ -145,6 +145,14 @@ namespace RageLib.Data
         }
 
         /// <summary>
+        /// Writes a half precision floating point value.
+        /// </summary>
+        public void Write(Half value)
+        {
+            WriteToStream(value);
+        }
+
+        /// <summary>
         /// Writes a single precision floating point value.
         /// </summary>
         public void Write(float value)
