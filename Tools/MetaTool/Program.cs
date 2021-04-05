@@ -132,8 +132,9 @@ namespace MetaTool
             var meta = reader.Read(inputFileName);
             var exporter = new MetaXmlExporter();
             exporter.HashMapping = new Dictionary<int, string>();
-            AddHashForStrings(exporter, "MetaTool.Lists.FileNames.txt");
-            AddHashForStrings(exporter, "MetaTool.Lists.MetaNames.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.FileNames.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.MetaNames.txt");
+            AddHashForUserStrings(exporter.HashMapping, "UserDictionary.txt");
             exporter.Export(meta, outputFileName);
         }
 
@@ -146,12 +147,13 @@ namespace MetaTool
             var meta = reader.Read(inputFileName);
             var exporter = new PsoXmlExporter();
             exporter.HashMapping = new Dictionary<int, string>();
-            AddHashForStrings(exporter, "MetaTool.Lists.PsoTypeNames.txt");
-            AddHashForStrings(exporter, "MetaTool.Lists.PsoFieldNames.txt");
-            AddHashForStrings(exporter, "MetaTool.Lists.PsoEnumValues.txt");
-            AddHashForStrings(exporter, "MetaTool.Lists.PsoCommon.txt");
-            AddHashForStrings(exporter, "MetaTool.Lists.FileNames.txt");
-            AddHashForStrings(exporter, "MetaTool.Lists.PsoCollisions.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoTypeNames.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoFieldNames.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoEnumValues.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoCommon.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.FileNames.txt");
+            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoCollisions.txt");
+            AddHashForUserStrings(exporter.HashMapping, "UserDictionary.txt");
             exporter.Export(meta, outputFileName);
         }
 
@@ -164,7 +166,7 @@ namespace MetaTool
             new RbfXmlExporter().Export(rbf, outputFileName);
         }
 
-        private void AddHashForStrings(MetaXmlExporter exporter, string resourceFileName)
+        private void AddHashForStrings(Dictionary<int, string> dictionary, string resourceFileName)
         {
             var assembly = Assembly.GetExecutingAssembly();
             using (Stream namesStream = assembly.GetManifestResourceStream(resourceFileName))
@@ -174,27 +176,30 @@ namespace MetaTool
                 {
                     string name = namesReader.ReadLine();
                     uint hash = Jenkins.Hash(name);
-                    if (!exporter.HashMapping.ContainsKey((int)hash))
+                    if (!dictionary.ContainsKey((int)hash))
                     {
-                        exporter.HashMapping.Add((int)hash, name);
+                        dictionary.Add((int)hash, name);
                     }
                 }
             }
         }
 
-        private void AddHashForStrings(PsoXmlExporter exporter, string resourceFileName)
+        private void AddHashForUserStrings(Dictionary<int, string> dictionary, string resourceFileName)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            using (Stream namesStream = assembly.GetManifestResourceStream(resourceFileName))
+            var path = Path.Combine(Directory.GetCurrentDirectory(), resourceFileName);
+            if (!File.Exists(path))
+                return;
+
+            using (Stream namesStream = new FileStream(path, FileMode.Open, FileAccess.Read))
             using (StreamReader namesReader = new StreamReader(namesStream))
             {
                 while (!namesReader.EndOfStream)
                 {
                     string name = namesReader.ReadLine();
                     uint hash = Jenkins.Hash(name);
-                    if (!exporter.HashMapping.ContainsKey((int)hash))
+                    if (!dictionary.ContainsKey((int)hash))
                     {
-                        exporter.HashMapping.Add((int)hash, name);
+                        dictionary.Add((int)hash, name);
                     }
                 }
             }
