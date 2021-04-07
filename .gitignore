@@ -4,9 +4,6 @@ packages/*
 **/obj/
 *.suo
 
-# ignore testing project
-Testing
-
 Debug/*
 Release/*
 Libraries/DirectXTex/Debug/*
