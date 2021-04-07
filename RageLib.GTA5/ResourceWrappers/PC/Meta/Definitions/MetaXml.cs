@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
+using RageLib.Helpers.Xml;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
 {
@@ -28,7 +25,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
 
         [XmlIgnore]
@@ -38,7 +35,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string KeyAsHex
         {
             get { return HexConverter.ToHex(Key); }
-            set { Key = HexConverter.ToUInt32(value); }
+            set { Key = HexConverter.ToInt32(value); }
         }
 
         [XmlIgnore]
@@ -48,7 +45,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string UnknownAsHex
         {
             get { return HexConverter.ToHex(Unknown); }
-            set { Unknown = HexConverter.ToUInt32(value); }
+            set { Unknown = HexConverter.ToInt32(value); }
         }
 
         [XmlAttribute("Length")]
@@ -68,7 +65,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
 
         [XmlAttribute("Offset")]
@@ -84,7 +81,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string TypeHashAsHex
         {
             get { return HexConverter.ToHex(TypeHash); }
-            set { TypeHash = HexConverter.ToUInt32(value); }
+            set { TypeHash = HexConverter.ToInt32(value); }
         }
 
         [XmlIgnore]
@@ -94,7 +91,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string UnknownAsHex
         {
             get { return HexConverter.ToHex(Unknown); }
-            set { Unknown = HexConverter.ToUInt32(value); }
+            set { Unknown = HexConverter.ToInt32(value); }
         }
 
         [XmlElement("ArrayType")]
@@ -114,7 +111,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string TypeHashAsHex
         {
             get { return HexConverter.ToHex(TypeHash); }
-            set { TypeHash = HexConverter.ToUInt32(value); }
+            set { TypeHash = HexConverter.ToInt32(value); }
         }
 
         [XmlElement("ArrayType")]
@@ -131,7 +128,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string KeyAsHex
         {
             get { return HexConverter.ToHex(Key); }
-            set { Key = HexConverter.ToUInt32(value); }
+            set { Key = HexConverter.ToInt32(value); }
         }
 
 
@@ -142,7 +139,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
 
         [XmlElement("EnumEntry")]
@@ -159,30 +156,10 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
 
         [XmlAttribute("Value")]
         public int Value { get; set; }
-    }
-
-    public static class HexConverter
-    {
-        public static string ToHex(int value)
-        {
-            return "0x" + value.ToString("X8");
-        }
-
-        public static int ToUInt32(string value)
-        {
-            if (value.StartsWith("0x"))
-            {
-                return int.Parse(value.AsSpan(2), NumberStyles.HexNumber);
-            }
-            else
-            {
-                return int.Parse(value, NumberStyles.HexNumber);
-            }
-        }
     }
 }

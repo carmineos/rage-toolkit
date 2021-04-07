@@ -22,8 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Xml.Serialization;
+using RageLib.Helpers.Xml;
 
 namespace RageLib.GTA5.PSOWrappers.Xml
 {
@@ -136,12 +136,4 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         [XmlAttribute("Value")]
         public int Value { get; set; }
     }
-
-    public static class HexConverter
-    {
-        public static string ToHex(int value) => $"0x{value:X8}";
-
-        public static int ToInt32(string value) => Convert.ToInt32(value, 16);
-    }
-
 }
