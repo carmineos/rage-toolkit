@@ -21,6 +21,7 @@
 */
 
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
+using RageLib.Helpers.Xml;
 using RageLib.Resources.GTA5.PC.Meta;
 using System.Collections.Generic;
 using System.Globalization;
@@ -51,8 +52,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         {
             var strctureValue = (MetaStructure)value;
 
-            var writer = new XmlTextWriter(xmlFileStream, Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;
+            var writer = XmlWriter.Create(xmlFileStream, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8 });
             writer.WriteStartDocument();
             writer.WriteStartElement(GetNameForHash(strctureValue.info.StructureNameHash));
             WriteStructureContentXml(strctureValue, writer);
@@ -61,7 +61,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.Flush();
         }
 
-        private void WriteStructureContentXml(MetaStructure value, XmlTextWriter writer)
+        private void WriteStructureContentXml(MetaStructure value, XmlWriter writer)
         {
             foreach (var field in value.Values)
             {
@@ -73,239 +73,189 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        private void WriteStructureElementContentXml(IMetaValue value, XmlTextWriter writer)
+        private void WriteStructureElementContentXml(IMetaValue value, XmlWriter writer)
         {
-            if (value is MetaArray)
+            switch (value)
             {
-                var arrayValue = value as MetaArray;
-                if (arrayValue.Entries != null)
-                {
-                    if (arrayValue.info.DataType == StructureEntryDataType.UnsignedByte)
+                case MetaArray:
                     {
-                        WriteByteArrayContent(writer, arrayValue);
-                    }
-                    else if (arrayValue.info.DataType == StructureEntryDataType.UnsignedShort)
-                    {
-                        WriteShortArrayContent(writer, arrayValue);
-                    }
-                    else if (arrayValue.info.DataType == StructureEntryDataType.UnsignedInt)
-                    {
-                        WriteIntArrayContent(writer, arrayValue);
-                    }
-                    else if (arrayValue.info.DataType == StructureEntryDataType.Float)
-                    {
-                        WriteFloatArrayContent(writer, arrayValue);
-                    }
-                    else if (arrayValue.info.DataType == StructureEntryDataType.Float_XYZ)
-                    {
-                        WriteFloatVectorArrayContent(writer, arrayValue);
-                    }
-                    else if (arrayValue.info.DataType == StructureEntryDataType.Hash)
-                    {
-                        WriteHashArrayContent(writer, arrayValue);
-                    }
-                    else
-                    {
-                        foreach (var k in arrayValue.Entries)
+                        var arrayValue = value as MetaArray;
+                        if (arrayValue.Entries != null)
                         {
-                            writer.WriteStartElement("Item");
-                            if (k is MetaStructure)
+                            switch (arrayValue.info.DataType)
                             {
-                                WriteStructureContentXml(k as MetaStructure, writer);
+                                case StructureEntryDataType.UnsignedByte:
+                                    WriteByteArrayContent(writer, arrayValue);
+                                    break;
+                                case StructureEntryDataType.UnsignedShort:
+                                    WriteShortArrayContent(writer, arrayValue);
+                                    break;
+                                case StructureEntryDataType.UnsignedInt:
+                                    WriteIntArrayContent(writer, arrayValue);
+                                    break;
+                                case StructureEntryDataType.Float:
+                                    WriteFloatArrayContent(writer, arrayValue);
+                                    break;
+                                case StructureEntryDataType.Float_XYZ:
+                                    WriteFloatVectorArrayContent(writer, arrayValue);
+                                    break;
+                                case StructureEntryDataType.Hash:
+                                    WriteHashArrayContent(writer, arrayValue);
+                                    break;
+                                default:
+                                    WriteStructureArrayContent(writer, arrayValue);
+                                    break;
                             }
-                            else
-                            {
-                                WriteStructureElementContentXml(k, writer);
-                            }
-                            writer.WriteEndElement();
                         }
+                        break;
                     }
-                }
-            }
-            if (value is MetaBoolean)
-            {
-                var booleanValue = value as MetaBoolean;
-                WriteBooleanContent(writer, booleanValue);
-            }
-            if (value is MetaByte_A)
-            {
-                var byteValue = value as MetaByte_A;
-                WriteSignedByteContent(writer, byteValue);
-            }
-            if (value is MetaByte_B)
-            {
-                var byteValue = value as MetaByte_B;
-                WriteUnsignedByteContent(writer, byteValue);
-            }
-            if (value is MetaInt16_A)
-            {
-                var shortValue = value as MetaInt16_A;
-                WriteSignedShortContent(writer, shortValue);
-            }
-            if (value is MetaInt16_B)
-            {
-                var shortValue = value as MetaInt16_B;
-                WriteUnsignedShortContent(writer, shortValue);
-            }
-            if (value is MetaInt32_A)
-            {
-                var intValue = value as MetaInt32_A;
-                WriteSignedIntContent(writer, intValue);
-            }
-            if (value is MetaInt32_B)
-            {
-                var intValue = value as MetaInt32_B;
-                WriteUnsignedIntContent(writer, intValue);
-            }
-            if (value is MetaFloat)
-            {
-                var floatValue = value as MetaFloat;
-                WriteFloatContent(writer, floatValue);
-            }
-            if (value is MetaFloat4_XYZ)
-            {
-                var floatVectorValue = value as MetaFloat4_XYZ;
-                WriteFloatXYZContent(writer, floatVectorValue);
-            }
-            if (value is MetaFloat4_XYZW)
-            {
-                var floatVectorValue = value as MetaFloat4_XYZW;
-                WriteFloatXYZWContent(writer, floatVectorValue);
-            }
-            if (value is MetaByte_Enum)
-            {
-                WriteByteEnumContent(writer, (MetaByte_Enum)value);
-            }
-            if (value is MetaInt32_Enum1)
-            {
-                WriteIntEnumContent(writer, (MetaInt32_Enum1)value);
-            }
-            if (value is MetaInt16_Enum)
-            {
-                WriteShortFlagsContent(writer, (MetaInt16_Enum)value);
-            }
-            if (value is MetaInt32_Enum2)
-            {
-                WriteIntFlags1Content(writer, (MetaInt32_Enum2)value);
-            }
-            if (value is MetaInt32_Enum3)
-            {
-                WriteIntFlags2Content(writer, (MetaInt32_Enum3)value);
-            }
 
+                case MetaBoolean:
+                    writer.WriteAttributeValue(((MetaBoolean)value).Value);
+                    break;
 
+                case MetaByte_A:
+                    writer.WriteAttributeValue(((MetaByte_A)value).Value);
+                    break;
 
+                case MetaByte_B:
+                    writer.WriteAttributeValue(((MetaByte_B)value).Value);
+                    break;
 
+                case MetaInt16_A:
+                    writer.WriteAttributeValue(((MetaInt16_A)value).Value);
+                    break;
 
-            if (value is MetaArrayOfChars)
-            {
-                var stringValue = value as MetaArrayOfChars;
-                writer.WriteString(stringValue.Value);
-            }
-            if (value is MetaCharPointer)
-            {
-                var stringValue = value as MetaCharPointer;
-                writer.WriteString(stringValue.Value);
-            }
+                case MetaInt16_B:
+                    writer.WriteAttributeValue(((MetaInt16_B)value).Value);
+                    break;
 
-            if (value is MetaGeneric)
-            {
-                var genericValue = value as MetaGeneric;
-                var val = (MetaStructure)genericValue.Value;
-                if (val != null)
-                {
-                    var vbstrdata = val;
-                    writer.WriteAttributeString("type", GetNameForHash(vbstrdata.info.StructureNameHash));
-                    WriteStructureContentXml(vbstrdata, writer);
-                }
-                else
-                {
-                    writer.WriteAttributeString("type", "NULL");
+                case MetaInt32_A:
+                    writer.WriteAttributeValue(((MetaInt32_A)value).Value);
+                    break;
 
-                }
+                case MetaInt32_B:
+                    writer.WriteAttributeValue(((MetaInt32_B)value).Value);
+                    break;
 
-            }
+                case MetaFloat:
+                    writer.WriteAttributeValue(((MetaFloat)value).Value);
+                    break;
 
-            if (value is MetaArrayOfBytes)
-            {
-                var intValue = value as MetaArrayOfBytes;
-                var sb = new StringBuilder();
-                for (int i = 0; i < intValue.Value.Length; i++)
-                {
-                    sb.Append(intValue.Value[i]);
-                    if (i != intValue.Value.Length - 1)
-                        sb.Append(' ');
-                }
-                writer.WriteString(sb.ToString());
-            }
+                case MetaFloat4_XYZ:
+                    WriteFloatXYZContent(writer, (MetaFloat4_XYZ)value);
+                    break;
 
-            if (value is MetaInt32_Hash)
-            {
-                var intValue = value as MetaInt32_Hash;
-                if (intValue.Value != 0)
-                {
-                    writer.WriteString(GetNameForHash(intValue.Value));
-                }
-            }
+                case MetaFloat4_XYZW:
+                    WriteFloatXYZWContent(writer, (MetaFloat4_XYZW)value);
+                    break;
 
-            if (value is MetaDataBlockPointer)
-            {
-                var longValue = value as MetaDataBlockPointer;
-                if (longValue.Data != null)
-                {
-                    writer.WriteString(ByteArrayToString(longValue.Data));
-                }
-            }
+                case MetaByte_Enum:
+                    WriteByteEnumContent(writer, (MetaByte_Enum)value);
+                    break;
+                case MetaInt32_Enum1:
+                    WriteIntEnumContent(writer, (MetaInt32_Enum1)value);
+                    break;
+                case MetaInt16_Enum:
+                    WriteShortFlagsContent(writer, (MetaInt16_Enum)value);
+                    break;
+                case MetaInt32_Enum2:
+                    WriteIntFlags1Content(writer, (MetaInt32_Enum2)value);
+                    break;
+                case MetaInt32_Enum3:
+                    WriteIntFlags2Content(writer, (MetaInt32_Enum3)value);
+                    break;
+                case MetaArrayOfChars:
+                    {
+                        var stringValue = value as MetaArrayOfChars;
+                        writer.WriteString(stringValue.Value);
+                        break;
+                    }
 
-            if (value is MetaStructure)
-            {
-                var structureValue = value as MetaStructure;
-                WriteStructureContentXml(structureValue, writer);
+                case MetaCharPointer:
+                    {
+                        var stringValue = value as MetaCharPointer;
+                        writer.WriteString(stringValue.Value);
+                        break;
+                    }
+
+                case MetaGeneric:
+                    {
+                        var genericValue = value as MetaGeneric;
+                        var val = (MetaStructure)genericValue.Value;
+                        if (val != null)
+                        {
+                            var vbstrdata = val;
+                            writer.WriteAttributeString("type", GetNameForHash(vbstrdata.info.StructureNameHash));
+                            WriteStructureContentXml(vbstrdata, writer);
+                        }
+                        else
+                        {
+                            writer.WriteAttributeString("type", "NULL");
+                        }
+
+                        break;
+                    }
+
+                case MetaArrayOfBytes:
+                    {
+                        var intValue = value as MetaArrayOfBytes;
+                        var sb = new StringBuilder();
+                        for (int i = 0; i < intValue.Value.Length; i++)
+                        {
+                            sb.Append(intValue.Value[i]);
+                            if (i != intValue.Value.Length - 1)
+                                sb.Append(' ');
+                        }
+                        writer.WriteString(sb.ToString());
+                        break;
+                    }
+
+                case MetaInt32_Hash:
+                    {
+                        var intValue = value as MetaInt32_Hash;
+                        if (intValue.Value != 0)
+                        {
+                            writer.WriteString(GetNameForHash(intValue.Value));
+                        }
+
+                        break;
+                    }
+
+                case MetaDataBlockPointer:
+                    {
+                        var longValue = value as MetaDataBlockPointer;
+                        if (longValue.Data != null)
+                        {
+                            writer.WriteString(ByteArrayToString(longValue.Data));
+                        }
+
+                        break;
+                    }
+
+                case MetaStructure:
+                    {
+                        var structureValue = value as MetaStructure;
+                        WriteStructureContentXml(structureValue, writer);
+                        break;
+                    }
+
+                default:
+                    break;
             }
         }
 
-        private void WriteBooleanContent(XmlTextWriter writer, MetaBoolean booleanValue)
-        {
-            writer.WriteAttributeString("value", booleanValue.Value ? "true" : "false");
-        }
 
-        private void WriteSignedByteContent(XmlTextWriter writer, MetaByte_A byteValue)
-        {
-            writer.WriteAttributeString("value", unchecked((sbyte)byteValue.Value).ToString());
-        }
 
-        private void WriteUnsignedByteContent(XmlTextWriter writer, MetaByte_B byteValue)
-        {
-            writer.WriteAttributeString("value", byteValue.Value.ToString());
-        }
 
-        private void WriteSignedShortContent(XmlTextWriter writer, MetaInt16_A shortValue)
-        {
-            writer.WriteAttributeString("value", shortValue.Value.ToString());
-        }
 
-        private void WriteUnsignedShortContent(XmlTextWriter writer, MetaInt16_B shortValue)
-        {
-            writer.WriteAttributeString("value", shortValue.Value.ToString());
-        }
 
-        private void WriteSignedIntContent(XmlTextWriter writer, MetaInt32_A intValue)
-        {
-            writer.WriteAttributeString("value", intValue.Value.ToString());
-        }
 
-        private void WriteUnsignedIntContent(XmlTextWriter writer, MetaInt32_B intValue)
-        {
-            writer.WriteAttributeString("value", intValue.Value.ToString());
-        }
 
-        private void WriteFloatContent(XmlTextWriter writer, MetaFloat floatValue)
-        {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", floatValue.Value);
-            writer.WriteAttributeString("value", s1);
-        }
 
-        private void WriteFloatXYZContent(XmlTextWriter writer, MetaFloat4_XYZ floatVectorValue)
+
+
+        private void WriteFloatXYZContent(XmlWriter writer, MetaFloat4_XYZ floatVectorValue)
         {
             var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", floatVectorValue.X);
             var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", floatVectorValue.Y);
@@ -315,7 +265,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteAttributeString("z", s3);
         }
 
-        private void WriteFloatXYZWContent(XmlTextWriter writer, MetaFloat4_XYZW floatVectorValue)
+        private void WriteFloatXYZWContent(XmlWriter writer, MetaFloat4_XYZW floatVectorValue)
         {
             var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", floatVectorValue.X);
             var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", floatVectorValue.Y);
@@ -327,7 +277,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteAttributeString("w", s4);
         }
 
-        private void WriteByteEnumContent(XmlTextWriter writer, MetaByte_Enum byteValue)
+        private void WriteByteEnumContent(XmlWriter writer, MetaByte_Enum byteValue)
         {
             var thehash = (int)0;
             foreach (var enty in byteValue.info.Entries)
@@ -336,7 +286,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(GetEnumNameForHash(thehash));
         }
 
-        private void WriteIntEnumContent(XmlTextWriter writer, MetaInt32_Enum1 intValue)
+        private void WriteIntEnumContent(XmlWriter writer, MetaInt32_Enum1 intValue)
         {
             if (intValue.Value != -1)
             {
@@ -352,7 +302,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        private void WriteShortFlagsContent(XmlTextWriter writer, MetaInt16_Enum shortValue)
+        private void WriteShortFlagsContent(XmlWriter writer, MetaInt16_Enum shortValue)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 16; i++)
@@ -372,7 +322,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(sb.ToString().Trim());
         }
 
-        private void WriteIntFlags1Content(XmlTextWriter writer, MetaInt32_Enum2 intValue)
+        private void WriteIntFlags1Content(XmlWriter writer, MetaInt32_Enum2 intValue)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 32; i++)
@@ -392,7 +342,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(sb.ToString().Trim());
         }
 
-        private void WriteIntFlags2Content(XmlTextWriter writer, MetaInt32_Enum3 intValue)
+        private void WriteIntFlags2Content(XmlWriter writer, MetaInt32_Enum3 intValue)
         {
             if (intValue.Value != 0)
             {
@@ -424,7 +374,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        private void WriteByteArrayContent(XmlTextWriter writer, MetaArray arrayValue)
+        private void WriteByteArrayContent(XmlWriter writer, MetaArray arrayValue)
         {
             writer.WriteAttributeString("content", "char_array");
 
@@ -436,7 +386,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(b.ToString());
         }
 
-        private void WriteShortArrayContent(XmlTextWriter writer, MetaArray arrayValue)
+        private void WriteShortArrayContent(XmlWriter writer, MetaArray arrayValue)
         {
             writer.WriteAttributeString("content", "short_array");
 
@@ -448,7 +398,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(b.ToString());
         }
 
-        private void WriteIntArrayContent(XmlTextWriter writer, MetaArray arrayValue)
+        private void WriteIntArrayContent(XmlWriter writer, MetaArray arrayValue)
         {
             writer.WriteAttributeString("content", "int_array");
 
@@ -460,7 +410,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(b.ToString());
         }
 
-        private void WriteFloatArrayContent(XmlTextWriter writer, MetaArray arrayValue)
+        private void WriteFloatArrayContent(XmlWriter writer, MetaArray arrayValue)
         {
             writer.WriteAttributeString("content", "float_array");
 
@@ -473,7 +423,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(b.ToString());
         }
 
-        private void WriteFloatVectorArrayContent(XmlTextWriter writer, MetaArray arrayValue)
+        private void WriteFloatVectorArrayContent(XmlWriter writer, MetaArray arrayValue)
         {
             writer.WriteAttributeString("content", "vector3_array");
 
@@ -483,12 +433,17 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", ((MetaFloat4_XYZ)k).X);
                 var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", ((MetaFloat4_XYZ)k).Y);
                 var s3 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", ((MetaFloat4_XYZ)k).Z);
-                b.AppendLine(s1 + " " + s2 + " " + s3);
+                b.Append(s1);
+                b.Append(' ');
+                b.Append(s2);
+                b.Append(' ');
+                b.Append(s3);
+                b.AppendLine();
             }
             writer.WriteString(b.ToString());
         }
 
-        private void WriteHashArrayContent(XmlTextWriter writer, MetaArray arrayValue)
+        private void WriteHashArrayContent(XmlWriter writer, MetaArray arrayValue)
         {
             StringBuilder b = new StringBuilder();
             foreach (var k in arrayValue.Entries)
@@ -504,6 +459,22 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
+        private void WriteStructureArrayContent(XmlWriter writer, MetaArray arrayValue)
+        {
+            foreach (var k in arrayValue.Entries)
+            {
+                writer.WriteStartElement("Item");
+                if (k is MetaStructure)
+                {
+                    WriteStructureContentXml(k as MetaStructure, writer);
+                }
+                else
+                {
+                    WriteStructureElementContentXml(k, writer);
+                }
+                writer.WriteEndElement();
+            }
+        }
 
 
 
@@ -513,32 +484,17 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         private string GetNameForHash(int hash)
         {
-            if (HashMapping.ContainsKey(hash))
-            {
-                var ss = HashMapping[hash];
-                return ss;
-            }
-            return "hash_" + hash.ToString("X8");
+            return HashMapping.TryGetValue(hash, out string resolved) ? resolved : $"hash_{hash:X8}";
         }
 
         private string GetEnumNameForHash(int hash)
         {
-            if (HashMapping.ContainsKey(hash))
-            {
-                var ss = HashMapping[hash];
-                return ss;
-            }
-            return "enum_hash_" + hash.ToString("X8");
+            return HashMapping.TryGetValue(hash, out string resolved) ? resolved : $"enum_hash_{hash:X8}";
         }
 
         private string GetFlagNameForHash(int hash)
         {
-            if (HashMapping.ContainsKey(hash))
-            {
-                var ss = HashMapping[hash];
-                return ss;
-            }
-            return "flag_hash_" + hash.ToString("X8");
+            return HashMapping.TryGetValue(hash, out string resolved) ? resolved : $"flag_hash_{hash:X8}";
         }
 
         public string ByteArrayToString(byte[] b)

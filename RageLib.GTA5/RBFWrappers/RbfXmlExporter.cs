@@ -43,8 +43,7 @@ namespace RageLib.GTA5.RBFWrappers
 
         public void Export(RbfStructure value, Stream xmlFileStream)
         {
-            var writer = new XmlTextWriter(xmlFileStream, Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;
+            var writer = XmlWriter.Create(xmlFileStream, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8 });
             writer.WriteStartDocument();
             writer.WriteStartElement(value.Name);
             WriteStructureContentXml(value, writer);
@@ -53,7 +52,7 @@ namespace RageLib.GTA5.RBFWrappers
             writer.Flush();
         }
 
-        private void WriteStructureContentXml(RbfStructure value, XmlTextWriter writer)
+        private void WriteStructureContentXml(RbfStructure value, XmlWriter writer)
         {
             foreach (var child in value.Children)
             {

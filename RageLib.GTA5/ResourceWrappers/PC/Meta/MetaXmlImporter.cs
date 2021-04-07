@@ -88,172 +88,182 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         entryInfo = x;
 
                 var type = (StructureEntryDataType)xmlEntry.Type;
-                if (type == StructureEntryDataType.Array)
+                switch (type)
                 {
+                    case StructureEntryDataType.Array:
+                        {
 
-                    var arrayType = (StructureEntryDataType)xmlEntry.ArrayType.Type;
-                    if (arrayType == StructureEntryDataType.StructurePointer)
-                    {
-                        MetaArray arrayValue = ReadPointerArray(xmlNode);
-                        arrayValue.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arrayValue);
-                    }
-                    if (arrayType == StructureEntryDataType.Structure)
-                    {
-                        MetaArray arryVal = ReadStructureArray(xmlNode, xmlEntry.ArrayType.TypeHash);
-                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
-                    }
-                    if (arrayType == StructureEntryDataType.UnsignedByte)
-                    {
-                        MetaArray arryVal = ReadByteArray(xmlNode);
-                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
-                    }
-                    if (arrayType == StructureEntryDataType.UnsignedShort)
-                    {
-                        MetaArray arryVal = ReadShortArray(xmlNode);
-                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
-                    }
-                    if (arrayType == StructureEntryDataType.UnsignedInt)
-                    {
-                        MetaArray arryVal = ReadIntArray(xmlNode);
-                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
-                    }
-                    if (arrayType == StructureEntryDataType.Float)
-                    {
-                        MetaArray arryVal = ReadFloatArray(xmlNode);
-                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
-                    }
-                    if (arrayType == StructureEntryDataType.Float_XYZ)
-                    {
-                        MetaArray arryVal = ReadFloatVectorArray(xmlNode);
-                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
-                    }
-                    if (arrayType == StructureEntryDataType.Hash)
-                    {
-                        MetaArray arryVal = ReadHashArray(xmlNode);
-                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
-                    }
+                            var arrayType = (StructureEntryDataType)xmlEntry.ArrayType.Type;
+                            switch (arrayType)
+                            {
+                                case StructureEntryDataType.StructurePointer:
+                                    {
+                                        MetaArray arrayValue = ReadPointerArray(xmlNode);
+                                        arrayValue.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arrayValue);
+                                        break;
+                                    }
 
+                                case StructureEntryDataType.Structure:
+                                    {
+                                        MetaArray arryVal = ReadStructureArray(xmlNode, xmlEntry.ArrayType.TypeHash);
+                                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
+                                        break;
+                                    }
 
+                                case StructureEntryDataType.UnsignedByte:
+                                    {
+                                        MetaArray arryVal = ReadByteArray(xmlNode);
+                                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
+                                        break;
+                                    }
 
-                }
+                                case StructureEntryDataType.UnsignedShort:
+                                    {
+                                        MetaArray arryVal = ReadShortArray(xmlNode);
+                                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
+                                        break;
+                                    }
 
+                                case StructureEntryDataType.UnsignedInt:
+                                    {
+                                        MetaArray arryVal = ReadIntArray(xmlNode);
+                                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
+                                        break;
+                                    }
 
-                if (type == StructureEntryDataType.Boolean)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadBoolean(xmlNode));
-                }
-                if (type == StructureEntryDataType.SignedByte)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedByte(xmlNode));
-                }
-                if (type == StructureEntryDataType.UnsignedByte)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedByte(xmlNode));
-                }
-                if (type == StructureEntryDataType.SignedShort)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedShort(xmlNode));
-                }
-                if (type == StructureEntryDataType.UnsignedShort)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedShort(xmlNode));
-                }
-                if (type == StructureEntryDataType.SignedInt)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedInt(xmlNode));
-                }
-                if (type == StructureEntryDataType.UnsignedInt)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedInt(xmlNode));
-                }
-                if (type == StructureEntryDataType.Float)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadFloat(xmlNode));
-                }
-                if (type == StructureEntryDataType.Float_XYZ)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadFloatXYZ(xmlNode));
-                }
-                if (type == StructureEntryDataType.Float_XYZW)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadFloatXYZW(xmlNode));
-                }
-                if (type == StructureEntryDataType.ByteEnum)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadByteEnum(xmlNode, entryInfo.ReferenceKey));
-                }
-                if (type == StructureEntryDataType.IntEnum)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadIntEnum(xmlNode, entryInfo.ReferenceKey));
-                }
-                if (type == StructureEntryDataType.ShortFlags)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadShortFlags(xmlNode, entryInfo.ReferenceKey));
-                }
-                if (type == StructureEntryDataType.IntFlags1)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadIntFlags1(xmlNode, entryInfo.ReferenceKey));
-                }
-                if (type == StructureEntryDataType.IntFlags2)
-                {
-                    resultStructure.Values.Add(xmlEntry.NameHash, ReadIntFlags2(xmlNode, entryInfo.ReferenceKey));
-                }
+                                case StructureEntryDataType.Float:
+                                    {
+                                        MetaArray arryVal = ReadFloatArray(xmlNode);
+                                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
+                                        break;
+                                    }
 
+                                case StructureEntryDataType.Float_XYZ:
+                                    {
+                                        MetaArray arryVal = ReadFloatVectorArray(xmlNode);
+                                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
+                                        break;
+                                    }
 
+                                case StructureEntryDataType.Hash:
+                                    {
+                                        MetaArray arryVal = ReadHashArray(xmlNode);
+                                        arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
+                                        resultStructure.Values.Add(xmlEntry.NameHash, arryVal);
+                                        break;
+                                    }
+                            }
 
+                            break;
+                        }
 
+                    case StructureEntryDataType.Boolean:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadBoolean(xmlNode));
+                        break;
+                    case StructureEntryDataType.SignedByte:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedByte(xmlNode));
+                        break;
+                    case StructureEntryDataType.UnsignedByte:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedByte(xmlNode));
+                        break;
+                    case StructureEntryDataType.SignedShort:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedShort(xmlNode));
+                        break;
+                    case StructureEntryDataType.UnsignedShort:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedShort(xmlNode));
+                        break;
+                    case StructureEntryDataType.SignedInt:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedInt(xmlNode));
+                        break;
+                    case StructureEntryDataType.UnsignedInt:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedInt(xmlNode));
+                        break;
+                    case StructureEntryDataType.Float:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadFloat(xmlNode));
+                        break;
+                    case StructureEntryDataType.Float_XYZ:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadFloatXYZ(xmlNode));
+                        break;
+                    case StructureEntryDataType.Float_XYZW:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadFloatXYZW(xmlNode));
+                        break;
+                    case StructureEntryDataType.ByteEnum:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadByteEnum(xmlNode, entryInfo.ReferenceKey));
+                        break;
+                    case StructureEntryDataType.IntEnum:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadIntEnum(xmlNode, entryInfo.ReferenceKey));
+                        break;
+                    case StructureEntryDataType.ShortFlags:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadShortFlags(xmlNode, entryInfo.ReferenceKey));
+                        break;
+                    case StructureEntryDataType.IntFlags1:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadIntFlags1(xmlNode, entryInfo.ReferenceKey));
+                        break;
+                    case StructureEntryDataType.IntFlags2:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadIntFlags2(xmlNode, entryInfo.ReferenceKey));
+                        break;
 
+                    case StructureEntryDataType.ArrayOfBytes:
+                        {
+                            var byteArrayValue = new MetaArrayOfBytes();
+                            byteArrayValue.Value = ByteFromString(xmlNode.InnerText);
+                            resultStructure.Values.Add(xmlEntry.NameHash, byteArrayValue);
+                            break;
+                        }
 
-                if (type == StructureEntryDataType.ArrayOfBytes)
-                {
-                    var byteArrayValue = new MetaArrayOfBytes();
-                    byteArrayValue.Value = ByteFromString(xmlNode.InnerText);
-                    resultStructure.Values.Add(xmlEntry.NameHash, byteArrayValue);
-                }
-                if (type == StructureEntryDataType.ArrayOfChars)
-                {
-                    var charArrayValue = new MetaArrayOfChars(entryInfo);
-                    charArrayValue.Value = xmlNode.InnerText;
-                    resultStructure.Values.Add(xmlEntry.NameHash, charArrayValue);
-                }
-                if (type == StructureEntryDataType.Hash)
-                {
-                    var hashValue = new MetaInt32_Hash();
-                    if (xmlNode.InnerText.Trim().Length > 0)
-                    {
-                        hashValue.Value = GetHashForName(xmlNode.InnerText);
-                    }
-                    resultStructure.Values.Add(xmlEntry.NameHash, hashValue);
-                }
-                if (type == StructureEntryDataType.CharPointer)
-                {
-                    var charPointerValue = new MetaCharPointer();
-                    charPointerValue.Value = xmlNode.InnerText;
-                    if (charPointerValue.Value.Equals(""))
-                        charPointerValue.Value = null;
-                    resultStructure.Values.Add(xmlEntry.NameHash, charPointerValue);
-                }
-                if (type == StructureEntryDataType.DataBlockPointer)
-                {
-                    var dataBlockValue = new MetaDataBlockPointer(entryInfo);
-                    dataBlockValue.Data = ByteFromString(xmlNode.InnerText);
-                    if (dataBlockValue.Data.Length == 0)
-                        dataBlockValue.Data = null;
-                    resultStructure.Values.Add(xmlEntry.NameHash, dataBlockValue);
-                }
-                if (type == StructureEntryDataType.Structure)
-                {
-                    var xmlInfo = FindAndCheckStructure(xmlEntry.TypeHash, xmlNode);
-                    var structureValue = ParseStructure(xmlNode, xmlInfo);
-                    resultStructure.Values.Add(xmlEntry.NameHash, structureValue);
+                    case StructureEntryDataType.ArrayOfChars:
+                        {
+                            var charArrayValue = new MetaArrayOfChars(entryInfo);
+                            charArrayValue.Value = xmlNode.InnerText;
+                            resultStructure.Values.Add(xmlEntry.NameHash, charArrayValue);
+                            break;
+                        }
+
+                    case StructureEntryDataType.Hash:
+                        {
+                            var hashValue = new MetaInt32_Hash();
+                            if (xmlNode.InnerText.Trim().Length > 0)
+                            {
+                                hashValue.Value = GetHashForName(xmlNode.InnerText);
+                            }
+                            resultStructure.Values.Add(xmlEntry.NameHash, hashValue);
+                            break;
+                        }
+
+                    case StructureEntryDataType.CharPointer:
+                        {
+                            var charPointerValue = new MetaCharPointer();
+                            charPointerValue.Value = xmlNode.InnerText;
+                            if (charPointerValue.Value.Equals(""))
+                                charPointerValue.Value = null;
+                            resultStructure.Values.Add(xmlEntry.NameHash, charPointerValue);
+                            break;
+                        }
+
+                    case StructureEntryDataType.DataBlockPointer:
+                        {
+                            var dataBlockValue = new MetaDataBlockPointer(entryInfo);
+                            dataBlockValue.Data = ByteFromString(xmlNode.InnerText);
+                            if (dataBlockValue.Data.Length == 0)
+                                dataBlockValue.Data = null;
+                            resultStructure.Values.Add(xmlEntry.NameHash, dataBlockValue);
+                            break;
+                        }
+
+                    case StructureEntryDataType.Structure:
+                        {
+                            var xmlInfo = FindAndCheckStructure(xmlEntry.TypeHash, xmlNode);
+                            var structureValue = ParseStructure(xmlNode, xmlInfo);
+                            resultStructure.Values.Add(xmlEntry.NameHash, structureValue);
+                            break;
+                        }
                 }
             }
 
