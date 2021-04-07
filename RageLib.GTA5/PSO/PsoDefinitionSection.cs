@@ -183,47 +183,61 @@ namespace RageLib.GTA5.PSO
         }
     }
 
-    public enum DataType : byte
+    // parMemberType
+    public enum ParMemberType : byte
     {
-        Boolean = 0x00,
-        LONG_01h = 0x01,
-        Byte = 0x02,
-        SHORT_03h = 0x03,
-        SHORT_04h = 0x04,
-        INT_05h = 0x05,
-        Integer = 0x06,
-        Float = 0x07,
-        Float2 = 0x08,
-        TYPE_09h = 0x09,
-        Float4 = 0x0a,
-        String = 0x0b,
-        Structure = 0x0c,
-        Array = 0x0d,
-        Enum = 0x0e,
-        Flags = 0x0f,
-        Map = 0x10,
-        TYPE_14h = 0x14,
-        Float3 = 0x15,
-        SHORT_1Eh = 0x1e,
-        LONG_20h = 0x20
+        BOOL = 0,
+        CHAR = 1,
+        UCHAR = 2,
+        SHORT = 3,
+        USHORT = 4,
+        INT = 5,
+        UINT = 6,
+        FLOAT = 7,
+        VECTOR2 = 8,
+        VECTOR3 = 9,
+        VECTOR4 = 10,
+        STRING = 11,
+        STRUCT = 12,
+        ARRAY = 13,
+        ENUM = 14,
+        BITSET = 15,
+        MAP = 16,
+        MATRIX34 = 17,
+        MATRIX44 = 18,
+        VEC2V = 19,
+        VEC3V = 20,
+        VEC4V = 21,
+        MAT33V = 22,
+        MAT34V = 23,
+        MAT44V = 24,
+        SCALARV = 25,
+        BOOLV = 26,
+        VECBOOLV = 27,
+        PTRDIFFT = 28,
+        SIZET = 29,
+        FLOAT16 = 30,
+        INT64 = 31,
+        UINT64 = 32,
+        DOUBLE = 33
     }
 
     public class PsoStructureEntryInfo
     {
         public int EntryNameHash;
-        public DataType Type;
-        public byte Unk_5h;
+        public ParMemberType Type;
+        public byte SubType;
         public short DataOffset;
         public int ReferenceKey; // when array -> entry index with type
 
         public PsoStructureEntryInfo()
         { }
 
-        public PsoStructureEntryInfo(int nameHash, DataType type, byte unk5, short dataOffset, int referenceKey)
+        public PsoStructureEntryInfo(int nameHash, ParMemberType type, byte unk5, short dataOffset, int referenceKey)
         {
             this.EntryNameHash = nameHash;
             this.Type = type;
-            this.Unk_5h = unk5;
+            this.SubType = unk5;
             this.DataOffset = dataOffset;
             this.ReferenceKey = referenceKey;
         }
@@ -231,8 +245,8 @@ namespace RageLib.GTA5.PSO
         public void Read(DataReader reader)
         {
             this.EntryNameHash = reader.ReadInt32();
-            this.Type = (DataType)reader.ReadByte();
-            this.Unk_5h = reader.ReadByte();
+            this.Type = (ParMemberType)reader.ReadByte();
+            this.SubType = reader.ReadByte();
             this.DataOffset = reader.ReadInt16();
             this.ReferenceKey = reader.ReadInt32();
         }
@@ -241,7 +255,7 @@ namespace RageLib.GTA5.PSO
         {
             writer.Write(EntryNameHash);
             writer.Write((byte)Type);
-            writer.Write(Unk_5h);
+            writer.Write(SubType);
             writer.Write(DataOffset);
             writer.Write(ReferenceKey);
         }

@@ -35,33 +35,13 @@ namespace RageLib.GTA5.PSOWrappers.Data
     {
         private readonly PsoFile psoFile;
 
-        public override long Length
-        {
-            get
-            {
-                return psoFile.DataMappingSection.Entries[CurrentSectionIndex].Length;
-            }
-        }
+        public override long Length => psoFile.DataMappingSection.Entries[CurrentSectionIndex].Length;
 
-        public int CurrentSectionIndex
-        {
-            get;
-            private set;
-        }
+        public int CurrentSectionIndex { get; private set; }
 
-        public int CurrentSectionHash
-        {
-            get;
-            private set;
-        }
+        public int CurrentSectionHash { get; private set; }
 
-        public override long Position
-        {
-            get;
-            set;
-        }
-
-
+        public override long Position { get; set; }
 
         public PsoDataReader(PsoFile psoFile) : base(null, Endianess.BigEndian)
         {

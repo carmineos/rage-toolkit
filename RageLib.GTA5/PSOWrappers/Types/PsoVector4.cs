@@ -22,19 +22,20 @@
 
 using RageLib.Data;
 using RageLib.GTA5.PSOWrappers.Data;
+using System.Numerics;
 
 namespace RageLib.GTA5.PSOWrappers.Types
 {
-    public class PsoXXByte : IPsoValue
+    public class PsoVector4 : IPsoValue
     {
-        public byte Value { get; set; }
+        public Vector4 Value { get; set; }
 
-        public PsoXXByte()
+        public PsoVector4()
         { }
 
         public void Read(PsoDataReader reader)
         {
-            Value = reader.ReadByte();
+            Value = reader.ReadVector4();
         }
 
         public void Write(DataWriter writer)
