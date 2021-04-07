@@ -47,7 +47,7 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
         
         [XmlIgnore]
@@ -57,7 +57,7 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         public string UnknownAsHex
         {
             get { return HexConverter.ToHex(Unknown); }
-            set { Unknown = HexConverter.ToUInt32(value); }
+            set { Unknown = HexConverter.ToInt32(value); }
         }
 
         [XmlAttribute("Length")]
@@ -77,7 +77,7 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
 
         [XmlAttribute("Offset")]
@@ -86,6 +86,9 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         [XmlAttribute("Type")]
         public int Type { get; set; }
 
+        [XmlAttribute("SubType")]
+        public int SubType { get; set; }
+
         [XmlIgnore]
         public int TypeHash { get; set; }
 
@@ -93,17 +96,7 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         public string TypeHashAsHex
         {
             get { return HexConverter.ToHex(TypeHash); }
-            set { TypeHash = HexConverter.ToUInt32(value); }
-        }
-
-        [XmlIgnore]
-        public int Unknown { get; set; }
-
-        [XmlAttribute("Unknown")]
-        public string UnknownAsHex
-        {
-            get { return HexConverter.ToHex(Unknown); }
-            set { Unknown = HexConverter.ToUInt32(value); }
+            set { TypeHash = HexConverter.ToInt32(value); }
         }
 
         [XmlElement("ArrayType")]
@@ -120,7 +113,7 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
 
         [XmlElement("EnumEntry")]
@@ -137,7 +130,7 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         public string NameHashAsHex
         {
             get { return HexConverter.ToHex(NameHash); }
-            set { NameHash = HexConverter.ToUInt32(value); }
+            set { NameHash = HexConverter.ToInt32(value); }
         }
 
         [XmlAttribute("Value")]
@@ -146,22 +139,9 @@ namespace RageLib.GTA5.PSOWrappers.Xml
 
     public static class HexConverter
     {
-        public static string ToHex(int value)
-        {
-            return "0x" + value.ToString("X8");
-        }
+        public static string ToHex(int value) => $"0x{value:X8}";
 
-        public static int ToUInt32(string value)
-        {
-            if (value.StartsWith("0x"))
-            {
-                return int.Parse(value.AsSpan(2), NumberStyles.HexNumber);
-            }
-            else
-            {
-                return int.Parse(value, NumberStyles.HexNumber);
-            }
-        }
+        public static int ToInt32(string value) => Convert.ToInt32(value, 16);
     }
 
 }
