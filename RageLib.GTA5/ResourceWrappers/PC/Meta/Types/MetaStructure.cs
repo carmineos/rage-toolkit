@@ -236,20 +236,18 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 
         public static StructureInfo GetStructureInfo(MetaFile meta, int structureKey)
         {
-            StructureInfo info = null;
-            foreach (var x in meta.StructureInfos)
-                if (x.StructureNameHash == structureKey)
-                    info = x;
-            return info;
+            foreach (var structureInfo in meta.StructureInfos)
+                if (structureInfo.StructureNameHash == structureKey)
+                    return structureInfo;
+            return null;
         }
 
         public static EnumInfo GetEnumInfo(MetaFile meta, int structureKey)
         {
-            EnumInfo info = null;
-            foreach (var x in meta.EnumInfos)
-                if (x.EnumNameHash == structureKey)
-                    info = x;
-            return info;
+            foreach (var enumInfo in meta.EnumInfos)
+                if (enumInfo.EnumNameHash == structureKey)
+                    return enumInfo;
+            return null;
         }
 
         public void Write(DataWriter writer)
