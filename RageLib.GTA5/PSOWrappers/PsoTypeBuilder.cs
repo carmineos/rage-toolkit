@@ -23,6 +23,7 @@
 using RageLib.GTA5.PSO;
 using RageLib.GTA5.PSOWrappers.Types;
 using System;
+using System.Diagnostics;
 
 namespace RageLib.GTA5.PSOWrappers
 {
@@ -32,9 +33,9 @@ namespace RageLib.GTA5.PSOWrappers
         {
             switch (entryInfo.Type)
             {
-                case DataType.Array:
+                case ParMemberType.ARRAY:
                     {
-                        switch (entryInfo.Unk_5h)
+                        switch (entryInfo.SubType)
                         {
                             case 0:
                                 {
@@ -55,15 +56,12 @@ namespace RageLib.GTA5.PSOWrappers
                                     var t = structureInfo.Entries[typeIndex];
                                     return new PsoArray4(pso, structureInfo, t, num);
                                 }
-                            default:
-                                {
-                                    throw new Exception("Unsupported array type.");
-                                }
+                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
                     }
-                case DataType.String:
+                case ParMemberType.STRING:
                     {
-                        switch (entryInfo.Unk_5h)
+                        switch (entryInfo.SubType)
                         {
                             case 0:
                                 {
@@ -90,15 +88,12 @@ namespace RageLib.GTA5.PSOWrappers
                                 {
                                     return new PsoString8();
                                 }
-                            default:
-                                {
-                                    throw new Exception("Unsupported string type.");
-                                }
+                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
                     }
-                case DataType.Enum:
+                case ParMemberType.ENUM:
                     {
-                        switch (entryInfo.Unk_5h)
+                        switch (entryInfo.SubType)
                         {
                             case 0:
                                 {
@@ -112,15 +107,12 @@ namespace RageLib.GTA5.PSOWrappers
                                     entryValue.TypeInfo = GetEnumInfo(pso, entryInfo.ReferenceKey);
                                     return entryValue;
                                 }
-                            default:
-                                {
-                                    throw new Exception("Unsupported enum type.");
-                                }
+                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
                     }
-                case DataType.Flags:
+                case ParMemberType.BITSET:
                     {
-                        switch (entryInfo.Unk_5h)
+                        switch (entryInfo.SubType)
                         {
                             case 0:
                                 {
@@ -154,24 +146,21 @@ namespace RageLib.GTA5.PSOWrappers
                                     entryValue.TypeInfo = GetEnumInfo(pso, reftype.ReferenceKey);
                                     return entryValue;
                                 }
-                            default:
-                                {
-                                    throw new Exception("Unsupported flags type.");
-                                }
+                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
                     }
-                case DataType.Integer:
+                case ParMemberType.UINT:
                     {
-                        switch (entryInfo.Unk_5h)
+                        switch (entryInfo.SubType)
                         {
-                            case 0: return new PsoIntSigned();
-                            case 1: return new PsoIntUnsigned();
-                            default: throw new Exception("Unsupported integer type.");
+                            case 0: return new PsoUInt32();
+                            case 1: return new PsoUInt32Hex();
+                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
                     }
-                case DataType.Structure:
+                case ParMemberType.STRUCT:
                     {
-                        switch (entryInfo.Unk_5h)
+                        switch (entryInfo.SubType)
                         {
                             case 0:
                                 {
@@ -184,15 +173,12 @@ namespace RageLib.GTA5.PSOWrappers
                                 {
                                     return new PsoStructure3(pso, structureInfo, entryInfo);
                                 }
-                            default:
-                                {
-                                    throw new Exception("Unsupported structure type.");
-                                }
+                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
                     }
-                case DataType.Map:
+                case ParMemberType.MAP:
                     {
-                        switch (entryInfo.Unk_5h)
+                        switch (entryInfo.SubType)
                         {
                             case 1:
                                 {
@@ -202,152 +188,108 @@ namespace RageLib.GTA5.PSOWrappers
                                     var reftype2 = structureInfo.Entries[idx1];
                                     return new PsoMap(pso, structureInfo, reftype1, reftype2);
                                 }
-                            default: throw new Exception("Unsupported PsoType5 type.");
+                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
 
                     }
-                case DataType.INT_05h:
+                case ParMemberType.BOOL:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoType5();
-                            default: throw new Exception("Unsupported PsoType5 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoBoolean();
                     }
-                case DataType.Byte:
+                case ParMemberType.CHAR:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoByte();
-                            default: throw new Exception("Unsupported PsoByte type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoSByte();
                     }
-                case DataType.Boolean:
+                case ParMemberType.UCHAR:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoBoolean();
-                            default: throw new Exception("Unsupported boolean type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoByte();
                     }
-                case DataType.Float:
+                case ParMemberType.SHORT:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoFloat();
-                            default: throw new Exception("Unsupported float type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoInt16();
                     }
-                case DataType.Float2:
+                case ParMemberType.USHORT:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoFloat2();
-                            default: throw new Exception("Unsupported float2 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoUInt16();
                     }
-                case DataType.Float3:
+                case ParMemberType.INT:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoFloat4A();
-                            default: throw new Exception("Unsupported float3 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoInt32();
                     }
-                case DataType.Float4:
+                case ParMemberType.FLOAT:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoFloat4B();
-                            default: throw new Exception("Unsupported float4 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoFloat();
                     }
-                case DataType.TYPE_09h:
+                case ParMemberType.VECTOR2:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoType9();
-                            default: throw new Exception("Unsupported PsoType9 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoVector2();
                     }
-                case DataType.LONG_20h:
+                case ParMemberType.VECTOR3:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoType32();
-                            default: throw new Exception("Unsupported PsoType32 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoVector3();
                     }
-                case DataType.SHORT_1Eh:
+                case ParMemberType.VECTOR4:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoXXHalf();
-                            default: throw new Exception("Unsupported PsoType30 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoVector4();
                     }
-                case DataType.SHORT_03h:
+                case ParMemberType.VEC3V:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoType3();
-                            default: throw new Exception("Unsupported PsoType3 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoVec3V();
                     }
-                case DataType.SHORT_04h:
+                case ParMemberType.VEC4V:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoType4();
-                            default: throw new Exception("Unsupported PsoType4 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoVec4V();
                     }
-                case DataType.LONG_01h:
+                
+                case ParMemberType.FLOAT16:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoXXByte();
-                            default: throw new Exception("Unsupported PsoType1 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoFloat16();
                     }
-                case DataType.TYPE_14h:
+                case ParMemberType.UINT64:
                     {
-                        switch (entryInfo.Unk_5h)
-                        {
-                            case 0: return new PsoFloat3();
-                            default: throw new Exception("Unsupported PsoType20 type.");
-                        }
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoUInt64();
                     }
                 default:
-                    throw new Exception("Unsupported type.");
+                    throw new Exception($"Unsupported {nameof(ParMemberType)}: {entryInfo.Type}");
             }
         }
 
         public static PsoStructureInfo GetStructureInfo(PsoFile meta, int structureKey)
         {
-            PsoStructureInfo info = null;
             for (int i = 0; i < meta.DefinitionSection.Count; i++)
                 if (meta.DefinitionSection.EntriesIdx[i].NameHash == structureKey)
-                    info = (PsoStructureInfo)meta.DefinitionSection.Entries[i];
-            return info;
+                    return (PsoStructureInfo)meta.DefinitionSection.Entries[i];
+            return null;
         }
 
         public static PsoEnumInfo GetEnumInfo(PsoFile meta, int structureKey)
         {
-            PsoEnumInfo info = null;
             for (int i = 0; i < meta.DefinitionSection.Count; i++)
                 if (meta.DefinitionSection.EntriesIdx[i].NameHash == structureKey)
-                    info = (PsoEnumInfo)meta.DefinitionSection.Entries[i];
-            return info;
+                    return (PsoEnumInfo)meta.DefinitionSection.Entries[i];
+            return null;
         }
 
         public static PsoElementIndexInfo GetStructureIndexInfo(PsoFile meta, int structureKey)
         {
-            PsoElementIndexInfo info = null;
             for (int i = 0; i < meta.DefinitionSection.Count; i++)
                 if (meta.DefinitionSection.EntriesIdx[i].NameHash == structureKey)
-                    info = (PsoElementIndexInfo)meta.DefinitionSection.EntriesIdx[i];
-            return info;
+                    return (PsoElementIndexInfo)meta.DefinitionSection.EntriesIdx[i];
+            return null;
         }
 
     }

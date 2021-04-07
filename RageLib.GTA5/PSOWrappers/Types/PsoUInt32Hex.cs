@@ -25,27 +25,21 @@ using RageLib.GTA5.PSOWrappers.Data;
 
 namespace RageLib.GTA5.PSOWrappers.Types
 {
-    public class PsoFloat4B : IPsoValue
+    public class PsoUInt32Hex : IPsoValue
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
-        public float W { get; set; }
+        public uint Value { get; set; }
 
-        public PsoFloat4B()
+        public PsoUInt32Hex()
         { }
 
         public void Read(PsoDataReader reader)
         {
-            this.X = reader.ReadSingle();
-            this.Y = reader.ReadSingle();
-            this.Z = reader.ReadSingle();
-            this.W = reader.ReadSingle();
+            this.Value = reader.ReadUInt32();
         }
 
         public void Write(DataWriter writer)
         {
-
+            writer.Write(this.Value);
         }
     }
 }
