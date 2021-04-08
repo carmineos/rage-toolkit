@@ -38,6 +38,12 @@ namespace RageLib.GTA5.Cryptography
     {
         public byte[] Key { get; set; }
 
+        public static uint GetKeyIndex(string name, uint length)
+        {
+            var hash = GTA5Hash.CalculateHash(name);
+            return (hash + length + (101 - 40)) % 0x65;
+        }
+
         ////////////////////////////////////////////////////////////////////////////
         // decryption
         ////////////////////////////////////////////////////////////////////////////

@@ -88,11 +88,10 @@ namespace RageLib.GTA5.ArchiveWrappers
 
 
             // calculate key...
-            var tmp1 = GTA5Hash.CalculateHash(FileName);
-            var tmp2 = (tmp1 + (uint)archive_.BaseStream.Length + (101 - 40)) % 0x65;
+            var indexKey = GTA5Crypto.GetKeyIndex(FileName, (uint)archive_.BaseStream.Length);
 
             //  archive_.key_ = GTA5Crypto.key_gta5;
-            archive_.WriteHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[tmp2]);
+            archive_.WriteHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]);
             archive_.BaseStream.Flush();
 
         }
@@ -341,10 +340,9 @@ namespace RageLib.GTA5.ArchiveWrappers
                 if (GTA5Constants.PC_LUT != null && GTA5Constants.PC_NG_KEYS != null)
                 {
                     // calculate key...
-                    var tmp1 = GTA5Hash.CalculateHash(arch.FileName);
-                    var tmp2 = (tmp1 + (uint)finfo.Length + (101 - 40)) % 0x65;
+                    var indexKey = GTA5Crypto.GetKeyIndex(arch.FileName, (uint)finfo.Length);
 
-                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[tmp2]); // read...
+                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
                 }
                 else
                 {
@@ -370,10 +368,9 @@ namespace RageLib.GTA5.ArchiveWrappers
                 if (GTA5Constants.PC_LUT != null && GTA5Constants.PC_NG_KEYS != null)
                 {
                     // calculate key...
-                    var tmp1 = GTA5Hash.CalculateHash(arch.FileName);
-                    var tmp2 = (tmp1 + (uint)stream.Length + (101 - 40)) % 0x65;
+                    var indexKey = GTA5Crypto.GetKeyIndex(arch.FileName, (uint)stream.Length);
 
-                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[tmp2]); // read...
+                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
                 }
                 else
                 {

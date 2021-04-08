@@ -180,12 +180,11 @@ namespace ArchiveTool.Models
                 // decrypt...
                 if (binFile.IsEncrypted)
                 {
-                    var qq = GTA5Hash.CalculateHash(binFile.Name);
-                    var gg = (qq + (uint)binFile.UncompressedSize + (101 - 40)) % 0x65;
+                    var indexKey = GTA5Crypto.GetKeyIndex(binFile.Name, (uint)binFile.UncompressedSize);
 
                     // TODO: if archive encrypted with AES, use AES key...
 
-                    buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[gg]);
+                    buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
                 }
                 
                 // decompress...

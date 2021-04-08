@@ -123,9 +123,8 @@ namespace RageLib.GTA5.Utilities
                         }
                         else
                         {
-                            var qq = GTA5Hash.CalculateHash(file.Name);
-                            var gg = (qq + (uint)file.UncompressedSize + (101 - 40)) % 0x65;
-                            buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[gg]);
+                            var indexKey = GTA5Crypto.GetKeyIndex(file.Name, (uint)file.UncompressedSize);
+                            buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
                         }
                     }
 
@@ -199,9 +198,8 @@ namespace RageLib.GTA5.Utilities
                         }
                         else
                         {
-                            var qq = GTA5Hash.CalculateHash(file.Name);
-                            var gg = (qq + (uint)file.UncompressedSize + (101 - 40)) % 0x65;
-                            buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[gg]);
+                            var indexKey = GTA5Crypto.GetKeyIndex(file.Name, (uint)file.UncompressedSize);
+                            buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
                         }
                     }
 
@@ -356,9 +354,8 @@ namespace RageLib.GTA5.Utilities
                         }
                         else
                         {
-                            var qq = GTA5Hash.CalculateHash(file.Name);
-                            var gg = (qq + (uint)file.UncompressedSize + (101 - 40)) % 0x65;
-                            buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[gg]);
+                            var indexKey = GTA5Crypto.GetKeyIndex(file.Name, (uint)file.UncompressedSize);
+                            buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
                         }
                     }
 
