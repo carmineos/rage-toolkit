@@ -24,6 +24,7 @@ using RageLib.Data;
 using RageLib.GTA5.PSO;
 using RageLib.GTA5.PSOWrappers.Data;
 using System;
+using System.Diagnostics;
 
 namespace RageLib.GTA5.PSOWrappers.Types
 {
@@ -43,17 +44,16 @@ namespace RageLib.GTA5.PSOWrappers.Types
 
         public void Read(PsoDataReader reader)
         {
-            int z1 = reader.ReadInt32();
-            int z2 = reader.ReadInt32();
-            if (z2 != 0)
-                throw new Exception("z2 should be zero");
+            var blockIndexAndOffset = reader.ReadUInt32();
+            var Offset = (int)(blockIndexAndOffset >> 12) & 0x000FFFFF;
+            var BlockIndex = (int)(blockIndexAndOffset & 0x00000FFF);
 
-            int offset = (z1 >> 12) & 0x000FFFFF;
-            int sectionIndex = z1 & 0x00000FFF;
+            var unknown_4h = reader.ReadUInt32();
+            Debug.Assert(unknown_4h == 0);
 
-            if (sectionIndex > 0)
+            if (BlockIndex > 0)
             {
-                var nameHash = pso.DataMappingSection.Entries[sectionIndex - 1].NameHash;
+                var nameHash = pso.DataMappingSection.Entries[BlockIndex - 1].NameHash;
                 var strInfo = (PsoStructureInfo)null;
                 var sectionIdxInfo = (PsoElementIndexInfo)null;
                 for (int k = 0; k < pso.DefinitionSection.Entries.Count; k++)
@@ -70,8 +70,8 @@ namespace RageLib.GTA5.PSOWrappers.Types
                 var backupOfSection = reader.CurrentSectionIndex;
                 var backupOfPosition = reader.Position;
 
-                reader.SetSectionIndex(sectionIndex - 1);
-                reader.Position = offset;
+                reader.SetSectionIndex(BlockIndex - 1);
+                reader.Position = Offset;
 
                 Value = new PsoStructure(pso, strInfo, sectionIdxInfo, null);
                 Value.Read(reader);
