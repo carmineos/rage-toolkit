@@ -49,12 +49,26 @@ namespace RageLib.GTA5.PSOWrappers
                                     var t = structureInfo.Entries[typeIndex];
                                     return new PsoArray1(pso, structureInfo, t, num);
                                 }
+                            case ParMemberArraySubtype.ATRANGEARRAY:
+                                {
+                                    var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
+                                    var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
+                                    var t = structureInfo.Entries[typeIndex];
+                                    return new PsoArray2(pso, structureInfo, t, num);
+                                }
                             case ParMemberArraySubtype.MEMBER:
                                 {
                                     var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
                                     var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
                                     var t = structureInfo.Entries[typeIndex];
                                     return new PsoArray4(pso, structureInfo, t, num);
+                                }
+                            case (ParMemberArraySubtype)0x81:
+                                {
+                                    var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
+                                    var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
+                                    var t = structureInfo.Entries[typeIndex];
+                                    return new PsoArray129(pso, structureInfo, t, num);
                                 }
                             default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }

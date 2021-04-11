@@ -103,8 +103,14 @@ namespace RageLib.GTA5.PSOWrappers
                 case PsoArray1:
                     WriteArrayContent(writer, ((PsoArray1)value).Entries);
                     break;
+                case PsoArray2:
+                    WriteArrayContent(writer, ((PsoArray2)value).Entries);
+                    break;
                 case PsoArray4:
                     WriteArrayContent(writer, ((PsoArray4)value).Entries);
+                    break;
+                case PsoArray129:
+                    WriteArrayContent(writer, ((PsoArray129)value).Entries);
                     break;
                 case PsoUInt32:
                     writer.WriteAttributeValue(((PsoUInt32)value).Value);
