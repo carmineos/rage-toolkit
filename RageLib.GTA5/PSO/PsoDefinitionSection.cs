@@ -182,9 +182,8 @@ namespace RageLib.GTA5.PSO
             }
         }
     }
-
-    // parMemberType
-    public enum ParMemberType : byte
+    
+    public enum ParMemberType : byte    // 0x1CA39C3D
     {
         BOOL = 0,
         CHAR = 1,
@@ -222,6 +221,67 @@ namespace RageLib.GTA5.PSO
         DOUBLE = 33
     }
 
+    public enum ParMemberArraySubtype : byte    // 0xADE25B1B
+    {
+        ATARRAY = 0,                        // 0xABE40192
+        ATFIXEDARRAY = 1,                   // 0x3A523E81
+        ATRANGEARRAY = 2,                   // 0x18A25B6B
+        POINTER = 3,                        // 0x47073D6E
+        MEMBER = 4,                         // 0x6CC11BB4
+        _0x2087BB00 = 5,                    // 0x2087BB00
+        POINTER_WITH_COUNT = 6,             // 0xE2980EB5
+        POINTER_WITH_COUNT_8BIT_IDX = 7,    // 0x254D33B1
+        POINTER_WITH_COUNT_16BIT_IDX = 8,   // 0xB66B6752
+        VIRTUAL = 9,                        // 0xAC01A1DC
+    };
+
+    public enum ParMemberEnumSubtype : byte // 0x2721C60A
+    {
+        _32BIT = 0,         // 0xAF085554
+        _16BIT = 1,         // 0x0D502D8E
+        _8BIT = 2,          // 0xF2AAF53D
+    };
+
+    public enum ParMemberBitsetSubtype : byte
+    {
+        _32BIT = 0,         // 0xAF085554
+        _16BIT = 1,         // 0x0D502D8E
+        _8BIT = 2,          // 0xF2AAF53D
+        ATBITSET = 3,       // 0xB46B5F65
+    };
+
+    public enum ParMemberMapSubtype : byte  // 0x9C9F1983
+    {
+        ATMAP = 0,          // 0xD8C10171
+        ATBINARYMAP = 1,    // 0x6560BA79
+    };
+
+    public enum ParMemberStringSubtype : byte   // 0xA5CF41A9
+    {
+        MEMBER = 0,                 // 0x6CC11BB4
+        POINTER = 1,                // 0x47073D6E
+        CONST_STRING = 2,           // 0x757C1B9B
+        ATSTRING = 3,               // 0x5CDCA61E
+        WIDE_MEMBER = 4,            // 0xAC508104
+        WIDE_POINTER = 5,           // 0x99D4A8CD
+        ATWIDESTRING = 6,           // 0x3DED5509
+        ATNONFINALHASHSTRING = 7,   // 0xDFE6E4AF
+        ATFINALHASHSTRING = 8,      // 0x945E5945
+        ATHASHVALUE = 9,            // 0xBD3CD157
+        ATPARTIALHASHVALUE = 10,    // 0xD552B3C8
+        ATNSHASHSTRING = 11,        // 0x893F9F69
+        ATNSHASHVALUE = 12,         // 0x3767C917
+    };
+
+    public enum ParMemberStructSubtype : byte   // 0x76214E40
+    {
+        STRUCTURE = 0,                  // 0x3AC3050F
+        EXTERNAL_NAMED = 1,             // 0xA53F8BA9
+        EXTERNAL_NAMED_USERNULL = 2,    // 0x2DED4C19
+        POINTER = 3,                    // 0x47073D6E
+        SIMPLE_POINTER = 4,             // 0x67466543
+    };
+
     public class PsoStructureEntryInfo
     {
         public int EntryNameHash;
@@ -233,11 +293,11 @@ namespace RageLib.GTA5.PSO
         public PsoStructureEntryInfo()
         { }
 
-        public PsoStructureEntryInfo(int nameHash, ParMemberType type, byte unk5, short dataOffset, int referenceKey)
+        public PsoStructureEntryInfo(int nameHash, ParMemberType type, byte subType, short dataOffset, int referenceKey)
         {
             this.EntryNameHash = nameHash;
             this.Type = type;
-            this.SubType = unk5;
+            this.SubType = subType;
             this.DataOffset = dataOffset;
             this.ReferenceKey = referenceKey;
         }
