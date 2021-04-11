@@ -35,21 +35,21 @@ namespace RageLib.GTA5.PSOWrappers
             {
                 case ParMemberType.ARRAY:
                     {
-                        switch (entryInfo.SubType)
+                        switch ((ParMemberArraySubtype)entryInfo.SubType)
                         {
-                            case 0:
+                            case ParMemberArraySubtype.ATARRAY:
                                 {
                                     var t = structureInfo.Entries[entryInfo.ReferenceKey & 0x0000FFFF];
                                     return new PsoArray0(pso, structureInfo, t);
                                 }
-                            case 1:
+                            case ParMemberArraySubtype.ATFIXEDARRAY:
                                 {
                                     var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
                                     var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
                                     var t = structureInfo.Entries[typeIndex];
                                     return new PsoArray1(pso, structureInfo, t, num);
                                 }
-                            case 4:
+                            case ParMemberArraySubtype.MEMBER:
                                 {
                                     var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
                                     var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
@@ -61,30 +61,30 @@ namespace RageLib.GTA5.PSOWrappers
                     }
                 case ParMemberType.STRING:
                     {
-                        switch (entryInfo.SubType)
+                        switch ((ParMemberStringSubtype)entryInfo.SubType)
                         {
-                            case 0:
+                            case ParMemberStringSubtype.MEMBER:
                                 {
                                     var len = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
                                     return new PsoString0(len);
                                 }
-                            case 1:
+                            case ParMemberStringSubtype.POINTER:
                                 {
                                     return new PsoString1();
                                 }
-                            case 2:
+                            case ParMemberStringSubtype.CONST_STRING:
                                 {
                                     return new PsoString2();
                                 }
-                            case 3:
+                            case ParMemberStringSubtype.ATSTRING:
                                 {
                                     return new PsoString3();
                                 }
-                            case 7:
+                            case ParMemberStringSubtype.ATNONFINALHASHSTRING:
                                 {
                                     return new PsoString7();
                                 }
-                            case 8:
+                            case ParMemberStringSubtype.ATFINALHASHSTRING:
                                 {
                                     return new PsoString8();
                                 }
@@ -93,15 +93,15 @@ namespace RageLib.GTA5.PSOWrappers
                     }
                 case ParMemberType.ENUM:
                     {
-                        switch (entryInfo.SubType)
+                        switch ((ParMemberEnumSubtype)entryInfo.SubType)
                         {
-                            case 0:
+                            case ParMemberEnumSubtype._32BIT:
                                 {
                                     var entryValue = new PsoEnumInt();
                                     entryValue.TypeInfo = GetEnumInfo(pso, entryInfo.ReferenceKey);
                                     return entryValue;
                                 }
-                            case 2:
+                            case ParMemberEnumSubtype._8BIT:
                                 {
                                     var entryValue = new PsoEnumByte();
                                     entryValue.TypeInfo = GetEnumInfo(pso, entryInfo.ReferenceKey);
@@ -112,9 +112,9 @@ namespace RageLib.GTA5.PSOWrappers
                     }
                 case ParMemberType.BITSET:
                     {
-                        switch (entryInfo.SubType)
+                        switch ((ParMemberBitsetSubtype)entryInfo.SubType)
                         {
-                            case 0:
+                            case ParMemberBitsetSubtype._32BIT:
                                 {
                                     var entryValue = new PsoFlagsInt();
                                     var sidx = entryInfo.ReferenceKey & 0x0000FFFF;
@@ -128,7 +128,7 @@ namespace RageLib.GTA5.PSOWrappers
 
                                     return entryValue;
                                 }
-                            case 1:
+                            case ParMemberBitsetSubtype._16BIT:
                                 {
                                     var entryValue = new PsoFlagsShort();
                                     var sidx = entryInfo.ReferenceKey & 0x0000FFFF;
@@ -138,7 +138,7 @@ namespace RageLib.GTA5.PSOWrappers
 
                                     return entryValue;
                                 }
-                            case 2:
+                            case ParMemberBitsetSubtype._8BIT:
                                 {
                                     var entryValue = new PsoFlagsByte();
                                     var sidx = entryInfo.ReferenceKey & 0x0000FFFF;
@@ -160,16 +160,16 @@ namespace RageLib.GTA5.PSOWrappers
                     }
                 case ParMemberType.STRUCT:
                     {
-                        switch (entryInfo.SubType)
+                        switch ((ParMemberStructSubtype)entryInfo.SubType)
                         {
-                            case 0:
+                            case ParMemberStructSubtype.STRUCTURE:
                                 {
                                     var t1 = GetStructureInfo(pso, entryInfo.ReferenceKey);
                                     var t2 = GetStructureIndexInfo(pso, entryInfo.ReferenceKey);
                                     var entryValue = new PsoStructure(pso, t1, t2, entryInfo);
                                     return entryValue;
                                 }
-                            case 3:
+                            case ParMemberStructSubtype.POINTER:
                                 {
                                     return new PsoStructure3(pso, structureInfo, entryInfo);
                                 }
@@ -178,9 +178,9 @@ namespace RageLib.GTA5.PSOWrappers
                     }
                 case ParMemberType.MAP:
                     {
-                        switch (entryInfo.SubType)
+                        switch ((ParMemberMapSubtype)entryInfo.SubType)
                         {
-                            case 1:
+                            case ParMemberMapSubtype.ATBINARYMAP:
                                 {
                                     var idx1 = entryInfo.ReferenceKey & 0x0000FFFF;
                                     var idx2 = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
