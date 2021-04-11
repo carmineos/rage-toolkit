@@ -61,8 +61,7 @@ namespace RageLib.GTA5.PSO
             var reader = new DataReader(stream, Endianess.BigEndian);
             while (reader.Position < reader.Length)
             {
-                var identInt = reader.ReadUInt32();
-                var ident = (PsoSection)identInt;
+                var ident = (PsoSection)reader.ReadUInt32();
                 var length = reader.ReadInt32();
 
                 reader.Position -= 8;
@@ -130,25 +129,18 @@ namespace RageLib.GTA5.PSO
             if (CHKSSection != null) CHKSSection.Write(writer);
         }
 
-
-
         public static bool IsPSO(string fileName)
         {
             using (var stream = new FileStream(fileName, FileMode.Open))
-                return !IsRBF(stream);
+                return IsPSO(stream);
         }
 
         public static bool IsPSO(Stream stream)
         {
-            return !IsRBF(stream);
-        }
-
-        public static bool IsRBF(Stream stream)
-        {
             var reader = new DataReader(stream, Endianess.BigEndian);
-            var identInt = reader.ReadUInt32();
-            stream.Position = 0;
-            return ((identInt & 0xFFFFFF00) == 0x52424600);
+            var ident = reader.ReadUInt32();
+            stream.Position -= 4;
+            return ident == (uint)PsoSection.PSIN;
         }
     }
 }

@@ -204,5 +204,19 @@ namespace RageLib.GTA5.RBF
                     throw new Exception("Unsupported data type.");
             }
         }
+
+        public static bool IsRBF(string fileName)
+        {
+            using (var stream = new FileStream(fileName, FileMode.Open))
+                return IsRBF(stream);
+        }
+
+        public static bool IsRBF(Stream stream)
+        {
+            var reader = new DataReader(stream);
+            var ident = reader.ReadUInt32();
+            stream.Position -= 4;
+            return ident == RBF_IDENT;
+        }
     }
 }
