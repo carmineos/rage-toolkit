@@ -287,13 +287,13 @@ namespace RageLib.GTA5.PSO
         public int EntryNameHash;
         public ParMemberType Type;
         public byte SubType;
-        public short DataOffset;
+        public ushort DataOffset;
         public int ReferenceKey; // when array -> entry index with type
 
         public PsoStructureEntryInfo()
         { }
 
-        public PsoStructureEntryInfo(int nameHash, ParMemberType type, byte subType, short dataOffset, int referenceKey)
+        public PsoStructureEntryInfo(int nameHash, ParMemberType type, byte subType, ushort dataOffset, int referenceKey)
         {
             this.EntryNameHash = nameHash;
             this.Type = type;
@@ -307,7 +307,7 @@ namespace RageLib.GTA5.PSO
             this.EntryNameHash = reader.ReadInt32();
             this.Type = (ParMemberType)reader.ReadByte();
             this.SubType = reader.ReadByte();
-            this.DataOffset = reader.ReadInt16();
+            this.DataOffset = reader.ReadUInt16();
             this.ReferenceKey = reader.ReadInt32();
         }
 
