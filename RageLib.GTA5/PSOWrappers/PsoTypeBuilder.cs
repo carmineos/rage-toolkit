@@ -263,6 +263,11 @@ namespace RageLib.GTA5.PSOWrappers
                         Debug.Assert(entryInfo.SubType == 0);
                         return new PsoUInt64();
                     }
+                case ParMemberType.INT64:
+                    {
+                        Debug.Assert(entryInfo.SubType == 0);
+                        return new PsoInt64();
+                    }
                 default:
                     throw new Exception($"Unsupported {nameof(ParMemberType)}: {entryInfo.Type}");
             }
