@@ -197,6 +197,9 @@ namespace RageLib.GTA5.PSOWrappers
                 case PsoUInt64:
                     writer.WriteAttributeValue(((PsoUInt64)value).Value);
                     break;
+                case PsoInt64:
+                    writer.WriteAttributeValue(((PsoInt64)value).Value);
+                    break;
                 default:
                     throw new Exception("Unknown type");
             }
