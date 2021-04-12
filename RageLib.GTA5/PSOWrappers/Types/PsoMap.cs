@@ -52,7 +52,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
         public void Read(PsoDataReader reader)
         {
             var unknown_0h = reader.ReadUInt32();
-            Debug.Assert(unknown_0h == 0);
+            Debug.Assert(unknown_0h == 0x01000000);
 
             var unknown_4h = reader.ReadUInt32();
             Debug.Assert(unknown_4h == 0);
@@ -64,9 +64,9 @@ namespace RageLib.GTA5.PSOWrappers.Types
             var unknown_Ch = reader.ReadUInt32();
             Debug.Assert(unknown_Ch == 0);
 
-            var count = reader.ReadUInt16();
-            var capacity = reader.ReadUInt16();
-            Debug.Assert(count <= capacity);
+            var keysCount = reader.ReadUInt16();
+            var itemsCount = reader.ReadUInt16();
+            Debug.Assert(keysCount == itemsCount);
 
             var unknown_14h = reader.ReadUInt32();
             Debug.Assert(unknown_14h == 0);
@@ -91,7 +91,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
             }
 
             Entries = new List<PsoStructure>();
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < keysCount; i++)
             {
                 var entryStr = new PsoStructure(pso, sectionInfo, null, null);
                 entryStr.Read(reader);

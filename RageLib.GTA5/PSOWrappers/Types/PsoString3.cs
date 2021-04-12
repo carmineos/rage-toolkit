@@ -40,11 +40,14 @@ namespace RageLib.GTA5.PSOWrappers.Types
             var unknown_4h = reader.ReadUInt32();
             Debug.Assert(unknown_4h == 0);
 
-            var count = reader.ReadUInt16() & 0x0FFF;
-            var capacity = reader.ReadUInt16() & 0x0FFF;
-            Debug.Assert(count <= capacity);
+            var count1 = reader.ReadUInt16();
+            var count2 = reader.ReadUInt16();
 
-            var length = capacity;
+            var length = Math.Min(count1, count2);
+            var length_null = Math.Max(count1, count2);
+
+            // One is the length with null terminator, but they are often inverted
+            Debug.Assert(length_null == length + 1);
 
             var unknown_Ch = reader.ReadUInt32();
             Debug.Assert(unknown_Ch == 0);
