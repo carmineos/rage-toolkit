@@ -44,7 +44,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
             var capacity = reader.ReadUInt16() & 0x0FFF;
             Debug.Assert(count <= capacity);
 
-            var NumberOfEntries = capacity;
+            var length = capacity;
 
             var unknown_Ch = reader.ReadUInt32();
             Debug.Assert(unknown_Ch == 0);
@@ -52,25 +52,16 @@ namespace RageLib.GTA5.PSOWrappers.Types
             // read reference data...
             if (BlockIndex > 0)
             {
-
                 var backupOfSection = reader.CurrentSectionIndex;
                 var backupOfPosition = reader.Position;
 
                 reader.SetSectionIndex(BlockIndex - 1);
                 reader.Position = Offset;
 
-                string s = "";
-                for (int k = 0; k < NumberOfEntries; k++)
-                {
-                    s += (char)reader.ReadByte();
-                }
-                Value = s;
+                Value = reader.ReadString(length);
 
                 reader.SetSectionIndex(backupOfSection);
                 reader.Position = backupOfPosition;
-
-
-
             }
             else
             {
