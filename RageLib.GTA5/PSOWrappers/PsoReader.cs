@@ -65,7 +65,7 @@ namespace RageLib.GTA5.PSOWrappers
             var resultStructure = new PsoStructure(meta, t1, t2, null);
 
             var reader = new PsoDataReader(meta);
-            reader.SetSectionIndex(meta.DataMappingSection.RootIndex - 1);
+            reader.CurrentSectionIndex = meta.DataMappingSection.RootIndex - 1;
             reader.Position = 0;
             resultStructure.Read(reader);
             return resultStructure;

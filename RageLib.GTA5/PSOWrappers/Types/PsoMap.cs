@@ -75,7 +75,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
             var backupOfSection = reader.CurrentSectionIndex;
             var backupOfPosition = reader.Position;
 
-            reader.SetSectionIndex(BlockIndex - 1);
+            reader.CurrentSectionIndex = BlockIndex - 1;
             reader.Position = Offset;
 
             int nameOfDataSection = pso.DataMappingSection.Entries[BlockIndex - 1].NameHash;
@@ -98,7 +98,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
                 Entries.Add(entryStr);
             }
 
-            reader.SetSectionIndex(backupOfSection);
+            reader.CurrentSectionIndex = backupOfSection;
             reader.Position = backupOfPosition;
         }
 

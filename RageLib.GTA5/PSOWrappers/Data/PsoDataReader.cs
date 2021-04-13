@@ -34,47 +34,39 @@ namespace RageLib.GTA5.PSOWrappers.Data
     public class PsoDataReader : DataReader
     {
         private readonly PsoFile psoFile;
+        private readonly Stream stream;
 
         public override long Length => psoFile.DataMappingSection.Entries[CurrentSectionIndex].Length;
-
-        public int CurrentSectionIndex { get; private set; }
-
-        public int CurrentSectionHash { get; private set; }
-
+        
         public override long Position { get; set; }
+
+        public int CurrentSectionIndex { get; set; }
+
+        public int CurrentSectionHash => psoFile.DataMappingSection.Entries[CurrentSectionIndex].NameHash;
 
         public PsoDataReader(PsoFile psoFile) : base(null, Endianess.BigEndian)
         {
             this.psoFile = psoFile;
+            this.stream = new MemoryStream(psoFile.DataSection.Data);
         }
 
         protected override void ReadFromStreamRaw(Span<byte> span)
         {
-            // TODO very bad performance, improve this!
-            var str = new MemoryStream(psoFile.DataSection.Data);
-            str.Position = psoFile.DataMappingSection.Entries[CurrentSectionIndex].Offset;
-            str.Position += Position;
+            stream.Position = psoFile.DataMappingSection.Entries[CurrentSectionIndex].Offset;
+            stream.Position += Position;
 
-            str.Read(span);
+            stream.Read(span);
             Position += span.Length;
         }
 
         protected override byte ReadByteFromStreamRaw()
         {
-            // TODO very bad performance, improve this!
-            var str = new MemoryStream(psoFile.DataSection.Data);
-            str.Position = psoFile.DataMappingSection.Entries[CurrentSectionIndex].Offset;
-            str.Position += Position;
+            stream.Position = psoFile.DataMappingSection.Entries[CurrentSectionIndex].Offset;
+            stream.Position += Position;
 
-            var b = (byte)str.ReadByte();
+            var b = (byte)stream.ReadByte();
             Position += 1;
             return b;
-        }
-
-        public void SetSectionIndex(int index)
-        {
-            CurrentSectionIndex = index;
-            CurrentSectionHash = psoFile.DataMappingSection.Entries[index].NameHash;
         }
     }
 }

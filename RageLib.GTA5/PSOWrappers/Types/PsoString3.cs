@@ -43,11 +43,12 @@ namespace RageLib.GTA5.PSOWrappers.Types
             var count1 = reader.ReadUInt16();
             var count2 = reader.ReadUInt16();
 
+            // one is the length with null terminator, but they are often inverted
             var length = Math.Min(count1, count2);
             var length_null = Math.Max(count1, count2);
 
-            // One is the length with null terminator, but they are often inverted
-            Debug.Assert(length_null == length + 1);
+            // check they are either equal or differ of 1
+            Debug.Assert(length_null - length <= 1);
 
             var unknown_Ch = reader.ReadUInt32();
             Debug.Assert(unknown_Ch == 0);
@@ -58,12 +59,12 @@ namespace RageLib.GTA5.PSOWrappers.Types
                 var backupOfSection = reader.CurrentSectionIndex;
                 var backupOfPosition = reader.Position;
 
-                reader.SetSectionIndex(BlockIndex - 1);
+                reader.CurrentSectionIndex = BlockIndex - 1;
                 reader.Position = Offset;
 
                 Value = reader.ReadString(length);
 
-                reader.SetSectionIndex(backupOfSection);
+                reader.CurrentSectionIndex = backupOfSection;
                 reader.Position = backupOfPosition;
             }
             else
