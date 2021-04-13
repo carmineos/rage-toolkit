@@ -311,5 +311,12 @@ namespace RageLib.GTA5.PSOWrappers
             return null;
         }
 
+        public static Tuple<PsoElementInfo, PsoElementIndexInfo> GetElementInfoAndElementIndexInfo(PsoFile meta, int structureKey)
+        {
+            for (int i = 0; i < meta.DefinitionSection.Count; i++)
+                if (meta.DefinitionSection.EntriesIdx[i].NameHash == structureKey)
+                    return new Tuple<PsoElementInfo, PsoElementIndexInfo>(meta.DefinitionSection.Entries[i], meta.DefinitionSection.EntriesIdx[i]);
+            return null;
+        }
     }
 }
