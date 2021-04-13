@@ -54,17 +54,9 @@ namespace RageLib.GTA5.PSOWrappers.Types
             if (BlockIndex > 0)
             {
                 var nameHash = pso.DataMappingSection.Entries[BlockIndex - 1].NameHash;
-                var strInfo = (PsoStructureInfo)null;
-                var sectionIdxInfo = (PsoElementIndexInfo)null;
-                for (int k = 0; k < pso.DefinitionSection.Entries.Count; k++)
-                {
-                    if (pso.DefinitionSection.EntriesIdx[k].NameHash == nameHash)
-                    {
-                        strInfo = (PsoStructureInfo)pso.DefinitionSection.Entries[k];
-                        sectionIdxInfo = pso.DefinitionSection.EntriesIdx[k];
-                    }
-                }
-
+                var infos = PsoTypeBuilder.GetElementInfoAndElementIndexInfo(pso, nameHash);
+                var strInfo = (PsoStructureInfo)infos.Item1;
+                var sectionIdxInfo = infos.Item2;
 
                 // read reference data...
                 var backupOfSection = reader.CurrentSectionIndex;

@@ -79,16 +79,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
             reader.Position = Offset;
 
             int nameOfDataSection = pso.DataMappingSection.Entries[BlockIndex - 1].NameHash;
-            var sectionInfo = (PsoStructureInfo)null;
-            //var sectionIdxInfo = (PsoElementIndexInfo)null;
-            for (int k = 0; k < pso.DefinitionSection.EntriesIdx.Count; k++)
-            {
-                if (pso.DefinitionSection.EntriesIdx[k].NameHash == nameOfDataSection)
-                {
-                    sectionInfo = (PsoStructureInfo)pso.DefinitionSection.Entries[k];
-                    //sectionIdxInfo = pso.DefinitionSection.EntriesIdx[k];
-                }
-            }
+            var sectionInfo = PsoTypeBuilder.GetStructureInfo(pso, nameOfDataSection);
 
             Entries = new List<PsoStructure>();
             for (int i = 0; i < keysCount; i++)
