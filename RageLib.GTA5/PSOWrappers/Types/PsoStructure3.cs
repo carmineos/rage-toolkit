@@ -70,13 +70,13 @@ namespace RageLib.GTA5.PSOWrappers.Types
                 var backupOfSection = reader.CurrentSectionIndex;
                 var backupOfPosition = reader.Position;
 
-                reader.SetSectionIndex(BlockIndex - 1);
+                reader.CurrentSectionIndex = BlockIndex - 1;
                 reader.Position = Offset;
 
                 Value = new PsoStructure(pso, strInfo, sectionIdxInfo, null);
                 Value.Read(reader);
 
-                reader.SetSectionIndex(backupOfSection);
+                reader.CurrentSectionIndex = backupOfSection;
                 reader.Position = backupOfPosition;
             }
             else
