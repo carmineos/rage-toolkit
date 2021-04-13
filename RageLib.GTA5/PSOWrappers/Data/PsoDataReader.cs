@@ -36,13 +36,24 @@ namespace RageLib.GTA5.PSOWrappers.Data
         private readonly PsoFile psoFile;
         private readonly Stream stream;
 
-        public override long Length => psoFile.DataMappingSection.Entries[CurrentSectionIndex].Length;
+        private int currentSectionIndex;
+        private PsoDataMappingEntry currentDataMappingEntry;
+
+        public override long Length => currentDataMappingEntry.Length;
         
         public override long Position { get; set; }
 
-        public int CurrentSectionIndex { get; set; }
+        public int CurrentSectionIndex 
+        { 
+            get => currentSectionIndex;
+            set 
+            {
+                currentSectionIndex = value;
+                currentDataMappingEntry = psoFile.DataMappingSection.Entries[value];
+            } 
+        }
 
-        public int CurrentSectionHash => psoFile.DataMappingSection.Entries[CurrentSectionIndex].NameHash;
+        public int CurrentSectionHash => currentDataMappingEntry.NameHash;
 
         public PsoDataReader(PsoFile psoFile) : base(null, Endianess.BigEndian)
         {
@@ -52,7 +63,7 @@ namespace RageLib.GTA5.PSOWrappers.Data
 
         protected override void ReadFromStreamRaw(Span<byte> span)
         {
-            stream.Position = psoFile.DataMappingSection.Entries[CurrentSectionIndex].Offset;
+            stream.Position = currentDataMappingEntry.Offset;
             stream.Position += Position;
 
             stream.Read(span);
@@ -61,7 +72,7 @@ namespace RageLib.GTA5.PSOWrappers.Data
 
         protected override byte ReadByteFromStreamRaw()
         {
-            stream.Position = psoFile.DataMappingSection.Entries[CurrentSectionIndex].Offset;
+            stream.Position = currentDataMappingEntry.Offset;
             stream.Position += Position;
 
             var b = (byte)stream.ReadByte();
