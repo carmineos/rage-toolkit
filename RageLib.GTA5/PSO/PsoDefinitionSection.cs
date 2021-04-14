@@ -142,18 +142,17 @@ namespace RageLib.GTA5.PSO
     public class PsoStructureInfo : PsoElementInfo
     {
         public byte Type { get; set; } = 0;
-        public short EntriesCount { get; private set; }
         public byte Unk { get; set; }
+        public short EntriesCount { get; private set; }
         public int StructureLength { get; set; }
         public uint Unk_Ch { get; set; } = 0x00000000;
         public List<PsoStructureEntryInfo> Entries { get; set; } = new List<PsoStructureEntryInfo>();
 
         public override void Read(DataReader reader)
         {
-            uint x = reader.ReadUInt32();
-            this.Type = (byte)((x & 0xFF000000) >> 24);
-            this.EntriesCount = (short)(x & 0xFFFF);
-            this.Unk = (byte)((x & 0x00FF0000) >> 16);
+            this.Type = reader.ReadByte();
+            this.Unk = reader.ReadByte();
+            this.EntriesCount = reader.ReadInt16();
             this.StructureLength = reader.ReadInt32();
             this.Unk_Ch = reader.ReadUInt32();
 
@@ -171,8 +170,9 @@ namespace RageLib.GTA5.PSO
             Type = 0;
             EntriesCount = (short)Entries.Count;
 
-            uint typeAndEntriesCount = (uint)(Type << 24) | (uint)(Unk << 16) | (ushort)EntriesCount;
-            writer.Write(typeAndEntriesCount);
+            writer.Write(Type);
+            writer.Write(Unk);
+            writer.Write(EntriesCount);
             writer.Write(StructureLength);
             writer.Write(Unk_Ch);
 
@@ -324,14 +324,15 @@ namespace RageLib.GTA5.PSO
     public class PsoEnumInfo : PsoElementInfo
     {
         public byte Type { get; private set; } = 1;
-        public int EntriesCount { get; private set; }
+        public byte Unk { get; set; }
+        public short EntriesCount { get; private set; }
         public List<PsoEnumEntryInfo> Entries { get; set; }
 
         public override void Read(DataReader reader)
         {
-            uint x = reader.ReadUInt32();
-            this.Type = (byte)((x & 0xFF000000) >> 24);
-            this.EntriesCount = (int)(x & 0x00FFFFFF);
+            this.Type = reader.ReadByte();
+            this.Unk = reader.ReadByte();
+            this.EntriesCount = reader.ReadInt16();
 
             Entries = new List<PsoEnumEntryInfo>();
             for (int i = 0; i < EntriesCount; i++)
@@ -346,10 +347,11 @@ namespace RageLib.GTA5.PSO
         {
             // update...
             Type = 1;
-            EntriesCount = Entries.Count;
+            EntriesCount = (short)Entries.Count;
 
-            uint typeAndEntriesCount = (uint)(Type << 24) | (uint)EntriesCount;
-            writer.Write(typeAndEntriesCount);
+            writer.Write(Type);
+            writer.Write(Unk);
+            writer.Write(EntriesCount);
 
             foreach (var entry in Entries)
             {
