@@ -70,8 +70,8 @@ namespace RageLib.GTA5.PSOWrappers
                                     var t = structureInfo.Entries[typeIndex];
                                     return new PsoArray129(pso, structureInfo, t, num);
                                 }
-                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
+                        break;
                     }
                 case ParMemberType.STRING:
                     {
@@ -102,8 +102,8 @@ namespace RageLib.GTA5.PSOWrappers
                                 {
                                     return new PsoString8();
                                 }
-                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
+                        break;
                     }
                 case ParMemberType.ENUM:
                     {
@@ -121,8 +121,8 @@ namespace RageLib.GTA5.PSOWrappers
                                     entryValue.TypeInfo = GetEnumInfo(pso, entryInfo.ReferenceKey);
                                     return entryValue;
                                 }
-                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
+                        break;
                     }
                 case ParMemberType.BITSET:
                     {
@@ -160,8 +160,8 @@ namespace RageLib.GTA5.PSOWrappers
                                     entryValue.TypeInfo = GetEnumInfo(pso, reftype.ReferenceKey);
                                     return entryValue;
                                 }
-                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
+                        break;
                     }
                 case ParMemberType.UINT:
                     {
@@ -169,8 +169,8 @@ namespace RageLib.GTA5.PSOWrappers
                         {
                             case 0: return new PsoUInt32();
                             case 1: return new PsoUInt32Hex();
-                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
+                        break;
                     }
                 case ParMemberType.STRUCT:
                     {
@@ -187,8 +187,8 @@ namespace RageLib.GTA5.PSOWrappers
                                 {
                                     return new PsoStructure3(pso, structureInfo, entryInfo);
                                 }
-                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
+                        break;
                     }
                 case ParMemberType.MAP:
                     {
@@ -202,9 +202,8 @@ namespace RageLib.GTA5.PSOWrappers
                                     var reftype2 = structureInfo.Entries[idx1];
                                     return new PsoMap(pso, structureInfo, reftype1, reftype2);
                                 }
-                            default: throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
                         }
-
+                        break;
                     }
                 case ParMemberType.BOOL:
                     {
@@ -282,9 +281,8 @@ namespace RageLib.GTA5.PSOWrappers
                         Debug.Assert(entryInfo.SubType == 0);
                         return new PsoInt64();
                     }
-                default:
-                    throw new Exception($"Unsupported {nameof(ParMemberType)}: {entryInfo.Type}");
             }
+            throw new Exception($"Unsupported {nameof(entryInfo.SubType)}: {entryInfo.SubType} for {nameof(ParMemberType)}: {entryInfo.Type}");
         }
 
         public static PsoStructureInfo GetStructureInfo(PsoFile meta, int structureKey)
