@@ -14,65 +14,65 @@ namespace RageLib.Helpers.Xml
 
         public static void WriteAttributeValue(this XmlWriter writer, byte value)
         {
-            writer.WriteAttributeString("value", value.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, sbyte value)
         {
-            writer.WriteAttributeString("value", value.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, short value)
         {
-            writer.WriteAttributeString("value", value.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, ushort value)
         {
-            writer.WriteAttributeString("value", value.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, int value)
         {
-            writer.WriteAttributeString("value", value.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, uint value)
         {
-            writer.WriteAttributeString("value", value.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, Half value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value);
+            var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value);
             writer.WriteAttributeString("value", s1);
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, float value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value);
+            var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value);
             writer.WriteAttributeString("value", s1);
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, double value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value);
+            var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value);
             writer.WriteAttributeString("value", s1);
         }
 
         public static void WriteAttributesXY(this XmlWriter writer, Vector2 value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
+            var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
+            var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
             writer.WriteAttributeString("x", s1);
             writer.WriteAttributeString("y", s2);
         }
 
         public static void WriteAttributesXYZ(this XmlWriter writer, Vector3 value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
-            var s3 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Z);
+            var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
+            var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
+            var s3 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Z);
             writer.WriteAttributeString("x", s1);
             writer.WriteAttributeString("y", s2);
             writer.WriteAttributeString("z", s3);
@@ -80,10 +80,10 @@ namespace RageLib.Helpers.Xml
 
         public static void WriteAttributesXYZW(this XmlWriter writer, Vector4 value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
-            var s3 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Z);
-            var s4 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.W);
+            var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
+            var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
+            var s3 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Z);
+            var s4 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.W);
             writer.WriteAttributeString("x", s1);
             writer.WriteAttributeString("y", s2);
             writer.WriteAttributeString("z", s3);
@@ -92,10 +92,10 @@ namespace RageLib.Helpers.Xml
 
         public static void WriteAttributesXYZW(this XmlWriter writer, Quaternion value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
-            var s3 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Z);
-            var s4 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.W);
+            var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
+            var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
+            var s3 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Z);
+            var s4 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.W);
             writer.WriteAttributeString("x", s1);
             writer.WriteAttributeString("y", s2);
             writer.WriteAttributeString("z", s3);
