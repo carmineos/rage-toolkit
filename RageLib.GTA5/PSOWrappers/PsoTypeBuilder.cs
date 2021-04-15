@@ -35,40 +35,31 @@ namespace RageLib.GTA5.PSOWrappers
             {
                 case ParMemberType.ARRAY:
                     {
+                        var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
+                        var count = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
+                        var type = structureInfo.Entries[typeIndex];
+
                         switch ((ParMemberArraySubtype)entryInfo.SubType)
                         {
                             case ParMemberArraySubtype.ATARRAY:
                                 {
-                                    var t = structureInfo.Entries[entryInfo.ReferenceKey & 0x0000FFFF];
-                                    return new PsoArray0(pso, structureInfo, t);
+                                    return new PsoArray0(pso, structureInfo, type);
                                 }
                             case ParMemberArraySubtype.ATFIXEDARRAY:
                                 {
-                                    var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
-                                    var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
-                                    var t = structureInfo.Entries[typeIndex];
-                                    return new PsoArray1(pso, structureInfo, t, num);
+                                    return new PsoArray1(pso, structureInfo, type, count);
                                 }
                             case ParMemberArraySubtype.ATRANGEARRAY:
                                 {
-                                    var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
-                                    var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
-                                    var t = structureInfo.Entries[typeIndex];
-                                    return new PsoArray2(pso, structureInfo, t, num);
+                                    return new PsoArray2(pso, structureInfo, type, count);
                                 }
                             case ParMemberArraySubtype.MEMBER:
                                 {
-                                    var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
-                                    var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
-                                    var t = structureInfo.Entries[typeIndex];
-                                    return new PsoArray4(pso, structureInfo, t, num);
+                                    return new PsoArray4(pso, structureInfo, type, count);
                                 }
                             case (ParMemberArraySubtype)0x81:
                                 {
-                                    var typeIndex = entryInfo.ReferenceKey & 0x0000FFFF;
-                                    var num = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
-                                    var t = structureInfo.Entries[typeIndex];
-                                    return new PsoArray129(pso, structureInfo, t, num);
+                                    return new PsoArray129(pso, structureInfo, type, count);
                                 }
                         }
                         break;
