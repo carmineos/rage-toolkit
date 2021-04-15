@@ -98,19 +98,19 @@ namespace RageLib.GTA5.PSOWrappers
             switch (value)
             {
                 case PsoArray0:
-                    WriteArrayContent(writer, ((PsoArray0)value).Entries);
+                    WriteStructuredArray(writer, ((PsoArray0)value).Entries);
                     break;
-                case PsoArray1:
-                    WriteArrayContent(writer, ((PsoArray1)value).Entries);
+                case PsoArray1 array1:
+                    WriteArray(writer, array1.Entries, array1.entryInfo);
                     break;
-                case PsoArray2:
-                    WriteArrayContent(writer, ((PsoArray2)value).Entries);
+                case PsoArray2 array2:
+                    WriteArray(writer, array2.Entries, array2.entryInfo);
                     break;
-                case PsoArray4:
-                    WriteArrayContent(writer, ((PsoArray4)value).Entries);
+                case PsoArray4 array4:
+                    WriteArray(writer, array4.Entries, array4.entryInfo);
                     break;
-                case PsoArray129:
-                    WriteArrayContent(writer, ((PsoArray129)value).Entries);
+                case PsoArray129 array129:
+                    WriteArray(writer, array129.Entries, array129.entryInfo);
                     break;
                 case PsoUInt32:
                     writer.WriteAttributeValue(((PsoUInt32)value).Value);
@@ -211,10 +211,162 @@ namespace RageLib.GTA5.PSOWrappers
             }
         }
 
+        private void WriteArray(XmlWriter writer, List<IPsoValue> Entries, PsoStructureEntryInfo entryInfo)
+        {
+            switch (entryInfo.Type)
+            {
+                case ParMemberType.UCHAR:
+                case ParMemberType.CHAR:
+                    WriteInlineArrayContentChar(writer, Entries);
+                    break;
+                case ParMemberType.USHORT:
+                case ParMemberType.SHORT:
+                    WriteInlineArrayContentShort(writer, Entries);
+                    break;
+                case ParMemberType.UINT:
+                case ParMemberType.INT:
+                    WriteInlineArrayContentInt(writer, Entries);
+                    break;
+                case ParMemberType.FLOAT:
+                    WriteInlineArrayContentFloat(writer, Entries);
+                    break;
+                case ParMemberType.VECTOR2:
+                    WriteInlineArrayContentVector2(writer, Entries);
+                    break;
+                case ParMemberType.VECTOR3:
+                    WriteInlineArrayContentVector3(writer, Entries);
+                    break;
+                default:
+                    WriteStructuredArray(writer, Entries);
+                    break;
+            }
+        }
 
+        // TODO:    Fix broken indentation
+        //          move these methods to XmlWriterExtentions to avoid duplicated code
+        private void WriteInlineArrayContentChar(XmlWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "char_array");
 
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            foreach (var arrayEntry in entries)
+            {
+                if (arrayEntry is PsoSByte)
+                {
+                    var value = ((PsoSByte)arrayEntry).Value;
+                    sb.AppendLine(value.ToString());
+                }
+                else if(arrayEntry is PsoByte)
+                {
+                    var value = ((PsoByte)arrayEntry).Value;
+                    sb.AppendLine(value.ToString());
+                }
+            }
+            writer.WriteString(sb.ToString());
+        }
 
-        private void WriteArrayContent(XmlWriter writer, List<IPsoValue> entries)
+        private void WriteInlineArrayContentShort(XmlWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "short_array");
+
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            foreach (var arrayEntry in entries)
+            {
+                if (arrayEntry is PsoInt16)
+                {
+                    var value = ((PsoInt16)arrayEntry).Value;
+                    sb.AppendLine(value.ToString());
+                }
+                else if (arrayEntry is PsoUInt16)
+                {
+                    var value = ((PsoUInt16)arrayEntry).Value;
+                    sb.AppendLine(value.ToString());
+                }
+            }
+            writer.WriteString(sb.ToString());
+        }
+
+        private void WriteInlineArrayContentInt(XmlWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "int_array");
+
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            foreach (var arrayEntry in entries)
+            {
+                if (arrayEntry is PsoInt32)
+                {
+                    var value = ((PsoInt32)arrayEntry).Value;
+                    sb.AppendLine(value.ToString());
+                }
+                else if (arrayEntry is PsoUInt32)
+                {
+                    var value = ((PsoUInt32)arrayEntry).Value;
+                    sb.AppendLine(value.ToString());
+                }
+            }
+            writer.WriteString(sb.ToString());
+        }
+
+        private void WriteInlineArrayContentFloat(XmlWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "float_array");
+
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            foreach (var arrayEntry in entries)
+            {
+                var value = ((PsoFloat)arrayEntry).Value;
+                var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value);
+                sb.AppendLine(s1);
+            }
+            writer.WriteString(sb.ToString());
+        }
+
+        private void WriteInlineArrayContentVector2(XmlWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "vector2_array");
+
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            foreach (var arrayEntry in entries)
+            {
+                var value = ((PsoVector3)arrayEntry).Value;
+                var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
+                var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
+                sb.Append(s1);
+                sb.Append(' ');
+                sb.Append(s2);
+                sb.AppendLine();
+            }
+            writer.WriteString(sb.ToString());
+        }
+
+        private void WriteInlineArrayContentVector3(XmlWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "vector3_array");
+
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            foreach (var arrayEntry in entries)
+            {
+                var value = ((PsoVector3)arrayEntry).Value;
+                var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
+                var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
+                var s3 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Z);
+                sb.Append(s1);
+                sb.Append(' ');
+                sb.Append(s2); 
+                sb.Append(' ');
+                sb.Append(s3);
+                sb.AppendLine();
+            }
+            writer.WriteString(sb.ToString());
+        }
+
+        private void WriteStructuredArray(XmlWriter writer, List<IPsoValue> entries)
         {
             if (entries is null)
                 return;
