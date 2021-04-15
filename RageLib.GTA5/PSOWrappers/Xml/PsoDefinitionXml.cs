@@ -81,13 +81,13 @@ namespace RageLib.GTA5.PSOWrappers.Xml
         }
 
         [XmlAttribute("Offset")]
-        public int Offset { get; set; }
+        public ushort Offset { get; set; }
 
         [XmlAttribute("Type")]
-        public int Type { get; set; }
+        public byte Type { get; set; }
 
         [XmlAttribute("SubType")]
-        public int SubType { get; set; }
+        public byte SubType { get; set; }
 
         [XmlIgnore]
         public int TypeHash { get; set; }
