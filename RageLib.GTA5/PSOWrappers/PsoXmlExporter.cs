@@ -53,7 +53,7 @@ namespace RageLib.GTA5.PSOWrappers
         {
             var strctureValue = (PsoStructure)value;
 
-            var writer = XmlWriter.Create(xmlFileStream, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8, });
+            var writer = new XmlRageWriter(XmlWriter.Create(xmlFileStream, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8, }));
             writer.WriteStartDocument();
             writer.WriteStartElement(GetNameForHash(strctureValue.entryIndexInfo.NameHash));
             WriteStructureContentXml(writer, strctureValue);
@@ -217,24 +217,24 @@ namespace RageLib.GTA5.PSOWrappers
             {
                 case ParMemberType.UCHAR:
                 case ParMemberType.CHAR:
-                    WriteInlineArrayContentChar(writer, Entries);
+                    WriteInlineArrayContentChar((XmlRageWriter)writer, Entries);
                     break;
                 case ParMemberType.USHORT:
                 case ParMemberType.SHORT:
-                    WriteInlineArrayContentShort(writer, Entries);
+                    WriteInlineArrayContentShort((XmlRageWriter)writer, Entries);
                     break;
                 case ParMemberType.UINT:
                 case ParMemberType.INT:
-                    WriteInlineArrayContentInt(writer, Entries);
+                    WriteInlineArrayContentInt((XmlRageWriter)writer, Entries);
                     break;
                 case ParMemberType.FLOAT:
-                    WriteInlineArrayContentFloat(writer, Entries);
+                    WriteInlineArrayContentFloat((XmlRageWriter)writer, Entries);
                     break;
                 case ParMemberType.VECTOR2:
-                    WriteInlineArrayContentVector2(writer, Entries);
+                    WriteInlineArrayContentVector2((XmlRageWriter)writer, Entries);
                     break;
                 case ParMemberType.VECTOR3:
-                    WriteInlineArrayContentVector3(writer, Entries);
+                    WriteInlineArrayContentVector3((XmlRageWriter)writer, Entries);
                     break;
                 default:
                     WriteStructuredArray(writer, Entries);
@@ -244,126 +244,121 @@ namespace RageLib.GTA5.PSOWrappers
 
         // TODO:    Fix broken indentation
         //          move these methods to XmlWriterExtentions to avoid duplicated code
-        private void WriteInlineArrayContentChar(XmlWriter writer, List<IPsoValue> entries)
+        private void WriteInlineArrayContentChar(XmlRageWriter writer, List<IPsoValue> entries)
         {
             writer.WriteAttributeString("content", "char_array");
 
-            var sb = new StringBuilder();
-            sb.AppendLine();
+            writer.WriteString(Environment.NewLine);
             foreach (var arrayEntry in entries)
             {
+                writer.WriteInnerIndent();
                 if (arrayEntry is PsoSByte)
                 {
                     var value = ((PsoSByte)arrayEntry).Value;
-                    sb.AppendLine(value.ToString());
+                    writer.WriteString(value.ToString());
                 }
                 else if(arrayEntry is PsoByte)
                 {
                     var value = ((PsoByte)arrayEntry).Value;
-                    sb.AppendLine(value.ToString());
+                    writer.WriteString(value.ToString());
                 }
+                writer.WriteString(Environment.NewLine);
             }
-            writer.WriteString(sb.ToString());
+            writer.WriteOuterIndent();
         }
 
-        private void WriteInlineArrayContentShort(XmlWriter writer, List<IPsoValue> entries)
+        private void WriteInlineArrayContentShort(XmlRageWriter writer, List<IPsoValue> entries)
         {
             writer.WriteAttributeString("content", "short_array");
 
-            var sb = new StringBuilder();
-            sb.AppendLine();
+            writer.WriteString(Environment.NewLine);
             foreach (var arrayEntry in entries)
             {
+                writer.WriteInnerIndent();
                 if (arrayEntry is PsoInt16)
                 {
                     var value = ((PsoInt16)arrayEntry).Value;
-                    sb.AppendLine(value.ToString());
+                    writer.WriteString(value.ToString());
                 }
                 else if (arrayEntry is PsoUInt16)
                 {
                     var value = ((PsoUInt16)arrayEntry).Value;
-                    sb.AppendLine(value.ToString());
+                    writer.WriteString(value.ToString());
                 }
+                writer.WriteString(Environment.NewLine);
             }
-            writer.WriteString(sb.ToString());
+            writer.WriteOuterIndent();
         }
 
-        private void WriteInlineArrayContentInt(XmlWriter writer, List<IPsoValue> entries)
+        private void WriteInlineArrayContentInt(XmlRageWriter writer, List<IPsoValue> entries)
         {
             writer.WriteAttributeString("content", "int_array");
 
-            var sb = new StringBuilder();
-            sb.AppendLine();
+            writer.WriteString(Environment.NewLine);
             foreach (var arrayEntry in entries)
             {
+                writer.WriteInnerIndent();
                 if (arrayEntry is PsoInt32)
                 {
                     var value = ((PsoInt32)arrayEntry).Value;
-                    sb.AppendLine(value.ToString());
+                    writer.WriteString(value.ToString());
                 }
                 else if (arrayEntry is PsoUInt32)
                 {
                     var value = ((PsoUInt32)arrayEntry).Value;
-                    sb.AppendLine(value.ToString());
+                    writer.WriteString(value.ToString());
                 }
+                writer.WriteString(Environment.NewLine);
             }
-            writer.WriteString(sb.ToString());
+            writer.WriteOuterIndent();
         }
 
-        private void WriteInlineArrayContentFloat(XmlWriter writer, List<IPsoValue> entries)
+        private void WriteInlineArrayContentFloat(XmlRageWriter writer, List<IPsoValue> entries)
         {
             writer.WriteAttributeString("content", "float_array");
 
-            var sb = new StringBuilder();
-            sb.AppendLine();
+            writer.WriteString(Environment.NewLine);
             foreach (var arrayEntry in entries)
             {
+                writer.WriteInnerIndent();
                 var value = ((PsoFloat)arrayEntry).Value;
-                var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value);
-                sb.AppendLine(s1);
+                writer.WriteString(value.ToString("0.000000", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(Environment.NewLine);
             }
-            writer.WriteString(sb.ToString());
+            writer.WriteOuterIndent();
         }
 
-        private void WriteInlineArrayContentVector2(XmlWriter writer, List<IPsoValue> entries)
+        private void WriteInlineArrayContentVector2(XmlRageWriter writer, List<IPsoValue> entries)
         {
             writer.WriteAttributeString("content", "vector2_array");
 
-            var sb = new StringBuilder();
-            sb.AppendLine();
+            writer.WriteString(Environment.NewLine);
             foreach (var arrayEntry in entries)
             {
-                var value = ((PsoVector3)arrayEntry).Value;
-                var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
-                var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
-                sb.Append(s1);
-                sb.Append(' ');
-                sb.Append(s2);
-                sb.AppendLine();
+                writer.WriteInnerIndent();
+                var value = ((PsoVector2)arrayEntry).Value;
+                writer.WriteString(value.X.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Y.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(Environment.NewLine);
             }
-            writer.WriteString(sb.ToString());
+            writer.WriteOuterIndent();
         }
 
-        private void WriteInlineArrayContentVector3(XmlWriter writer, List<IPsoValue> entries)
+        private void WriteInlineArrayContentVector3(XmlRageWriter writer, List<IPsoValue> entries)
         {
             writer.WriteAttributeString("content", "vector3_array");
 
-            var sb = new StringBuilder();
-            sb.AppendLine();
+            writer.WriteString(Environment.NewLine);
             foreach (var arrayEntry in entries)
             {
+                writer.WriteInnerIndent();
                 var value = ((PsoVector3)arrayEntry).Value;
-                var s1 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.X);
-                var s2 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Y);
-                var s3 = string.Format(NumberFormatInfo.InvariantInfo, "{0:0.000000}", value.Z);
-                sb.Append(s1);
-                sb.Append(' ');
-                sb.Append(s2); 
-                sb.Append(' ');
-                sb.Append(s3);
-                sb.AppendLine();
+                writer.WriteString(value.X.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Y.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Z.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(Environment.NewLine);
             }
-            writer.WriteString(sb.ToString());
+            writer.WriteOuterIndent();
         }
 
         private void WriteStructuredArray(XmlWriter writer, List<IPsoValue> entries)
