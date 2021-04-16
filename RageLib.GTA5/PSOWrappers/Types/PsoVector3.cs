@@ -29,6 +29,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
     public class PsoVector3 : IPsoValue
     {
         public Vector3 Value { get; set; }
+        public float Pad_Ch { get; set; }
 
         public PsoVector3()
         { }
@@ -36,6 +37,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
         public void Read(PsoDataReader reader)
         {
             Value = reader.ReadVector3();
+            Pad_Ch = reader.ReadSingle();
         }
 
         public void Write(DataWriter writer)
