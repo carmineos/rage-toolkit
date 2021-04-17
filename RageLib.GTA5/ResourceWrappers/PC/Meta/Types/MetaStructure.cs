@@ -162,6 +162,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
                         }
                     case StructureEntryDataType.ArrayOfBytes:
                         {
+                            // TODO: bytes array should be casted to specific type array described by previous entryInfo 0x100
                             var entryValue = new MetaArrayOfBytes(entry);
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
