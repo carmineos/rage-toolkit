@@ -23,10 +23,12 @@
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using RageLib.Hash;
+using RageLib.Helpers.Xml;
 using RageLib.Resources.Common;
 using RageLib.Resources.GTA5.PC.Meta;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Xml;
@@ -287,68 +289,68 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         private MetaByte_A ReadSignedByte(XmlNode node)
         {
             var byteValue = new MetaByte_A();
-            byteValue.Value = sbyte.Parse(node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+            byteValue.Value = sbyte.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return byteValue;
         }
 
         private MetaByte_B ReadUnsignedByte(XmlNode node)
         {
             var byteValue = new MetaByte_B();
-            byteValue.Value = byte.Parse(node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+            byteValue.Value = byte.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return byteValue;
         }
 
         private MetaInt16_A ReadSignedShort(XmlNode node)
         {
             var shortValue = new MetaInt16_A();
-            shortValue.Value = short.Parse(node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+            shortValue.Value = short.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return shortValue;
         }
 
         private MetaInt16_B ReadUnsignedShort(XmlNode node)
         {
             var shortValue = new MetaInt16_B();
-            shortValue.Value = ushort.Parse(node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+            shortValue.Value = ushort.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return shortValue;
         }
 
         private MetaInt32_A ReadSignedInt(XmlNode node)
         {
             var intValue = new MetaInt32_A();
-            intValue.Value = int.Parse(node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+            intValue.Value = int.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return intValue;
         }
 
         private MetaInt32_B ReadUnsignedInt(XmlNode node)
         {
             var intValue = new MetaInt32_B();
-            intValue.Value = uint.Parse(node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+            intValue.Value = uint.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return intValue;
         }
 
         private MetaFloat ReadFloat(XmlNode node)
         {
             var floatValue = new MetaFloat();
-            floatValue.Value = float.Parse(node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+            floatValue.Value = float.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return floatValue;
         }
 
         private MetaFloat4_XYZ ReadFloatXYZ(XmlNode node)
         {
             var floatVectorValue = new MetaFloat4_XYZ();
-            floatVectorValue.X = float.Parse(node.Attributes["x"].Value, CultureInfo.InvariantCulture);
-            floatVectorValue.Y = float.Parse(node.Attributes["y"].Value, CultureInfo.InvariantCulture);
-            floatVectorValue.Z = float.Parse(node.Attributes["z"].Value, CultureInfo.InvariantCulture);
+            floatVectorValue.X = float.Parse(node.Attributes["x"].Value, NumberFormatInfo.InvariantInfo);
+            floatVectorValue.Y = float.Parse(node.Attributes["y"].Value, NumberFormatInfo.InvariantInfo);
+            floatVectorValue.Z = float.Parse(node.Attributes["z"].Value, NumberFormatInfo.InvariantInfo);
             return floatVectorValue;
         }
 
         private MetaFloat4_XYZW ReadFloatXYZW(XmlNode node)
         {
             var floatVectorValue = new MetaFloat4_XYZW();
-            floatVectorValue.X = float.Parse(node.Attributes["x"].Value, CultureInfo.InvariantCulture);
-            floatVectorValue.Y = float.Parse(node.Attributes["y"].Value, CultureInfo.InvariantCulture);
-            floatVectorValue.Z = float.Parse(node.Attributes["z"].Value, CultureInfo.InvariantCulture);
-            floatVectorValue.W = float.Parse(node.Attributes["w"].Value, CultureInfo.InvariantCulture);
+            floatVectorValue.X = float.Parse(node.Attributes["x"].Value, NumberFormatInfo.InvariantInfo);
+            floatVectorValue.Y = float.Parse(node.Attributes["y"].Value, NumberFormatInfo.InvariantInfo);
+            floatVectorValue.Z = float.Parse(node.Attributes["z"].Value, NumberFormatInfo.InvariantInfo);
+            floatVectorValue.W = float.Parse(node.Attributes["w"].Value, NumberFormatInfo.InvariantInfo);
             return floatVectorValue;
         }
         
@@ -455,7 +457,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 var keyStrings = node.InnerText.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var x in keyStrings)
                 {
-                    var enumIdx = int.Parse(x.AsSpan(11), NumberStyles.Integer, CultureInfo.InvariantCulture);
+                    var enumIdx = int.Parse(x.AsSpan(11), NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
                     intFlags.Value += (uint)(1 << enumIdx);
                 }
             }
@@ -532,33 +534,36 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         private MetaArray ReadByteArray(XmlNode node)
         {
             var arrayValue = new MetaArray();
-            var v = node.InnerText.Trim();
-            if (!string.IsNullOrEmpty(v))
+            var innerText = node.InnerText;
+
+            if (string.IsNullOrEmpty(innerText))
+                return arrayValue;
+
+            arrayValue.Entries = new List<IMetaValue>();
+            var items = StringParseHelpers.ParseItemsAsInt8(innerText);
+            
+            foreach (var item in items)
             {
-                arrayValue.Entries = new List<IMetaValue>();
-                // TODO: Parse using Span
-                string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var kkk in k)
-                {
-                    arrayValue.Entries.Add(new MetaByte_B(byte.Parse(kkk, CultureInfo.InvariantCulture)));
-                }
+                arrayValue.Entries.Add(new MetaByte_B(item));
             }
+
             return arrayValue;
         }
 
         private MetaArray ReadShortArray(XmlNode node)
         {
             var arrayValue = new MetaArray();
-            var v = node.InnerText.Trim();
-            if (!string.IsNullOrEmpty(v))
+            var innerText = node.InnerText;
+
+            if (string.IsNullOrEmpty(innerText))
+                return arrayValue;
+
+            arrayValue.Entries = new List<IMetaValue>();
+            var items = StringParseHelpers.ParseItemsAsUInt16(innerText);
+
+            foreach (var item in items)
             {
-                arrayValue.Entries = new List<Types.IMetaValue>();
-                // TODO: Parse using Span
-                string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var kkk in k)
-                {
-                    arrayValue.Entries.Add(new MetaInt16_B(ushort.Parse(kkk, CultureInfo.InvariantCulture)));
-                }
+                arrayValue.Entries.Add(new MetaInt16_B(item));
             }
 
             return arrayValue;
@@ -567,16 +572,17 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         private MetaArray ReadIntArray(XmlNode node)
         {
             var arrayValue = new MetaArray();
-            var v = node.InnerText.Trim();
-            if (!string.IsNullOrEmpty(v))
+            var innerText = node.InnerText;
+
+            if (string.IsNullOrEmpty(innerText))
+                return arrayValue;
+
+            arrayValue.Entries = new List<IMetaValue>();
+            var items = StringParseHelpers.ParseItemsAsUInt32(innerText);
+
+            foreach (var item in items)
             {
-                arrayValue.Entries = new List<Types.IMetaValue>();
-                // TODO: Parse using Span
-                string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var kkk in k)
-                {
-                    arrayValue.Entries.Add(new MetaInt32_B(uint.Parse(kkk, CultureInfo.InvariantCulture)));
-                }
+                arrayValue.Entries.Add(new MetaInt32_B(item));
             }
 
             return arrayValue;
@@ -585,16 +591,17 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         private MetaArray ReadFloatArray(XmlNode node)
         {
             var arrayValue = new MetaArray();
-            var v = node.InnerText.Trim();
-            if (!string.IsNullOrEmpty(v))
+            var innerText = node.InnerText;
+
+            if (string.IsNullOrEmpty(innerText))
+                return arrayValue;
+
+            arrayValue.Entries = new List<IMetaValue>();
+            var items = StringParseHelpers.ParseItemsAsFloat(innerText);
+
+            foreach (var item in items)
             {
-                arrayValue.Entries = new List<Types.IMetaValue>();
-                // TODO: Parse using Span
-                string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var kkk in k)
-                {
-                    arrayValue.Entries.Add(new MetaFloat(float.Parse(kkk, CultureInfo.InvariantCulture)));
-                }
+                arrayValue.Entries.Add(new MetaFloat(item));
             }
 
             return arrayValue;
@@ -603,18 +610,18 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         private MetaArray ReadFloatVectorArray(XmlNode node)
         {
             var arrayValue = new MetaArray();
-            var v = node.InnerText.Trim();
-            if (!string.IsNullOrEmpty(v))
-            {
-                arrayValue.Entries = new List<Types.IMetaValue>();
-                // TODO: Parse using Span
-                string[] k = v.Split(new char[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var innerText = node.InnerText;
 
-                int iii = 0;
-                while (iii < k.Length)
-                {
-                    arrayValue.Entries.Add(new MetaFloat4_XYZ(float.Parse(k[iii++], CultureInfo.InvariantCulture), float.Parse(k[iii++], CultureInfo.InvariantCulture), float.Parse(k[iii++], CultureInfo.InvariantCulture)));
-                }
+            if (string.IsNullOrEmpty(innerText))
+                return arrayValue;
+
+            arrayValue.Entries = new List<IMetaValue>();
+            var items = StringParseHelpers.ParseItemsAsFloat(innerText);
+            Debug.Assert(items.Count % 3 == 0);
+
+            for (int i = 0; i < items.Count; i+=3)
+            {
+                arrayValue.Entries.Add(new MetaFloat4_XYZ(items[i], items[i + 1], items[i + 2]));
             }
 
             return arrayValue;
@@ -625,14 +632,12 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             var arrayValue = new MetaArray();
             if (node.ChildNodes.Count > 0)
             {
-                arrayValue.Entries = new List<Types.IMetaValue>();
+                arrayValue.Entries = new List<IMetaValue>();
                 foreach (XmlNode kkk in node.ChildNodes)
                 {
                     var p = kkk.InnerText.Trim();
                     if (!string.IsNullOrEmpty(p))
                     {
-
-
                         arrayValue.Entries.Add(new MetaInt32_Hash(GetHashForName(p)));
                     }
                     else
@@ -655,7 +660,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         {
             if (hashName.StartsWith("enum_hash_", StringComparison.OrdinalIgnoreCase))
             {
-                int intAgain = int.Parse(hashName.AsSpan(10), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+                int intAgain = int.Parse(hashName.AsSpan(10), NumberStyles.HexNumber, NumberFormatInfo.InvariantInfo);
                 return intAgain;
             }
             else
@@ -668,7 +673,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         {
             if (hashName.StartsWith("flag_hash_", StringComparison.OrdinalIgnoreCase))
             {
-                int intAgain = int.Parse(hashName.AsSpan(10), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+                int intAgain = int.Parse(hashName.AsSpan(10), NumberStyles.HexNumber, NumberFormatInfo.InvariantInfo);
                 return intAgain;
             }
             else
@@ -679,21 +684,14 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public byte[] ByteFromString(string str)
         {
-            // TODO: Parse using Span
-            string[] ss = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            byte[] res = new byte[ss.Length];
-            for (int i = 0; i < ss.Length; i++)
-            {
-                res[i] = byte.Parse(ss[i], CultureInfo.InvariantCulture);
-            }
-            return res;
+            return StringParseHelpers.ParseItemsAsInt8(str).ToArray();
         }
 
         public int GetHashForName(string hashName)
         {
             if (hashName.StartsWith("hash_", StringComparison.OrdinalIgnoreCase))
             {
-                int intAgain = int.Parse(hashName.AsSpan(5), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+                int intAgain = int.Parse(hashName.AsSpan(5), NumberStyles.HexNumber, NumberFormatInfo.InvariantInfo);
                 return intAgain;
             }
             else
