@@ -41,26 +41,11 @@ namespace RageLib.GTA5.PSOWrappers
 
                         switch ((ParMemberArraySubtype)entryInfo.SubType)
                         {
-                            case ParMemberArraySubtype.ATARRAY:
-                                {
-                                    return new PsoArray0(pso, structureInfo, type);
-                                }
-                            case ParMemberArraySubtype.ATFIXEDARRAY:
-                                {
-                                    return new PsoArray1(pso, structureInfo, type, count);
-                                }
-                            case ParMemberArraySubtype.ATRANGEARRAY:
-                                {
-                                    return new PsoArray2(pso, structureInfo, type, count);
-                                }
-                            case ParMemberArraySubtype.MEMBER:
-                                {
-                                    return new PsoArray4(pso, structureInfo, type, count);
-                                }
-                            case (ParMemberArraySubtype)0x81:
-                                {
-                                    return new PsoArray129(pso, structureInfo, type, count);
-                                }
+                            case ParMemberArraySubtype.ATARRAY: return new PsoArray0(pso, structureInfo, type);
+                            case ParMemberArraySubtype.ATFIXEDARRAY: return new PsoArray1(pso, structureInfo, type, count);
+                            case ParMemberArraySubtype.ATRANGEARRAY: return new PsoArray2(pso, structureInfo, type, count);
+                            case ParMemberArraySubtype.MEMBER: return new PsoArray4(pso, structureInfo, type, count);
+                            case (ParMemberArraySubtype)0x81: return new PsoArray129(pso, structureInfo, type, count);
                         }
                         break;
                     }
@@ -73,84 +58,37 @@ namespace RageLib.GTA5.PSOWrappers
                                     var len = (entryInfo.ReferenceKey >> 16) & 0x0000FFFF;
                                     return new PsoString0(len);
                                 }
-                            case ParMemberStringSubtype.POINTER:
-                                {
-                                    return new PsoString1();
-                                }
-                            case ParMemberStringSubtype.CONST_STRING:
-                                {
-                                    return new PsoString2();
-                                }
-                            case ParMemberStringSubtype.ATSTRING:
-                                {
-                                    return new PsoString3();
-                                }
-                            case ParMemberStringSubtype.ATNONFINALHASHSTRING:
-                                {
-                                    return new PsoString7();
-                                }
-                            case ParMemberStringSubtype.ATFINALHASHSTRING:
-                                {
-                                    return new PsoString8();
-                                }
+                            case ParMemberStringSubtype.POINTER: return new PsoString1();
+                            case ParMemberStringSubtype.CONST_STRING: return new PsoString2();
+                            case ParMemberStringSubtype.ATSTRING: return new PsoString3();
+                            case ParMemberStringSubtype.ATNONFINALHASHSTRING: return new PsoString7();
+                            case ParMemberStringSubtype.ATFINALHASHSTRING: return new PsoString8();
                         }
                         break;
                     }
                 case ParMemberType.ENUM:
                     {
+                        var enumInfo = GetEnumInfo(pso, entryInfo.ReferenceKey);
+
                         switch ((ParMemberEnumSubtype)entryInfo.SubType)
                         {
-                            case ParMemberEnumSubtype._32BIT:
-                                {
-                                    var entryValue = new PsoEnumInt();
-                                    entryValue.TypeInfo = GetEnumInfo(pso, entryInfo.ReferenceKey);
-                                    return entryValue;
-                                }
-                            case ParMemberEnumSubtype._8BIT:
-                                {
-                                    var entryValue = new PsoEnumByte();
-                                    entryValue.TypeInfo = GetEnumInfo(pso, entryInfo.ReferenceKey);
-                                    return entryValue;
-                                }
+                            case ParMemberEnumSubtype._32BIT: return new PsoEnumInt32(enumInfo);
+                            case ParMemberEnumSubtype._16BIT: return new PsoEnumInt16(enumInfo);
+                            case ParMemberEnumSubtype._8BIT: return new PsoEnumInt8(enumInfo);
                         }
                         break;
                     }
                 case ParMemberType.BITSET:
                     {
+                        var sidx = entryInfo.ReferenceKey & 0x0000FFFF;
+                        var reftype = structureInfo.Entries[sidx];
+                        var enumInfo = GetEnumInfo(pso, reftype.ReferenceKey);
+
                         switch ((ParMemberBitsetSubtype)entryInfo.SubType)
                         {
-                            case ParMemberBitsetSubtype._32BIT:
-                                {
-                                    var entryValue = new PsoFlagsInt();
-                                    var sidx = entryInfo.ReferenceKey & 0x0000FFFF;
-
-                                    if (sidx != 0xfff)
-                                    {
-                                        var reftype = structureInfo.Entries[sidx];
-                                        entryValue.TypeInfo = GetEnumInfo(pso, reftype.ReferenceKey);
-                                    }
-
-
-                                    return entryValue;
-                                }
-                            case ParMemberBitsetSubtype._16BIT:
-                                {
-                                    var entryValue = new PsoFlagsShort();
-                                    var sidx = entryInfo.ReferenceKey & 0x0000FFFF;
-
-                                    var reftype = structureInfo.Entries[sidx];
-                                    entryValue.TypeInfo = GetEnumInfo(pso, reftype.ReferenceKey);
-
-                                    return entryValue;
-                                }
-                            case ParMemberBitsetSubtype._8BIT:
-                                {
-                                    var entryValue = new PsoFlagsByte();
-                                    var sidx = entryInfo.ReferenceKey & 0x0000FFFF;
-                                    var reftype = structureInfo.Entries[sidx];
-                                    entryValue.TypeInfo = GetEnumInfo(pso, reftype.ReferenceKey);
-                                    return entryValue;
-                                }
+                            case ParMemberBitsetSubtype._32BIT: return new PsoFlagsInt32(enumInfo);
+                            case ParMemberBitsetSubtype._16BIT: return new PsoFlagsInt16(enumInfo);
+                            case ParMemberBitsetSubtype._8BIT: return new PsoFlagsInt8(enumInfo);
                         }
                         break;
                     }
@@ -256,7 +194,6 @@ namespace RageLib.GTA5.PSOWrappers
                         Debug.Assert(entryInfo.SubType == 0);
                         return new PsoVec4V();
                     }
-                
                 case ParMemberType.FLOAT16:
                     {
                         Debug.Assert(entryInfo.SubType == 0);

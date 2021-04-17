@@ -29,9 +29,6 @@ namespace RageLib.GTA5.PSOWrappers.Types
     {
         public sbyte Value { get; set; }
 
-        public PsoSByte()
-        { }
-
         public void Read(PsoDataReader reader)
         {
             Value = (sbyte)reader.ReadByte();

@@ -30,9 +30,6 @@ namespace RageLib.GTA5.PSOWrappers.Types
     {
         public Half Value { get; set; }
 
-        public PsoFloat16()
-        { }
-
         public void Read(PsoDataReader reader)
         {
             Value = reader.ReadHalf();

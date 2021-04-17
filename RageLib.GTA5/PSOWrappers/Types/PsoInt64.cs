@@ -29,9 +29,6 @@ namespace RageLib.GTA5.PSOWrappers.Types
     {
         public long Value { get; set; }
 
-        public PsoInt64()
-        { }
-
         public void Read(PsoDataReader reader)
         {
             Value = reader.ReadInt64();

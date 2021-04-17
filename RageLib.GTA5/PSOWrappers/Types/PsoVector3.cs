@@ -31,9 +31,6 @@ namespace RageLib.GTA5.PSOWrappers.Types
         public Vector3 Value { get; set; }
         public float Pad_Ch { get; set; }
 
-        public PsoVector3()
-        { }
-
         public void Read(PsoDataReader reader)
         {
             Value = reader.ReadVector3();
