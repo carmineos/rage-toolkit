@@ -78,18 +78,14 @@ namespace RageLib.GTA5.PSOWrappers
 
         private void WriteStructureContentXml(XmlWriter writer, PsoStructure3 value)
         {
-            if (value.Value != null)
+            if (value.Value is null)
+            {
+                writer.WriteAttributeString("type", "NULL");
+            }
+            else
             {
                 writer.WriteAttributeString("type", GetNameForHash(value.Value.entryIndexInfo.NameHash));
-                foreach (var field in value.Value.Values)
-                {
-                    var fieldNameHash = field.Key;
-                    var fieldValue = field.Value;
-                    var fixedName = GetNameForHash(fieldNameHash);
-                    writer.WriteStartElement(fixedName);
-                    WriteStructureElementContentXml(writer, fieldValue);
-                    writer.WriteEndElement();
-                }
+                WriteStructureContentXml(writer, value.Value);
             }
         }
 
