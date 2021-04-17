@@ -89,6 +89,27 @@ namespace RageLib.Helpers.Xml
             writer.WriteAttributeString("w", value.W.ToString(floatFormat, numberFormatInfo));
         }
 
+        public static void WriteAttributesXY(this XmlWriter writer, float x, float y)
+        {
+            writer.WriteAttributeString("x", x.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("y", y.ToString(floatFormat, numberFormatInfo));
+        }
+
+        public static void WriteAttributesXYZ(this XmlWriter writer, float x, float y, float z)
+        {
+            writer.WriteAttributeString("x", x.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("y", y.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("z", z.ToString(floatFormat, numberFormatInfo));
+        }
+
+        public static void WriteAttributesXYZW(this XmlWriter writer, float x, float y, float z, float w)
+        {
+            writer.WriteAttributeString("x", x.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("y", y.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("z", z.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("w", w.ToString(floatFormat, numberFormatInfo));
+        }
+
         public static void WriteAttributeValueAsHex(this XmlWriter writer, uint value)
         {
             writer.WriteAttributeString("value", $"0x{value:X8}");
