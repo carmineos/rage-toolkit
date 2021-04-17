@@ -29,9 +29,6 @@ namespace RageLib.GTA5.PSOWrappers.Types
     {
         public ushort Value { get; set; }
 
-        public PsoUInt16()
-        { }
-
         public void Read(PsoDataReader reader)
         {
             Value = reader.ReadUInt16();

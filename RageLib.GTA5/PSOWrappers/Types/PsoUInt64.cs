@@ -29,9 +29,6 @@ namespace RageLib.GTA5.PSOWrappers.Types
     {
         public ulong Value { get; set; }
 
-        public PsoUInt64()
-        { }
-
         public void Read(PsoDataReader reader)
         {
             Value = reader.ReadUInt64();

@@ -26,28 +26,20 @@ using RageLib.GTA5.PSOWrappers.Data;
 
 namespace RageLib.GTA5.PSOWrappers.Types
 {
-    public class PsoEnumInt : IPsoValue
+    public class PsoEnumInt8 : IPsoValue
     {
-        public PsoEnumInfo TypeInfo { get; set; }
-        public int Value { get; set; }
+        public readonly PsoEnumInfo TypeInfo;
 
-        public PsoEnumInt()
-        { }
+        public byte Value { get; set; }
 
-        public PsoEnumInt(int value)
-        {
-            this.Value = value;
-        }
-
-        public PsoEnumInt(PsoEnumInfo typeInfo, int value)
+        public PsoEnumInt8(PsoEnumInfo typeInfo)
         {
             this.TypeInfo = typeInfo;
-            this.Value = value;
         }
 
         public void Read(PsoDataReader reader)
         {
-            Value = reader.ReadInt32();
+            Value = reader.ReadByte();
         }
 
         public void Write(DataWriter writer)

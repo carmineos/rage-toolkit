@@ -132,20 +132,23 @@ namespace RageLib.GTA5.PSOWrappers
                 case PsoInt32:
                     writer.WriteAttributeValue(((PsoInt32)value).Value);
                     break;
-                case PsoEnumByte:
-                    WriteEnumContent(writer, (PsoEnumByte)value);
+                case PsoEnumInt8:
+                    WriteEnumContent(writer, (PsoEnumInt8)value);
                     break;
-                case PsoEnumInt:
-                    WriteEnumContent(writer, (PsoEnumInt)value);
+                case PsoEnumInt16:
+                    WriteEnumContent(writer, (PsoEnumInt16)value);
                     break;
-                case PsoFlagsByte:
-                    WriteFlagsContent(writer, (PsoFlagsByte)value);
+                case PsoEnumInt32:
+                    WriteEnumContent(writer, (PsoEnumInt32)value);
                     break;
-                case PsoFlagsShort:
-                    WriteFlagsContent(writer, (PsoFlagsShort)value);
+                case PsoFlagsInt8:
+                    WriteFlagsContent(writer, (PsoFlagsInt8)value);
                     break;
-                case PsoFlagsInt:
-                    WriteFlagsContent(writer, (PsoFlagsInt)value);
+                case PsoFlagsInt16:
+                    WriteFlagsContent(writer, (PsoFlagsInt16)value);
+                    break;
+                case PsoFlagsInt32:
+                    WriteFlagsContent(writer, (PsoFlagsInt32)value);
                     break;
                 case PsoFloat:
                     writer.WriteAttributeValue(((PsoFloat)value).Value);
@@ -383,7 +386,7 @@ namespace RageLib.GTA5.PSOWrappers
             }
         }
         
-        private void WriteEnumContent(XmlWriter writer, PsoEnumByte value)
+        private void WriteEnumContent(XmlWriter writer, PsoEnumInt8 value)
         {
             var matchingEnumEntry = (PsoEnumEntryInfo)null;
             foreach (var enumEntry in value.TypeInfo.Entries)
@@ -399,7 +402,7 @@ namespace RageLib.GTA5.PSOWrappers
             }
         }
 
-        private void WriteEnumContent(XmlWriter writer, PsoEnumInt value)
+        private void WriteEnumContent(XmlWriter writer, PsoEnumInt16 value)
         {
             var matchingEnumEntry = (PsoEnumEntryInfo)null;
             foreach (var enumEntry in value.TypeInfo.Entries)
@@ -415,7 +418,23 @@ namespace RageLib.GTA5.PSOWrappers
             }
         }
 
-        private void WriteFlagsContent(XmlWriter writer, PsoFlagsByte value)
+        private void WriteEnumContent(XmlWriter writer, PsoEnumInt32 value)
+        {
+            var matchingEnumEntry = (PsoEnumEntryInfo)null;
+            foreach (var enumEntry in value.TypeInfo.Entries)
+            {
+                if (enumEntry.EntryKey == value.Value)
+                    matchingEnumEntry = enumEntry;
+            }
+
+            if (matchingEnumEntry != null)
+            {
+                var matchingEntryName = GetNameForHash(matchingEnumEntry.EntryNameHash);
+                writer.WriteString(matchingEntryName);
+            }
+        }
+
+        private void WriteFlagsContent(XmlWriter writer, PsoFlagsInt8 value)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < 8; i++)
@@ -439,7 +458,7 @@ namespace RageLib.GTA5.PSOWrappers
             writer.WriteString(flagsString);
         }
 
-        private void WriteFlagsContent(XmlWriter writer, PsoFlagsShort value)
+        private void WriteFlagsContent(XmlWriter writer, PsoFlagsInt16 value)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < 16; i++)
@@ -463,7 +482,7 @@ namespace RageLib.GTA5.PSOWrappers
             writer.WriteString(flagsString);
         }
 
-        private void WriteFlagsContent(XmlWriter writer, PsoFlagsInt value)
+        private void WriteFlagsContent(XmlWriter writer, PsoFlagsInt32 value)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < 32; i++)
