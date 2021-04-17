@@ -53,7 +53,7 @@ namespace RageLib.GTA5.PSOWrappers
         {
             var strctureValue = (PsoStructure)value;
 
-            var writer = new XmlRageWriter(XmlWriter.Create(xmlFileStream, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8, }));
+            var writer = new XmlRageWriter(XmlWriter.Create(xmlFileStream, new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), }));
             writer.WriteStartDocument();
             writer.WriteStartElement(GetNameForHash(strctureValue.entryIndexInfo.NameHash));
             WriteStructureContentXml(writer, strctureValue);
