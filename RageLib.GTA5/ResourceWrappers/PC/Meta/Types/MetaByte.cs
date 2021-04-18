@@ -21,19 +21,17 @@
 */
 
 using RageLib.Data;
-using RageLib.Resources.GTA5.PC.Meta;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaByte_Enum : IMetaValue
+    public class MetaByte : IMetaValue
     {
-        public EnumInfo info;
         public byte Value { get; set; }
 
-        public MetaByte_Enum()
+        public MetaByte()
         { }
 
-        public MetaByte_Enum(byte value)
+        public MetaByte(byte value)
         {
             this.Value = value;
         }

@@ -21,18 +21,24 @@
 */
 
 using RageLib.Data;
-using RageLib.Resources.GTA5.PC.Meta;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaInt32_Enum2 : IMetaValue
+    public class MetaStringHash : IMetaValue
     {
-        public EnumInfo info;
-        public uint Value { get; set; }
+        public int Value { get; set; }
+
+        public MetaStringHash()
+        { }
+
+        public MetaStringHash(int value)
+        {
+            this.Value = value;
+        }
 
         public void Read(DataReader reader)
         {
-            this.Value = reader.ReadUInt32();
+            this.Value = reader.ReadInt32();
         }
 
         public void Write(DataWriter writer)

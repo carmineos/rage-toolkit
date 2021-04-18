@@ -25,22 +25,22 @@ using RageLib.Resources.GTA5.PC.Meta;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaInt32_Enum1 : IMetaValue
+    public class MetaEnumInt16 : IMetaValue
     {
         public EnumInfo info;
-        public int Value { get; set; }
+        public short Value { get; set; }
 
-        public MetaInt32_Enum1()
+        public MetaEnumInt16()
         { }
 
-        public MetaInt32_Enum1(int value)
+        public MetaEnumInt16(short value)
         {
             this.Value = value;
         }
 
         public void Read(DataReader reader)
         {
-            this.Value = reader.ReadInt32();
+            this.Value = reader.ReadInt16();
         }
 
         public void Write(DataWriter writer)

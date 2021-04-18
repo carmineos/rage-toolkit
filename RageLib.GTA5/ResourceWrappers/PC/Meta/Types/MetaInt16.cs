@@ -21,65 +21,29 @@
 */
 
 using RageLib.Data;
-using RageLib.Resources.GTA5.PC.Meta;
-using System;
-using System.Text;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaArrayOfChars : IMetaValue
+    public class MetaInt16 : IMetaValue
     {
-        public readonly StructureEntryInfo info;
+        public short Value { get; set; }
 
-        public string Value { get; set; }
+        public MetaInt16()
+        { }
 
-        public MetaArrayOfChars(StructureEntryInfo info)
+        public MetaInt16(short value)
         {
-            this.info = info;
-        }
-
-        public MetaArrayOfChars(StructureEntryInfo inf, string value)
-        {
-            this.info = inf;
             this.Value = value;
         }
 
         public void Read(DataReader reader)
         {
-            var valueBuilder = new StringBuilder();
-            var valueValid = true;
-            for (int i = 0; i < info.ReferenceKey; i++)
-            {
-                char c = (char)reader.ReadByte();
-                if (c == 0)
-                {
-                    valueValid = false;
-                }
-                if (valueValid)
-                {
-                    valueBuilder.Append((char)c);
-                }
-                else
-                {
-                    if (c != 0)
-                    {
-                        throw new Exception("c should be 0");
-                    }
-                }
-            }
-            this.Value = valueBuilder.ToString();
+            this.Value = reader.ReadInt16();
         }
 
         public void Write(DataWriter writer)
         {
-            for (int i = 0; i < Value.Length; i++)
-            {
-                writer.Write((byte)Value[i]);
-            }
-            for (int i = Value.Length; i < info.ReferenceKey; i++)
-            {
-                writer.Write((byte)0);
-            }
+            writer.Write(this.Value);
         }
     }
 }

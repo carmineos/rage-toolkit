@@ -77,33 +77,33 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             {
                 AssertArray((MetaArray)expectedValue, (MetaArray)actualValue);
             }
-            else if (expectedValue is MetaArrayOfBytes)
+            else if (expectedValue is MetaArrayLocal)
             {
-                AssertArrayOfBytes((MetaArrayOfBytes)expectedValue, (MetaArrayOfBytes)actualValue);
+                AssertArrayOfBytes((MetaArrayLocal)expectedValue, (MetaArrayLocal)actualValue);
             }
-            else if (expectedValue is MetaArrayOfChars)
+            else if (expectedValue is MetaString)
             {
-                AssertArrayOfChars((MetaArrayOfChars)expectedValue, (MetaArrayOfChars)actualValue);
+                AssertArrayOfChars((MetaString)expectedValue, (MetaString)actualValue);
             }
-            else if (expectedValue is MetaBoolean)
+            else if (expectedValue is MetaBool)
             {
-                AssertBoolean((MetaBoolean)expectedValue, (MetaBoolean)actualValue);
+                AssertBoolean((MetaBool)expectedValue, (MetaBool)actualValue);
             }
-            else if (expectedValue is MetaByte_A)
+            else if (expectedValue is MetaSByte)
             {
-                AssertByte((MetaByte_A)expectedValue, (MetaByte_A)actualValue);
+                AssertByte((MetaSByte)expectedValue, (MetaSByte)actualValue);
             }
-            else if (expectedValue is MetaByte_B)
+            else if (expectedValue is MetaByte)
             {
-                AssertByte((MetaByte_B)expectedValue, (MetaByte_B)actualValue);
+                AssertByte((MetaByte)expectedValue, (MetaByte)actualValue);
             }
-            else if (expectedValue is MetaByte_Enum)
+            else if (expectedValue is MetaEnumInt8)
             {
-                AssertByte((MetaByte_Enum)expectedValue, (MetaByte_Enum)actualValue);
+                AssertByte((MetaEnumInt8)expectedValue, (MetaEnumInt8)actualValue);
             }
-            else if (expectedValue is MetaCharPointer)
+            else if (expectedValue is MetaStringPointer)
             {
-                AssertCharPointer((MetaCharPointer)expectedValue, (MetaCharPointer)actualValue);
+                AssertCharPointer((MetaStringPointer)expectedValue, (MetaStringPointer)actualValue);
             }
             else if (expectedValue is MetaDataBlockPointer)
             {
@@ -113,49 +113,49 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             {
                 AssertFloat((MetaFloat)expectedValue, (MetaFloat)actualValue);
             }
-            else if (expectedValue is MetaFloat4_XYZ)
+            else if (expectedValue is MetaVector3)
             {
-                AssertFloatVector((MetaFloat4_XYZ)expectedValue, (MetaFloat4_XYZ)actualValue);
+                AssertFloatVector((MetaVector3)expectedValue, (MetaVector3)actualValue);
             }
-            else if (expectedValue is MetaFloat4_XYZW)
+            else if (expectedValue is MetaVector4)
             {
-                AssertFloatVector((MetaFloat4_XYZW)expectedValue, (MetaFloat4_XYZW)actualValue);
+                AssertFloatVector((MetaVector4)expectedValue, (MetaVector4)actualValue);
             }
-            else if (expectedValue is MetaInt16_A)
+            else if (expectedValue is MetaInt16)
             {
-                AssertInt16((MetaInt16_A)expectedValue, (MetaInt16_A)actualValue);
+                AssertInt16((MetaInt16)expectedValue, (MetaInt16)actualValue);
             }
-            else if (expectedValue is MetaInt16_B)
+            else if (expectedValue is MetaUInt16)
             {
-                AssertInt16((MetaInt16_B)expectedValue, (MetaInt16_B)actualValue);
+                AssertInt16((MetaUInt16)expectedValue, (MetaUInt16)actualValue);
             }
-            else if (expectedValue is MetaInt16_Enum)
+            else if (expectedValue is MetaFlagsInt16)
             {
-                AssertInt16((MetaInt16_Enum)expectedValue, (MetaInt16_Enum)actualValue);
+                AssertInt16((MetaFlagsInt16)expectedValue, (MetaFlagsInt16)actualValue);
             }
-            else if (expectedValue is MetaInt32_A)
+            else if (expectedValue is MetaInt32)
             {
-                AssertInt32((MetaInt32_A)expectedValue, (MetaInt32_A)actualValue);
+                AssertInt32((MetaInt32)expectedValue, (MetaInt32)actualValue);
             }
-            else if (expectedValue is MetaInt32_B)
+            else if (expectedValue is MetaUInt32)
             {
-                AssertInt32((MetaInt32_B)expectedValue, (MetaInt32_B)actualValue);
+                AssertInt32((MetaUInt32)expectedValue, (MetaUInt32)actualValue);
             }
-            else if (expectedValue is MetaInt32_Enum1)
+            else if (expectedValue is MetaEnumInt32)
             {
-                AssertInt32((MetaInt32_Enum1)expectedValue, (MetaInt32_Enum1)actualValue);
+                AssertInt32((MetaEnumInt32)expectedValue, (MetaEnumInt32)actualValue);
             }
-            else if (expectedValue is MetaInt32_Enum2)
+            else if (expectedValue is MetaFlagsInt8)
             {
-                AssertInt32((MetaInt32_Enum2)expectedValue, (MetaInt32_Enum2)actualValue);
+                AssertInt32((MetaFlagsInt8)expectedValue, (MetaFlagsInt8)actualValue);
             }
-            else if (expectedValue is MetaInt32_Enum3)
+            else if (expectedValue is MetaFlagsInt32)
             {
-                AssertInt32((MetaInt32_Enum3)expectedValue, (MetaInt32_Enum3)actualValue);
+                AssertInt32((MetaFlagsInt32)expectedValue, (MetaFlagsInt32)actualValue);
             }
-            else if (expectedValue is MetaInt32_Hash)
+            else if (expectedValue is MetaStringHash)
             {
-                AssertInt32((MetaInt32_Hash)expectedValue, (MetaInt32_Hash)actualValue);
+                AssertInt32((MetaStringHash)expectedValue, (MetaStringHash)actualValue);
             }
             else if (expectedValue is MetaGeneric)
             {
@@ -183,37 +183,51 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             }
         }
 
-        public void AssertArrayOfBytes(MetaArrayOfBytes expectedArray, MetaArrayOfBytes actualArray)
+        public void AssertArrayOfBytes(MetaArrayLocal expectedArray, MetaArrayLocal actualArray)
         {
-            CollectionAssert.AreEqual(expectedArray.Value, actualArray.Value);
+            switch (expectedArray)
+            {
+                case MetaArrayLocal<byte>:
+                    CollectionAssert.AreEqual(((MetaArrayLocal<byte>)expectedArray).Value, ((MetaArrayLocal<byte>)actualArray).Value);
+                    break;
+                case MetaArrayLocal<ushort>:
+                    CollectionAssert.AreEqual(((MetaArrayLocal<ushort>)expectedArray).Value, ((MetaArrayLocal<ushort>)actualArray).Value);
+                    break;
+                case MetaArrayLocal<uint>:
+                    CollectionAssert.AreEqual(((MetaArrayLocal<uint>)expectedArray).Value, ((MetaArrayLocal<uint>)actualArray).Value);
+                    break;
+                case MetaArrayLocal<float>:
+                    CollectionAssert.AreEqual(((MetaArrayLocal<float>)expectedArray).Value, ((MetaArrayLocal<float>)actualArray).Value);
+                    break;
+            }
         }
 
-        public void AssertArrayOfChars(MetaArrayOfChars expectedArray, MetaArrayOfChars actualArray)
+        public void AssertArrayOfChars(MetaString expectedArray, MetaString actualArray)
         {
             Assert.AreEqual(expectedArray.Value, actualArray.Value);
         }
 
-        public void AssertBoolean(MetaBoolean expectedBoolean, MetaBoolean actualBoolean)
+        public void AssertBoolean(MetaBool expectedBoolean, MetaBool actualBoolean)
         {
             Assert.AreEqual(expectedBoolean.Value, actualBoolean.Value);
         }
 
-        public void AssertByte(MetaByte_A expectedByte, MetaByte_A actualByte)
+        public void AssertByte(MetaSByte expectedByte, MetaSByte actualByte)
         {
             Assert.AreEqual(expectedByte.Value, actualByte.Value);
         }
 
-        public void AssertByte(MetaByte_B expectedByte, MetaByte_B actualByte)
+        public void AssertByte(MetaByte expectedByte, MetaByte actualByte)
         {
             Assert.AreEqual(expectedByte.Value, actualByte.Value);
         }
 
-        public void AssertByte(MetaByte_Enum expectedByte, MetaByte_Enum actualByte)
+        public void AssertByte(MetaEnumInt8 expectedByte, MetaEnumInt8 actualByte)
         {
             Assert.AreEqual(expectedByte.Value, actualByte.Value);
         }
 
-        public void AssertCharPointer(MetaCharPointer expectedCharPointer, MetaCharPointer actualCharPointer)
+        public void AssertCharPointer(MetaStringPointer expectedCharPointer, MetaStringPointer actualCharPointer)
         {
             Assert.AreEqual(expectedCharPointer.Value, actualCharPointer.Value);
         }
@@ -228,62 +242,62 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             Assert.AreEqual(expectedFloat.Value, actualFloat.Value);
         }
 
-        public void AssertFloatVector(MetaFloat4_XYZ expectedFloat, MetaFloat4_XYZ actualFloat)
+        public void AssertFloatVector(MetaVector3 expectedFloat, MetaVector3 actualFloat)
         {
-            Assert.AreEqual(expectedFloat.X, actualFloat.X);
-            Assert.AreEqual(expectedFloat.Y, actualFloat.Y);
-            Assert.AreEqual(expectedFloat.Z, actualFloat.Z);
+            Assert.AreEqual(expectedFloat.Value.X, actualFloat.Value.X);
+            Assert.AreEqual(expectedFloat.Value.Y, actualFloat.Value.Y);
+            Assert.AreEqual(expectedFloat.Value.Z, actualFloat.Value.Z);
         }
 
-        public void AssertFloatVector(MetaFloat4_XYZW expectedFloat, MetaFloat4_XYZW actualFloat)
+        public void AssertFloatVector(MetaVector4 expectedFloat, MetaVector4 actualFloat)
         {
-            Assert.AreEqual(expectedFloat.X, actualFloat.X);
-            Assert.AreEqual(expectedFloat.Y, actualFloat.Y);
-            Assert.AreEqual(expectedFloat.Z, actualFloat.Z);
-            Assert.AreEqual(expectedFloat.W, actualFloat.W);
+            Assert.AreEqual(expectedFloat.Value.X, actualFloat.Value.X);
+            Assert.AreEqual(expectedFloat.Value.Y, actualFloat.Value.Y);
+            Assert.AreEqual(expectedFloat.Value.Z, actualFloat.Value.Z);
+            Assert.AreEqual(expectedFloat.Value.W, actualFloat.Value.W);
         }
 
-        public void AssertInt16(MetaInt16_A expectedInt, MetaInt16_A actualInt)
-        {
-            Assert.AreEqual(expectedInt.Value, actualInt.Value);
-        }
-
-        public void AssertInt16(MetaInt16_B expectedInt, MetaInt16_B actualInt)
+        public void AssertInt16(MetaInt16 expectedInt, MetaInt16 actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }
 
-        public void AssertInt16(MetaInt16_Enum expectedInt, MetaInt16_Enum actualInt)
+        public void AssertInt16(MetaUInt16 expectedInt, MetaUInt16 actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }
 
-        public void AssertInt32(MetaInt32_A expectedInt, MetaInt32_A actualInt)
+        public void AssertInt16(MetaFlagsInt16 expectedInt, MetaFlagsInt16 actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }
 
-        public void AssertInt32(MetaInt32_B expectedInt, MetaInt32_B actualInt)
+        public void AssertInt32(MetaInt32 expectedInt, MetaInt32 actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }
 
-        public void AssertInt32(MetaInt32_Enum1 expectedInt, MetaInt32_Enum1 actualInt)
+        public void AssertInt32(MetaUInt32 expectedInt, MetaUInt32 actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }
 
-        public void AssertInt32(MetaInt32_Enum2 expectedInt, MetaInt32_Enum2 actualInt)
+        public void AssertInt32(MetaEnumInt32 expectedInt, MetaEnumInt32 actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }
 
-        public void AssertInt32(MetaInt32_Enum3 expectedInt, MetaInt32_Enum3 actualInt)
+        public void AssertInt32(MetaFlagsInt8 expectedInt, MetaFlagsInt8 actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }
 
-        public void AssertInt32(MetaInt32_Hash expectedInt, MetaInt32_Hash actualInt)
+        public void AssertInt32(MetaFlagsInt32 expectedInt, MetaFlagsInt32 actualInt)
+        {
+            Assert.AreEqual(expectedInt.Value, actualInt.Value);
+        }
+
+        public void AssertInt32(MetaStringHash expectedInt, MetaStringHash actualInt)
         {
             Assert.AreEqual(expectedInt.Value, actualInt.Value);
         }

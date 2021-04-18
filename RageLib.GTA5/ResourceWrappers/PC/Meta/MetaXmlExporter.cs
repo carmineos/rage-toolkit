@@ -85,22 +85,22 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         {
                             switch (arrayValue.info.DataType)
                             {
-                                case StructureEntryDataType.UnsignedByte:
+                                case StructureEntryDataType.UInt8:
                                     WriteInlineArrayContentChar((XmlRageWriter)writer, arrayValue);
                                     break;
-                                case StructureEntryDataType.UnsignedShort:
+                                case StructureEntryDataType.UInt16:
                                     WriteInlineArrayContentShort((XmlRageWriter)writer, arrayValue);
                                     break;
-                                case StructureEntryDataType.UnsignedInt:
+                                case StructureEntryDataType.UInt32:
                                     WriteInlineArrayContentInt((XmlRageWriter)writer, arrayValue);
                                     break;
                                 case StructureEntryDataType.Float:
                                     WriteInlineArrayContentFloat((XmlRageWriter)writer, arrayValue);
                                     break;
-                                case StructureEntryDataType.Float_XYZ:
+                                case StructureEntryDataType.Vector3:
                                     WriteInlineArrayContentVector3((XmlRageWriter)writer, arrayValue);
                                     break;
-                                case StructureEntryDataType.Hash:
+                                case StructureEntryDataType.StringHash:
                                     WriteHashArrayContent(writer, arrayValue);
                                     break;
                                 default:
@@ -111,77 +111,87 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         break;
                     }
 
-                case MetaBoolean:
-                    writer.WriteAttributeValue(((MetaBoolean)value).Value);
+                case MetaBool:
+                    writer.WriteAttributeValue(((MetaBool)value).Value);
                     break;
 
-                case MetaByte_A:
-                    writer.WriteAttributeValue(((MetaByte_A)value).Value);
+                case MetaSByte:
+                    writer.WriteAttributeValue(((MetaSByte)value).Value);
                     break;
 
-                case MetaByte_B:
-                    writer.WriteAttributeValue(((MetaByte_B)value).Value);
+                case MetaByte:
+                    writer.WriteAttributeValue(((MetaByte)value).Value);
                     break;
 
-                case MetaInt16_A:
-                    writer.WriteAttributeValue(((MetaInt16_A)value).Value);
+                case MetaInt16:
+                    writer.WriteAttributeValue(((MetaInt16)value).Value);
                     break;
 
-                case MetaInt16_B:
-                    writer.WriteAttributeValue(((MetaInt16_B)value).Value);
+                case MetaUInt16:
+                    writer.WriteAttributeValue(((MetaUInt16)value).Value);
                     break;
 
-                case MetaInt32_A:
-                    writer.WriteAttributeValue(((MetaInt32_A)value).Value);
+                case MetaInt32:
+                    writer.WriteAttributeValue(((MetaInt32)value).Value);
                     break;
 
-                case MetaInt32_B:
-                    writer.WriteAttributeValue(((MetaInt32_B)value).Value);
+                case MetaUInt32:
+                    writer.WriteAttributeValue(((MetaUInt32)value).Value);
                     break;
 
                 case MetaFloat:
                     writer.WriteAttributeValue(((MetaFloat)value).Value);
                     break;
 
-                case MetaFloat4_XYZ:
-                    var xyzValue = (MetaFloat4_XYZ)value;
-                    writer.WriteAttributesXYZ(xyzValue.X, xyzValue.Y, xyzValue.Z);
+                case MetaVector3:
+                    writer.WriteAttributesXYZ(((MetaVector3)value).Value);
                     break;
 
-                case MetaFloat4_XYZW:
-                    var xyzwValue = (MetaFloat4_XYZW)value;
-                    writer.WriteAttributesXYZW(xyzwValue.X, xyzwValue.Y, xyzwValue.Z, xyzwValue.W);
+                case MetaVector4:
+                    writer.WriteAttributesXYZW(((MetaVector4)value).Value);
                     break;
 
-                case MetaByte_Enum:
-                    WriteByteEnumContent(writer, (MetaByte_Enum)value);
+                case MetaEnumInt8:
+                    WriteEnumContent(writer, (MetaEnumInt8)value);
                     break;
-                case MetaInt32_Enum1:
-                    WriteIntEnumContent(writer, (MetaInt32_Enum1)value);
+                case MetaEnumInt16:
+                    WriteEnumContent(writer, (MetaEnumInt16)value);
                     break;
-                case MetaInt16_Enum:
-                    WriteShortFlagsContent(writer, (MetaInt16_Enum)value);
+                case MetaEnumInt32:
+                    WriteEnumContent(writer, (MetaEnumInt32)value);
                     break;
-                case MetaInt32_Enum2:
-                    WriteIntFlags1Content(writer, (MetaInt32_Enum2)value);
+                case MetaFlagsInt16:
+                    WriteFlagsContent(writer, (MetaFlagsInt16)value);
                     break;
-                case MetaInt32_Enum3:
-                    WriteIntFlags2Content(writer, (MetaInt32_Enum3)value);
+                case MetaFlagsInt8:
+                    WriteFlagsContent(writer, (MetaFlagsInt8)value);
                     break;
-                case MetaArrayOfChars:
+                case MetaFlagsInt32:
+                    WriteFlagsContent(writer, (MetaFlagsInt32)value);
+                    break;
+                case MetaString:
                     {
-                        var stringValue = value as MetaArrayOfChars;
+                        var stringValue = value as MetaString;
                         writer.WriteString(stringValue.Value);
                         break;
                     }
 
-                case MetaCharPointer:
+                case MetaStringPointer:
                     {
-                        var stringValue = value as MetaCharPointer;
+                        var stringValue = value as MetaStringPointer;
                         writer.WriteString(stringValue.Value);
                         break;
                     }
+                case MetaStringHash:
+                    {
+                        var intValue = value as MetaStringHash;
+                        if (intValue.Value != 0)
+                        {
+                            writer.WriteString(GetNameForHash(intValue.Value));
+                        }
 
+                        break;
+                    }
                 case MetaGeneric:
                     {
                         var genericValue = value as MetaGeneric;
@@ -200,23 +210,35 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         break;
                     }
 
-                case MetaArrayOfBytes:
+                case MetaArrayLocal:
                     {
-                        WriteInlineArrayBytes((XmlRageWriter)writer, (MetaArrayOfBytes)value);
-                        break;
-                    }
-
-                case MetaInt32_Hash:
-                    {
-                        var intValue = value as MetaInt32_Hash;
-                        if (intValue.Value != 0)
+                        var xmlRageWriter = (XmlRageWriter)writer;
+                        
+                        switch (value)
                         {
-                            writer.WriteString(GetNameForHash(intValue.Value));
+                            case MetaArrayLocal<byte> bytes:
+                                {
+                                    xmlRageWriter.WriteInlineArrayContent(bytes.Value);
+                                    break;
+                                }
+                            case MetaArrayLocal<ushort> ushorts:
+                                {
+                                    xmlRageWriter.WriteInlineArrayContent(ushorts.Value);
+                                    break;
+                                }
+                            case MetaArrayLocal<uint> uints:
+                                {
+                                    xmlRageWriter.WriteInlineArrayContent(uints.Value);
+                                    break;
+                                }
+                            case MetaArrayLocal<float> floats:
+                                {
+                                    xmlRageWriter.WriteInlineArrayContent(floats.Value);
+                                    break;
+                                }
                         }
-
                         break;
                     }
-
                 case MetaDataBlockPointer:
                     {
                         var longValue = value as MetaDataBlockPointer;
@@ -241,7 +263,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         }
 
 
-        private void WriteByteEnumContent(XmlWriter writer, MetaByte_Enum byteValue)
+        private void WriteEnumContent(XmlWriter writer, MetaEnumInt8 byteValue)
         {
             var thehash = (int)0;
             foreach (var enty in byteValue.info.Entries)
@@ -250,7 +272,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(GetEnumNameForHash(thehash));
         }
 
-        private void WriteIntEnumContent(XmlWriter writer, MetaInt32_Enum1 intValue)
+        private void WriteEnumContent(XmlWriter writer, MetaEnumInt16 intValue)
         {
             if (intValue.Value != -1)
             {
@@ -266,7 +288,23 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        private void WriteShortFlagsContent(XmlWriter writer, MetaInt16_Enum shortValue)
+        private void WriteEnumContent(XmlWriter writer, MetaEnumInt32 intValue)
+        {
+            if (intValue.Value != -1)
+            {
+                var thehash = (int)0;
+                foreach (var enty in intValue.info.Entries)
+                    if (enty.EntryValue == intValue.Value)
+                        thehash = enty.EntryNameHash;
+                writer.WriteString(GetEnumNameForHash(thehash));
+            }
+            else
+            {
+                writer.WriteString("enum_NONE");
+            }
+        }
+
+        private void WriteFlagsContent(XmlWriter writer, MetaFlagsInt16 shortValue)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 16; i++)
@@ -286,7 +324,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(sb.ToString().Trim());
         }
 
-        private void WriteIntFlags1Content(XmlWriter writer, MetaInt32_Enum2 intValue)
+        private void WriteFlagsContent(XmlWriter writer, MetaFlagsInt8 intValue)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 32; i++)
@@ -306,7 +344,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(sb.ToString().Trim());
         }
 
-        private void WriteIntFlags2Content(XmlWriter writer, MetaInt32_Enum3 intValue)
+        private void WriteFlagsContent(XmlWriter writer, MetaFlagsInt32 intValue)
         {
             if (intValue.Value != 0)
             {
@@ -338,19 +376,6 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        private void WriteInlineArrayBytes(XmlRageWriter writer, MetaArrayOfBytes arrayValue)
-        {
-            writer.WriteString(Environment.NewLine);
-            for (int i = 0; i < arrayValue.Value.Length; i++)
-            {
-                var value = arrayValue.Value[i];
-                writer.WriteInnerIndent();
-                writer.WriteString(value.ToString());
-                writer.WriteString(Environment.NewLine);
-            }
-            writer.WriteOuterIndent();
-        }
-
         private void WriteInlineArrayContentChar(XmlRageWriter writer, MetaArray arrayValue)
         {
             writer.WriteAttributeString("content", "char_array");
@@ -358,7 +383,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(Environment.NewLine);
             foreach (var k in arrayValue.Entries)
             {
-                var value = ((MetaByte_B)k).Value;
+                var value = ((MetaByte)k).Value;
                 writer.WriteInnerIndent();
                 writer.WriteString(value.ToString());
                 writer.WriteString(Environment.NewLine);
@@ -373,7 +398,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(Environment.NewLine);
             foreach (var k in arrayValue.Entries)
             {
-                var value = ((MetaInt16_B)k).Value;
+                var value = ((MetaUInt16)k).Value;
                 writer.WriteInnerIndent();
                 writer.WriteString(value.ToString());
                 writer.WriteString(Environment.NewLine);
@@ -388,7 +413,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(Environment.NewLine);
             foreach (var k in arrayValue.Entries)
             {
-                var value = ((MetaInt32_B)k).Value;
+                var value = ((MetaUInt32)k).Value;
                 writer.WriteInnerIndent();
                 writer.WriteString(value.ToString());
                 writer.WriteString(Environment.NewLine);
@@ -418,7 +443,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             writer.WriteString(Environment.NewLine);
             foreach (var k in arrayValue.Entries)
             {
-                var value = (MetaFloat4_XYZ)k;
+                var value = ((MetaVector3)k).Value;
                 writer.WriteInnerIndent();
                 writer.WriteString(value.X.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
                 writer.WriteString(value.Y.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
@@ -433,7 +458,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             foreach (var k in arrayValue.Entries)
             {
                 writer.WriteStartElement("Item");
-                var ii = ((MetaInt32_Hash)k).Value;
+                var ii = ((MetaStringHash)k).Value;
                 if (ii != 0)
                 {
                     var ss = GetNameForHash(ii);

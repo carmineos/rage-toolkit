@@ -21,29 +21,23 @@
 */
 
 using RageLib.Data;
+using RageLib.Resources.GTA5.PC.Meta;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaByte_A : IMetaValue
+    public class MetaFlagsInt8 : IMetaValue
     {
-        public sbyte Value { get; set; }
-
-        public MetaByte_A()
-        { }
-
-        public MetaByte_A(sbyte value)
-        {
-            this.Value = value;
-        }
+        public EnumInfo info;
+        public uint Value { get; set; }
 
         public void Read(DataReader reader)
         {
-            this.Value = unchecked((sbyte)reader.ReadByte());
+            this.Value = reader.ReadUInt32();
         }
 
         public void Write(DataWriter writer)
         {
-            writer.Write(unchecked((byte)this.Value));
+            writer.Write(this.Value);
         }
     }
 }

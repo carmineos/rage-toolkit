@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Numerics;
 using System.Xml;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta
@@ -114,7 +115,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                         break;
                                     }
 
-                                case StructureEntryDataType.UnsignedByte:
+                                case StructureEntryDataType.UInt8:
                                     {
                                         MetaArray arryVal = ReadByteArray(xmlNode);
                                         arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
@@ -122,7 +123,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                         break;
                                     }
 
-                                case StructureEntryDataType.UnsignedShort:
+                                case StructureEntryDataType.UInt16:
                                     {
                                         MetaArray arryVal = ReadShortArray(xmlNode);
                                         arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
@@ -130,7 +131,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                         break;
                                     }
 
-                                case StructureEntryDataType.UnsignedInt:
+                                case StructureEntryDataType.UInt32:
                                     {
                                         MetaArray arryVal = ReadIntArray(xmlNode);
                                         arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
@@ -146,7 +147,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                         break;
                                     }
 
-                                case StructureEntryDataType.Float_XYZ:
+                                case StructureEntryDataType.Vector3:
                                     {
                                         MetaArray arryVal = ReadFloatVectorArray(xmlNode);
                                         arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
@@ -154,7 +155,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                         break;
                                     }
 
-                                case StructureEntryDataType.Hash:
+                                case StructureEntryDataType.StringHash:
                                     {
                                         MetaArray arryVal = ReadHashArray(xmlNode);
                                         arryVal.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
@@ -166,71 +167,105 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             break;
                         }
 
-                    case StructureEntryDataType.Boolean:
+                    case StructureEntryDataType.Bool:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadBoolean(xmlNode));
                         break;
-                    case StructureEntryDataType.SignedByte:
+                    case StructureEntryDataType.Int8:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedByte(xmlNode));
                         break;
-                    case StructureEntryDataType.UnsignedByte:
+                    case StructureEntryDataType.UInt8:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedByte(xmlNode));
                         break;
-                    case StructureEntryDataType.SignedShort:
+                    case StructureEntryDataType.Int16:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedShort(xmlNode));
                         break;
-                    case StructureEntryDataType.UnsignedShort:
+                    case StructureEntryDataType.UInt16:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedShort(xmlNode));
                         break;
-                    case StructureEntryDataType.SignedInt:
+                    case StructureEntryDataType.Int32:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadSignedInt(xmlNode));
                         break;
-                    case StructureEntryDataType.UnsignedInt:
+                    case StructureEntryDataType.UInt32:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadUnsignedInt(xmlNode));
                         break;
                     case StructureEntryDataType.Float:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadFloat(xmlNode));
                         break;
-                    case StructureEntryDataType.Float_XYZ:
+                    case StructureEntryDataType.Vector3:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadFloatXYZ(xmlNode));
                         break;
-                    case StructureEntryDataType.Float_XYZW:
+                    case StructureEntryDataType.Vector4:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadFloatXYZW(xmlNode));
                         break;
-                    case StructureEntryDataType.ByteEnum:
+                    case StructureEntryDataType.EnumInt8:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadByteEnum(xmlNode, entryInfo.ReferenceKey));
                         break;
-                    case StructureEntryDataType.IntEnum:
+                    case StructureEntryDataType.EnumInt16:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadShortEnum(xmlNode, entryInfo.ReferenceKey));
+                        break;
+                    case StructureEntryDataType.EnumInt32:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadIntEnum(xmlNode, entryInfo.ReferenceKey));
                         break;
-                    case StructureEntryDataType.ShortFlags:
-                        resultStructure.Values.Add(xmlEntry.NameHash, ReadShortFlags(xmlNode, entryInfo.ReferenceKey));
-                        break;
-                    case StructureEntryDataType.IntFlags1:
+                    case StructureEntryDataType.FlagsInt8:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadIntFlags1(xmlNode, entryInfo.ReferenceKey));
                         break;
-                    case StructureEntryDataType.IntFlags2:
+                    case StructureEntryDataType.FlagsInt16:
+                        resultStructure.Values.Add(xmlEntry.NameHash, ReadShortFlags(xmlNode, entryInfo.ReferenceKey));
+                        break;
+                    case StructureEntryDataType.FlagsInt32:
                         resultStructure.Values.Add(xmlEntry.NameHash, ReadIntFlags2(xmlNode, entryInfo.ReferenceKey));
                         break;
 
-                    case StructureEntryDataType.ArrayOfBytes:
+                    case StructureEntryDataType.ArrayLocal:
                         {
-                            var byteArrayValue = new MetaArrayOfBytes();
-                            byteArrayValue.Value = ByteFromString(xmlNode.InnerText);
-                            resultStructure.Values.Add(xmlEntry.NameHash, byteArrayValue);
+                            MetaArrayLocal entryValue;
+
+                            var arrayType = (StructureEntryDataType)xmlEntry.ArrayType.Type;
+                            switch (arrayType)
+                            {
+                                case StructureEntryDataType.UInt8:
+                                    entryValue = new MetaArrayLocal<byte>(entryInfo);
+                                    ((MetaArrayLocal<byte>)entryValue).Value = StringParseHelpers.ParseItemsAsUInt8(xmlNode.InnerText).ToArray();
+                                    break;
+                                case StructureEntryDataType.UInt16:
+                                    entryValue = new MetaArrayLocal<ushort>(entryInfo);
+                                    ((MetaArrayLocal<ushort>)entryValue).Value = StringParseHelpers.ParseItemsAsUInt16(xmlNode.InnerText).ToArray();
+                                    break;
+                                case StructureEntryDataType.UInt32:
+                                    entryValue = new MetaArrayLocal<uint>(entryInfo);
+                                    ((MetaArrayLocal<uint>)entryValue).Value = StringParseHelpers.ParseItemsAsUInt32(xmlNode.InnerText).ToArray();
+                                    break;
+                                case StructureEntryDataType.Float:
+                                    entryValue = new MetaArrayLocal<float>(entryInfo);
+                                    ((MetaArrayLocal<float>)entryValue).Value = StringParseHelpers.ParseItemsAsFloat(xmlNode.InnerText).ToArray();
+                                    break;
+                                default:
+                                    throw new Exception($"Unsupported ArrayType: {arrayType} for Type: {type}");
+                            }
+
+                            resultStructure.Values.Add(xmlEntry.NameHash, entryValue);
                             break;
                         }
 
-                    case StructureEntryDataType.ArrayOfChars:
+                    case StructureEntryDataType.StringLocal:
                         {
-                            var charArrayValue = new MetaArrayOfChars(entryInfo);
+                            var charArrayValue = new MetaString(entryInfo);
                             charArrayValue.Value = xmlNode.InnerText;
                             resultStructure.Values.Add(xmlEntry.NameHash, charArrayValue);
                             break;
                         }
-
-                    case StructureEntryDataType.Hash:
+                    case StructureEntryDataType.StringPointer:
                         {
-                            var hashValue = new MetaInt32_Hash();
+                            var charPointerValue = new MetaStringPointer();
+                            charPointerValue.Value = xmlNode.InnerText;
+                            if (charPointerValue.Value.Equals(""))
+                                charPointerValue.Value = null;
+                            resultStructure.Values.Add(xmlEntry.NameHash, charPointerValue);
+                            break;
+                        }
+                    case StructureEntryDataType.StringHash:
+                        {
+                            var hashValue = new MetaStringHash();
                             if (xmlNode.InnerText.Trim().Length > 0)
                             {
                                 hashValue.Value = GetHashForName(xmlNode.InnerText);
@@ -238,21 +273,10 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             resultStructure.Values.Add(xmlEntry.NameHash, hashValue);
                             break;
                         }
-
-                    case StructureEntryDataType.CharPointer:
-                        {
-                            var charPointerValue = new MetaCharPointer();
-                            charPointerValue.Value = xmlNode.InnerText;
-                            if (charPointerValue.Value.Equals(""))
-                                charPointerValue.Value = null;
-                            resultStructure.Values.Add(xmlEntry.NameHash, charPointerValue);
-                            break;
-                        }
-
                     case StructureEntryDataType.DataBlockPointer:
                         {
                             var dataBlockValue = new MetaDataBlockPointer(entryInfo);
-                            dataBlockValue.Data = ByteFromString(xmlNode.InnerText);
+                            dataBlockValue.Data = StringParseHelpers.ParseItemsAsUInt8(xmlNode.InnerText).ToArray();
                             if (dataBlockValue.Data.Length == 0)
                                 dataBlockValue.Data = null;
                             resultStructure.Values.Add(xmlEntry.NameHash, dataBlockValue);
@@ -279,51 +303,51 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
 
 
-        private MetaBoolean ReadBoolean(XmlNode node)
+        private MetaBool ReadBoolean(XmlNode node)
         {
-            var booleanValue = new MetaBoolean();
+            var booleanValue = new MetaBool();
             booleanValue.Value = bool.Parse(node.Attributes["value"].Value);
             return booleanValue;
         }
 
-        private MetaByte_A ReadSignedByte(XmlNode node)
+        private MetaSByte ReadSignedByte(XmlNode node)
         {
-            var byteValue = new MetaByte_A();
+            var byteValue = new MetaSByte();
             byteValue.Value = sbyte.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return byteValue;
         }
 
-        private MetaByte_B ReadUnsignedByte(XmlNode node)
+        private MetaByte ReadUnsignedByte(XmlNode node)
         {
-            var byteValue = new MetaByte_B();
+            var byteValue = new MetaByte();
             byteValue.Value = byte.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return byteValue;
         }
 
-        private MetaInt16_A ReadSignedShort(XmlNode node)
+        private MetaInt16 ReadSignedShort(XmlNode node)
         {
-            var shortValue = new MetaInt16_A();
+            var shortValue = new MetaInt16();
             shortValue.Value = short.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return shortValue;
         }
 
-        private MetaInt16_B ReadUnsignedShort(XmlNode node)
+        private MetaUInt16 ReadUnsignedShort(XmlNode node)
         {
-            var shortValue = new MetaInt16_B();
+            var shortValue = new MetaUInt16();
             shortValue.Value = ushort.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return shortValue;
         }
 
-        private MetaInt32_A ReadSignedInt(XmlNode node)
+        private MetaInt32 ReadSignedInt(XmlNode node)
         {
-            var intValue = new MetaInt32_A();
+            var intValue = new MetaInt32();
             intValue.Value = int.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return intValue;
         }
 
-        private MetaInt32_B ReadUnsignedInt(XmlNode node)
+        private MetaUInt32 ReadUnsignedInt(XmlNode node)
         {
-            var intValue = new MetaInt32_B();
+            var intValue = new MetaUInt32();
             intValue.Value = uint.Parse(node.Attributes["value"].Value, NumberFormatInfo.InvariantInfo);
             return intValue;
         }
@@ -335,28 +359,30 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return floatValue;
         }
 
-        private MetaFloat4_XYZ ReadFloatXYZ(XmlNode node)
+        private MetaVector3 ReadFloatXYZ(XmlNode node)
         {
-            var floatVectorValue = new MetaFloat4_XYZ();
-            floatVectorValue.X = float.Parse(node.Attributes["x"].Value, NumberFormatInfo.InvariantInfo);
-            floatVectorValue.Y = float.Parse(node.Attributes["y"].Value, NumberFormatInfo.InvariantInfo);
-            floatVectorValue.Z = float.Parse(node.Attributes["z"].Value, NumberFormatInfo.InvariantInfo);
+            var floatVectorValue = new MetaVector3();
+            float x = float.Parse(node.Attributes["x"].Value, NumberFormatInfo.InvariantInfo);
+            float y = float.Parse(node.Attributes["y"].Value, NumberFormatInfo.InvariantInfo);
+            float z = float.Parse(node.Attributes["z"].Value, NumberFormatInfo.InvariantInfo);
+            floatVectorValue.Value = new Vector3(x, y, z);
             return floatVectorValue;
         }
 
-        private MetaFloat4_XYZW ReadFloatXYZW(XmlNode node)
+        private MetaVector4 ReadFloatXYZW(XmlNode node)
         {
-            var floatVectorValue = new MetaFloat4_XYZW();
-            floatVectorValue.X = float.Parse(node.Attributes["x"].Value, NumberFormatInfo.InvariantInfo);
-            floatVectorValue.Y = float.Parse(node.Attributes["y"].Value, NumberFormatInfo.InvariantInfo);
-            floatVectorValue.Z = float.Parse(node.Attributes["z"].Value, NumberFormatInfo.InvariantInfo);
-            floatVectorValue.W = float.Parse(node.Attributes["w"].Value, NumberFormatInfo.InvariantInfo);
+            var floatVectorValue = new MetaVector4();
+            float x = float.Parse(node.Attributes["x"].Value, NumberFormatInfo.InvariantInfo);
+            float y = float.Parse(node.Attributes["y"].Value, NumberFormatInfo.InvariantInfo);
+            float z = float.Parse(node.Attributes["z"].Value, NumberFormatInfo.InvariantInfo);
+            float w = float.Parse(node.Attributes["w"].Value, NumberFormatInfo.InvariantInfo);
+            floatVectorValue.Value = new Vector4(x, y, z, w);
             return floatVectorValue;
         }
         
-        private MetaByte_Enum ReadByteEnum(XmlNode node, int enumNameHash)
+        private MetaEnumInt8 ReadByteEnum(XmlNode node, int enumNameHash)
         {
-            var byteEnum = new MetaByte_Enum();
+            var byteEnum = new MetaEnumInt8();
             var enumKey = GetHashForEnumName(node.InnerText);
             var enumInfo = (MetaEnumXml)null;
             foreach (var x in xmlInfos.Enums)
@@ -367,14 +393,40 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             foreach (var x in enumInfo.Entries)
             {
                 if (x.NameHash == enumKey)
-                    byteEnum.Value = (byte)x.Value;
+                    byteEnum.Value = (sbyte)x.Value;
             }
             return byteEnum;
         }
 
-        private MetaInt32_Enum1 ReadIntEnum(XmlNode node, int enumNameHash)
+        private MetaEnumInt16 ReadShortEnum(XmlNode node, int enumNameHash)
         {
-            var intEnum = new MetaInt32_Enum1();
+            var intEnum = new MetaEnumInt16();
+            var it = node.InnerText.Trim();
+            if (it.Equals("enum_NONE"))
+            {
+                intEnum.Value = -1;
+            }
+            else
+            {
+                var enumKey = GetHashForEnumName(it);
+                var enumInfo = (MetaEnumXml)null;
+                foreach (var x in xmlInfos.Enums)
+                {
+                    if (x.NameHash == enumNameHash)
+                        enumInfo = x;
+                }
+                foreach (var x in enumInfo.Entries)
+                {
+                    if (x.NameHash == enumKey)
+                        intEnum.Value = (short)x.Value;
+                }
+            }
+            return intEnum;
+        }
+
+        private MetaEnumInt32 ReadIntEnum(XmlNode node, int enumNameHash)
+        {
+            var intEnum = new MetaEnumInt32();
             var it = node.InnerText.Trim();
             if (it.Equals("enum_NONE"))
             {
@@ -398,9 +450,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return intEnum;
         }
 
-        private MetaInt16_Enum ReadShortFlags(XmlNode node, int enumNameHash)
+        private MetaFlagsInt16 ReadShortFlags(XmlNode node, int enumNameHash)
         {
-            var shortFlags = new MetaInt16_Enum();
+            var shortFlags = new MetaFlagsInt16();
             var enumInfo = (MetaEnumXml)null;
             foreach (var x in xmlInfos.Enums)
             {
@@ -422,9 +474,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return shortFlags;
         }
 
-        private MetaInt32_Enum2 ReadIntFlags1(XmlNode node, int enumNameHash)
+        private MetaFlagsInt8 ReadIntFlags1(XmlNode node, int enumNameHash)
         {
-            var intFlags = new MetaInt32_Enum2();
+            var intFlags = new MetaFlagsInt8();
 
             var enumInfo = (MetaEnumXml)null;
             foreach (var x in xmlInfos.Enums)
@@ -447,9 +499,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return intFlags;
         }
 
-        private MetaInt32_Enum3 ReadIntFlags2(XmlNode node, int enumNameHash)
+        private MetaFlagsInt32 ReadIntFlags2(XmlNode node, int enumNameHash)
         {
-            var intFlags = new MetaInt32_Enum3();
+            var intFlags = new MetaFlagsInt32();
 
             if (enumNameHash == 0)
             {
@@ -540,11 +592,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 return arrayValue;
 
             arrayValue.Entries = new List<IMetaValue>();
-            var items = StringParseHelpers.ParseItemsAsInt8(innerText);
+            var items = StringParseHelpers.ParseItemsAsUInt8(innerText);
             
             foreach (var item in items)
             {
-                arrayValue.Entries.Add(new MetaByte_B(item));
+                arrayValue.Entries.Add(new MetaByte(item));
             }
 
             return arrayValue;
@@ -563,7 +615,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
             foreach (var item in items)
             {
-                arrayValue.Entries.Add(new MetaInt16_B(item));
+                arrayValue.Entries.Add(new MetaUInt16(item));
             }
 
             return arrayValue;
@@ -582,7 +634,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
             foreach (var item in items)
             {
-                arrayValue.Entries.Add(new MetaInt32_B(item));
+                arrayValue.Entries.Add(new MetaUInt32(item));
             }
 
             return arrayValue;
@@ -621,7 +673,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
             for (int i = 0; i < items.Count; i+=3)
             {
-                arrayValue.Entries.Add(new MetaFloat4_XYZ(items[i], items[i + 1], items[i + 2]));
+                arrayValue.Entries.Add(new MetaVector3(items[i], items[i + 1], items[i + 2]));
             }
 
             return arrayValue;
@@ -638,11 +690,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     var p = kkk.InnerText.Trim();
                     if (!string.IsNullOrEmpty(p))
                     {
-                        arrayValue.Entries.Add(new MetaInt32_Hash(GetHashForName(p)));
+                        arrayValue.Entries.Add(new MetaStringHash(GetHashForName(p)));
                     }
                     else
                     {
-                        arrayValue.Entries.Add(new MetaInt32_Hash(0));
+                        arrayValue.Entries.Add(new MetaStringHash(0));
                     }
                 }
             }
@@ -680,11 +732,6 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 return (int)Jenkins.Hash(hashName);
             }
-        }
-
-        public byte[] ByteFromString(string str)
-        {
-            return StringParseHelpers.ParseItemsAsInt8(str).ToArray();
         }
 
         public int GetHashForName(string hashName)

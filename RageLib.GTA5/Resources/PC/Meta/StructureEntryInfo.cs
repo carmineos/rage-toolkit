@@ -24,29 +24,30 @@ namespace RageLib.Resources.GTA5.PC.Meta
 {
     public enum StructureEntryDataType : byte
     {
-        Boolean = 0x01,
-        SignedByte = 0x10,
-        UnsignedByte = 0x11, // OCCURS IN ARRAY
-        SignedShort = 0x12,
-        UnsignedShort = 0x13, // OCCURS IN ARRAY
-        SignedInt = 0x14,
-        UnsignedInt = 0x15, // OCCURS IN ARRAY
-        Float = 0x21, // OCCURS IN ARRAY
-        Float_XYZ = 0x33, // OCCURS IN ARRAY
-        Float_XYZW = 0x34,
-        ByteEnum = 0x60, // has enum name hash in info
-        IntEnum = 0x62, // has enum name hash in info
-        ShortFlags = 0x64, // has enum name hash in info     
-        IntFlags1 = 0x63, // has enum name hash in info
-        IntFlags2 = 0x65, // has enum name hash in info (optional?)
-        Hash = 0x4A, // OCCURS IN ARRAY
-        Array = 0x52,
-        ArrayOfChars = 0x40, // has length in info
-        ArrayOfBytes = 0x50, // has length in info
-        DataBlockPointer = 0x59,
-        CharPointer = 0x44,
+        Bool = 0x01, 
+        Structure = 0x05, // has structure name hash in info, OCCURS IN ARRAY
         StructurePointer = 0x07, // OCCURS IN ARRAY
-        Structure = 0x05 // has structure name hash in info, OCCURS IN ARRAY
+        Int8 = 0x10,
+        UInt8 = 0x11, // OCCURS IN ARRAY
+        Int16 = 0x12,
+        UInt16 = 0x13, // OCCURS IN ARRAY
+        Int32 = 0x14,
+        UInt32 = 0x15, // OCCURS IN ARRAY
+        Float = 0x21, // OCCURS IN ARRAY
+        Vector3 = 0x33, // OCCURS IN ARRAY
+        Vector4 = 0x34, 
+        StringLocal = 0x40, // has length in info
+        StringPointer = 0x44, 
+        StringHash = 0x4A, // OCCURS IN ARRAY
+        ArrayLocal = 0x50, // has length in info
+        Array = 0x52,
+        DataBlockPointer = 0x59,
+        EnumInt8 = 0x60, // has enum name hash in info
+        EnumInt16 = 0x61, // has enum name hash in info
+        EnumInt32 = 0x62, // has enum name hash in info
+        FlagsInt8 = 0x63, // has enum name hash in info
+        FlagsInt16 = 0x64, // has enum name hash in info     
+        FlagsInt32 = 0x65, // has enum name hash in info (optional?)
     }
 
     public class StructureEntryInfo : ResourceSystemBlock

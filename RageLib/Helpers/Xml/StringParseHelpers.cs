@@ -7,7 +7,7 @@ namespace RageLib.Helpers.Xml
     // Refactor once https://github.com/dotnet/designs/pull/205 is available
     public static class StringParseHelpers
     {
-        public static List<byte> ParseItemsAsInt8(ReadOnlySpan<char> span)
+        public static List<byte> ParseItemsAsUInt8(ReadOnlySpan<char> span)
         {
             List<byte> items = new List<byte>();
             int start = 0;

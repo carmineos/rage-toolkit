@@ -24,41 +24,26 @@ using RageLib.Data;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaFloat4_XYZ : IMetaValue
+    public class MetaUInt16 : IMetaValue
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
-        public float Unk { get; set; }
+        public ushort Value { get; set; }
 
-        public MetaFloat4_XYZ()
+        public MetaUInt16()
         { }
 
-        public MetaFloat4_XYZ(float x, float y, float z)
+        public MetaUInt16(ushort value)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
+            this.Value = value;
         }
 
         public void Read(DataReader reader)
         {
-            this.X = reader.ReadSingle();
-            this.Y = reader.ReadSingle();
-            this.Z = reader.ReadSingle();
-            this.Unk = reader.ReadSingle();
-            //if (!float.IsNaN(nan))
-            //{
-            //    throw new Exception("nan should be NaN");
-            //}
+            this.Value = reader.ReadUInt16();
         }
 
         public void Write(DataWriter writer)
         {
-            writer.Write(this.X);
-            writer.Write(this.Y);
-            writer.Write(this.Z);
-            writer.Write(this.Unk);
+            writer.Write(this.Value);
         }
     }
 }

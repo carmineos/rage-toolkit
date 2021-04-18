@@ -24,21 +24,21 @@ using RageLib.Data;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaInt16_A : IMetaValue
+    public class MetaInt32 : IMetaValue
     {
-        public short Value { get; set; }
+        public int Value { get; set; }
 
-        public MetaInt16_A()
+        public MetaInt32()
         { }
 
-        public MetaInt16_A(short value)
+        public MetaInt32(int value)
         {
             this.Value = value;
         }
 
         public void Read(DataReader reader)
         {
-            this.Value = reader.ReadInt16();
+            this.Value = reader.ReadInt32();
         }
 
         public void Write(DataWriter writer)

@@ -21,29 +21,37 @@
 */
 
 using RageLib.Data;
+using RageLib.Resources.GTA5.PC.Meta;
+using System;
+using System.Text;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaByte_B : IMetaValue
+    public class MetaString : IMetaValue
     {
-        public byte Value { get; set; }
+        public readonly StructureEntryInfo info;
 
-        public MetaByte_B()
-        { }
+        public string Value { get; set; }
 
-        public MetaByte_B(byte value)
+        public MetaString(StructureEntryInfo info)
         {
+            this.info = info;
+        }
+
+        public MetaString(StructureEntryInfo inf, string value)
+        {
+            this.info = inf;
             this.Value = value;
         }
 
         public void Read(DataReader reader)
         {
-            this.Value = reader.ReadByte();
+            this.Value = reader.ReadString(info.ReferenceKey);
         }
 
         public void Write(DataWriter writer)
         {
-            writer.Write(this.Value);
+            writer.Write(Value, info.ReferenceKey);
         }
     }
 }
