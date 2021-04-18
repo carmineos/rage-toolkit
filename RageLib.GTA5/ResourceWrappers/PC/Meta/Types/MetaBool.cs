@@ -24,26 +24,26 @@ using RageLib.Data;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaInt32_B : IMetaValue
+    public class MetaBool : IMetaValue
     {
-        public uint Value { get; set; }
+        public bool Value { get; set; }
 
-        public MetaInt32_B()
+        public MetaBool()
         { }
 
-        public MetaInt32_B(uint value)
+        public MetaBool(bool value)
         {
             this.Value = value;
         }
 
         public void Read(DataReader reader)
         {
-            this.Value = reader.ReadUInt32();
+            this.Value = reader.ReadByte() != 0;
         }
 
         public void Write(DataWriter writer)
         {
-            writer.Write(this.Value);
+            writer.Write(this.Value ? (byte)1 : (byte)0);
         }
     }
 }

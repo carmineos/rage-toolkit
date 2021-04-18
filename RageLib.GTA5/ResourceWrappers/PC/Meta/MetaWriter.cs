@@ -265,7 +265,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                         }
                     }
-                    if (structureEntryToCheck.Value is MetaCharPointer)
+                    if (structureEntryToCheck.Value is MetaStringPointer)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
                     }
@@ -330,9 +330,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         arrayValue.NumberOfEntries = 0;
                     }
                 }
-                if (v is MetaCharPointer)
+                if (v is MetaStringPointer)
                 {
-                    var charPointerValue = (MetaCharPointer)v;
+                    var charPointerValue = (MetaStringPointer)v;
                     if (charPointerValue.Value != null)
                     {
                         writer.SelectBlockByNameHash(0x10);

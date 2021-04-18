@@ -21,41 +21,33 @@
 */
 
 using RageLib.Data;
+using System.Numerics;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaFloat4_XYZW : IMetaValue
+    public class MetaVector3 : IMetaValue
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
-        public float W { get; set; }
+        public Vector3 Value { get; set; }
+        public float Pad { get; set; }
 
-        public MetaFloat4_XYZW()
+        public MetaVector3()
         { }
 
-        public MetaFloat4_XYZW(float x, float y, float z, float w)
+        public MetaVector3(float x, float y, float z)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
-            this.W = w;
+            this.Value = new Vector3(x, y, z);
         }
 
         public void Read(DataReader reader)
         {
-            this.X = reader.ReadSingle();
-            this.Y = reader.ReadSingle();
-            this.Z = reader.ReadSingle();
-            this.W = reader.ReadSingle();
+            this.Value = reader.ReadVector3();
+            this.Pad = reader.ReadSingle();
         }
 
         public void Write(DataWriter writer)
         {
-            writer.Write(this.X);
-            writer.Write(this.Y);
-            writer.Write(this.Z);
-            writer.Write(this.W);
+            writer.Write(Value);
+            writer.Write(this.Pad);
         }
     }
 }

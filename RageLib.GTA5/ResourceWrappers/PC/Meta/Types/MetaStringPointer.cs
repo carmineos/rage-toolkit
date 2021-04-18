@@ -22,10 +22,11 @@
 
 using RageLib.Data;
 using System;
+using System.Diagnostics;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
-    public class MetaCharPointer : IMetaValue
+    public class MetaStringPointer : IMetaValue
     {
         public int DataBlockIndex { get; set; }
         public int DataOffset { get; set; }
@@ -35,10 +36,10 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
         // Reference values
         public string Value { get; set; }
 
-        public MetaCharPointer()
+        public MetaStringPointer()
         { }
 
-        public MetaCharPointer(string value)
+        public MetaStringPointer(string value)
         {
             this.Value = value;
         }
@@ -48,24 +49,25 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
             var blockIndexAndOffset = reader.ReadUInt32();
             this.DataBlockIndex = (int)(blockIndexAndOffset & 0x00000FFF);
             this.DataOffset = (int)((blockIndexAndOffset & 0xFFFFF000) >> 12);
-            var zero_4h = reader.ReadUInt32();
-            if (zero_4h != 0)
-            {
-                throw new Exception("zero_4h should be 0");
-            }
-            var size1 = reader.ReadUInt16();
-            var size2 = reader.ReadUInt16();
-            if ((size1 != 0 || size2 != 0) && (size1 != size2 - 1))
-            {
-                throw new Exception("size1 should be size2");
-            }
-            this.StringLength = size1;
-            this.StringCapacity = size2;
-            var zero_Ch = reader.ReadUInt32();
-            if (zero_Ch != 0)
-            {
-                throw new Exception("zero_Ch should be 0");
-            }
+            
+            var unknown_4h = reader.ReadUInt32();
+            Debug.Assert(unknown_4h == 0);
+
+            var count1 = reader.ReadUInt16();
+            var count2 = reader.ReadUInt16();
+            
+            // one is the length with null terminator, but they are often inverted
+            var length = Math.Min(count1, count2);
+            var length_null = Math.Max(count1, count2);
+
+            // check they are either equal or differ of 1
+            Debug.Assert(length_null - length <= 1);
+
+            var unknown_Ch = reader.ReadUInt32();
+            Debug.Assert(unknown_Ch == 0);
+
+            this.StringLength = count1;
+            this.StringCapacity = count2;
         }
 
         public void Write(DataWriter writer)

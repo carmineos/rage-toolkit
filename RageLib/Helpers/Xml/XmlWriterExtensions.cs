@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
 using System.Xml;
@@ -113,6 +114,78 @@ namespace RageLib.Helpers.Xml
         public static void WriteAttributeValueAsHex(this XmlWriter writer, uint value)
         {
             writer.WriteAttributeString("value", $"0x{value:X8}");
+        }
+
+        public static void WriteInlineArrayContent(this XmlRageWriter writer, IEnumerable<byte> array)
+        {
+            writer.WriteAttributeString("content", "char_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var value in array)
+            {
+                writer.WriteInnerIndent();
+                writer.WriteString(value.ToString(numberFormatInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        public static void WriteInlineArrayContent(this XmlRageWriter writer, IEnumerable<ushort> array)
+        {
+            writer.WriteAttributeString("content", "short_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var value in array)
+            {
+                writer.WriteInnerIndent();
+                writer.WriteString(value.ToString(numberFormatInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        public static void WriteInlineArrayContent(this XmlRageWriter writer, IEnumerable<uint> array)
+        {
+            writer.WriteAttributeString("content", "int_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var value in array)
+            {
+                writer.WriteInnerIndent();
+                writer.WriteString(value.ToString(numberFormatInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        public static void WriteInlineArrayContent(this XmlRageWriter writer, IEnumerable<float> array)
+        {
+            writer.WriteAttributeString("content", "float_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var value in array)
+            {
+                writer.WriteInnerIndent();
+                writer.WriteString(value.ToString(floatFormat, numberFormatInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        public static void WriteInlineArrayContent(this XmlRageWriter writer, IEnumerable<Vector3> array)
+        {
+            writer.WriteAttributeString("content", "vector3_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var value in array)
+            {
+                writer.WriteInnerIndent();
+                writer.WriteString(value.X.ToString($"{floatFormat}\t", numberFormatInfo));
+                writer.WriteString(value.Y.ToString($"{floatFormat}\t", numberFormatInfo));
+                writer.WriteString(value.Z.ToString($"{floatFormat}\t", numberFormatInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
         }
     }
 }
