@@ -64,22 +64,27 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             // Skip declaration
             reader.MoveToContent();
 
-            var rootInfo = FindAndCheckStructure(reader.Name);
+            var rootInfo = GetMetaStructureXml(GetHashForName(reader.Name));
 
             var res = ParseStructure(reader, rootInfo);
             return res;
         }
 
-        // TODO: Edit MetaInformationXml to store a dictionary for fast lookup by hash
-        public MetaStructureXml FindAndCheckStructure(string name)
+        // TODO:    Edit MetaInformationXml to store a dictionary for fast lookup by hash
+        //          do we need to check the structure??
+        public MetaStructureXml GetMetaStructureXml(int hash)
         {
-            int hash = GetHashForName(name);
-            foreach (var structure in xmlInfos.Structures)
-            {
-                if (structure.NameHash == hash)
-                    return structure;
-            }
+            foreach (var structureXml in xmlInfos.Structures)
+                if (structureXml.NameHash == hash)
+                    return structureXml;
+            return null;
+        }
 
+        public MetaEnumXml GetMetaEnumXml(int hash)
+        {
+            foreach (var enumXml in xmlInfos.Enums)
+                if (enumXml.NameHash == hash)
+                    return enumXml;
             return null;
         }
 
@@ -88,17 +93,6 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             foreach (var entryInfo in structureInfo.Entries)
                 if (entryInfo.EntryNameHash == entryInfoNameHash)
                     return entryInfo;
-
-            return null;
-        }
-
-        public MetaStructureXml FindAndCheckStructure(int hash)
-        {
-            foreach (var structure in xmlInfos.Structures)
-            {
-                if (structure.NameHash == hash)
-                    return structure;
-            }
 
             return null;
         }
@@ -367,7 +361,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                ReadEnumInt8(reader, metaValue, entryInfo.ReferenceKey);
+                                metaValue.Value = ReadEnumInt8(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
@@ -384,7 +378,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                ReadEnumInt16(reader, metaValue, entryInfo.ReferenceKey);
+                                metaValue.Value = ReadEnumInt16(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
@@ -401,7 +395,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                ReadEnumInt32(reader, metaValue, entryInfo.ReferenceKey);
+                                metaValue.Value = ReadEnumInt32(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
@@ -418,7 +412,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                ReadFlagsInt8(reader, metaValue, entryInfo.ReferenceKey);
+                                metaValue.Value = ReadFlagsUInt8(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
@@ -435,7 +429,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                ReadFlagsInt16(reader, metaValue, entryInfo.ReferenceKey);
+                                metaValue.Value = ReadFlagsUInt16(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
@@ -452,7 +446,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                ReadFlagsInt32(reader, metaValue, entryInfo.ReferenceKey);
+                                metaValue.Value = ReadFlagsUInt32(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
@@ -461,7 +455,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         }
                     case StructureEntryDataType.Structure:
                         {
-                            var xmlInfo = FindAndCheckStructure(xmlEntry.TypeHash);
+                            var xmlInfo = GetMetaStructureXml(xmlEntry.TypeHash);
                             var structureValue = ParseStructure(reader.ReadSubtree(), xmlInfo);
                             reader.ReadEndElement();
                             resultStructure.Values.Add(xmlEntry.NameHash, structureValue);
@@ -721,7 +715,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 {
                     var hash = GetHashForName(type);
                 
-                    var structure = FindAndCheckStructure(hash);
+                    var structure = GetMetaStructureXml(hash);
                     var metaValue = ParseStructure(reader.ReadSubtree(), structure);
                     pointer.Value = metaValue;
                 }
@@ -734,7 +728,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         private List<IMetaValue> ReadArrayStructure(XmlReader reader, int structureNameHash)
         {
             var entries = new List<IMetaValue>();
-            var structure = FindAndCheckStructure(structureNameHash);
+            var structure = GetMetaStructureXml(structureNameHash);
 
             reader.MoveToContent();
             while (reader.Read())
@@ -906,8 +900,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return entries;
         }
 
-        private void ReadEnumInt32(XmlReader reader, MetaEnumInt32 metaEnum, int enumNameHash)
+        private int ReadEnumInt32(XmlReader reader, int enumNameHash)
         {
+            int value = -1;
             reader.MoveToContent();
 
             if (reader.IsEmptyElement)
@@ -919,29 +914,21 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
                 if (content.Equals("enum_NONE"))
-                {
-                    metaEnum.Value = -1;
-                }
-                else
-                {
-                    var enumKey = GetHashForEnumName(content);
-                    var enumInfo = (MetaEnumXml)null;
-                    foreach (var x in xmlInfos.Enums)
-                    {
-                        if (x.NameHash == enumNameHash)
-                            enumInfo = x;
-                    }
-                    foreach (var x in enumInfo.Entries)
-                    {
-                        if (x.NameHash == enumKey)
-                            metaEnum.Value = x.Value;
-                    }
-                }          
+                    return -1;
+
+                var enumKey = GetHashForEnumName(content);
+                var enumInfo = GetMetaEnumXml(enumNameHash);
+
+                foreach (var x in enumInfo.Entries)
+                    if (x.NameHash == enumKey)
+                        return x.Value;
             }
+            return value;
         }
 
-        private void ReadEnumInt16(XmlReader reader, MetaEnumInt16 metaEnum, int enumNameHash)
+        private short ReadEnumInt16(XmlReader reader, int enumNameHash)
         {
+            short value = -1;
             reader.MoveToContent();
 
             if (reader.IsEmptyElement)
@@ -953,29 +940,21 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
                 if (content.Equals("enum_NONE"))
-                {
-                    metaEnum.Value = -1;
-                }
-                else
-                {
-                    var enumKey = GetHashForEnumName(content);
-                    var enumInfo = (MetaEnumXml)null;
-                    foreach (var x in xmlInfos.Enums)
-                    {
-                        if (x.NameHash == enumNameHash)
-                            enumInfo = x;
-                    }
-                    foreach (var x in enumInfo.Entries)
-                    {
-                        if (x.NameHash == enumKey)
-                            metaEnum.Value = (short)x.Value;
-                    }
-                }
+                    return -1;
+
+                var enumKey = GetHashForEnumName(content);
+                var enumInfo = GetMetaEnumXml(enumNameHash);
+
+                foreach (var x in enumInfo.Entries)
+                    if (x.NameHash == enumKey)
+                        return (short)x.Value;
             }
+            return value;
         }
 
-        private void ReadEnumInt8(XmlReader reader, MetaEnumInt8 metaEnum, int enumNameHash)
+        private sbyte ReadEnumInt8(XmlReader reader, int enumNameHash)
         {
+            sbyte value = -1;
             reader.MoveToContent();
 
             if (reader.IsEmptyElement)
@@ -987,29 +966,21 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
                 if (content.Equals("enum_NONE"))
-                {
-                    metaEnum.Value = -1;
-                }
-                else
-                {
-                    var enumKey = GetHashForEnumName(content);
-                    var enumInfo = (MetaEnumXml)null;
-                    foreach (var x in xmlInfos.Enums)
-                    {
-                        if (x.NameHash == enumNameHash)
-                            enumInfo = x;
-                    }
-                    foreach (var x in enumInfo.Entries)
-                    {
-                        if (x.NameHash == enumKey)
-                            metaEnum.Value = (sbyte)x.Value;
-                    }
-                }
+                    return -1;
+
+                var enumKey = GetHashForEnumName(content);
+                var enumInfo = GetMetaEnumXml(enumNameHash);
+
+                foreach (var x in enumInfo.Entries)
+                    if (x.NameHash == enumKey)
+                        return (sbyte)x.Value;
             }
+            return value;
         }
 
-        private void ReadFlagsInt8(XmlReader reader, MetaFlagsInt8 metaFlags, int enumNameHash)
+        private uint ReadFlagsUInt8(XmlReader reader, int enumNameHash)
         {
+            uint value = 0;
             reader.MoveToContent();
 
             if (reader.IsEmptyElement)
@@ -1021,12 +992,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
 
-                var enumInfo = (MetaEnumXml)null;
-                foreach (var x in xmlInfos.Enums)
-                {
-                    if (x.NameHash == enumNameHash)
-                        enumInfo = x;
-                }
+                var enumInfo = GetMetaEnumXml(enumNameHash);
 
                 var items = new SpanTokenizer(content);
                 foreach (var item in items)
@@ -1035,14 +1001,16 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     foreach (var p in enumInfo.Entries)
                     {
                         if (p.NameHash == enumKey)
-                            metaFlags.Value += (uint)(1 << p.Value);
+                            value += (uint)(1 << p.Value);
                     }
                 }
             }
+            return value;
         }
 
-        private void ReadFlagsInt16(XmlReader reader, MetaFlagsInt16 metaFlags, int enumNameHash)
+        private ushort ReadFlagsUInt16(XmlReader reader, int enumNameHash)
         {
+            ushort value = 0;
             reader.MoveToContent();
 
             if (reader.IsEmptyElement)
@@ -1054,12 +1022,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
 
-                var enumInfo = (MetaEnumXml)null;
-                foreach (var x in xmlInfos.Enums)
-                {
-                    if (x.NameHash == enumNameHash)
-                        enumInfo = x;
-                }
+                var enumInfo = GetMetaEnumXml(enumNameHash);
 
                 var items = new SpanTokenizer(content);
                 foreach (var item in items)
@@ -1068,14 +1031,16 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     foreach (var p in enumInfo.Entries)
                     {
                         if (p.NameHash == enumKey)
-                            metaFlags.Value += (ushort)(1 << p.Value);
+                            value += (ushort)(1 << p.Value);
                     }
                 }
             }
+            return value;
         }
 
-        private void ReadFlagsInt32(XmlReader reader, MetaFlagsInt32 metaFlags, int enumNameHash)
+        private uint ReadFlagsUInt32(XmlReader reader, int enumNameHash)
         {
+            uint value = 0;
             reader.MoveToContent();
 
             if (reader.IsEmptyElement)
@@ -1094,17 +1059,12 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     foreach (var item in items)
                     {
                         var enumIdx = int.Parse(item.Slice(11), NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
-                        metaFlags.Value += (uint)(1 << enumIdx);
+                        value += (uint)(1 << enumIdx);
                     }
-                    return;
+                    return value;
                 }
 
-                var enumInfo = (MetaEnumXml)null;
-                foreach (var x in xmlInfos.Enums)
-                {
-                    if (x.NameHash == enumNameHash)
-                        enumInfo = x;
-                }
+                var enumInfo = GetMetaEnumXml(enumNameHash);
 
                 foreach (var item in items)
                 {
@@ -1112,10 +1072,12 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     foreach (var p in enumInfo.Entries)
                     {
                         if (p.NameHash == enumKey)
-                            metaFlags.Value += (ushort)(1 << p.Value);
+                            value += (ushort)(1 << p.Value);
                     }
                 }
             }
+
+            return value;
         }
     }
 }
