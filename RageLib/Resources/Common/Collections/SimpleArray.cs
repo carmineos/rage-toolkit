@@ -63,11 +63,5 @@ namespace RageLib.Resources.Common
         {
             return Data.AsSpan();
         }
-
-        // TODO: Check usage to know if it's safe to return without creating a copy
-        public T[] ToArray()
-        {
-            return (T[])Data.Clone();
-        }
     }
 }

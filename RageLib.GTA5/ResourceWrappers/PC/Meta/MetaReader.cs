@@ -145,7 +145,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     var realBlockIndex = dataPointerEntry.BlockIndex - 1;
                     if (realBlockIndex >= 0)
                     {
-                        byte[] b = ToBytes(meta.DataBlocks[realBlockIndex].Data);
+                        byte[] b = meta.DataBlocks[realBlockIndex].Data.Data;
                         dataPointerEntry.Data = b;
                     }
                 }
@@ -195,7 +195,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         private List<IMetaValue> ReadBlock(DataBlock block, CreateMetaValueDelegate CreateMetaValue)
         {
             var result = new List<IMetaValue>();
-            var reader = new DataReader(new MemoryStream(ToBytes(block.Data)));
+            var reader = new DataReader(new MemoryStream(block.Data.Data));
             while (reader.Position < reader.Length)
             {
                 var value = CreateMetaValue();
@@ -203,11 +203,6 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 result.Add(value);
             }
             return result;
-        }
-
-        private byte[] ToBytes(SimpleArray<byte> data)
-        {
-            return data.ToArray();
         }
 
         public static StructureInfo GetInfo(MetaFile meta, int structureKey)

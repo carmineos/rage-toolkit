@@ -102,7 +102,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 var metaDataBlock = new DataBlock();
                 metaDataBlock.StructureNameHash = block.NameHash;
-                metaDataBlock.Data = StreamToResourceBytes(block.Stream);
+                metaDataBlock.Data = StreamToResourceBytes(block.Stream, (uint)block.NameHash == 0xED86F522);
                 meta.DataBlocks.Add(metaDataBlock);
             }
 
@@ -117,12 +117,16 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return meta;
         }
 
-        private SimpleArray<byte> StreamToResourceBytes(Stream stream)
+        private RawResourceBlock StreamToResourceBytes(Stream stream, bool graphics)
         {
             var buffer = new byte[stream.Length];
             stream.Position = 0;
             stream.Read(buffer, 0, (int)stream.Length);
-            return new SimpleArray<byte>(buffer);
+            
+            if(graphics)
+                return new RawResourceGraphicsBlock(buffer);
+            else
+                return new RawResourceSystemBlock(buffer);
         }
 
         private void MetaInitialize()
