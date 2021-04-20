@@ -107,24 +107,24 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             // TODO: Invert loop, loop on xml nodes and fill struct not the opposite!
             for (int i = 0; i < info.Entries.Count; i++)
             {
-                var xmlEntry = info.Entries[i];
-
-                var type = (StructureEntryDataType)xmlEntry.Type;
-
-                var entryInfo = GetStructureEntryInfo(resultStructure.info, xmlEntry.NameHash);
                 var name = reader.Name;
-
                 var hash = GetHashForName(name);
-
+                
+                var xmlEntry = info.Entries[i];
+                var entryInfo = GetStructureEntryInfo(resultStructure.info, xmlEntry.NameHash);
+                
                 if (xmlEntry.NameHash != hash)
                     throw new Exception($"Expected:{xmlEntry.NameHash}, Current: {hash}({reader.Name})");
+                
+                var type = (StructureEntryDataType)xmlEntry.Type;
+
+                IMetaValue metaValue = null;
 
                 switch (type)
                 {
                     case StructureEntryDataType.StringLocal:
                         {
-                            var metaValue = new MetaString(entryInfo);
-                            metaValue.Value = null;
+                            metaValue = new MetaString(entryInfo) { Value = null };
 
                             if (reader.IsEmptyElement)
                             {
@@ -134,17 +134,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             {
                                 reader.ReadStartElement();
                                 var content = reader.ReadContentAsString();
-                                metaValue.Value = content;
+                                (metaValue as MetaString).Value = content;
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.StringHash:
                         {
-                            var metaValue = new MetaStringHash();
-                            metaValue.Value = 0;
+                            metaValue = new MetaStringHash() { Value = 0 };
 
                             if (reader.IsEmptyElement)
                             {
@@ -154,17 +152,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             {
                                 reader.ReadStartElement();
                                 var content = reader.ReadContentAsString();
-                                metaValue.Value = GetHashForName(content);
+                                (metaValue as MetaStringHash).Value = GetHashForName(content);
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.StringPointer:
                         {
-                            var metaValue = new MetaStringPointer();
-                            metaValue.Value = null;
+                            metaValue = new MetaStringPointer() { Value = null };
 
                             if (reader.IsEmptyElement)
                             {
@@ -174,17 +170,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             {
                                 reader.ReadStartElement();
                                 var content = reader.ReadContentAsString();
-                                metaValue.Value = content;
+                                (metaValue as MetaStringPointer).Value = content;
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Bool:
                         {
-                            var metaValue = new MetaBool();
-                            metaValue.Value = reader.GetAttributeValueAsBool();
+                            metaValue = new MetaBool() { Value = reader.GetAttributeValueAsBool() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -195,13 +189,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.UInt8:
                         {
-                            var metaValue = new MetaByte();
-                            metaValue.Value = reader.GetAttributeValueAsByte();
+                            metaValue = new MetaByte() { Value= reader.GetAttributeValueAsByte() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -212,13 +204,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Int8:
                         {
-                            var metaValue = new MetaSByte();
-                            metaValue.Value = reader.GetAttributeValueAsSByte();
+                            metaValue = new MetaSByte() { Value = reader.GetAttributeValueAsSByte() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -229,13 +219,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.UInt16:
                         {
-                            var metaValue = new MetaUInt16();
-                            metaValue.Value = reader.GetAttributeValueAsUInt16();
+                            metaValue = new MetaUInt16() { Value = reader.GetAttributeValueAsUInt16() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -246,13 +234,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Int16:
                         {
-                            var metaValue = new MetaInt16();
-                            metaValue.Value = reader.GetAttributeValueAsInt16();
+                            metaValue = new MetaInt16() { Value = reader.GetAttributeValueAsInt16() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -263,13 +249,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.UInt32:
                         {
-                            var metaValue = new MetaUInt32();
-                            metaValue.Value = reader.GetAttributeValueAsUInt32();
+                            metaValue = new MetaUInt32() { Value = reader.GetAttributeValueAsUInt32() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -280,13 +264,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Int32:
                         {
-                            var metaValue = new MetaInt32();
-                            metaValue.Value = reader.GetAttributeValueAsInt32();
+                            metaValue = new MetaInt32() { Value = reader.GetAttributeValueAsInt32() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -297,13 +279,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Float:
                         {
-                            var metaValue = new MetaFloat();
-                            metaValue.Value = reader.GetAttributeValueAsFloat();
+                            metaValue = new MetaFloat() { Value = reader.GetAttributeValueAsFloat() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -314,13 +294,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Vector3:
                         {
-                            var metaValue = new MetaVector3();
-                            metaValue.Value = reader.GetAttributesXYZAsVector3();
+                            metaValue = new MetaVector3() { Value = reader.GetAttributesXYZAsVector3() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -331,13 +309,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Vector4:
                         {
-                            var metaValue = new MetaVector4();
-                            metaValue.Value = reader.GetAttributesXYZWAsVector4();
+                            metaValue = new MetaVector4() { Value = reader.GetAttributesXYZWAsVector4() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -348,12 +324,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.EnumInt8:
                         {
-                            var metaValue = new MetaEnumInt8();
+                            metaValue = new MetaEnumInt8();
 
                             if (reader.IsEmptyElement)
                             {
@@ -361,16 +336,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                metaValue.Value = ReadEnumInt8(reader, entryInfo.ReferenceKey);
+                                (metaValue as MetaEnumInt8).Value = ReadEnumInt8(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.EnumInt16:
                         {
-                            var metaValue = new MetaEnumInt16();
+                            metaValue = new MetaEnumInt16();
 
                             if (reader.IsEmptyElement)
                             {
@@ -378,16 +352,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                metaValue.Value = ReadEnumInt16(reader, entryInfo.ReferenceKey);
+                                (metaValue as MetaEnumInt16).Value = ReadEnumInt16(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.EnumInt32:
                         {
-                            var metaValue = new MetaEnumInt32();
+                            metaValue = new MetaEnumInt32();
 
                             if (reader.IsEmptyElement)
                             {
@@ -395,16 +368,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                metaValue.Value = ReadEnumInt32(reader, entryInfo.ReferenceKey);
+                                (metaValue as MetaEnumInt32).Value = ReadEnumInt32(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.FlagsInt8:
                         {
-                            var metaValue = new MetaFlagsInt8();
+                            metaValue = new MetaFlagsInt8();
 
                             if (reader.IsEmptyElement)
                             {
@@ -412,16 +384,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                metaValue.Value = ReadFlagsUInt8(reader, entryInfo.ReferenceKey);
+                                (metaValue as MetaFlagsInt8).Value = ReadFlagsUInt8(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.FlagsInt16:
                         {
-                            var metaValue = new MetaFlagsInt16();
+                            metaValue = new MetaFlagsInt16();
 
                             if (reader.IsEmptyElement)
                             {
@@ -429,16 +400,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                metaValue.Value = ReadFlagsUInt16(reader, entryInfo.ReferenceKey);
+                                (metaValue as MetaFlagsInt16).Value = ReadFlagsUInt16(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.FlagsInt32:
                         {
-                            var metaValue = new MetaFlagsInt32();
+                            metaValue = new MetaFlagsInt32();
 
                             if (reader.IsEmptyElement)
                             {
@@ -446,24 +416,31 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                             else
                             {
-                                metaValue.Value = ReadFlagsUInt32(reader, entryInfo.ReferenceKey);
+                                (metaValue as MetaFlagsInt32).Value = ReadFlagsUInt32(reader, entryInfo.ReferenceKey);
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.Structure:
                         {
-                            var xmlInfo = GetMetaStructureXml(xmlEntry.TypeHash);
-                            var structureValue = ParseStructure(reader.ReadSubtree(), xmlInfo);
-                            reader.ReadEndElement();
-                            resultStructure.Values.Add(xmlEntry.NameHash, structureValue);
+                            if (reader.IsEmptyElement)
+                            {
+                                reader.ReadStartElement();
+                            }
+                            else
+                            {
+                                var xmlInfo = GetMetaStructureXml(xmlEntry.TypeHash);
+                                metaValue = ParseStructure(reader.ReadSubtree(), xmlInfo);
+                                reader.ReadEndElement();
+                            }
+
                             break;
                         }
                     case StructureEntryDataType.Array:
                         {
-                            MetaArray metaValue = new MetaArray();
+                            metaValue = new MetaArray() { info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex] };
+
                             if (reader.IsEmptyElement)
                             {
                                 reader.ReadStartElement();
@@ -475,35 +452,35 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 switch (arrayType)
                                 {
                                     case StructureEntryDataType.StructurePointer:
-                                        metaValue.Entries = ReadArrayStructurePointer(reader.ReadSubtree());
+                                        (metaValue as MetaArray).Entries = ReadArrayStructurePointer(reader.ReadSubtree());
                                         break;
 
                                     case StructureEntryDataType.Structure:
-                                        metaValue.Entries = ReadArrayStructure(reader.ReadSubtree(), xmlEntry.ArrayType.TypeHash);
+                                        (metaValue as MetaArray).Entries = ReadArrayStructure(reader.ReadSubtree(), xmlEntry.ArrayType.TypeHash);
                                         break;
 
                                     case StructureEntryDataType.StringHash:
-                                        metaValue.Entries = ReadArrayHash(reader.ReadSubtree());
+                                        (metaValue as MetaArray).Entries = ReadArrayHash(reader.ReadSubtree());
                                         break;
 
                                     case StructureEntryDataType.UInt8:
-                                        metaValue.Entries = ReadArrayUInt8(reader.ReadSubtree());
+                                        (metaValue as MetaArray).Entries = ReadArrayUInt8(reader.ReadSubtree());
                                         break;
 
                                     case StructureEntryDataType.UInt16:
-                                        metaValue.Entries = ReadArrayUInt16(reader.ReadSubtree());
+                                        (metaValue as MetaArray).Entries = ReadArrayUInt16(reader.ReadSubtree());
                                         break;
 
                                     case StructureEntryDataType.UInt32:
-                                        metaValue.Entries = ReadArrayUInt32(reader.ReadSubtree());
+                                        (metaValue as MetaArray).Entries = ReadArrayUInt32(reader.ReadSubtree());
                                         break;
 
                                     case StructureEntryDataType.Float:
-                                        metaValue.Entries = ReadArrayFloat(reader.ReadSubtree());
+                                        (metaValue as MetaArray).Entries = ReadArrayFloat(reader.ReadSubtree());
                                         break;
 
                                     case StructureEntryDataType.Vector3:
-                                        metaValue.Entries = ReadArrayVector3(reader.ReadSubtree());
+                                        (metaValue as MetaArray).Entries = ReadArrayVector3(reader.ReadSubtree());
                                         break;
 
                                     default:
@@ -513,14 +490,10 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            metaValue.info = resultStructure.info.Entries[entryInfo.ReferenceTypeIndex];
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
                     case StructureEntryDataType.ArrayLocal:
                         {
-                            MetaArrayLocal metaValue = null;
-
                             if (reader.IsEmptyElement)
                             {
                                 reader.ReadStartElement();
@@ -558,14 +531,12 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }
 
                     case StructureEntryDataType.DataBlockPointer:
                         {
-                            MetaDataBlockPointer metaValue = new MetaDataBlockPointer(entryInfo);
-                            metaValue.Data = null;
+                            metaValue = new MetaDataBlockPointer(entryInfo) { Data = null };
 
                             if (reader.IsEmptyElement)
                             {
@@ -575,15 +546,16 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             {
                                 reader.ReadStartElement();
                                 var content = reader.ReadContentAsString();
-                                metaValue.Data = StringParseHelpers.ParseItemsAsUInt8(content).ToArray();
+                                (metaValue as MetaDataBlockPointer).Data = StringParseHelpers.ParseItemsAsUInt8(content).ToArray();
                                 reader.ReadEndElement();
                             }
 
-                            resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
                             break;
                         }                   
                     default: throw new Exception($"Unsupported DataType: {type}");
                 }
+
+                resultStructure.Values.Add(xmlEntry.NameHash, metaValue);
             }
 
             return resultStructure;
