@@ -97,6 +97,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     meta.EnumInfos.RemoveAt(e);
             }
 
+            if (meta.EnumInfos.Count < 1)
+                meta.EnumInfos = null;
+
             meta.DataBlocks = new ResourceSimpleArray<DataBlock>();
             foreach (var block in writer.Blocks)
             {
