@@ -60,30 +60,30 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             foreach (var block in meta.DataBlocks)
             {
                 blockKeys.Add(block.StructureNameHash);
-                switch ((StructureEntryDataType)block.StructureNameHash)
+                switch (block.StructureNameHash)
                 {
-                    case StructureEntryDataType.StructurePointer:
+                    case (int)StructureEntryDataType.StructurePointer:
                         blocks.Add(ReadBlock(block, () => new MetaGeneric())); // has no special type declaration in .meta -> pointer
                         break;
-                    case StructureEntryDataType.Int8:
+                    case (int)StructureEntryDataType.Int8:
                         blocks.Add(ReadBlock(block, () => new MetaSByte())); // char_array
                         break;
-                    case StructureEntryDataType.UInt8:
+                    case (int)StructureEntryDataType.UInt8:
                         blocks.Add(ReadBlock(block, () => new MetaByte()));  // has no special type declaration in .meta -> string
                         break;
-                    case StructureEntryDataType.UInt16:
+                    case (int)StructureEntryDataType.UInt16:
                         blocks.Add(ReadBlock(block, () => new MetaUInt16())); // probably short_array
                         break;
-                    case StructureEntryDataType.UInt32:
+                    case (int)StructureEntryDataType.UInt32:
                         blocks.Add(ReadBlock(block, () => new MetaUInt32())); // int_array
                         break;
-                    case StructureEntryDataType.Float:
+                    case (int)StructureEntryDataType.Float:
                         blocks.Add(ReadBlock(block, () => new MetaFloat())); // float_array
                         break;
-                    case StructureEntryDataType.Vector3:
+                    case (int)StructureEntryDataType.Vector3:
                         blocks.Add(ReadBlock(block, () => new MetaVector3())); // vector3_array
                         break;
-                    case StructureEntryDataType.StringHash:
+                    case (int)StructureEntryDataType.StringHash:
                         blocks.Add(ReadBlock(block, () => new MetaStringHash())); // probably list of <Item>HASH_OF_SOME_NAME</Item>
                         break;
                     default:
