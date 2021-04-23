@@ -25,6 +25,27 @@ using System;
 
 namespace RageLib.Resources.GTA5.PC.Fragments
 {
+    [Flags]
+    public enum FragTypeGroupFlags : ushort
+    {
+        Unknown_1 = 0x1,
+        Unknown_2 = 0x2,
+        Unknown_3 = 0x4,
+        Unknown_4 = 0x8,
+        Unknown_5 = 0x10,
+        Unknown_6 = 0x20,
+        Unknown_7 = 0x40,
+        Unknown_8 = 0x80,
+        DisappearsWhenDead = 0x100,
+        Unknown_10 = 0x200,
+        Unknown_11 = 0x400,
+        Unknown_12 = 0x800,
+        Unknown_13 = 0x1000,
+        Unknown_14 = 0x2000,
+        Unknown_15 = 0x4000,
+        Unknown_16 = 0x8000,
+    }
+
     public class FragTypeGroup : ResourceSystemBlock
     {
         public override long BlockLength => 0xB0;
@@ -55,8 +76,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public byte Unknown_4Fh;
         public byte Unknown_50h;
         public byte Unknown_51h;
-        public byte Unknown_52h;
-        public byte Unknown_53h; // disappearsWhenDead ?
+        public FragTypeGroupFlags GroupFlags;
         public float MinDamageForce;
         public float DamageHealth;
         public float Unknown_5Ch;
@@ -105,8 +125,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.Unknown_4Fh = reader.ReadByte();
             this.Unknown_50h = reader.ReadByte();
             this.Unknown_51h = reader.ReadByte();
-            this.Unknown_52h = reader.ReadByte();
-            this.Unknown_53h = reader.ReadByte();
+            this.GroupFlags = (FragTypeGroupFlags)reader.ReadUInt16();
             this.MinDamageForce = reader.ReadSingle();
             this.DamageHealth = reader.ReadSingle();
             this.Unknown_5Ch = reader.ReadSingle();
@@ -156,8 +175,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.Unknown_4Fh);
             writer.Write(this.Unknown_50h);
             writer.Write(this.Unknown_51h);
-            writer.Write(this.Unknown_52h);
-            writer.Write(this.Unknown_53h);
+            writer.Write((ushort)this.GroupFlags);
             writer.Write(this.MinDamageForce);
             writer.Write(this.DamageHealth);
             writer.Write(this.Unknown_5Ch);

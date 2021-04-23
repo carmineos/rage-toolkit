@@ -64,8 +64,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public uint Unknown_C4h;
         public uint Unknown_C8h; // 0xFFFFFFFF
         public uint Unknown_CCh;
-        public float Unknown_D0h;
-        public float Unknown_D4h;
+        public float GravityMultiplier;
+        public float BuoyancyMultiplier;
         public byte Unknown_D8h;
         public byte GlassPaneModelInfosCount;
         public ushort Unknown_DAh;
@@ -127,8 +127,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.Unknown_C4h = reader.ReadUInt32();
             this.Unknown_C8h = reader.ReadUInt32();
             this.Unknown_CCh = reader.ReadUInt32();
-            this.Unknown_D0h = reader.ReadSingle();
-            this.Unknown_D4h = reader.ReadSingle();
+            this.GravityMultiplier = reader.ReadSingle();
+            this.BuoyancyMultiplier = reader.ReadSingle();
             this.Unknown_D8h = reader.ReadByte();
             this.GlassPaneModelInfosCount = reader.ReadByte();
             this.Unknown_DAh = reader.ReadUInt16();
@@ -223,8 +223,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.Unknown_C4h);
             writer.Write(this.Unknown_C8h);
             writer.Write(this.Unknown_CCh);
-            writer.Write(this.Unknown_D0h);
-            writer.Write(this.Unknown_D4h);
+            writer.Write(this.GravityMultiplier);
+            writer.Write(this.BuoyancyMultiplier);
             writer.Write(this.Unknown_D8h);
             writer.Write(this.GlassPaneModelInfosCount);
             writer.Write(this.Unknown_DAh);
