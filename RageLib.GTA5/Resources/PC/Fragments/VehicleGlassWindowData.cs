@@ -21,6 +21,7 @@
 */
 
 using System;
+using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Fragments
 {
@@ -100,25 +101,16 @@ namespace RageLib.Resources.GTA5.PC.Fragments
     {
         public override long BlockLength => 0x70 + Chunk.Length;
 
-        public float Unknown_00h;
-        public float Unknown_04h;
-        public float Unknown_08h;
-        public float Unknown_0Ch;
-        public float Unknown_10h;
-        public float Unknown_14h;
-        public float Unknown_18h;
-        public float Unknown_1Ch;
-        public float Unknown_20h;
-        public float Unknown_24h;
-        public float Unknown_28h;
-        public float Unknown_2Ch;
-        public float Unknown_30h;
-        public float Unknown_34h;
-        public float Unknown_38h;
-        public float Unknown_3Ch;
+        public Vector4 Unknown_00h;
+        public Vector4 Unknown_10h;
+        public Vector4 Unknown_20h;
+        public Vector2 Unknown_30h;
+        public Vector2 Unknown_38h;
         public uint Id; // VGWC: 0x56475743
-        public uint Unknown_44h;
-        public uint Unknown_48h;
+        public ushort GroupIndex;
+        public ushort Unknown_46h;
+        public ushort Unknown_48h;
+        public ushort Unknown_4Ah;
         public ushort ChunkSize;
         public ushort Unknown_4Eh;
         public uint Unknown_50h;
@@ -133,25 +125,16 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
-            Unknown_00h = reader.ReadSingle();
-            Unknown_04h = reader.ReadSingle();
-            Unknown_08h = reader.ReadSingle();
-            Unknown_0Ch = reader.ReadSingle();
-            Unknown_10h = reader.ReadSingle();
-            Unknown_14h = reader.ReadSingle();
-            Unknown_18h = reader.ReadSingle();
-            Unknown_1Ch = reader.ReadSingle();
-            Unknown_20h = reader.ReadSingle();
-            Unknown_24h = reader.ReadSingle();
-            Unknown_28h = reader.ReadSingle();
-            Unknown_2Ch = reader.ReadSingle();
-            Unknown_30h = reader.ReadSingle();
-            Unknown_34h = reader.ReadSingle();
-            Unknown_38h = reader.ReadSingle();
-            Unknown_3Ch = reader.ReadSingle();
+            Unknown_00h = reader.ReadVector4();
+            Unknown_10h = reader.ReadVector4();
+            Unknown_20h = reader.ReadVector4();
+            Unknown_30h = reader.ReadVector2();
+            Unknown_38h = reader.ReadVector2();
             Id = reader.ReadUInt32();
-            Unknown_44h = reader.ReadUInt32();
-            Unknown_48h = reader.ReadUInt32();
+            GroupIndex = reader.ReadUInt16();
+            Unknown_46h = reader.ReadUInt16();
+            Unknown_48h = reader.ReadUInt16();
+            Unknown_4Ah = reader.ReadUInt16();
             ChunkSize = reader.ReadUInt16();
             Unknown_4Eh = reader.ReadUInt16();
             Unknown_50h = reader.ReadUInt32();
@@ -171,24 +154,15 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             writer.Write(Unknown_00h);
-            writer.Write(Unknown_04h);
-            writer.Write(Unknown_08h);
-            writer.Write(Unknown_0Ch);
             writer.Write(Unknown_10h);
-            writer.Write(Unknown_14h);
-            writer.Write(Unknown_18h);
-            writer.Write(Unknown_1Ch);
             writer.Write(Unknown_20h);
-            writer.Write(Unknown_24h);
-            writer.Write(Unknown_28h);
-            writer.Write(Unknown_2Ch);
             writer.Write(Unknown_30h);
-            writer.Write(Unknown_34h);
             writer.Write(Unknown_38h);
-            writer.Write(Unknown_3Ch);
             writer.Write(Id);
-            writer.Write(Unknown_44h);
+            writer.Write(GroupIndex);
+            writer.Write(Unknown_46h);
             writer.Write(Unknown_48h);
+            writer.Write(Unknown_4Ah);
             writer.Write(ChunkSize);
             writer.Write(Unknown_4Eh);
             writer.Write(Unknown_50h);
