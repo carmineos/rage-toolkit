@@ -201,11 +201,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             mat.M44 = FloatHelpers.SignalingNaN;
 
             Matrix4x4[] matrices = new Matrix4x4[NumBounds];
-
-            for (int i = 0; i < NumBounds; i++)
-            {
-                matrices[i] = mat;
-            }
+            matrices.AsSpan().Fill(mat);
 
             CurrentMatrices = new SimpleArray<Matrix4x4>(matrices);
             LastMatrices = new SimpleArray<Matrix4x4>((Matrix4x4[])matrices.Clone());
