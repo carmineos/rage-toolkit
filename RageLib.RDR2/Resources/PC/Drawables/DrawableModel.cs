@@ -1,4 +1,5 @@
-﻿using RageLib.Resources.Common;
+﻿using RageLib.Numerics;
+using RageLib.Resources.Common;
 
 namespace RageLib.Resources.RDR2.PC.Drawables
 {

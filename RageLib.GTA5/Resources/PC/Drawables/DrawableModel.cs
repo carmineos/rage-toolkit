@@ -20,6 +20,7 @@
     THE SOFTWARE.
 */
 
+using RageLib.Numerics;
 using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
