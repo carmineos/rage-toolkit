@@ -101,11 +101,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
     {
         public override long BlockLength => 0x70 + Chunk.Length;
 
-        public Vector4 Unknown_00h;
-        public Vector4 Unknown_10h;
-        public Vector4 Unknown_20h;
-        public Vector2 Unknown_30h;
-        public Vector2 Unknown_38h;
+        public Matrix4x4 ProjectionMatrix;
         public uint Id; // VGWC: 0x56475743
         public ushort GroupIndex;
         public ushort Unknown_46h;
@@ -125,11 +121,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
-            Unknown_00h = reader.ReadVector4();
-            Unknown_10h = reader.ReadVector4();
-            Unknown_20h = reader.ReadVector4();
-            Unknown_30h = reader.ReadVector2();
-            Unknown_38h = reader.ReadVector2();
+            ProjectionMatrix = reader.ReadMatrix4x4();
             Id = reader.ReadUInt32();
             GroupIndex = reader.ReadUInt16();
             Unknown_46h = reader.ReadUInt16();
@@ -153,11 +145,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
-            writer.Write(Unknown_00h);
-            writer.Write(Unknown_10h);
-            writer.Write(Unknown_20h);
-            writer.Write(Unknown_30h);
-            writer.Write(Unknown_38h);
+            writer.Write(ProjectionMatrix);
             writer.Write(Id);
             writer.Write(GroupIndex);
             writer.Write(Unknown_46h);
