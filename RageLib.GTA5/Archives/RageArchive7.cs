@@ -45,7 +45,7 @@ namespace RageLib.GTA5.Archives
         uint FileSize { get; set; }
     }
 
-    public enum RageArchiveEncryption7
+    public enum RageArchiveEncryption7 : uint
     {
         None = 0,
         OPEN = 0x4E45504F,
@@ -62,7 +62,6 @@ namespace RageLib.GTA5.Archives
 
         public RageArchiveEncryption7 Encryption { get; set; }
 
-        private bool LeaveOpen;
         public Stream BaseStream { get; private set; }
 
         public RageArchiveDirectory7 Root { get; set; }
@@ -70,10 +69,9 @@ namespace RageLib.GTA5.Archives
         /// <summary>
         /// Creates an RPFv7 archive.
         /// </summary>
-        public RageArchive7(Stream fileStream, bool leaveOpen = false)
+        public RageArchive7(Stream fileStream)
         {
             BaseStream = fileStream;
-            LeaveOpen = leaveOpen;
         }
 
         /// <summary>
@@ -91,47 +89,43 @@ namespace RageLib.GTA5.Archives
 
             uint header_entriesCount = reader.ReadUInt32();
             uint header_namesLength = reader.ReadUInt32();
-            uint header_encryption = reader.ReadUInt32();
+            var header_encryption = (RageArchiveEncryption7)reader.ReadUInt32();
 
-            byte[] entries_data_dec = null;
-            byte[] names_data_dec = null;
+            byte[] entries_data_dec = reader.ReadBytes(16 * (int)header_entriesCount);
+            byte[] names_data_dec = reader.ReadBytes((int)header_namesLength);
 
-            if (header_encryption == 0x4E45504F) // for OpenIV compatibility
+            switch (header_encryption)
             {
-                // no encryption...
-                Encryption = RageArchiveEncryption7.None;
-                entries_data_dec = reader.ReadBytes(16 * (int)header_entriesCount);
-                names_data_dec = reader.ReadBytes((int)header_namesLength);
-
+                case RageArchiveEncryption7.None:
+                case RageArchiveEncryption7.OPEN:   // for OpenIV compatibility
+                    // no encryption...
+                    Encryption = RageArchiveEncryption7.None;
+                    break;
+                case RageArchiveEncryption7.AES:
+                    // AES encryption...                
+                    Encryption = RageArchiveEncryption7.AES;
+                    entries_data_dec = AesEncryption.DecryptData(entries_data_dec, aesKey);
+                    names_data_dec = AesEncryption.DecryptData(names_data_dec, aesKey);
+                    break;
+                case RageArchiveEncryption7.NG:
+                    // NG encryption...
+                    Encryption = RageArchiveEncryption7.NG;
+                    entries_data_dec = GTA5Crypto.Decrypt(entries_data_dec, ngKey);
+                    names_data_dec = GTA5Crypto.Decrypt(names_data_dec, ngKey);
+                    break;
+                default:
+                    throw new Exception($"Unknown RPF7 encryption type: {header_encryption.ToString("X8")}");
             }
-            else if (header_encryption == 0x0FFFFFF9)
-            {
-                // AES enceyption...                
-
-                Encryption = RageArchiveEncryption7.AES;
-
-                var entries_data = reader.ReadBytes(16 * (int)header_entriesCount);
-                entries_data_dec = AesEncryption.DecryptData(entries_data, aesKey);
-
-                var names_data = reader.ReadBytes((int)header_namesLength);
-                names_data_dec = AesEncryption.DecryptData(names_data, aesKey);
-            }
-            else if (header_encryption == 0x0FEFFFFF)
-            {
-                // NG encryption...
-
-                Encryption = RageArchiveEncryption7.NG;
-
-                var entries_data = reader.ReadBytes(16 * (int)header_entriesCount);
-                entries_data_dec = GTA5Crypto.Decrypt(entries_data, ngKey);
-
-                var names_data = reader.ReadBytes((int)header_namesLength);
-                names_data_dec = GTA5Crypto.Decrypt(names_data, ngKey);
-            }
-            else throw new Exception("Unknown RPF7 encryption type");
 
             var entries_reader = new DataReader(new MemoryStream(entries_data_dec));
             var names_reader = new DataReader(new MemoryStream(names_data_dec));
+
+            // Ensure root is a directory, if not then probably decryption failed
+            uint tmp = entries_reader.ReadUInt32();
+            tmp = entries_reader.ReadUInt32();
+            if (tmp != 0x7fffff00)
+                throw new Exception("Root of RPF7 isn't a directory");
+            entries_reader.Position -= 8;
 
             var entries = new List<IRageArchiveEntry7>();
             for (var index = 0; index < header_entriesCount; index++)
@@ -146,9 +140,6 @@ namespace RageLib.GTA5.Archives
                     var e = new RageArchiveDirectory7();
                     e.Read(entries_reader);
 
-                    names_reader.Position = e.NameOffset;
-                    e.Name = names_reader.ReadString();
-
                     entries.Add(e);
                 }
                 else
@@ -158,9 +149,6 @@ namespace RageLib.GTA5.Archives
                         // binary file
                         var e = new RageArchiveBinaryFile7();
                         e.Read(entries_reader);
-
-                        names_reader.Position = e.NameOffset;
-                        e.Name = names_reader.ReadString();
 
                         entries.Add(e);
                     }
@@ -179,27 +167,39 @@ namespace RageLib.GTA5.Archives
                             e.FileSize = ((uint)buf[7] << 0) | ((uint)buf[14] << 8) | ((uint)buf[5] << 16) | ((uint)buf[2] << 24);
                         }
 
-                        names_reader.Position = e.NameOffset;
-                        e.Name = names_reader.ReadString();
-                        
                         entries.Add(e);
                     }
                 }
             }
 
+            // Read the names of the entries
+            foreach(var e in entries)
+            {
+                names_reader.Position = e.NameOffset;
+                e.Name = names_reader.ReadString();
+            }
+
+            BuildEntriesTree(entries);
+
+            reader.Position = posbak;
+        }
+
+        private void BuildEntriesTree(List<IRageArchiveEntry7> entries)
+        {
             var stack = new Stack<RageArchiveDirectory7>();
             stack.Push((RageArchiveDirectory7)entries[0]);
             Root = (RageArchiveDirectory7)entries[0];
+            
             while (stack.Count > 0)
             {
                 var item = stack.Pop();
 
                 for (int index = (int)item.EntriesIndex; index < (item.EntriesIndex + item.EntriesCount); index++)
                 {
-                    if (entries[index] is RageArchiveDirectory7)
+                    if (entries[index] is RageArchiveDirectory7 directoryEntry)
                     {
-                        item.Directories.Add(entries[index] as RageArchiveDirectory7);
-                        stack.Push(entries[index] as RageArchiveDirectory7);
+                        item.Directories.Add(directoryEntry);
+                        stack.Push(directoryEntry);
                     }
                     else
                     {
@@ -207,8 +207,6 @@ namespace RageLib.GTA5.Archives
                     }
                 }
             }
-
-            reader.Position = posbak;
         }
 
         /// <summary>
@@ -356,23 +354,15 @@ namespace RageLib.GTA5.Archives
             writer.Write((uint)entries.Count);
             writer.Write((uint)n_buf.Length);
 
-            switch (Encryption)
+            if (Encryption == RageArchiveEncryption7.None)
             {
-                case RageArchiveEncryption7.None:
-                    writer.Write((uint)0x04E45504F);
-                    break;
-                case RageArchiveEncryption7.AES:
-                    writer.Write((uint)0x0ffffff9);
-                    break;
-                case RageArchiveEncryption7.NG:
-                    writer.Write((uint)0x0fefffff);
-                    break;
+                // For OpenIV compatibility
+                Encryption = RageArchiveEncryption7.OPEN;
             }
 
+            writer.Write((uint)Encryption);
             writer.Write(ent_buf);
             writer.Write(n_buf);
-
-
 
             // restore position
             BaseStream.Position = positionBackup;
@@ -460,7 +450,7 @@ namespace RageLib.GTA5.Archives
 
             FileUncompressedSize = reader.ReadUInt32();
             EncryptionType = reader.ReadUInt32();
-            
+
             switch (EncryptionType)
             {
                 case 0: IsEncrypted = false; break;
@@ -505,22 +495,13 @@ namespace RageLib.GTA5.Archives
         public uint NameOffset { get; set; }
         public uint FileSize { get; set; }
         public uint FileOffset { get; set; }
-        public ResourceChunkFlags VirtualFlags { get; set; }
-        public ResourceChunkFlags PhysicalFlags { get; set; }
+        public DatResourceInfo ResourceInfo { get; set; }
 
-        public int Version
-        {
-            get
-            {
-                var vf = (VirtualFlags >> 28) & 0xF;
-                var pf = (PhysicalFlags >> 28) & 0xF;
-                return (int)((vf << 4) + pf);
-            }
-        }
+        public int Version => ResourceInfo.Version;
 
-        public int VirtualSize => (int)VirtualFlags.Size;
+        public uint VirtualSize => ((ResourceChunkFlags)ResourceInfo.VirtualFlags).Size;
 
-        public int PhysicalSize => (int)PhysicalFlags.Size;
+        public uint PhysicalSize => ((ResourceChunkFlags)ResourceInfo.PhysicalFlags).Size;
 
         public string Name { get; set; }
         /// <summary>
@@ -536,8 +517,10 @@ namespace RageLib.GTA5.Archives
             var buf2 = reader.ReadBytes(3);
             FileOffset = ((uint)buf2[0] + (uint)(buf2[1] << 8) + (uint)(buf2[2] << 16)) & 0x7FFFFF;
 
-            VirtualFlags = reader.ReadUInt32();
-            PhysicalFlags = reader.ReadUInt32();
+            var VirtualFlags = reader.ReadUInt32();
+            var PhysicalFlags = reader.ReadUInt32();
+
+            ResourceInfo = new DatResourceInfo(VirtualFlags, PhysicalFlags);
         }
 
         /// <summary>
@@ -561,8 +544,8 @@ namespace RageLib.GTA5.Archives
             };
             writer.Write(buf2);
 
-            writer.Write(VirtualFlags);
-            writer.Write(PhysicalFlags);
+            writer.Write(ResourceInfo.VirtualFlags);
+            writer.Write(ResourceInfo.PhysicalFlags);
         }
     }
 }

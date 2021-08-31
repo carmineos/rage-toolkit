@@ -24,6 +24,7 @@ using RageLib.Archives;
 using RageLib.Data;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.Cryptography;
+using RageLib.Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,24 +36,42 @@ namespace RageLib.GTA5.ArchiveWrappers
     /// </summary>
     public class RageArchiveWrapper7 : IArchive
     {
-        public static int BLOCK_SIZE = 512;
+        public const int BLOCK_SIZE = 0x200;
 
-        public RageArchive7 archive_;
+        /// <summary>
+        /// The RPF7 archive
+        /// </summary>
+        private RageArchive7 archive;
 
+        /// <summary>
+        /// The encryption of the archive
+        /// </summary>
+        public RageArchiveEncryption7 Encryption
+        {
+            get => archive.Encryption;
+            set => archive.Encryption = value;
+        }
+
+        /// <summary>
+        /// The filename of the archive
+        /// </summary>
         public string FileName { get; set; }
 
         /// <summary>
         /// Gets the root directory of the archive.
         /// </summary>
-        public IArchiveDirectory Root
-        {
-            get { return new RageArchiveDirectoryWrapper7(this, archive_.Root); }
-        }
+        public IArchiveDirectory Root => new RageArchiveDirectoryWrapper7(this, archive.Root);
+
+        /// <summary>
+        /// A flag to indicate if the archive should be left open 
+        /// </summary>
+        public bool LeaveOpen { get; set; }
 
         private RageArchiveWrapper7(Stream stream, string fileName, bool leaveOpen = false)
         {
-            archive_ = new RageArchive7(stream, leaveOpen);
+            archive = new RageArchive7(stream);
             this.FileName = fileName;
+            this.LeaveOpen = leaveOpen;
             //  archive_.ReadHeader();
         }
 
@@ -73,7 +92,7 @@ namespace RageLib.GTA5.ArchiveWrappers
                 if (maxheaderlength < headerSize)
                 {
                     long newpos = ArchiveHelpers.FindOffset(blocks, blocks[1].Length, 512);
-                    ArchiveHelpers.MoveBytes(archive_.BaseStream, blocks[1].Offset, newpos, blocks[1].Length);
+                    ArchiveHelpers.MoveBytes(archive.BaseStream, blocks[1].Offset, newpos, blocks[1].Length);
                     ((IRageArchiveFileEntry7)blocks[1].Tag).FileOffset = (uint)(newpos / 512);
 
                     blocks = GetBlocks();
@@ -88,11 +107,11 @@ namespace RageLib.GTA5.ArchiveWrappers
 
 
             // calculate key...
-            var indexKey = GTA5Crypto.GetKeyIndex(FileName, (uint)archive_.BaseStream.Length);
+            var indexKey = GTA5Crypto.GetKeyIndex(FileName, (uint)archive.BaseStream.Length);
 
             //  archive_.key_ = GTA5Crypto.key_gta5;
-            archive_.WriteHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]);
-            archive_.BaseStream.Flush();
+            archive.WriteHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]);
+            archive.BaseStream.Flush();
 
         }
 
@@ -101,40 +120,60 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void Dispose()
         {
-            if (archive_ != null)
-                archive_.Dispose();
+            if (archive != null)
+                archive.Dispose();
 
-            archive_ = null;
+            archive = null;
         }
 
         /////////////////////////////////////////////////////////////////////////////
         // helper functions
         /////////////////////////////////////////////////////////////////////////////
 
-        internal Stream GetStream(RageArchiveBinaryFile7 file_)
+        internal Stream GetStream(RageArchiveBinaryFile7 file)
         {
 
             return new PartialStream(
-                    archive_.BaseStream,
+                    archive.BaseStream,
                     delegate () // offset
                     {
-                        return 512 * file_.FileOffset;
+                        return BLOCK_SIZE * file.FileOffset;
                     },
                     delegate () // size
                     {
-                        if (file_.FileSize != 0)
-                            return file_.FileSize; // compressed
+                        if (file.FileSize != 0)
+                            return file.FileSize; // compressed
                         else
-                            return file_.FileUncompressedSize; // uncompressed
+                            return file.FileUncompressedSize; // uncompressed
                     },
                     delegate (long newLength)
                     {
-                        RequestBytes(file_, newLength);
+                        RequestBytes(file, newLength);
                     }
                 );
 
         }
 
+        /// <summary>
+        /// Gets the stream to a resource file
+        /// </summary>
+        /// <param name="file">The wrapper to the resource file</param>
+        /// <returns>The stream</returns>
+        internal Stream GetStream(RageArchiveResourceFile7 file)
+        {
+
+            return new PartialStream(
+                    archive.BaseStream,
+                   delegate () // offset
+                   {
+                       return file.FileOffset * BLOCK_SIZE;
+                   },
+                   delegate () // size
+                   {
+                       return file.FileSize;
+                   }
+               );
+        }
 
 
 
@@ -148,7 +187,7 @@ namespace RageLib.GTA5.ArchiveWrappers
             long len = 16;
 
             var st = new Stack<RageArchiveDirectory7>();
-            st.Push(archive_.Root);
+            st.Push(archive.Root);
             while (st.Count > 0)
             {
                 var x = st.Pop();
@@ -187,7 +226,7 @@ namespace RageLib.GTA5.ArchiveWrappers
             );
 
             var st = new Stack<RageArchiveDirectory7>();
-            st.Push(archive_.Root);
+            st.Push(archive.Root);
             while (st.Count > 0)
             {
                 var x = st.Pop();
@@ -253,7 +292,7 @@ namespace RageLib.GTA5.ArchiveWrappers
                 // move...
 
                 long offset = ArchiveHelpers.FindOffset(blocks, newLength, 512);
-                ArchiveHelpers.MoveBytes(archive_.BaseStream, thisBlock.Offset, offset, thisBlock.Length);
+                ArchiveHelpers.MoveBytes(archive.BaseStream, thisBlock.Offset, offset, thisBlock.Length);
                 ((IRageArchiveFileEntry7)thisBlock.Tag).FileOffset = (uint)offset / 512;
 
             }
@@ -281,16 +320,13 @@ namespace RageLib.GTA5.ArchiveWrappers
                 // move...
 
                 long offset = ArchiveHelpers.FindOffset(blocks, newLength, 512);
-                ArchiveHelpers.MoveBytes(archive_.BaseStream, thisBlock.Offset, offset, thisBlock.Length);
+                ArchiveHelpers.MoveBytes(archive.BaseStream, thisBlock.Offset, offset, thisBlock.Length);
                 ((IRageArchiveFileEntry7)thisBlock.Tag).FileOffset = (uint)offset / 512;
 
             }
 
             file_.FileSize = (uint)newLength;
         }
-
-
-
 
 
 
@@ -303,28 +339,16 @@ namespace RageLib.GTA5.ArchiveWrappers
         {
             var finfo = new FileInfo(fileName);
             var fs = new FileStream(fileName, FileMode.Create);
-            var arch = new RageArchiveWrapper7(fs, finfo.Name, false);
-
-
-            var rootD = new RageArchiveDirectory7();
-            rootD.Name = "";
-            arch.archive_.Root = rootD;
-
-
-            //   arch.archive_.WriteHeader(); // write...
-            return arch;
+            return Create(fs, finfo.Name, false);
         }
 
         public static RageArchiveWrapper7 Create(Stream stream, string fileName, bool leaveOpen = false)
         {
             var arch = new RageArchiveWrapper7(stream, fileName, leaveOpen);
-
-
+            
             var rootD = new RageArchiveDirectory7();
             rootD.Name = "";
-            arch.archive_.Root = rootD;
-
-
+            arch.archive.Root = rootD;
             // arch.archive_.WriteHeader(); // write...
             return arch;
         }
@@ -342,11 +366,11 @@ namespace RageLib.GTA5.ArchiveWrappers
                     // calculate key...
                     var indexKey = GTA5Crypto.GetKeyIndex(arch.FileName, (uint)finfo.Length);
 
-                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
+                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
                 }
                 else
                 {
-                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, null); // read...
+                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, null); // read...
                 }
 
                 
@@ -356,6 +380,7 @@ namespace RageLib.GTA5.ArchiveWrappers
             {
                 fs.Dispose();
                 arch.Dispose();
+                return InternalOpenWithUnknownNGKey(fileName);
                 throw;
             }
         }
@@ -370,11 +395,11 @@ namespace RageLib.GTA5.ArchiveWrappers
                     // calculate key...
                     var indexKey = GTA5Crypto.GetKeyIndex(arch.FileName, (uint)stream.Length);
 
-                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
+                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
                 }
                 else
                 {
-                    arch.archive_.ReadHeader(GTA5Constants.PC_AES_KEY, null); // read...
+                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, null); // read...
                 }
 
                 return arch;
@@ -382,8 +407,54 @@ namespace RageLib.GTA5.ArchiveWrappers
             catch
             {
                 arch.Dispose();
+                return InternalOpenWithUnknownNGKey(stream, fileName, leaveOpen);
                 throw;
             }
+        }
+
+        // If we haven't the required key with just try with any of them
+        // We could make it faster to detect a wrong key by just checking if the root entry of a rpf is a folder
+        private static RageArchiveWrapper7 InternalOpenWithUnknownNGKey(string fileName)
+        {
+            for (int i = 0; i < GTA5Constants.PC_NG_KEYS.Length; i++)
+            {
+                var finfo = new FileInfo(fileName);
+                var fs = new FileStream(fileName, FileMode.Open);
+                var arch = new RageArchiveWrapper7(fs, finfo.Name, false);
+                try
+                {
+                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[i]);
+                    return arch;
+                }
+                catch
+                {
+                    fs.Dispose();
+                    arch.Dispose();
+                }
+            }
+
+            throw new Exception();
+        }
+
+        // If we haven't the required key with just try with any of them
+        // We could make it faster to detect a wrong key by just checking if the root entry of a rpf is a folder
+        private static RageArchiveWrapper7 InternalOpenWithUnknownNGKey(Stream stream, string fileName, bool leaveOpen = false)
+        {
+            for (int i = 0; i < GTA5Constants.PC_NG_KEYS.Length; i++)
+            {
+                var arch = new RageArchiveWrapper7(stream, fileName, leaveOpen);
+                try
+                {
+                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[i]);
+                    return arch;
+                }
+                catch
+                {
+                    arch.Dispose();
+                }
+            }
+
+            throw new Exception();
         }
     }
 
@@ -393,21 +464,15 @@ namespace RageLib.GTA5.ArchiveWrappers
     public class RageArchiveDirectoryWrapper7 : IArchiveDirectory, IDisposable
     {
         private RageArchiveWrapper7 archiveWrapper;
-        internal RageArchiveDirectory7 directory;
+        private RageArchiveDirectory7 directory;
 
         /// <summary>
         /// Gets or sets the name of the directory.
         /// </summary>
         public string Name
         {
-            get
-            {
-                return directory.Name;
-            }
-            set
-            {
-                directory.Name = value;
-            }
+            get => directory.Name;
+            set => directory.Name = value;
         }
 
         internal RageArchiveDirectoryWrapper7(RageArchiveWrapper7 archiveWrapper, RageArchiveDirectory7 directory)
@@ -552,22 +617,16 @@ namespace RageLib.GTA5.ArchiveWrappers
     /// </summary>
     public class RageArchiveBinaryFileWrapper7 : IArchiveBinaryFile
     {
-        internal RageArchiveWrapper7 archiveWrapper;
-        internal RageArchiveBinaryFile7 file;
+        private RageArchiveWrapper7 archiveWrapper;
+        private RageArchiveBinaryFile7 file;
 
         /// <summary>
         /// Gets or sets the name of the file.
         /// </summary>
         public string Name
         {
-            get
-            {
-                return file.Name;
-            }
-            set
-            {
-                file.Name = value;
-            }
+            get => file.Name;
+            set => file.Name = value;
         }
 
         /// <summary>
@@ -575,14 +634,8 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public bool IsEncrypted
         {
-            get
-            {
-                return file.IsEncrypted;
-            }
-            set
-            {
-                file.IsEncrypted = value;
-            }
+            get => file.IsEncrypted;
+            set => file.IsEncrypted = value;
         }
 
         /// <summary>
@@ -590,10 +643,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public bool IsCompressed
         {
-            get
-            {
-                return file.FileSize != 0;
-            }
+            get => file.FileSize != 0;
             set
             {
                 if (value)
@@ -614,39 +664,16 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public long UncompressedSize
         {
-            get
-            {
-                // uncompressed size
-                return file.FileUncompressedSize;
-            }
-            set
-            {
-                file.FileUncompressedSize = (uint)value;
-            }
+            get => file.FileUncompressedSize;
+            set => file.FileUncompressedSize = (uint)value;
         }
 
         /// <summary>
-        /// Gets the compressed size of the file.
+        /// Gets the compressed size of the file or 0 if not compressed.
         /// </summary>
-        public long CompressedSize
-        {
-            get
-            {
-                // compressed size, 0 if not compressed
-                return file.FileSize;
-            }
-        }
+        public long CompressedSize => file.FileSize;
 
-        public long Size
-        {
-            get
-            {
-                if (file.FileSize != 0)
-                    return file.FileSize;
-                else
-                    return file.FileUncompressedSize;
-            }
-        }
+        public long Size => file.FileSize != 0 ? file.FileSize : file.FileUncompressedSize;
 
         internal RageArchiveBinaryFileWrapper7(RageArchiveWrapper7 archiveWrapper, RageArchiveBinaryFile7 file)
         {
@@ -724,26 +751,14 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public string Name
         {
-            get
-            {
-                return file.Name;
-            }
-            set
-            {
-                file.Name = value;
-            }
+            get => file.Name;
+            set => file.Name = value;
         }
 
         /// <summary>
         /// Gets the size of the file.
         /// </summary>
-        public long Size
-        {
-            get
-            {
-                return file.FileSize;
-            }
-        }
+        public long Size => file.FileSize;
 
         internal RageArchiveResourceFileWrapper7(RageArchiveWrapper7 archiveWrapper, RageArchiveResourceFile7 file)
         {
@@ -765,22 +780,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void Import(Stream stream)
         {
-            var resourceStream = new PartialStream(
-                   archiveWrapper.archive_.BaseStream,
-                   delegate () // offset
-                   {
-                       return file.FileOffset * RageArchiveWrapper7.BLOCK_SIZE;
-                   },
-                   delegate () // size
-                   {
-                       return file.FileSize;
-                   },
-                   delegate (long length)
-                   {
-                       archiveWrapper.RequestBytesRES(file, length);
-                   }
-
-               );
+            var resourceStream = archiveWrapper.GetStream(file);
             resourceStream.SetLength(stream.Length);
 
             // read resource
@@ -794,8 +794,7 @@ namespace RageLib.GTA5.ArchiveWrappers
             reader.Position = 0;
             var buffer = reader.ReadBytes((int)stream.Length);
 
-            file.VirtualFlags = systemFlags;
-            file.PhysicalFlags = graphicsFlags;
+            file.ResourceInfo = new DatResourceInfo(systemFlags, graphicsFlags);
             resourceStream.Write(buffer, 0, buffer.Length);
         }
 
@@ -813,28 +812,13 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void Export(Stream stream)
         {
-            // find version
-            // -> http://dageron.com/?page_id=5446&lang=en
-            var version = ((file.PhysicalFlags & 0xF0000000) >> 28) |
-                          ((file.VirtualFlags & 0xF0000000) >> 24);
-
             var writer = new DataWriter(stream);
-            writer.Write((uint)0x07435352);
-            writer.Write((uint)version);
-            writer.Write((uint)file.VirtualFlags);
-            writer.Write((uint)file.PhysicalFlags);
+            writer.Write((uint)0x37435352);
+            writer.Write((uint)file.ResourceInfo.Version);
+            writer.Write(file.ResourceInfo.VirtualFlags);
+            writer.Write(file.ResourceInfo.PhysicalFlags);
 
-            var resourceStream = new PartialStream(
-                   archiveWrapper.archive_.BaseStream,
-                   delegate () // offset
-                   {
-                       return file.FileOffset * RageArchiveWrapper7.BLOCK_SIZE;
-                   },
-                   delegate () // size
-                   {
-                       return file.FileSize;
-                   }
-               );
+            var resourceStream = archiveWrapper.GetStream(file);
             var resourceReader = new DataReader(resourceStream);
 
             resourceReader.Position = 16;

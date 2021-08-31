@@ -65,7 +65,7 @@ namespace RageLib.GTA5.Utilities
                 var fileInfo = new FileInfo(fileName);
                 var fileStream = new FileStream(fileName, FileMode.Open);
                 var inputArchive = RageArchiveWrapper7.Open(fileStream, fileInfo.Name);
-                ForEachFile(fileName.Replace(gameDirectoryName, ""), inputArchive.Root, inputArchive.archive_.Encryption, processDelegate);
+                ForEachFile(fileName.Replace(gameDirectoryName, ""), inputArchive.Root, inputArchive.Encryption, processDelegate);
                 inputArchive.Dispose();
             }
         }
@@ -79,7 +79,7 @@ namespace RageLib.GTA5.Utilities
                 {
                     var fileStream = ((IArchiveBinaryFile)file).GetStream();
                     var inputArchive = RageArchiveWrapper7.Open(fileStream, file.Name);
-                    ForEachFile(fullPathName + "\\" + file.Name, inputArchive.Root, inputArchive.archive_.Encryption, processDelegate);
+                    ForEachFile(fullPathName + "\\" + file.Name, inputArchive.Root, inputArchive.Encryption, processDelegate);
                 }
             }
             foreach (var subDirectory in directory.GetDirectories())
