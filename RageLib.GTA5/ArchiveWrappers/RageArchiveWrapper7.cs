@@ -785,10 +785,9 @@ namespace RageLib.GTA5.ArchiveWrappers
             var graphicsFlags = reader.ReadUInt32();
 
             reader.Position = 0;
-            var buffer = reader.ReadBytes((int)stream.Length);
-
             file.ResourceInfo = new DatResourceInfo(systemFlags, graphicsFlags);
-            resourceStream.Write(buffer, 0, buffer.Length);
+
+            stream.CopyTo(resourceStream);
         }
 
         /// <summary>
@@ -812,11 +811,9 @@ namespace RageLib.GTA5.ArchiveWrappers
             writer.Write(file.ResourceInfo.PhysicalFlags);
 
             var resourceStream = archiveWrapper.GetStream(file);
-            var resourceReader = new DataReader(resourceStream);
+            resourceStream.Position = 16;
 
-            resourceReader.Position = 16;
-            var buf = resourceReader.ReadBytes((int)resourceReader.Length - 16);
-            writer.Write(buf);
+            resourceStream.CopyTo(stream, (int)resourceStream.Length - 16);
         }
     }
 }
