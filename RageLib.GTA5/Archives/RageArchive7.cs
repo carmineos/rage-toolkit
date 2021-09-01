@@ -430,10 +430,11 @@ namespace RageLib.GTA5.Archives
         public uint FileSize { get; set; }
         public uint FileOffset { get; set; }
         public uint FileUncompressedSize { get; set; }
+        public uint Flags { get; set; }
+        
         public bool IsEncrypted { get; set; }
 
         public string Name { get; set; }
-        public uint EncryptionType { get; set; }
 
         /// <summary>
         /// Reads the binary file entry.
@@ -449,9 +450,9 @@ namespace RageLib.GTA5.Archives
             FileOffset = (uint)buf2[0] + (uint)(buf2[1] << 8) + (uint)(buf2[2] << 16);
 
             FileUncompressedSize = reader.ReadUInt32();
-            EncryptionType = reader.ReadUInt32();
+            Flags = reader.ReadUInt32();
 
-            switch (EncryptionType)
+            switch (Flags)
             {
                 case 0: IsEncrypted = false; break;
                 case 1: IsEncrypted = true; break;
@@ -483,7 +484,7 @@ namespace RageLib.GTA5.Archives
 
             writer.Write(FileUncompressedSize);
 
-            writer.Write(EncryptionType);
+            writer.Write(Flags);
         }
     }
 
@@ -497,13 +498,8 @@ namespace RageLib.GTA5.Archives
         public uint FileOffset { get; set; }
         public DatResourceInfo ResourceInfo { get; set; }
 
-        public int Version => ResourceInfo.Version;
-
-        public uint VirtualSize => ((ResourceChunkFlags)ResourceInfo.VirtualFlags).Size;
-
-        public uint PhysicalSize => ((ResourceChunkFlags)ResourceInfo.PhysicalFlags).Size;
-
         public string Name { get; set; }
+
         /// <summary>
         /// Reads the resource file entry.
         /// </summary>
