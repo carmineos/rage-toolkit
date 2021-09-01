@@ -709,11 +709,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         {
             var binaryStream = GetStream();
             binaryStream.SetLength(stream.Length);
-
-            byte[] buf = new byte[stream.Length];
-            stream.Position = 0;
-            stream.Read(buf, 0, buf.Length);
-            binaryStream.Write(buf, 0, buf.Length);
+            stream.CopyTo(binaryStream, (int)stream.Length);
         }
 
         /// <summary>
@@ -731,10 +727,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         public void Export(Stream stream)
         {
             var binaryStream = GetStream();
-
-            var buf = new byte[binaryStream.Length];
-            binaryStream.Read(buf, 0, buf.Length);
-            stream.Write(buf, 0, buf.Length);
+            binaryStream.CopyTo(stream);
         }
     }
 
