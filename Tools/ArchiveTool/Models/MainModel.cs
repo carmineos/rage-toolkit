@@ -21,6 +21,7 @@
 */
 
 using RageLib.Archives;
+using RageLib.Compression;
 using RageLib.Data;
 using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Cryptography;
@@ -192,7 +193,7 @@ namespace ArchiveTool.Models
                 {
                     var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
                     var bufnew = new byte[binFile.UncompressedSize];
-                    def.Read(bufnew, 0, (int)binFile.UncompressedSize);
+                    def.ReadAll(bufnew, 0, (int)binFile.UncompressedSize);
                     buf = bufnew;
                 }
                 

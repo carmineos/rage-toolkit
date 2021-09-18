@@ -20,6 +20,7 @@
     THE SOFTWARE.
 */
 
+using RageLib.Compression;
 using RageLib.Data;
 using System;
 using System.Collections.Generic;
@@ -80,8 +81,8 @@ namespace RageLib.Resources.RDR2
             PhysicalData = new byte[physicalSize];
 
             var deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true);
-            deflateStream.Read(VirtualData, 0, (int)virtualSize);
-            deflateStream.Read(PhysicalData, 0, (int)physicalSize);
+            deflateStream.ReadAll(VirtualData, 0, (int)virtualSize);
+            deflateStream.ReadAll(PhysicalData, 0, (int)physicalSize);
             deflateStream.Close();
         }
 

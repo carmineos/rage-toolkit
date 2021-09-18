@@ -20,6 +20,7 @@
     THE SOFTWARE.
 */
 
+using RageLib.Compression;
 using RageLib.Cryptography;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.Cryptography;
@@ -132,7 +133,7 @@ namespace RageLib.GTA5.Utilities
                     {
                         var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
                         var bufnew = new byte[file.UncompressedSize];
-                        def.Read(bufnew, 0, (int)file.UncompressedSize);
+                        def.ReadAll(bufnew, 0, (int)file.UncompressedSize);
                         buf = bufnew;
                     }
 
@@ -207,7 +208,7 @@ namespace RageLib.GTA5.Utilities
                     {
                         var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
                         var bufnew = new byte[file.UncompressedSize];
-                        def.Read(bufnew, 0, (int)file.UncompressedSize);
+                        def.ReadAll(bufnew, 0, (int)file.UncompressedSize);
                         buf = bufnew;
                     }
 
@@ -363,7 +364,7 @@ namespace RageLib.GTA5.Utilities
                     {
                         var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
                         var bufnew = new byte[file.UncompressedSize];
-                        def.Read(bufnew, 0, (int)file.UncompressedSize);
+                        def.ReadAll(bufnew, 0, (int)file.UncompressedSize);
                         buf = bufnew;
                     }
 
