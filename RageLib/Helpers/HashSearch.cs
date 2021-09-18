@@ -49,7 +49,7 @@ namespace RageLib.Helpers
 
                 var tmp = new byte[length];
 
-                var hashProvider = new SHA1CryptoServiceProvider();
+                var hashProvider = SHA1.Create();
                 //var buffer = new byte[length];
                 for (int i = 0; i < (BLOCK_LENGTH / alignment); i++)
                 {

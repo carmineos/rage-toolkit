@@ -59,7 +59,7 @@ namespace RageLib.Cryptography
         /// </summary>
         public static byte[] EncryptData(byte[] data, byte[] key, int rounds = 1)
         {
-            var rijndael = Rijndael.Create();
+            var rijndael = Aes.Create();
             rijndael.KeySize = 256;
             rijndael.Key = key;
             rijndael.BlockSize = 128;
@@ -85,7 +85,7 @@ namespace RageLib.Cryptography
         /// </summary>
         public static byte[] DecryptData(byte[] data, byte[] key, int rounds = 1)
         {
-            var rijndael = Rijndael.Create();
+            var rijndael = Aes.Create();
             rijndael.KeySize = 256;
             rijndael.Key = key;
             rijndael.BlockSize = 128;
