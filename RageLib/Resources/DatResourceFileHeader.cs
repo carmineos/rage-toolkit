@@ -26,5 +26,7 @@
             VirtualFlags = virtualFlags;
             PhysicalFlags = physicalFlags;
         }
+
+        public int Version => (int)(((VirtualFlags >> 28) & 0xF << 4) | ((PhysicalFlags >> 28) & 0xFF));
     }
 }
