@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>RageLib</RootNamespace>
     <AssemblyName>RageLib</AssemblyName>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\Libraries\DirectXTex\DirectXTex.vcxproj" />
   </ItemGroup>
