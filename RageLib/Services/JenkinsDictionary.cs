@@ -4,11 +4,11 @@ using System.IO;
 
 namespace RageLib.Services
 {
-    public class JenkinsDictionary : Dictionary<uint, string>, IHashDictionary<uint, string>
+    public class JenkinsDictionary : Dictionary<int, string>, IHashDictionary<int, string>
     {
         public bool TryAdd(string data)
         {
-            return this.TryAdd(Jenkins.Hash(data), data);
+            return this.TryAdd((int)Jenkins.Hash(data), data);
         }
 
         public void AddFromFile(string filePath)
