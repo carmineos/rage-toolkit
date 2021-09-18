@@ -21,188 +21,101 @@
 */
 
 using RageLib.GTA5.PSO;
-using RageLib.GTA5.PSOWrappers;
-using RageLib.GTA5.PSOWrappers.Xml;
 using RageLib.GTA5.RBF;
-using RageLib.GTA5.RBFWrappers;
-using RageLib.GTA5.ResourceWrappers.PC.Meta;
-using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
-using RageLib.Hash;
+using RageLib.GTA5.Services;
 using RageLib.Resources.GTA5;
+using RageLib.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Xml.Serialization;
 
 namespace MetaTool
 {
     public class Program
     {
-        private string[] arguments;
+        private static JenkinsDictionary joaatDictionary;
+        private static MetaConverter converter;
+        private static bool loaded;
 
         public static void Main(string[] args)
         {
-            new Program(args).Run();
-        }
+            if (args is null || args.Length < 1)
+                return;
 
-        public Program(string[] arguments)
-        {
-            this.arguments = arguments;
-        }
+            joaatDictionary = new JenkinsDictionary();
 
-        public void Run()
-        {
-            if (arguments.Length > 0)
+            converter = new MetaConverter(joaatDictionary);
+
+            foreach (var path in args)
             {
-
-
-                Convert();
-            }
-            else
-            {
-                Console.WriteLine("No input file specified.");
-                Console.ReadLine();
+                Convert(path);
+                GC.Collect();
             }
         }
 
-        private void Convert()
+        private static void BuildDictionary()
         {
-            if (arguments[0].EndsWith(".ymap.xml") ||
-             arguments[0].EndsWith(".ytyp.xml") ||
-             arguments[0].EndsWith(".ymt.xml"))
+            if (loaded)
+                return;
+
+            //AddHashForStrings(joaatDictionary, "MetaTool.Lists.FileNames.txt");
+            AddHashForStrings(joaatDictionary, "MetaTool.Lists.MetaNames.txt");
+            //AddUserDictionary(joaatDictionary, "UserDictionary.txt");
+
+            AddHashForStrings(joaatDictionary, "MetaTool.Lists.PsoTypeNames.txt");
+            AddHashForStrings(joaatDictionary, "MetaTool.Lists.PsoFieldNames.txt");
+            AddHashForStrings(joaatDictionary, "MetaTool.Lists.PsoEnumValues.txt");
+            AddHashForStrings(joaatDictionary, "MetaTool.Lists.PsoCommon.txt");
+            AddHashForStrings(joaatDictionary, "MetaTool.Lists.FileNames.txt");
+            AddHashForStrings(joaatDictionary, "MetaTool.Lists.PsoCollisions.txt");
+            AddUserDictionary(joaatDictionary, "UserDictionary.txt");
+
+            loaded = true;
+        }
+
+        public static void Convert(string filePath)
+        {
+            if (filePath.EndsWith(".ymap.xml") ||
+             filePath.EndsWith(".ytyp.xml") ||
+             filePath.EndsWith(".ymt.xml"))
             {
-                ConvertXmlToResource();
+                converter.ConvertXmlToResource(filePath);
             }
-            else if (arguments[0].EndsWith(".ymap") ||
-                   arguments[0].EndsWith(".ytyp") ||
-                   arguments[0].EndsWith(".ymt"))
+            else if (filePath.EndsWith(".ymap") ||
+                   filePath.EndsWith(".ytyp") ||
+                   filePath.EndsWith(".ymt"))
             {
-                if (ResourceFile_GTA5_pc.IsResourceFile(arguments[0]))
+                if (ResourceFile_GTA5_pc.IsResourceFile(filePath))
                 {
-                    ConvertResourceToXml();
+                    BuildDictionary();
+                    converter.ConvertResourceToXml(filePath);
                 }
-                else if (PsoFile.IsPSO(arguments[0]))
+                else if (PsoFile.IsPSO(filePath))
                 {
-                    ConvertPsoToXml();
+                    BuildDictionary();
+                    converter.ConvertPsoToXml(filePath);
                 }
-                else
+                else if (RbfFile.IsRBF(filePath))
                 {
-                    ConvertRbfToXml();
+                    converter.ConvertRbfToXml(filePath);
                 }
             }
-            else if (arguments[0].EndsWith(".ymf"))
-            {
-                ConvertPsoToXml();
-            }
-            else
-            {
-                Console.WriteLine("No supported file name specified.");
-                Console.ReadLine();
-            }
         }
 
-        private void ConvertXmlToResource()
-        {
-            string inputFileName = arguments[0];
-            string outputFileName = inputFileName.Replace(".xml", "");
-
-            var xml = (MetaInformationXml)null;
-            var assembly = Assembly.GetExecutingAssembly();
-            using (Stream xmlStream = assembly.GetManifestResourceStream("MetaTool.XmlInfos.xml"))
-            {
-                var ser = new XmlSerializer(typeof(MetaInformationXml));
-                xml = (MetaInformationXml)ser.Deserialize(xmlStream);
-            }
-
-            var importer = new MetaXmlImporter(xml);
-
-            var imported = importer.Import(inputFileName);
-
-            var writer = new MetaWriter();
-            writer.Write(imported, outputFileName);
-        }
-        
-        private void ConvertResourceToXml()
-        {
-            string inputFileName = arguments[0];
-            string outputFileName = inputFileName + ".xml";
-
-            var reader = new MetaReader();
-            var meta = reader.Read(inputFileName);
-            var exporter = new MetaXmlExporter();
-            exporter.HashMapping = new Dictionary<int, string>();
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.FileNames.txt");
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.MetaNames.txt");
-            AddHashForUserStrings(exporter.HashMapping, "UserDictionary.txt");
-            exporter.Export(meta, outputFileName);
-        }
-
-        private void ConvertPsoToXml()
-        {
-            string inputFileName = arguments[0];
-            string outputFileName = inputFileName + ".pso.xml";
-
-            var reader = new PsoReader();
-            var meta = reader.Read(inputFileName);
-            var exporter = new PsoXmlExporter();
-            exporter.HashMapping = new Dictionary<int, string>();
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoTypeNames.txt");
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoFieldNames.txt");
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoEnumValues.txt");
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoCommon.txt");
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.FileNames.txt");
-            AddHashForStrings(exporter.HashMapping, "MetaTool.Lists.PsoCollisions.txt");
-            AddHashForUserStrings(exporter.HashMapping, "UserDictionary.txt");
-            exporter.Export(meta, outputFileName);
-        }
-
-        private void ConvertRbfToXml()
-        {
-            string inputFileName = arguments[0];
-            string outputFileName = inputFileName + ".rbf.xml";
-
-            var rbf = new RbfFile().Load(inputFileName);
-            new RbfXmlExporter().Export(rbf, outputFileName);
-        }
-
-        private void AddHashForStrings(Dictionary<int, string> dictionary, string resourceFileName)
+        public static void AddHashForStrings(JenkinsDictionary joaatDictionary, string resourceFileName)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            using (Stream namesStream = assembly.GetManifestResourceStream(resourceFileName))
-            using (StreamReader namesReader = new StreamReader(namesStream))
-            {
-                while (!namesReader.EndOfStream)
-                {
-                    string name = namesReader.ReadLine();
-                    uint hash = Jenkins.Hash(name);
-                    if (!dictionary.ContainsKey((int)hash))
-                    {
-                        dictionary.Add((int)hash, name);
-                    }
-                }
-            }
+            using (Stream resourceStream = assembly.GetManifestResourceStream(resourceFileName))
+                joaatDictionary.AddFromFile(resourceStream);
         }
 
-        private void AddHashForUserStrings(Dictionary<int, string> dictionary, string resourceFileName)
+        public static void AddUserDictionary(JenkinsDictionary joaatDictionary, string resourceFileName)
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), resourceFileName);
             if (!File.Exists(path))
                 return;
 
-            using (Stream namesStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            using (StreamReader namesReader = new StreamReader(namesStream))
-            {
-                while (!namesReader.EndOfStream)
-                {
-                    string name = namesReader.ReadLine();
-                    uint hash = Jenkins.Hash(name);
-                    if (!dictionary.ContainsKey((int)hash))
-                    {
-                        dictionary.Add((int)hash, name);
-                    }
-                }
-            }
+            joaatDictionary.AddFromFile(resourceFileName);
         }
     }
 }
