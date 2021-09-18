@@ -23,6 +23,7 @@
 using RageLib.Data;
 using RageLib.GTA5.PSOWrappers.Data;
 using System;
+using System.Diagnostics;
 
 namespace RageLib.GTA5.PSOWrappers.Types
 {
@@ -32,26 +33,23 @@ namespace RageLib.GTA5.PSOWrappers.Types
 
         public void Read(PsoDataReader reader)
         {
-            int x1 = reader.ReadInt32();
-            int x2 = reader.ReadInt32();
-            if (x2 != 0)
-            {
-                throw new Exception("zero_Ch should be 0");
-            }
+            var blockIndexAndOffset = reader.ReadUInt32();
+            var BlockIndex = (int)(blockIndexAndOffset & 0x00000FFF);
+            var Offset = (int)((blockIndexAndOffset & 0xFFFFF000) >> 12);
 
-            var BlockIndex = (int)(x1 & 0x00000FFF);
-            var Offset = (int)((x1 & 0xFFFFF000) >> 12);
+            var unknown_4h = reader.ReadUInt32();
+            Debug.Assert(unknown_4h == 0);
 
             // read reference data...
             var backupOfSection = reader.CurrentSectionIndex;
             var backupOfPosition = reader.Position;
 
-            reader.SetSectionIndex(BlockIndex - 1);
+            reader.CurrentSectionIndex = BlockIndex - 1;
             reader.Position = Offset;
 
             Value = reader.ReadString();
 
-            reader.SetSectionIndex(backupOfSection);
+            reader.CurrentSectionIndex = backupOfSection;
             reader.Position = backupOfPosition;
         }
 

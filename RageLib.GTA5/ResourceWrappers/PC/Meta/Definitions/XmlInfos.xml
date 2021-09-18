@@ -167,20 +167,6 @@
       <ArrayType Type="74" TypeHash="0x00000000" />
     </StructureEntry>
   </Structure>
-  <Structure NameHash="0x3B8EFC0B" Key="0xDAEC93F9" Unknown="0x00000400" Length="96">
-    <StructureEntry NameHash="0x1381CF1A" Offset="0" Type="82" TypeHash="0x00000000" Unknown="0x00000000">
-      <ArrayType Type="74" TypeHash="0x00000000" />
-    </StructureEntry>
-    <StructureEntry NameHash="0xC9018A33" Offset="16" Type="82" TypeHash="0x00000000" Unknown="0x00000000">
-      <ArrayType Type="74" TypeHash="0x00000000" />
-    </StructureEntry>
-    <StructureEntry NameHash="0x15478380" Offset="32" Type="51" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x0C892BA1" Offset="48" Type="51" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x690CB1A7" Offset="64" Type="82" TypeHash="0x00000000" Unknown="0x00000000">
-      <ArrayType Type="17" TypeHash="0x00000000" />
-    </StructureEntry>
-    <StructureEntry NameHash="0x4B621302" Offset="80" Type="21" TypeHash="0x00000000" Unknown="0x00000000" />
-  </Structure>
   <Structure NameHash="0xD98BB561" Key="0x9B8046D4" Unknown="0x00000300" Length="80">
     <StructureEntry NameHash="0xF17E7F28" Offset="8" Type="82" TypeHash="0x00000000" Unknown="0x00000000">
       <ArrayType Type="7" TypeHash="0x00000000" />
@@ -835,24 +821,6 @@
     </StructureEntry>
     <StructureEntry NameHash="0x28108805" Offset="40" Type="80" TypeHash="0x00000006" Unknown="0x00000000">
       <ArrayType Type="17" TypeHash="0x00000000" />
-    </StructureEntry>
-  </Structure>
-  <Structure NameHash="0x82D6FC83" Key="0x8C35E9C4" Unknown="0x00000400" Length="128">
-    <StructureEntry NameHash="0xBF74DFA7" Offset="8" Type="33" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x67D26872" Offset="12" Type="21" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x6C1523E4" Offset="16" Type="21" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xD9EF8236" Offset="32" Type="51" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xE78AA618" Offset="48" Type="51" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xD61872FF" Offset="64" Type="51" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x82E8C5DE" Offset="80" Type="33" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xAD5D5B4C" Offset="84" Type="33" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xE6E17F14" Offset="88" Type="74" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x75D215A1" Offset="92" Type="74" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x19471791" Offset="96" Type="74" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xFC1FB6FB" Offset="100" Type="74" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xD3C717FC" Offset="104" Type="74" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0xF17E7F28" Offset="112" Type="82" TypeHash="0x00000000" Unknown="0x00000000">
-      <ArrayType Type="7" TypeHash="0x00000000" />
     </StructureEntry>
   </Structure>
   <Structure NameHash="0x752DC011" Key="0x9F3D66E9" Unknown="0x00000400" Length="48">

@@ -62,29 +62,29 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 blockKeys.Add(block.StructureNameHash);
                 switch (block.StructureNameHash)
                 {
-                    case 0x00000007:
+                    case (int)StructureEntryDataType.StructurePointer:
                         blocks.Add(ReadBlock(block, () => new MetaGeneric())); // has no special type declaration in .meta -> pointer
                         break;
-                    case 0x00000010:
-                        blocks.Add(ReadBlock(block, () => new MetaByte_A())); // char_array
+                    case (int)StructureEntryDataType.Int8:
+                        blocks.Add(ReadBlock(block, () => new MetaSByte())); // char_array
                         break;
-                    case 0x00000011:
-                        blocks.Add(ReadBlock(block, () => new MetaByte_B()));  // has no special type declaration in .meta -> string
+                    case (int)StructureEntryDataType.UInt8:
+                        blocks.Add(ReadBlock(block, () => new MetaByte()));  // has no special type declaration in .meta -> string
                         break;
-                    case 0x00000013:
-                        blocks.Add(ReadBlock(block, () => new MetaInt16_B())); // probably short_array
+                    case (int)StructureEntryDataType.UInt16:
+                        blocks.Add(ReadBlock(block, () => new MetaUInt16())); // probably short_array
                         break;
-                    case 0x00000015:
-                        blocks.Add(ReadBlock(block, () => new MetaInt32_B())); // int_array
+                    case (int)StructureEntryDataType.UInt32:
+                        blocks.Add(ReadBlock(block, () => new MetaUInt32())); // int_array
                         break;
-                    case 0x00000021:
+                    case (int)StructureEntryDataType.Float:
                         blocks.Add(ReadBlock(block, () => new MetaFloat())); // float_array
                         break;
-                    case 0x00000033:
-                        blocks.Add(ReadBlock(block, () => new MetaFloat4_XYZ())); // vector3_array
+                    case (int)StructureEntryDataType.Vector3:
+                        blocks.Add(ReadBlock(block, () => new MetaVector3())); // vector3_array
                         break;
-                    case 0x0000004A:
-                        blocks.Add(ReadBlock(block, () => new MetaInt32_Hash())); // probably list of <Item>HASH_OF_SOME_NAME</Item>
+                    case (int)StructureEntryDataType.StringHash:
+                        blocks.Add(ReadBlock(block, () => new MetaStringHash())); // probably list of <Item>HASH_OF_SOME_NAME</Item>
                         break;
                     default:
                         blocks.Add(ReadBlock(block, () => new MetaStructure(meta, GetInfo(meta, block.StructureNameHash)))); // has no special type declaration in .meta -> structure
@@ -124,16 +124,16 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         }
                     }
                 }
-                if (entry is MetaCharPointer)
+                if (entry is MetaStringPointer)
                 {
-                    var charPointerEntry = entry as MetaCharPointer;
+                    var charPointerEntry = entry as MetaStringPointer;
                     var realBlockIndex = charPointerEntry.DataBlockIndex - 1;
                     if (realBlockIndex >= 0)
                     {
                         string value = "";
                         for (int i = 0; i < charPointerEntry.StringLength; i++)
                         {
-                            var x = (MetaByte_A)blocks[realBlockIndex][i + charPointerEntry.DataOffset];
+                            var x = (MetaSByte)blocks[realBlockIndex][i + charPointerEntry.DataOffset];
                             value += (char)x.Value;
                         }
                         charPointerEntry.Value = value;

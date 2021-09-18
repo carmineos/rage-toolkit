@@ -22,6 +22,7 @@
 
 using RageLib.GTA5.PSO;
 using RageLib.GTA5.PSOWrappers.Types;
+using RageLib.Helpers.Xml;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -52,17 +53,16 @@ namespace RageLib.GTA5.PSOWrappers
         {
             var strctureValue = (PsoStructure)value;
 
-            var writer = new XmlTextWriter(xmlFileStream, Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;
+            var writer = new XmlRageWriter(XmlWriter.Create(xmlFileStream, new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), }));
             writer.WriteStartDocument();
             writer.WriteStartElement(GetNameForHash(strctureValue.entryIndexInfo.NameHash));
-            WriteStructureContentXml(strctureValue, writer);
+            WriteStructureContentXml(writer, strctureValue);
             writer.WriteEndElement();
             writer.WriteEndDocument();
             writer.Flush();
         }
 
-        private void WriteStructureContentXml(PsoStructure value, XmlTextWriter writer)
+        private void WriteStructureContentXml(XmlWriter writer, PsoStructure value)
         {
             foreach (var field in value.Values)
             {
@@ -71,261 +71,322 @@ namespace RageLib.GTA5.PSOWrappers
                 var fixedName = GetNameForHash(fieldNameHash);
 
                 writer.WriteStartElement(fixedName);
-                WriteStructureElementContentXml(fieldValue, writer);
+                WriteStructureElementContentXml(writer, fieldValue);
                 writer.WriteEndElement();
             }
         }
 
-        private void WriteStructureContentXml(PsoStructure3 value, XmlTextWriter writer)
+        private void WriteStructureContentXml(XmlWriter writer, PsoStructure3 value)
         {
-            if (value.Value != null)
+            if (value.Value is null)
+            {
+                writer.WriteAttributeString("type", "NULL");
+            }
+            else
             {
                 writer.WriteAttributeString("type", GetNameForHash(value.Value.entryIndexInfo.NameHash));
-                foreach (var field in value.Value.Values)
+                WriteStructureContentXml(writer, value.Value);
+            }
+        }
+
+        private void WriteStructureElementContentXml(XmlWriter writer, IPsoValue value)
+        {
+            switch (value)
+            {
+                case PsoArray0:
+                    WriteStructuredArray(writer, ((PsoArray0)value).Entries);
+                    break;
+                case PsoArray1 array1:
+                    WriteArray(writer, array1.Entries, array1.entryInfo);
+                    break;
+                case PsoArray2 array2:
+                    WriteArray(writer, array2.Entries, array2.entryInfo);
+                    break;
+                case PsoArray4 array4:
+                    WriteArray(writer, array4.Entries, array4.entryInfo);
+                    break;
+                case PsoArray129 array129:
+                    WriteArray(writer, array129.Entries, array129.entryInfo);
+                    break;
+                case PsoUInt32:
+                    writer.WriteAttributeValue(((PsoUInt32)value).Value);
+                    break;
+                case PsoUInt32Hex:
+                    writer.WriteAttributeValueAsHex(((PsoUInt32Hex)value).Value);
+                    break;
+                case PsoBoolean:
+                    writer.WriteAttributeValue(((PsoBoolean)value).Value);
+                    break;
+                case PsoByte:
+                    writer.WriteAttributeValue(((PsoByte)value).Value);
+                    break;
+                case PsoSByte:
+                    writer.WriteAttributeValue(((PsoSByte)value).Value);
+                    break;
+                case PsoInt16:
+                    writer.WriteAttributeValue(((PsoInt16)value).Value);
+                    break;
+                case PsoUInt16:
+                    writer.WriteAttributeValue(((PsoUInt16)value).Value);
+                    break;
+                case PsoInt32:
+                    writer.WriteAttributeValue(((PsoInt32)value).Value);
+                    break;
+                case PsoEnumInt8:
+                    WriteEnumContent(writer, (PsoEnumInt8)value);
+                    break;
+                case PsoEnumInt16:
+                    WriteEnumContent(writer, (PsoEnumInt16)value);
+                    break;
+                case PsoEnumInt32:
+                    WriteEnumContent(writer, (PsoEnumInt32)value);
+                    break;
+                case PsoFlagsInt8:
+                    WriteFlagsContent(writer, (PsoFlagsInt8)value);
+                    break;
+                case PsoFlagsInt16:
+                    WriteFlagsContent(writer, (PsoFlagsInt16)value);
+                    break;
+                case PsoFlagsInt32:
+                    WriteFlagsContent(writer, (PsoFlagsInt32)value);
+                    break;
+                case PsoFloat:
+                    writer.WriteAttributeValue(((PsoFloat)value).Value);
+                    break;
+                case PsoVector2:
+                    writer.WriteAttributesXY(((PsoVector2)value).Value);
+                    break;
+                case PsoVec3V:
+                    writer.WriteAttributesXYZ(((PsoVec3V)value).Value);
+                    break;
+                case PsoVec4V:
+                    writer.WriteAttributesXYZW(((PsoVec4V)value).Value);
+                    break;
+                case PsoVector4:
+                    writer.WriteAttributesXYZW(((PsoVector4)value).Value);
+                    break;
+                case PsoMap:
+                    WriteMapContent(writer, (PsoMap)value);
+                    break;
+                case PsoString0:
+                    WriteStringContent(writer, ((PsoString0)value).Value);
+                    break;
+                case PsoString1:
+                    WriteStringContent(writer, ((PsoString1)value).Value);
+                    break;
+                case PsoString2:
+                    WriteStringContent(writer, ((PsoString2)value).Value);
+                    break;
+                case PsoString3:
+                    WriteStringContent(writer, ((PsoString3)value).Value);
+                    break;
+                case PsoString7:
+                    WriteStringContent(writer, ((PsoString7)value).Value);
+                    break;
+                case PsoString8:
+                    WriteStringContent(writer, ((PsoString8)value).Value);
+                    break;
+                
+                case PsoStructure:
+                    WriteStructureContentXml(writer, (PsoStructure)value);
+                    break;
+                case PsoStructure3:
+                    WriteStructureContentXml(writer, (PsoStructure3)value);
+                    break;
+                case PsoFloat16:
+                    writer.WriteAttributeValue(((PsoFloat16)value).Value);
+                    break;
+                case PsoVector3:
+                    writer.WriteAttributesXYZ(((PsoVector3)value).Value);
+                    break;
+                case PsoUInt64:
+                    writer.WriteAttributeValue(((PsoUInt64)value).Value);
+                    break;
+                case PsoInt64:
+                    writer.WriteAttributeValue(((PsoInt64)value).Value);
+                    break;
+                default:
+                    throw new Exception("Unknown type");
+            }
+        }
+
+        private void WriteArray(XmlWriter writer, List<IPsoValue> Entries, PsoStructureEntryInfo entryInfo)
+        {
+            switch (entryInfo.Type)
+            {
+                case ParMemberType.UCHAR:
+                case ParMemberType.CHAR:
+                    WriteInlineArrayContentChar((XmlRageWriter)writer, Entries);
+                    break;
+                case ParMemberType.USHORT:
+                case ParMemberType.SHORT:
+                    WriteInlineArrayContentShort((XmlRageWriter)writer, Entries);
+                    break;
+                case ParMemberType.UINT:
+                case ParMemberType.INT:
+                    WriteInlineArrayContentInt((XmlRageWriter)writer, Entries);
+                    break;
+                case ParMemberType.FLOAT:
+                    WriteInlineArrayContentFloat((XmlRageWriter)writer, Entries);
+                    break;
+                case ParMemberType.VECTOR2:
+                    WriteInlineArrayContentVector2((XmlRageWriter)writer, Entries);
+                    break;
+                case ParMemberType.VECTOR3:
+                    WriteInlineArrayContentVector3((XmlRageWriter)writer, Entries);
+                    break;
+                default:
+                    WriteStructuredArray(writer, Entries);
+                    break;
+            }
+        }
+
+        // TODO:    Fix broken indentation
+        //          move these methods to XmlWriterExtentions to avoid duplicated code
+        private void WriteInlineArrayContentChar(XmlRageWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "char_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var arrayEntry in entries)
+            {
+                writer.WriteInnerIndent();
+                if (arrayEntry is PsoSByte)
                 {
-                    var fieldNameHash = field.Key;
-                    var fieldValue = field.Value;
-                    var fixedName = GetNameForHash(fieldNameHash);
-                    writer.WriteStartElement(fixedName);
-                    WriteStructureElementContentXml(fieldValue, writer);
-                    writer.WriteEndElement();
+                    var value = ((PsoSByte)arrayEntry).Value;
+                    writer.WriteString(value.ToString());
                 }
-            }
-        }
-
-        private void WriteStructureElementContentXml(IPsoValue value, XmlTextWriter writer)
-        {
-            if (value is PsoArray0)
-            {
-                WriteArrayContent(writer, (PsoArray0)value);
-            }
-            else if (value is PsoArray1)
-            {
-                WriteArrayContent(writer, (PsoArray1)value);
-            }
-            else if (value is PsoArray4)
-            {
-                WriteArrayContent(writer, (PsoArray4)value);
-            }
-            else if (value is PsoBoolean)
-            {
-                WriteBooleanContent(writer, (PsoBoolean)value);
-            }
-            else if (value is PsoByte)
-            {
-                WriteByteContent(writer, (PsoByte)value);
-            }
-            else if (value is PsoEnumByte)
-            {
-                WriteEnumContent(writer, (PsoEnumByte)value);
-            }
-            else if (value is PsoEnumInt)
-            {
-                WriteEnumContent(writer, (PsoEnumInt)value);
-            }
-            else if (value is PsoFlagsByte)
-            {
-                WriteFlagsContent(writer, (PsoFlagsByte)value);
-            }
-            else if (value is PsoFlagsShort)
-            {
-                WriteFlagsContent(writer, (PsoFlagsShort)value);
-            }
-            else if (value is PsoFlagsInt)
-            {
-                WriteFlagsContent(writer, (PsoFlagsInt)value);
-            }
-            else if (value is PsoFloat)
-            {
-                WriteFloatContent(writer, (PsoFloat)value);
-            }
-            else if (value is PsoFloat2)
-            {
-                WriteFloatContent(writer, (PsoFloat2)value);
-            }
-            else if (value is PsoFloat3)
-            {
-                WriteFloatContent(writer, (PsoFloat3)value);
-            }
-            else if (value is PsoFloat4A)
-            {
-                WriteFloatContent(writer, (PsoFloat4A)value);
-            }
-            else if (value is PsoFloat4B)
-            {
-                WriteFloatContent(writer, (PsoFloat4B)value);
-            }
-            else if (value is PsoIntSigned)
-            {
-                WriteIntegerContent(writer, (PsoIntSigned)value);
-            }
-            else if (value is PsoIntUnsigned)
-            {
-                WriteIntegerContent(writer, (PsoIntUnsigned)value);
-            }
-            else if (value is PsoMap)
-            {
-                WriteMapContent(writer, (PsoMap)value);
-            }
-            else if (value is PsoString0)
-            {
-                WriteStringContent(writer, (PsoString0)value);
-            }
-            else if (value is PsoString1)
-            {
-                WriteStringContent(writer, (PsoString1)value);
-            }
-            else if (value is PsoString2)
-            {
-                WriteStringContent(writer, (PsoString2)value);
-            }
-            else if (value is PsoString3)
-            {
-                WriteStringContent(writer, (PsoString3)value);
-            }
-            else if (value is PsoString7)
-            {
-                WriteStringContent(writer, (PsoString7)value);
-            }
-            else if (value is PsoString8)
-            {
-                WriteStringContent(writer, (PsoString8)value);
-            }
-
-
-            else if (value is PsoType5)
-            {
-                var v = value as PsoType5;
-                Write5Content(writer, v);
-            }
-            else if (value is PsoStructure)
-            {
-                var structureValue = value as PsoStructure;
-                WriteStructureContentXml(structureValue, writer);
-            }
-            else if (value is PsoStructure3)
-            {
-                var structureValue = value as PsoStructure3;
-                WriteStructureContentXml(structureValue, writer);
-            }
-            else if (value is PsoXXHalf)
-            {
-                throw new NotImplementedException();
-            }
-            else if (value is PsoType4)
-            {
-                throw new NotImplementedException();
-            }
-            else if (value is PsoType9)
-            {
-                throw new NotImplementedException();
-            }
-            else if (value is PsoType32)
-            {
-                throw new NotImplementedException();
-            }
-            else if (value is PsoType3)
-            {
-                throw new NotImplementedException();
-            }
-            else if (value is PsoXXByte)
-            {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                throw new Exception("Unknown type");
-            }
-        }
-
-
-
-
-
-        private void WriteArrayContent(XmlTextWriter writer, PsoArray0 arrayValue)
-        {
-            if (arrayValue.Entries != null)
-            {
-                foreach (var arrayEntry in arrayValue.Entries)
+                else if(arrayEntry is PsoByte)
                 {
-                    writer.WriteStartElement("Item");
-                    if (arrayEntry is PsoStructure)
-                    {
-                        WriteStructureContentXml((PsoStructure)arrayEntry, writer);
-                    }
-                    else if (arrayEntry is PsoStructure3)
-                    {
-                        WriteStructureContentXml((PsoStructure3)arrayEntry, writer);
-                    }
-                    else
-                    {
-                        WriteStructureElementContentXml(arrayEntry, writer);
-                    }
-                    writer.WriteEndElement();
+                    var value = ((PsoByte)arrayEntry).Value;
+                    writer.WriteString(value.ToString());
                 }
+                writer.WriteString(Environment.NewLine);
             }
+            writer.WriteOuterIndent();
         }
 
-        private void WriteArrayContent(XmlTextWriter writer, PsoArray1 arrayValue)
+        private void WriteInlineArrayContentShort(XmlRageWriter writer, List<IPsoValue> entries)
         {
-            foreach (var arrayEntry in arrayValue.Entries)
+            writer.WriteAttributeString("content", "short_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var arrayEntry in entries)
+            {
+                writer.WriteInnerIndent();
+                if (arrayEntry is PsoInt16)
+                {
+                    var value = ((PsoInt16)arrayEntry).Value;
+                    writer.WriteString(value.ToString());
+                }
+                else if (arrayEntry is PsoUInt16)
+                {
+                    var value = ((PsoUInt16)arrayEntry).Value;
+                    writer.WriteString(value.ToString());
+                }
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        private void WriteInlineArrayContentInt(XmlRageWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "int_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var arrayEntry in entries)
+            {
+                writer.WriteInnerIndent();
+                if (arrayEntry is PsoInt32)
+                {
+                    var value = ((PsoInt32)arrayEntry).Value;
+                    writer.WriteString(value.ToString());
+                }
+                else if (arrayEntry is PsoUInt32)
+                {
+                    var value = ((PsoUInt32)arrayEntry).Value;
+                    writer.WriteString(value.ToString());
+                }
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        private void WriteInlineArrayContentFloat(XmlRageWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "float_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var arrayEntry in entries)
+            {
+                writer.WriteInnerIndent();
+                var value = ((PsoFloat)arrayEntry).Value;
+                writer.WriteString(value.ToString("0.000000", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        private void WriteInlineArrayContentVector2(XmlRageWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "vector2_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var arrayEntry in entries)
+            {
+                writer.WriteInnerIndent();
+                var value = ((PsoVector2)arrayEntry).Value;
+                writer.WriteString(value.X.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Y.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        private void WriteInlineArrayContentVector3(XmlRageWriter writer, List<IPsoValue> entries)
+        {
+            writer.WriteAttributeString("content", "vector3_array");
+
+            writer.WriteString(Environment.NewLine);
+            foreach (var arrayEntry in entries)
+            {
+                writer.WriteInnerIndent();
+                var value = ((PsoVector3)arrayEntry).Value;
+                writer.WriteString(value.X.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Y.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Z.ToString("0.000000\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(Environment.NewLine);
+            }
+            writer.WriteOuterIndent();
+        }
+
+        private void WriteStructuredArray(XmlWriter writer, List<IPsoValue> entries)
+        {
+            if (entries is null)
+                return;
+
+            foreach (var arrayEntry in entries)
             {
                 writer.WriteStartElement("Item");
-                if (arrayEntry is PsoStructure)
+                
+                switch (arrayEntry)
                 {
-                    WriteStructureContentXml((PsoStructure)arrayEntry, writer);
+                    case PsoStructure:
+                        WriteStructureContentXml(writer, (PsoStructure)arrayEntry);
+                        break;
+                    case PsoStructure3:
+                        WriteStructureContentXml(writer, (PsoStructure3)arrayEntry);
+                        break;
+                    default:
+                        WriteStructureElementContentXml(writer, arrayEntry);
+                        break;
                 }
-                else if (arrayEntry is PsoStructure3)
-                {
-                    WriteStructureContentXml((PsoStructure3)arrayEntry, writer);
-                }
-                else
-                {
-                    WriteStructureElementContentXml(arrayEntry, writer);
-                }
+
                 writer.WriteEndElement();
             }
         }
-
-        private void WriteArrayContent(XmlTextWriter writer, PsoArray4 arrayValue)
-        {
-            foreach (var arrayEntry in arrayValue.Entries)
-            {
-                writer.WriteStartElement("Item");
-                if (arrayEntry is PsoStructure)
-                {
-                    WriteStructureContentXml((PsoStructure)arrayEntry, writer);
-                }
-                else if (arrayEntry is PsoStructure3)
-                {
-                    WriteStructureContentXml((PsoStructure3)arrayEntry, writer);
-                }
-                else
-                {
-                    WriteStructureElementContentXml(arrayEntry, writer);
-                }
-                writer.WriteEndElement();
-            }
-        }
-
-        private void WriteBooleanContent(XmlTextWriter writer, PsoBoolean value)
-        {
-            if (value.Value)
-            {
-                writer.WriteAttributeString("value", "true");
-            }
-            else
-            {
-                writer.WriteAttributeString("value", "false");
-            }
-        }
-
-        private void WriteByteContent(XmlTextWriter writer, PsoByte value)
-        {
-            writer.WriteAttributeString("value", value.Value.ToString());
-        }
-
-        private void WriteEnumContent(XmlTextWriter writer, PsoEnumByte value)
+        
+        private void WriteEnumContent(XmlWriter writer, PsoEnumInt8 value)
         {
             var matchingEnumEntry = (PsoEnumEntryInfo)null;
             foreach (var enumEntry in value.TypeInfo.Entries)
@@ -341,7 +402,7 @@ namespace RageLib.GTA5.PSOWrappers
             }
         }
 
-        private void WriteEnumContent(XmlTextWriter writer, PsoEnumInt value)
+        private void WriteEnumContent(XmlWriter writer, PsoEnumInt16 value)
         {
             var matchingEnumEntry = (PsoEnumEntryInfo)null;
             foreach (var enumEntry in value.TypeInfo.Entries)
@@ -357,7 +418,23 @@ namespace RageLib.GTA5.PSOWrappers
             }
         }
 
-        private void WriteFlagsContent(XmlTextWriter writer, PsoFlagsByte value)
+        private void WriteEnumContent(XmlWriter writer, PsoEnumInt32 value)
+        {
+            var matchingEnumEntry = (PsoEnumEntryInfo)null;
+            foreach (var enumEntry in value.TypeInfo.Entries)
+            {
+                if (enumEntry.EntryKey == value.Value)
+                    matchingEnumEntry = enumEntry;
+            }
+
+            if (matchingEnumEntry != null)
+            {
+                var matchingEntryName = GetNameForHash(matchingEnumEntry.EntryNameHash);
+                writer.WriteString(matchingEntryName);
+            }
+        }
+
+        private void WriteFlagsContent(XmlWriter writer, PsoFlagsInt8 value)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < 8; i++)
@@ -372,7 +449,8 @@ namespace RageLib.GTA5.PSOWrappers
                     }
 
                     var matchingFlagName = GetNameForHash(machingFlagEntry.EntryNameHash);
-                    sb.Append(matchingFlagName + " ");
+                    sb.Append(matchingFlagName);
+                    sb.Append(' ');
                 }
             }
 
@@ -380,7 +458,7 @@ namespace RageLib.GTA5.PSOWrappers
             writer.WriteString(flagsString);
         }
 
-        private void WriteFlagsContent(XmlTextWriter writer, PsoFlagsShort value)
+        private void WriteFlagsContent(XmlWriter writer, PsoFlagsInt16 value)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < 16; i++)
@@ -395,7 +473,8 @@ namespace RageLib.GTA5.PSOWrappers
                     }
 
                     var matchingFlagName = GetNameForHash(machingFlagEntry.EntryNameHash);
-                    sb.Append(matchingFlagName + " ");
+                    sb.Append(matchingFlagName);
+                    sb.Append(' ');
                 }
             }
 
@@ -403,7 +482,7 @@ namespace RageLib.GTA5.PSOWrappers
             writer.WriteString(flagsString);
         }
 
-        private void WriteFlagsContent(XmlTextWriter writer, PsoFlagsInt value)
+        private void WriteFlagsContent(XmlWriter writer, PsoFlagsInt32 value)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < 32; i++)
@@ -418,7 +497,8 @@ namespace RageLib.GTA5.PSOWrappers
                     }
 
                     var matchingFlagName = GetNameForHash(machingFlagEntry.EntryNameHash);
-                    sb.Append(matchingFlagName + " ");
+                    sb.Append(matchingFlagName);
+                    sb.Append(' ');
                 }
             }
 
@@ -426,160 +506,54 @@ namespace RageLib.GTA5.PSOWrappers
             writer.WriteString(flagsString);
         }
 
-        private void WriteFloatContent(XmlTextWriter writer, PsoFloat value)
-        {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Value);
-            writer.WriteAttributeString("value", s1);
-        }
+        
 
-        private void WriteFloatContent(XmlTextWriter writer, PsoFloat2 value)
+        private void WriteMapContent(XmlWriter writer, PsoMap value)
         {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
-            writer.WriteAttributeString("x", s1);
-            writer.WriteAttributeString("y", s2);
-        }
+            if (value.Entries is null)
+                return;
 
-        private void WriteFloatContent(XmlTextWriter writer, PsoFloat3 value)
-        {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
-            var s3 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Z);
-            writer.WriteAttributeString("x", s1);
-            writer.WriteAttributeString("y", s2);
-            writer.WriteAttributeString("z", s3);
-        }
-
-        private void WriteFloatContent(XmlTextWriter writer, PsoFloat4A value)
-        {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
-            var s3 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Z);
-            var s4 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.W);
-            writer.WriteAttributeString("x", s1);
-            writer.WriteAttributeString("y", s2);
-            writer.WriteAttributeString("z", s3);
-            writer.WriteAttributeString("w", s4);
-        }
-
-        private void WriteFloatContent(XmlTextWriter writer, PsoFloat4B value)
-        {
-            var s1 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.X);
-            var s2 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Y);
-            var s3 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.Z);
-            var s4 = string.Format(CultureInfo.InvariantCulture, "{0:0.0###########}", value.W);
-            writer.WriteAttributeString("x", s1);
-            writer.WriteAttributeString("y", s2);
-            writer.WriteAttributeString("z", s3);
-            writer.WriteAttributeString("w", s4);
-        }
-
-        private void WriteIntegerContent(XmlTextWriter writer, PsoIntSigned value)
-        {
-            writer.WriteAttributeString("value", value.Value.ToString());
-        }
-
-        private void WriteIntegerContent(XmlTextWriter writer, PsoIntUnsigned value)
-        {
-            writer.WriteAttributeString("value", value.Value.ToString("X8"));
-        }
-
-        private void WriteMapContent(XmlTextWriter writer, PsoMap value)
-        {
-            if (value.Entries != null)
+            foreach (var arrayEntry in value.Entries)
             {
-                foreach (var arrayEntry in value.Entries)
+                writer.WriteStartElement("Item");
+
+                var strKey = (PsoString7)arrayEntry.Values[0x6098a50e];
+                writer.WriteAttributeString("key", GetNameForHash(strKey.Value));
+
+                var kk = arrayEntry.Values[0x063fa3f2];
+
+                switch (kk)
                 {
-                    writer.WriteStartElement("Item");
-
-                    var strKey = (PsoString7)arrayEntry.Values[0x6098a50e];
-                    writer.WriteAttributeString("key", GetNameForHash(strKey.Value));
-
-                    var kk = arrayEntry.Values[0x063fa3f2];
-                    if (kk is PsoStructure)
-                    {
-                        WriteStructureContentXml((PsoStructure)kk, writer);
-                    }
-                    else if (kk is PsoStructure3)
-                    {
-                        WriteStructureContentXml((PsoStructure3)kk, writer);
-                    }
-                    else
-                    {
-                        WriteStructureElementContentXml(kk, writer);
-                    }
-
-
-                    writer.WriteEndElement();
+                    case PsoStructure:
+                        WriteStructureContentXml(writer, (PsoStructure)kk);
+                        break;
+                    case PsoStructure3:
+                        WriteStructureContentXml(writer, (PsoStructure3)kk);
+                        break;
+                    default:
+                        WriteStructureElementContentXml(writer, kk);
+                        break;
                 }
+
+                writer.WriteEndElement();
             }
         }
 
-        private void WriteStringContent(XmlTextWriter writer, PsoString0 value)
+        private void WriteStringContent(XmlWriter writer, string value)
         {
-            if (value.Value != null)
-            {
-                writer.WriteString(value.Value.Replace("\0", ""));
-            }
+            if (string.IsNullOrEmpty(value))
+                return;
+
+            writer.WriteString(value.Replace("\0", ""));
         }
 
-        private void WriteStringContent(XmlTextWriter writer, PsoString1 value)
+        private void WriteStringContent(XmlWriter writer, int value)
         {
-            if (value.Value != null)
-            {
-                writer.WriteString(value.Value.Replace("\0", ""));
-            }
+            if (value == 0)
+                return;
+            
+            writer.WriteString(GetNameForHash(value));
         }
-
-        private void WriteStringContent(XmlTextWriter writer, PsoString2 value)
-        {
-            if (value.Value != null)
-            {
-                writer.WriteString(value.Value.Replace("\0", ""));
-            }
-        }
-
-        private void WriteStringContent(XmlTextWriter writer, PsoString3 value)
-        {
-            if (value.Value != null)
-            {
-                writer.WriteString(value.Value.Replace("\0", ""));
-            }
-        }
-
-        private void WriteStringContent(XmlTextWriter writer, PsoString7 value)
-        {
-            if (value.Value != 0)
-            {
-                writer.WriteString(GetNameForHash(value.Value));
-            }
-        }
-
-        private void WriteStringContent(XmlTextWriter writer, PsoString8 value)
-        {
-            if (value.Value != 0)
-            {
-                writer.WriteString(GetNameForHash(value.Value));
-            }
-        }
-
-
-
-
-
-
-
-
-
-        private void Write5Content(XmlTextWriter writer, PsoType5 value)
-        {
-            writer.WriteAttributeString("value", value.Value.ToString());
-        }
-
-
-
-
-
 
         private string GetNameForHash(int hash)
         {
@@ -590,24 +564,9 @@ namespace RageLib.GTA5.PSOWrappers
             }
             else
             {
-                throw new Exception("Hash 0x" + hash.ToString("X8") + "could not be replaced by a string.");
+                //return $"Unknown_Hash_0x{hash:X8}";
+                throw new Exception($"Hash 0x{hash:X8} can't be resolved");
             }
         }
-
-        public string ByteArrayToString(byte[] b)
-        {
-            var result = new StringBuilder();
-            for (int i = 0; i < b.Length; i++)
-            {
-                //result.Append("0x");
-                result.Append(b[i]);
-                if (i != b.Length - 1)
-                {
-                    result.Append(' ');
-                }
-            }
-            return result.ToString();
-        }
-
     }
 }

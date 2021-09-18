@@ -45,10 +45,18 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
             long position = reader.Position;
 
             this.Values = new Dictionary<int, IMetaValue>();
-            foreach (var entry in info.Entries)
+            for (int i = 0; i < info.Entries.Count; i++)
             {
+                var entry = info.Entries[i];
+                
+                StructureEntryInfo arrayInfo = null;
+
                 if (entry.EntryNameHash == 0x100)
-                    continue;
+                {
+                    arrayInfo = entry;
+                    entry = info.Entries[i + 1];
+                    i++;
+                }
 
                 reader.Position = position + entry.DataOffset;
                 switch (entry.DataType)
@@ -67,45 +75,72 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.Boolean:
+                    case StructureEntryDataType.Bool:
                         {
-                            var entryValue = new MetaBoolean();
+                            var entryValue = new MetaBool();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.SignedByte:
+                    case StructureEntryDataType.Int8:
                         {
-                            var entryValue = new MetaByte_A();
+                            var entryValue = new MetaSByte();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.UnsignedByte:
+                    case StructureEntryDataType.UInt8:
                         {
-                            var entryValue = new MetaByte_B();
+                            var entryValue = new MetaByte();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.ByteEnum:
+                    case StructureEntryDataType.Int16:
                         {
-                            var entryValue = new MetaByte_Enum();
-                            entryValue.info = GetEnumInfo(meta, entry.ReferenceKey);
+                            var entryValue = new MetaInt16();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.ArrayOfChars:
+                    case StructureEntryDataType.UInt16:
                         {
-                            var entryValue = new MetaArrayOfChars(entry);
+                            var entryValue = new MetaUInt16();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.CharPointer:
+                    case StructureEntryDataType.Int32:
                         {
-                            var entryValue = new MetaCharPointer();
+                            var entryValue = new MetaInt32();
+                            entryValue.Read(reader);
+                            this.Values.Add(entry.EntryNameHash, entryValue);
+                            break;
+                        }
+                    case StructureEntryDataType.UInt32:
+                        {
+                            var entryValue = new MetaUInt32();
+                            entryValue.Read(reader);
+                            this.Values.Add(entry.EntryNameHash, entryValue);
+                            break;
+                        }
+                    case StructureEntryDataType.StringLocal:
+                        {
+                            var entryValue = new MetaString(entry);
+                            entryValue.Read(reader);
+                            this.Values.Add(entry.EntryNameHash, entryValue);
+                            break;
+                        }
+                    case StructureEntryDataType.StringPointer:
+                        {
+                            var entryValue = new MetaStringPointer();
+                            entryValue.Read(reader);
+                            this.Values.Add(entry.EntryNameHash, entryValue);
+                            break;
+                        }
+                    case StructureEntryDataType.StringHash:
+                        {
+                            var entryValue = new MetaStringHash();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
@@ -117,98 +152,92 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.Float_XYZ:
+                    case StructureEntryDataType.Vector3:
                         {
-                            var entryValue = new MetaFloat4_XYZ();
+                            var entryValue = new MetaVector3();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.Float_XYZW:
+                    case StructureEntryDataType.Vector4:
                         {
-                            var entryValue = new MetaFloat4_XYZW();
+                            var entryValue = new MetaVector4();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.StructurePointer:
+                    case StructureEntryDataType.ArrayLocal:
                         {
-                            var entryValue = new MetaGeneric();
+                            MetaArrayLocal entryValue;
+                            
+                            // TODO: Check why OpenIV sometimes doesn't handle these well
+                            switch (arrayInfo.DataType)
+                            {
+                                case StructureEntryDataType.UInt8:
+                                    entryValue = new MetaArrayLocal<byte>(entry);
+                                    break;
+                                case StructureEntryDataType.UInt16:
+                                    entryValue = new MetaArrayLocal<ushort>(entry);
+                                    break;
+                                case StructureEntryDataType.UInt32:
+                                    entryValue = new MetaArrayLocal<uint>(entry);
+                                    break;
+                                case StructureEntryDataType.Float:
+                                    entryValue = new MetaArrayLocal<float>(entry);
+                                    break;
+                                default:
+                                    throw new Exception($"Unsupported ArrayType: {arrayInfo.DataType} for Type: {entry.DataType}");
+                            }
+
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.SignedShort:
+                    case StructureEntryDataType.EnumInt8:
                         {
-                            var entryValue = new MetaInt16_A();
-                            entryValue.Read(reader);
-                            this.Values.Add(entry.EntryNameHash, entryValue);
-                            break;
-                        }
-                    case StructureEntryDataType.UnsignedShort:
-                        {
-                            var entryValue = new MetaInt16_B();
-                            entryValue.Read(reader);
-                            this.Values.Add(entry.EntryNameHash, entryValue);
-                            break;
-                        }
-                    case StructureEntryDataType.ShortFlags: // flags!
-                        {
-                            var entryValue = new MetaInt16_Enum();
-                            entryValue.Read(reader);
+                            var entryValue = new MetaEnumInt8();
                             entryValue.info = GetEnumInfo(meta, entry.ReferenceKey);
-                            this.Values.Add(entry.EntryNameHash, entryValue);
-                            break;
-                        }
-                    case StructureEntryDataType.ArrayOfBytes:
-                        {
-                            var entryValue = new MetaArrayOfBytes(entry);
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.SignedInt:
+                    case StructureEntryDataType.EnumInt16:
                         {
-                            var entryValue = new MetaInt32_A();
+                            var entryValue = new MetaEnumInt16();
+                            entryValue.info = GetEnumInfo(meta, entry.ReferenceKey);
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.UnsignedInt:
+                    case StructureEntryDataType.EnumInt32:
                         {
-                            var entryValue = new MetaInt32_B();
-                            entryValue.Read(reader);
-                            this.Values.Add(entry.EntryNameHash, entryValue);
-                            break;
-                        }
-                    case StructureEntryDataType.IntEnum:
-                        {
-                            var entryValue = new MetaInt32_Enum1();
+                            var entryValue = new MetaEnumInt32();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             entryValue.info = GetEnumInfo(meta, entry.ReferenceKey);
                             break;
                         }
-                    case StructureEntryDataType.IntFlags1:
+                    case StructureEntryDataType.FlagsInt8:
                         {
-                            var entryValue = new MetaInt32_Enum2();
+                            var entryValue = new MetaFlagsInt8();
                             entryValue.Read(reader);
                             entryValue.info = GetEnumInfo(meta, entry.ReferenceKey);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.IntFlags2: // flags
+                    case StructureEntryDataType.FlagsInt16: // flags!
                         {
-                            var entryValue = new MetaInt32_Enum3();
+                            var entryValue = new MetaFlagsInt16();
                             entryValue.Read(reader);
                             entryValue.info = GetEnumInfo(meta, entry.ReferenceKey);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
-                    case StructureEntryDataType.Hash:
+                    case StructureEntryDataType.FlagsInt32: // flags
                         {
-                            var entryValue = new MetaInt32_Hash();
+                            var entryValue = new MetaFlagsInt32();
                             entryValue.Read(reader);
+                            entryValue.info = GetEnumInfo(meta, entry.ReferenceKey);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;
                         }
@@ -222,6 +251,13 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
                     case StructureEntryDataType.Structure:
                         {
                             var entryValue = new MetaStructure(meta, GetStructureInfo(meta, entry.ReferenceKey));
+                            entryValue.Read(reader);
+                            this.Values.Add(entry.EntryNameHash, entryValue);
+                            break;
+                        }
+                    case StructureEntryDataType.StructurePointer:
+                        {
+                            var entryValue = new MetaGeneric();
                             entryValue.Read(reader);
                             this.Values.Add(entry.EntryNameHash, entryValue);
                             break;

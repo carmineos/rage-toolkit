@@ -97,11 +97,15 @@ namespace RageLib.Resources.GTA5
         public static bool IsResourceFile(string fileName)
         {
             using (var fileStream = new FileStream(fileName, FileMode.Open))
-            {
-                var reader = new DataReader(fileStream);
-                var ident = reader.ReadInt32();
-                return ident == RESOURCE_IDENT;
-            }
+                return IsResourceFile(fileStream);
+        }
+
+        public static bool IsResourceFile(Stream stream)
+        {
+            var reader = new DataReader(stream);
+            var ident = reader.ReadInt32();
+            stream.Position -= 4;
+            return ident == RESOURCE_IDENT;
         }
     }
 

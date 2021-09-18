@@ -24,6 +24,7 @@ using RageLib.Data;
 using RageLib.Resources.GTA5.PC.Meta;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
@@ -44,23 +45,17 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
             var blockIndexAndOffset = reader.ReadUInt32();
             this.BlockIndex = (int)(blockIndexAndOffset & 0x00000FFF);
             this.Offset = (int)((blockIndexAndOffset & 0xFFFFF000) >> 12);
-            var zero_4h = reader.ReadUInt32();
-            if (zero_4h != 0)
-            {
-                throw new Exception("zero_4h should be 0");
-            }
+            
+            var unknown_4h = reader.ReadUInt32();
+            Debug.Assert(unknown_4h == 0);
+
             var size1 = reader.ReadUInt16();
             var size2 = reader.ReadUInt16();
-            if (size1 != size2)
-            {
-                throw new Exception("size1 should be size2");
-            }
+            Debug.Assert(size1 == size2);
             this.NumberOfEntries = size1;
-            var zero_Ch = reader.ReadUInt32();
-            if (zero_Ch != 0)
-            {
-                throw new Exception("zero_Ch should be 0");
-            }
+
+            var unknown_Ch = reader.ReadUInt32();
+            Debug.Assert(unknown_Ch == 0);
         }
 
         public void Write(DataWriter writer)

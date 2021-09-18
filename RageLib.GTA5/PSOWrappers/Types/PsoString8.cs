@@ -22,6 +22,7 @@
 
 using RageLib.Data;
 using RageLib.GTA5.PSOWrappers.Data;
+using System.Diagnostics;
 
 namespace RageLib.GTA5.PSOWrappers.Types
 {
@@ -41,6 +42,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
         {
             int z1 = reader.ReadInt32();
             int z2 = reader.ReadInt32();
+            Debug.Assert(z2 == 0);
 
             Value = z1;
         }

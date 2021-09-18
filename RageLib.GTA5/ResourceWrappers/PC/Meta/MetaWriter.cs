@@ -97,6 +97,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     meta.EnumInfos.RemoveAt(e);
             }
 
+            if (meta.EnumInfos.Count < 1)
+                meta.EnumInfos = null;
+
             meta.DataBlocks = new ResourceSimpleArray<DataBlock>();
             foreach (var block in writer.Blocks)
             {
@@ -174,7 +177,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         arrayStructureEntryInfo.DataOffset = 0;
                         arrayStructureEntryInfo.DataType = (StructureEntryDataType)xmlArrayType.Type;
                         arrayStructureEntryInfo.Unknown_9h = 0;
-                        if (arrayStructureEntryInfo.DataType == StructureEntryDataType.Array)
+                        if (arrayStructureEntryInfo.DataType == StructureEntryDataType.Array || arrayStructureEntryInfo.DataType == StructureEntryDataType.ArrayLocal)
                         {
                             arrayStructureEntryInfo.ReferenceTypeIndex = (short)(structureInfo.Entries.Count - 1);
                         }
@@ -191,7 +194,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     structureEntryInfo.DataOffset = xmlStructureEntryInfo.Offset;
                     structureEntryInfo.DataType = (StructureEntryDataType)xmlStructureEntryInfo.Type;
                     structureEntryInfo.Unknown_9h = (byte)xmlStructureEntryInfo.Unknown;
-                    if (structureEntryInfo.DataType == StructureEntryDataType.Array)
+                    if (structureEntryInfo.DataType == StructureEntryDataType.Array || structureEntryInfo.DataType == StructureEntryDataType.ArrayLocal)
                     {
                         structureEntryInfo.ReferenceTypeIndex = (short)(structureInfo.Entries.Count - 1);
                     }
@@ -265,7 +268,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                         }
                     }
-                    if (structureEntryToCheck.Value is MetaCharPointer)
+                    if (structureEntryToCheck.Value is MetaStringPointer)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
                     }
@@ -330,9 +333,9 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         arrayValue.NumberOfEntries = 0;
                     }
                 }
-                if (v is MetaCharPointer)
+                if (v is MetaStringPointer)
                 {
-                    var charPointerValue = (MetaCharPointer)v;
+                    var charPointerValue = (MetaStringPointer)v;
                     if (charPointerValue.Value != null)
                     {
                         writer.SelectBlockByNameHash(0x10);

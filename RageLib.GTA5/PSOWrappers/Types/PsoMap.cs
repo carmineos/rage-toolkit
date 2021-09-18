@@ -25,6 +25,7 @@ using RageLib.GTA5.PSO;
 using RageLib.GTA5.PSOWrappers.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RageLib.GTA5.PSOWrappers.Types
 {
@@ -50,54 +51,45 @@ namespace RageLib.GTA5.PSOWrappers.Types
 
         public void Read(PsoDataReader reader)
         {
-            int x1 = reader.ReadInt32();
-            int x2 = reader.ReadInt32();
-            int x3 = reader.ReadInt32();
-            int unk = (x3 >> 12) & 0x000FFFFF;
-            int sectionIndex = x3 & 0x00000FFF;
+            var unknown_0h = reader.ReadUInt32();
+            Debug.Assert(unknown_0h == 0x01000000);
 
-            int x4 = reader.ReadInt32();
+            var unknown_4h = reader.ReadUInt32();
+            Debug.Assert(unknown_4h == 0);
 
+            var blockIndexAndOffset = reader.ReadUInt32();
+            var Offset = (int)((blockIndexAndOffset >> 12) & 0x000FFFFF);
+            var BlockIndex = (int)(blockIndexAndOffset & 0x00000FFF);
 
-            int x5 = reader.ReadInt32();
-            int length1 = (x5 >> 16) & 0x0000FFFF;
-            int length2 = x5 & 0x0000FFFF;
-            if (length1 != length2)
-                throw new Exception("length does not match");
+            var unknown_Ch = reader.ReadUInt32();
+            Debug.Assert(unknown_Ch == 0);
 
-            int x6 = reader.ReadInt32();
+            var keysCount = reader.ReadUInt16();
+            var itemsCount = reader.ReadUInt16();
+            Debug.Assert(keysCount == itemsCount);
 
-
-
+            var unknown_14h = reader.ReadUInt32();
+            Debug.Assert(unknown_14h == 0);
 
             // read reference data...
             var backupOfSection = reader.CurrentSectionIndex;
             var backupOfPosition = reader.Position;
 
-            reader.SetSectionIndex(sectionIndex - 1);
-            reader.Position = unk;
+            reader.CurrentSectionIndex = BlockIndex - 1;
+            reader.Position = Offset;
 
-            int nameOfDataSection = pso.DataMappingSection.Entries[sectionIndex - 1].NameHash;
-            var sectionInfo = (PsoStructureInfo)null;
-            //var sectionIdxInfo = (PsoElementIndexInfo)null;
-            for (int k = 0; k < pso.DefinitionSection.EntriesIdx.Count; k++)
-            {
-                if (pso.DefinitionSection.EntriesIdx[k].NameHash == nameOfDataSection)
-                {
-                    sectionInfo = (PsoStructureInfo)pso.DefinitionSection.Entries[k];
-                    //sectionIdxInfo = pso.DefinitionSection.EntriesIdx[k];
-                }
-            }
+            int nameOfDataSection = pso.DataMappingSection.Entries[BlockIndex - 1].NameHash;
+            var sectionInfo = PsoTypeBuilder.GetStructureInfo(pso, nameOfDataSection);
 
             Entries = new List<PsoStructure>();
-            for (int i = 0; i < length1; i++)
+            for (int i = 0; i < keysCount; i++)
             {
                 var entryStr = new PsoStructure(pso, sectionInfo, null, null);
                 entryStr.Read(reader);
                 Entries.Add(entryStr);
             }
 
-            reader.SetSectionIndex(backupOfSection);
+            reader.CurrentSectionIndex = backupOfSection;
             reader.Position = backupOfPosition;
         }
 

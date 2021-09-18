@@ -142,18 +142,17 @@ namespace RageLib.GTA5.PSO
     public class PsoStructureInfo : PsoElementInfo
     {
         public byte Type { get; set; } = 0;
-        public short EntriesCount { get; private set; }
         public byte Unk { get; set; }
+        public short EntriesCount { get; private set; }
         public int StructureLength { get; set; }
         public uint Unk_Ch { get; set; } = 0x00000000;
         public List<PsoStructureEntryInfo> Entries { get; set; } = new List<PsoStructureEntryInfo>();
 
         public override void Read(DataReader reader)
         {
-            uint x = reader.ReadUInt32();
-            this.Type = (byte)((x & 0xFF000000) >> 24);
-            this.EntriesCount = (short)(x & 0xFFFF);
-            this.Unk = (byte)((x & 0x00FF0000) >> 16);
+            this.Type = reader.ReadByte();
+            this.Unk = reader.ReadByte();
+            this.EntriesCount = reader.ReadInt16();
             this.StructureLength = reader.ReadInt32();
             this.Unk_Ch = reader.ReadUInt32();
 
@@ -171,8 +170,9 @@ namespace RageLib.GTA5.PSO
             Type = 0;
             EntriesCount = (short)Entries.Count;
 
-            uint typeAndEntriesCount = (uint)(Type << 24) | (uint)(Unk << 16) | (ushort)EntriesCount;
-            writer.Write(typeAndEntriesCount);
+            writer.Write(Type);
+            writer.Write(Unk);
+            writer.Write(EntriesCount);
             writer.Write(StructureLength);
             writer.Write(Unk_Ch);
 
@@ -182,48 +182,122 @@ namespace RageLib.GTA5.PSO
             }
         }
     }
-
-    public enum DataType : byte
+    
+    public enum ParMemberType : byte    // 0x1CA39C3D
     {
-        Boolean = 0x00,
-        LONG_01h = 0x01,
-        Byte = 0x02,
-        SHORT_03h = 0x03,
-        SHORT_04h = 0x04,
-        INT_05h = 0x05,
-        Integer = 0x06,
-        Float = 0x07,
-        Float2 = 0x08,
-        TYPE_09h = 0x09,
-        Float4 = 0x0a,
-        String = 0x0b,
-        Structure = 0x0c,
-        Array = 0x0d,
-        Enum = 0x0e,
-        Flags = 0x0f,
-        Map = 0x10,
-        TYPE_14h = 0x14,
-        Float3 = 0x15,
-        SHORT_1Eh = 0x1e,
-        LONG_20h = 0x20
+        BOOL = 0,
+        CHAR = 1,
+        UCHAR = 2,
+        SHORT = 3,
+        USHORT = 4,
+        INT = 5,
+        UINT = 6,
+        FLOAT = 7,
+        VECTOR2 = 8,
+        VECTOR3 = 9,
+        VECTOR4 = 10,
+        STRING = 11,
+        STRUCT = 12,
+        ARRAY = 13,
+        ENUM = 14,
+        BITSET = 15,
+        MAP = 16,
+        MATRIX34 = 17,
+        MATRIX44 = 18,
+        VEC2V = 19,
+        VEC3V = 20,
+        VEC4V = 21,
+        MAT33V = 22,
+        MAT34V = 23,
+        MAT44V = 24,
+        SCALARV = 25,
+        BOOLV = 26,
+        VECBOOLV = 27,
+        PTRDIFFT = 28,
+        SIZET = 29,
+        FLOAT16 = 30,
+        INT64 = 31,
+        UINT64 = 32,
+        DOUBLE = 33
     }
+
+    public enum ParMemberArraySubtype : byte    // 0xADE25B1B
+    {
+        ATARRAY = 0,                        // 0xABE40192
+        ATFIXEDARRAY = 1,                   // 0x3A523E81
+        ATRANGEARRAY = 2,                   // 0x18A25B6B
+        POINTER = 3,                        // 0x47073D6E
+        MEMBER = 4,                         // 0x6CC11BB4
+        _0x2087BB00 = 5,                    // 0x2087BB00
+        POINTER_WITH_COUNT = 6,             // 0xE2980EB5
+        POINTER_WITH_COUNT_8BIT_IDX = 7,    // 0x254D33B1
+        POINTER_WITH_COUNT_16BIT_IDX = 8,   // 0xB66B6752
+        VIRTUAL = 9,                        // 0xAC01A1DC
+    };
+
+    public enum ParMemberEnumSubtype : byte // 0x2721C60A
+    {
+        _32BIT = 0,         // 0xAF085554
+        _16BIT = 1,         // 0x0D502D8E
+        _8BIT = 2,          // 0xF2AAF53D
+    };
+
+    public enum ParMemberBitsetSubtype : byte
+    {
+        _32BIT = 0,         // 0xAF085554
+        _16BIT = 1,         // 0x0D502D8E
+        _8BIT = 2,          // 0xF2AAF53D
+        ATBITSET = 3,       // 0xB46B5F65
+    };
+
+    public enum ParMemberMapSubtype : byte  // 0x9C9F1983
+    {
+        ATMAP = 0,          // 0xD8C10171
+        ATBINARYMAP = 1,    // 0x6560BA79
+    };
+
+    public enum ParMemberStringSubtype : byte   // 0xA5CF41A9
+    {
+        MEMBER = 0,                 // 0x6CC11BB4
+        POINTER = 1,                // 0x47073D6E
+        CONST_STRING = 2,           // 0x757C1B9B
+        ATSTRING = 3,               // 0x5CDCA61E
+        WIDE_MEMBER = 4,            // 0xAC508104
+        WIDE_POINTER = 5,           // 0x99D4A8CD
+        ATWIDESTRING = 6,           // 0x3DED5509
+        ATNONFINALHASHSTRING = 7,   // 0xDFE6E4AF
+        ATFINALHASHSTRING = 8,      // 0x945E5945
+        ATHASHVALUE = 9,            // 0xBD3CD157
+        ATPARTIALHASHVALUE = 10,    // 0xD552B3C8
+        ATNSHASHSTRING = 11,        // 0x893F9F69
+        ATNSHASHVALUE = 12,         // 0x3767C917
+    };
+
+    public enum ParMemberStructSubtype : byte   // 0x76214E40
+    {
+        STRUCTURE = 0,                  // 0x3AC3050F
+        EXTERNAL_NAMED = 1,             // 0xA53F8BA9
+        EXTERNAL_NAMED_USERNULL = 2,    // 0x2DED4C19
+        POINTER = 3,                    // 0x47073D6E
+        SIMPLE_POINTER = 4,             // 0x67466543
+    };
 
     public class PsoStructureEntryInfo
     {
         public int EntryNameHash;
-        public DataType Type;
-        public byte Unk_5h;
-        public short DataOffset;
+        public ParMemberType Type;
+        public byte SubType;
+        public ushort DataOffset;
         public int ReferenceKey; // when array -> entry index with type
 
         public PsoStructureEntryInfo()
         { }
 
-        public PsoStructureEntryInfo(int nameHash, DataType type, byte unk5, short dataOffset, int referenceKey)
+        public PsoStructureEntryInfo(int nameHash, ParMemberType type, byte subType, ushort dataOffset, int referenceKey)
         {
             this.EntryNameHash = nameHash;
             this.Type = type;
-            this.Unk_5h = unk5;
+            this.SubType = subType;
             this.DataOffset = dataOffset;
             this.ReferenceKey = referenceKey;
         }
@@ -231,9 +305,9 @@ namespace RageLib.GTA5.PSO
         public void Read(DataReader reader)
         {
             this.EntryNameHash = reader.ReadInt32();
-            this.Type = (DataType)reader.ReadByte();
-            this.Unk_5h = reader.ReadByte();
-            this.DataOffset = reader.ReadInt16();
+            this.Type = (ParMemberType)reader.ReadByte();
+            this.SubType = reader.ReadByte();
+            this.DataOffset = reader.ReadUInt16();
             this.ReferenceKey = reader.ReadInt32();
         }
 
@@ -241,7 +315,7 @@ namespace RageLib.GTA5.PSO
         {
             writer.Write(EntryNameHash);
             writer.Write((byte)Type);
-            writer.Write(Unk_5h);
+            writer.Write(SubType);
             writer.Write(DataOffset);
             writer.Write(ReferenceKey);
         }
@@ -250,14 +324,15 @@ namespace RageLib.GTA5.PSO
     public class PsoEnumInfo : PsoElementInfo
     {
         public byte Type { get; private set; } = 1;
-        public int EntriesCount { get; private set; }
+        public byte Unk { get; set; }
+        public short EntriesCount { get; private set; }
         public List<PsoEnumEntryInfo> Entries { get; set; }
 
         public override void Read(DataReader reader)
         {
-            uint x = reader.ReadUInt32();
-            this.Type = (byte)((x & 0xFF000000) >> 24);
-            this.EntriesCount = (int)(x & 0x00FFFFFF);
+            this.Type = reader.ReadByte();
+            this.Unk = reader.ReadByte();
+            this.EntriesCount = reader.ReadInt16();
 
             Entries = new List<PsoEnumEntryInfo>();
             for (int i = 0; i < EntriesCount; i++)
@@ -272,10 +347,11 @@ namespace RageLib.GTA5.PSO
         {
             // update...
             Type = 1;
-            EntriesCount = Entries.Count;
+            EntriesCount = (short)Entries.Count;
 
-            uint typeAndEntriesCount = (uint)(Type << 24) | (uint)EntriesCount;
-            writer.Write(typeAndEntriesCount);
+            writer.Write(Type);
+            writer.Write(Unk);
+            writer.Write(EntriesCount);
 
             foreach (var entry in Entries)
             {

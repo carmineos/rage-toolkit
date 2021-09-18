@@ -48,44 +48,44 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             var structureWithSimpleTypesInfo = new StructureInfo();
             var structureWithSimpleTypes = new MetaStructure(null, structureWithSimpleTypesInfo);
             structureWithSimpleTypes.Values = new Dictionary<int, IMetaValue>();
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x36C55540), new MetaBoolean(false));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x707975FF), new MetaBoolean(true));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x96142337), new MetaByte_A(-128));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xD4D9059D), new MetaByte_A(-127));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x710D0955), new MetaByte_A(126));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x860ACDD8), new MetaByte_A(127));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xCDFD7789), new MetaByte_B(0));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x7DCCF225), new MetaByte_B(1));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xA0AB9B78), new MetaByte_B(254));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x3A223898), new MetaByte_B(255));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x2F07F270), new MetaInt16_A(-32768));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x83E5053E), new MetaInt16_A(-32767));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x86F3BC1E), new MetaInt16_A(32766));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x2C916F02), new MetaInt16_A(32767));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x1972DD39), new MetaInt16_B(0));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x1433E9A2), new MetaInt16_B(1));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xABF22E97), new MetaInt16_B(65534));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xCAD920FA), new MetaInt16_B(65535));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x96AA9C22), new MetaInt32_A(-2147483648));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xBE498F77), new MetaInt32_A(-2147483647));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xDEA66123), new MetaInt32_A(2147483646));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xA7A347FE), new MetaInt32_A(2147483647));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x5940A2C4), new MetaInt32_B(0));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x7AE8E34B), new MetaInt32_B(1));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x48758F24), new MetaInt32_B(4294967294));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x2DCCF53B), new MetaInt32_B(4294967295));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x36C55540), new MetaBool(false));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x707975FF), new MetaBool(true));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x96142337), new MetaSByte(-128));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xD4D9059D), new MetaSByte(-127));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x710D0955), new MetaSByte(126));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x860ACDD8), new MetaSByte(127));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xCDFD7789), new MetaByte(0));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x7DCCF225), new MetaByte(1));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xA0AB9B78), new MetaByte(254));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x3A223898), new MetaByte(255));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x2F07F270), new MetaInt16(-32768));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x83E5053E), new MetaInt16(-32767));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x86F3BC1E), new MetaInt16(32766));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x2C916F02), new MetaInt16(32767));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x1972DD39), new MetaUInt16(0));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x1433E9A2), new MetaUInt16(1));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xABF22E97), new MetaUInt16(65534));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xCAD920FA), new MetaUInt16(65535));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x96AA9C22), new MetaInt32(-2147483648));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xBE498F77), new MetaInt32(-2147483647));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xDEA66123), new MetaInt32(2147483646));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xA7A347FE), new MetaInt32(2147483647));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x5940A2C4), new MetaUInt32(0));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x7AE8E34B), new MetaUInt32(1));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x48758F24), new MetaUInt32(4294967294));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x2DCCF53B), new MetaUInt32(4294967295));
             structureWithSimpleTypes.Values.Add(unchecked((int)0x7C6BAA24), new MetaFloat(1.2f));
             structureWithSimpleTypes.Values.Add(unchecked((int)0xC81C39E6), new MetaFloat(12.0f));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xC599B2B0), new MetaFloat4_XYZ(1.2f, 3.4f, 5.6f));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xA2B4F045), new MetaFloat4_XYZ(12.0f, 34.0f, 56.0f));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xE0B18333), new MetaFloat4_XYZW(1.2f, 3.4f, 5.6f, 7.8f));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0xA7E3D660), new MetaFloat4_XYZW(12.0f, 34.0f, 56.0f, 78.0f));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x3B8AF0C2), new MetaArrayOfBytes(new byte[] { 0, 1, 254, 255 }));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xC599B2B0), new MetaVector3(1.2f, 3.4f, 5.6f));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xA2B4F045), new MetaVector3(12.0f, 34.0f, 56.0f));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xE0B18333), new MetaVector4(1.2f, 3.4f, 5.6f, 7.8f));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0xA7E3D660), new MetaVector4(12.0f, 34.0f, 56.0f, 78.0f));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x3B8AF0C2), new MetaArrayLocal<byte>(null) { Value = new byte[] { 0, 1, 254, 255 } });
             var charinfo = new StructureEntryInfo();
             charinfo.ReferenceKey = 64;
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x8FF34AB5), new MetaArrayOfChars(charinfo, "A String"));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x17525AB1), new MetaInt32_Hash(unchecked((int)0xF63A8BC0)));
-            structureWithSimpleTypes.Values.Add(unchecked((int)0x10D59C62), new MetaInt32_Hash(0));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x8FF34AB5), new MetaString(charinfo, "A String"));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x17525AB1), new MetaStringHash(unchecked((int)0xF63A8BC0)));
+            structureWithSimpleTypes.Values.Add(unchecked((int)0x10D59C62), new MetaStringHash(0));
             return structureWithSimpleTypes;
         }
 
@@ -107,9 +107,9 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             return structureWithEnums;
         }
 
-        private static MetaByte_Enum MakeByteEnum()
+        private static MetaEnumInt8 MakeByteEnum()
         {
-            var byteEnum = new MetaByte_Enum(1);
+            var byteEnum = new MetaEnumInt8(1);
             var en1info = new EnumInfo();
             en1info.Entries = new ResourceSimpleArray<EnumEntryInfo>();
             var q1 = new EnumEntryInfo();
@@ -124,16 +124,16 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             return byteEnum;
         }
 
-        private static MetaInt32_Enum1 MakeIntEnumA()
+        private static MetaEnumInt32 MakeIntEnumA()
         {
-            var intEnum = new MetaInt32_Enum1(1);
+            var intEnum = new MetaEnumInt32(1);
             intEnum.info = MakeIntEnumInfo();
             return intEnum;
         }
 
-        private static MetaInt32_Enum1 MakeIntEnumB()
+        private static MetaEnumInt32 MakeIntEnumB()
         {
-            var intEnum = new MetaInt32_Enum1(-1);
+            var intEnum = new MetaEnumInt32(-1);
             intEnum.info = MakeIntEnumInfo();
             return intEnum;
         }
@@ -153,17 +153,17 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             return intEnumInfo;
         }
 
-        private static MetaInt16_Enum MakeShortFlagsA()
+        private static MetaFlagsInt16 MakeShortFlagsA()
         {
-            var shortFlags = new MetaInt16_Enum();
+            var shortFlags = new MetaFlagsInt16();
             shortFlags.info = MakeShortFlagsInfo();
             shortFlags.Value = 3;
             return shortFlags;
         }
 
-        private static MetaInt16_Enum MakeShortFlagsB()
+        private static MetaFlagsInt16 MakeShortFlagsB()
         {
-            var shortFlags = new MetaInt16_Enum();
+            var shortFlags = new MetaFlagsInt16();
             shortFlags.info = MakeShortFlagsInfo();
             shortFlags.Value = 0;
             return shortFlags;
@@ -184,17 +184,17 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             return shortFlagsInfo;
         }
 
-        private static MetaInt32_Enum2 MakeIntFlags1A()
+        private static MetaFlagsInt8 MakeIntFlags1A()
         {
-            var intFlags = new MetaInt32_Enum2();
+            var intFlags = new MetaFlagsInt8();
             intFlags.info = MakeIntFlags1Info();
             intFlags.Value = 3;
             return intFlags;
         }
 
-        private static MetaInt32_Enum2 MakeIntFlags1B()
+        private static MetaFlagsInt8 MakeIntFlags1B()
         {
-            var intFlags = new MetaInt32_Enum2();
+            var intFlags = new MetaFlagsInt8();
             intFlags.info = MakeIntFlags1Info();
             intFlags.Value = 0;
             return intFlags;
@@ -215,19 +215,19 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             return intFlagsInfo;
         }
 
-        private static MetaInt32_Enum3 MakeIntFlags2A()
+        private static MetaFlagsInt32 MakeIntFlags2A()
         {
-            return new MetaInt32_Enum3(MakeIntFlags2Info(), 3);
+            return new MetaFlagsInt32(MakeIntFlags2Info(), 3);
         }
 
-        private static MetaInt32_Enum3 MakeIntFlags2B()
+        private static MetaFlagsInt32 MakeIntFlags2B()
         {
-            return new MetaInt32_Enum3(null, 3);
+            return new MetaFlagsInt32(null, 3);
         }
 
-        private static MetaInt32_Enum3 MakeIntFlags2C()
+        private static MetaFlagsInt32 MakeIntFlags2C()
         {
-            return new MetaInt32_Enum3(MakeIntFlags2Info(), 0);
+            return new MetaFlagsInt32(MakeIntFlags2Info(), 0);
         }
 
         private static EnumInfo MakeIntFlags2Info()
@@ -256,8 +256,8 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             structureWithSimpleReferenceData.Values.Add(unchecked((int)0x8FD208FE), MakeFloatArray());
             structureWithSimpleReferenceData.Values.Add(unchecked((int)0xD094EFE2), MakeFloatVectorArray());
             structureWithSimpleReferenceData.Values.Add(unchecked((int)0x68B43521), MakeHashArray());
-            structureWithSimpleReferenceData.Values.Add(unchecked((int)0x3A6E4591), new MetaCharPointer("A String"));
-            structureWithSimpleReferenceData.Values.Add(unchecked((int)0xC9811541), new MetaCharPointer(null));
+            structureWithSimpleReferenceData.Values.Add(unchecked((int)0x3A6E4591), new MetaStringPointer("A String"));
+            structureWithSimpleReferenceData.Values.Add(unchecked((int)0xC9811541), new MetaStringPointer(null));
             structureWithSimpleReferenceData.Values.Add(unchecked((int)0xC8C01542), new MetaDataBlockPointer(null, new byte[] { 0, 1, 254, 255 }));
             structureWithSimpleReferenceData.Values.Add(unchecked((int)0x2FCAB965), new MetaDataBlockPointer(null, null));
             return structureWithSimpleReferenceData;
@@ -267,12 +267,12 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
         {
             var metaArray = new MetaArray();
             metaArray.info = new StructureEntryInfo();
-            metaArray.info.DataType = StructureEntryDataType.UnsignedByte;
+            metaArray.info.DataType = StructureEntryDataType.UInt8;
             metaArray.Entries = new List<IMetaValue>();
-            metaArray.Entries.Add(new MetaByte_B(0));
-            metaArray.Entries.Add(new MetaByte_B(1));
-            metaArray.Entries.Add(new MetaByte_B(254));
-            metaArray.Entries.Add(new MetaByte_B(255));
+            metaArray.Entries.Add(new MetaByte(0));
+            metaArray.Entries.Add(new MetaByte(1));
+            metaArray.Entries.Add(new MetaByte(254));
+            metaArray.Entries.Add(new MetaByte(255));
             return metaArray;
         }
 
@@ -280,12 +280,12 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
         {
             var metaArray = new MetaArray();
             metaArray.info = new StructureEntryInfo();
-            metaArray.info.DataType = StructureEntryDataType.UnsignedShort;
+            metaArray.info.DataType = StructureEntryDataType.UInt16;
             metaArray.Entries = new List<IMetaValue>();
-            metaArray.Entries.Add(new MetaInt16_B(0));
-            metaArray.Entries.Add(new MetaInt16_B(1));
-            metaArray.Entries.Add(new MetaInt16_B(65534));
-            metaArray.Entries.Add(new MetaInt16_B(65535));
+            metaArray.Entries.Add(new MetaUInt16(0));
+            metaArray.Entries.Add(new MetaUInt16(1));
+            metaArray.Entries.Add(new MetaUInt16(65534));
+            metaArray.Entries.Add(new MetaUInt16(65535));
             return metaArray;
         }
 
@@ -293,12 +293,12 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
         {
             var metaArray = new MetaArray();
             metaArray.info = new StructureEntryInfo();
-            metaArray.info.DataType = StructureEntryDataType.UnsignedInt;
+            metaArray.info.DataType = StructureEntryDataType.UInt32;
             metaArray.Entries = new List<IMetaValue>();
-            metaArray.Entries.Add(new MetaInt32_B(0));
-            metaArray.Entries.Add(new MetaInt32_B(1));
-            metaArray.Entries.Add(new MetaInt32_B(4294967294));
-            metaArray.Entries.Add(new MetaInt32_B(4294967295));
+            metaArray.Entries.Add(new MetaUInt32(0));
+            metaArray.Entries.Add(new MetaUInt32(1));
+            metaArray.Entries.Add(new MetaUInt32(4294967294));
+            metaArray.Entries.Add(new MetaUInt32(4294967295));
             return metaArray;
         }
 
@@ -319,10 +319,10 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
         {
             var metaArray = new MetaArray();
             metaArray.info = new StructureEntryInfo();
-            metaArray.info.DataType = StructureEntryDataType.Float_XYZ;
+            metaArray.info.DataType = StructureEntryDataType.Vector3;
             metaArray.Entries = new List<IMetaValue>();
-            metaArray.Entries.Add(new MetaFloat4_XYZ(-50.00f, -6.00f, -30.00f));
-            metaArray.Entries.Add(new MetaFloat4_XYZ(50.00f, 6.00f, 30.00f));
+            metaArray.Entries.Add(new MetaVector3(-50.00f, -6.00f, -30.00f));
+            metaArray.Entries.Add(new MetaVector3(50.00f, 6.00f, 30.00f));
             return metaArray;
         }
 
@@ -330,11 +330,11 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
         {
             var metaArray = new MetaArray();
             metaArray.info = new StructureEntryInfo();
-            metaArray.info.DataType = StructureEntryDataType.Hash;
+            metaArray.info.DataType = StructureEntryDataType.StringHash;
             metaArray.Entries = new List<IMetaValue>();
-            metaArray.Entries.Add(new MetaInt32_Hash(unchecked((int)0xCA134811)));
-            metaArray.Entries.Add(new MetaInt32_Hash(unchecked((int)0x1AA9F061)));
-            metaArray.Entries.Add(new MetaInt32_Hash(0));
+            metaArray.Entries.Add(new MetaStringHash(unchecked((int)0xCA134811)));
+            metaArray.Entries.Add(new MetaStringHash(unchecked((int)0x1AA9F061)));
+            metaArray.Entries.Add(new MetaStringHash(0));
             return metaArray;
         }
 
@@ -352,13 +352,13 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
         {
             MetaStructure substr1 = new MetaStructure(null, null);
             substr1.Values = new Dictionary<int, IMetaValue>();
-            substr1.Values.Add(unchecked((int)0x620795CF), new MetaBoolean(false));
-            substr1.Values.Add(unchecked((int)0x2518B65F), new MetaBoolean(true));
+            substr1.Values.Add(unchecked((int)0x620795CF), new MetaBool(false));
+            substr1.Values.Add(unchecked((int)0x2518B65F), new MetaBool(true));
 
             MetaStructure substr2 = new MetaStructure(null, null);
             substr2.Values = new Dictionary<int, IMetaValue>();
-            substr2.Values.Add(unchecked((int)0x620795CF), new MetaBoolean(true));
-            substr2.Values.Add(unchecked((int)0x2518B65F), new MetaBoolean(false));
+            substr2.Values.Add(unchecked((int)0x620795CF), new MetaBool(true));
+            substr2.Values.Add(unchecked((int)0x2518B65F), new MetaBool(false));
 
             MetaArray structureArray = new MetaArray();
             structureArray.info = new StructureEntryInfo();
@@ -375,8 +375,8 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             metainf111.StructureNameHash = 0x2D8B6A9C;
             MetaStructure metasubstr1 = new MetaStructure(null, metainf111);
             metasubstr1.Values = new Dictionary<int, IMetaValue>();
-            metasubstr1.Values.Add(unchecked((int)0x04792618), new MetaBoolean(false));
-            metasubstr1.Values.Add(unchecked((int)0xD302778A), new MetaBoolean(true));
+            metasubstr1.Values.Add(unchecked((int)0x04792618), new MetaBool(false));
+            metasubstr1.Values.Add(unchecked((int)0xD302778A), new MetaBool(true));
             MetaGeneric pointerValue1 = new MetaGeneric();
             pointerValue1.Value = metasubstr1;
 
@@ -384,8 +384,8 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             metainf222.StructureNameHash = unchecked((int)0xA71A1B09);
             MetaStructure metasubstr2 = new MetaStructure(null, metainf222);
             metasubstr2.Values = new Dictionary<int, IMetaValue>();
-            metasubstr2.Values.Add(unchecked((int)0x8705BF6F), new MetaBoolean(true));
-            metasubstr2.Values.Add(unchecked((int)0x981F3DBC), new MetaBoolean(false));
+            metasubstr2.Values.Add(unchecked((int)0x8705BF6F), new MetaBool(true));
+            metasubstr2.Values.Add(unchecked((int)0x981F3DBC), new MetaBool(false));
             MetaGeneric pointerValue2 = new MetaGeneric();
             pointerValue2.Value = metasubstr2;
 

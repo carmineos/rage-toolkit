@@ -38,22 +38,7 @@ namespace RageLib.GTA5.PSOWrappers.Types
 
         public void Read(PsoDataReader reader)
         {
-            Value = "";
-            bool isok = true;
-            for (int i = 0; i < length; i++)
-            {
-                char c = (char)reader.ReadByte();
-                if (c == 0)
-                {
-                    isok = false;
-                }
-                else
-                {
-                    if (!isok)
-                        throw new Exception("Unexpected char.");
-                    Value += c;
-                }
-            }
+            Value = reader.ReadString(length);
         }
 
         public void Write(DataWriter writer)

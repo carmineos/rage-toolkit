@@ -6,7 +6,7 @@ namespace RageLib.Numerics
     /// <summary>
     /// Represents a Jenkins's one_at_a_time hash
     /// </summary>
-    public readonly struct JoaatHash : IComparable<JoaatHash>, IEquatable<JoaatHash>
+    public readonly struct JoaatHash : IComparable<JoaatHash>, IEquatable<JoaatHash>, IFormattable
     {
         private readonly uint value;
 
@@ -23,7 +23,9 @@ namespace RageLib.Numerics
 
         public override int GetHashCode() => (int)value;
 
-        public override string ToString() => value.ToString("X8");
+        public override string ToString() => value.ToString();
+
+        public string ToString(string format, IFormatProvider formatProvider) => value.ToString(format, formatProvider);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(JoaatHash left, JoaatHash right) => (left.value == right.value);
