@@ -171,6 +171,10 @@ namespace RageLib.GTA5.ArchiveWrappers
                    delegate () // size
                    {
                        return file.FileSize;
+                   },
+                   delegate (long newLength)
+                   {
+                       RequestBytesRES(file, newLength);
                    }
                );
         }
