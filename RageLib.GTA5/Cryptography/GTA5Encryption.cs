@@ -59,7 +59,7 @@ namespace RageLib.GTA5.Cryptography
         /// <summary>
         /// Decrypts data.
         /// </summary>
-        public static void DecryptUnsafe(Span<byte> data, ReadOnlySpan<byte> key)
+        public static void DecryptData(Span<byte> data, ReadOnlySpan<byte> key)
         {
             var keyuints = MemoryMarshal.Cast<byte,uint>(key);
 
@@ -68,7 +68,7 @@ namespace RageLib.GTA5.Cryptography
                 DecryptBlock(data.Slice(16 * blockIndex, 16), keyuints);
             }
 
-            //    // Just do nothing
+            // Just do nothing
             //if (data.Length % 16 != 0)
             //{
             //    var left = data.Length % 16;
@@ -80,7 +80,6 @@ namespace RageLib.GTA5.Cryptography
         /// </summary>
         public static byte[] Decrypt(byte[] data, byte[] key)
         {
-            // TODO: Actually it should be safe to decrypt data directly without copy
             var decryptedData = new byte[data.Length];
 
             var keyuints = MemoryMarshal.Cast<byte, uint>(key);

@@ -110,8 +110,8 @@ namespace RageLib.GTA5.Archives
                 case RageArchiveEncryption7.NG:
                     // NG encryption...
                     Encryption = RageArchiveEncryption7.NG;
-                    entries_data_dec = GTA5Crypto.Decrypt(entries_data_dec, ngKey);
-                    names_data_dec = GTA5Crypto.Decrypt(names_data_dec, ngKey);
+                    GTA5Crypto.DecryptData(entries_data_dec, ngKey);
+                    GTA5Crypto.DecryptData(names_data_dec, ngKey);
                     break;
                 default:
                     throw new Exception($"Unknown RPF7 encryption type: {header_encryption.ToString("X8")}");
