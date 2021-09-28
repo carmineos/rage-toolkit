@@ -21,14 +21,14 @@
 */
 
 using RageLib.Cryptography;
-using RageLib.GTA5.Cryptography.Helpers;
 using System;
+using System.Runtime.InteropServices;
 
 namespace RageLib.GTA5.Cryptography
 {
 
 
-  
+
 
 
     /// <summary>
@@ -59,143 +59,129 @@ namespace RageLib.GTA5.Cryptography
         /// <summary>
         /// Decrypts data.
         /// </summary>
-        public static byte[] Decrypt(byte[] data, byte[] key)
+        public static void DecryptUnsafe(Span<byte> data, ReadOnlySpan<byte> key)
         {
-            var decryptedData = new byte[data.Length];
-
-            var keyuints = new uint[key.Length / 4];
-            Buffer.BlockCopy(key, 0, keyuints, 0, key.Length);
+            var keyuints = MemoryMarshal.Cast<byte,uint>(key);
 
             for (int blockIndex = 0; blockIndex < data.Length / 16; blockIndex++)
             {
-                var encryptedBlock = new byte[16];
-                Array.Copy(data, 16 * blockIndex, encryptedBlock, 0, 16);
-                var decryptedBlock = DecryptBlock(encryptedBlock, keyuints);
-                Array.Copy(decryptedBlock, 0, decryptedData, 16 * blockIndex, 16);
+                DecryptBlock(data.Slice(16 * blockIndex, 16), keyuints);
+            }
+
+            //    // Just do nothing
+            //if (data.Length % 16 != 0)
+            //{
+            //    var left = data.Length % 16;
+            //}
+        }
+
+        /// <summary>
+        /// Decrypts data.
+        /// </summary>
+        public static byte[] Decrypt(byte[] data, byte[] key)
+        {
+            // TODO: Actually it should be safe to decrypt data directly without copy
+            var decryptedData = new byte[data.Length];
+
+            var keyuints = MemoryMarshal.Cast<byte, uint>(key);
+
+            Span<byte> block = stackalloc byte[16];
+
+            for (int blockIndex = 0; blockIndex < data.Length / 16; blockIndex++)
+            {
+                data.AsSpan(16 * blockIndex, 16).CopyTo(block);
+                DecryptBlock(block, keyuints);
+                block.CopyTo(decryptedData.AsSpan(16 * blockIndex, 16));
             }
 
             if (data.Length % 16 != 0)
             {
                 var left = data.Length % 16;
-                Buffer.BlockCopy(data, data.Length - left, decryptedData, data.Length - left, left);
+                data.AsSpan(data.Length - left, left).CopyTo(decryptedData.AsSpan(data.Length - left, left));
             }
 
             return decryptedData;
         }
 
-        public static byte[] DecryptBlock(byte[] data, uint[] key)
+        private static void DecryptBlock(Span<byte> data, ReadOnlySpan<uint> key)
         {
-            var buffer = data;
+            Span<uint> subkey = stackalloc uint[4];
 
-            // prepare key...
-            var subKeys = new uint[17][];
-            for (int i = 0; i < 17; i++)
+            for (int k = 0; k <= 16; k++)
             {
-                subKeys[i] = new uint[4];
-                subKeys[i][0] = key[4 * i + 0];
-                subKeys[i][1] = key[4 * i + 1];
-                subKeys[i][2] = key[4 * i + 2];
-                subKeys[i][3] = key[4 * i + 3];
+                key.Slice(4 * k, 4).CopyTo(subkey);
+
+                if (k == 0 || k == 1 || k == 16)
+                    DecryptRoundA(data, subkey, GTA5Constants.PC_NG_DECRYPT_TABLES[k]);
+                else
+                    DecryptRoundB(data, subkey, GTA5Constants.PC_NG_DECRYPT_TABLES[k]);
             }
-
-            buffer = DecryptRoundA(buffer, subKeys[0], GTA5Constants.PC_NG_DECRYPT_TABLES[0]);
-            buffer = DecryptRoundA(buffer, subKeys[1], GTA5Constants.PC_NG_DECRYPT_TABLES[1]);
-            for (int k = 2; k <= 15; k++)
-                buffer = DecryptRoundB(buffer, subKeys[k], GTA5Constants.PC_NG_DECRYPT_TABLES[k]);
-            buffer = DecryptRoundA(buffer, subKeys[16], GTA5Constants.PC_NG_DECRYPT_TABLES[16]);
-
-            return buffer;
         }
 
         // round 1,2,16
-        public static byte[] DecryptRoundA(byte[] data, uint[] key, uint[][] table)
+        private static void DecryptRoundA(Span<byte> data, ReadOnlySpan<uint> key, uint[][] table)
         {
-            var x1 =
+            Span<uint> decrypted = stackalloc uint[4];
+            
+            decrypted[0] =
                 table[0][data[0]] ^
                 table[1][data[1]] ^
                 table[2][data[2]] ^
                 table[3][data[3]] ^
                 key[0];
-            var x2 =
+            decrypted[1] =
                 table[4][data[4]] ^
                 table[5][data[5]] ^
                 table[6][data[6]] ^
                 table[7][data[7]] ^
                 key[1];
-            var x3 =
+            decrypted[2] =
                 table[8][data[8]] ^
                 table[9][data[9]] ^
                 table[10][data[10]] ^
                 table[11][data[11]] ^
                 key[2];
-            var x4 =
+            decrypted[3] =
                 table[12][data[12]] ^
                 table[13][data[13]] ^
                 table[14][data[14]] ^
                 table[15][data[15]] ^
                 key[3];
 
-            var result = new byte[16];
-            Array.Copy(BitConverter.GetBytes(x1), 0, result, 0, 4);
-            Array.Copy(BitConverter.GetBytes(x2), 0, result, 4, 4);
-            Array.Copy(BitConverter.GetBytes(x3), 0, result, 8, 4);
-            Array.Copy(BitConverter.GetBytes(x4), 0, result, 12, 4);
-            return result;
+            MemoryMarshal.AsBytes(decrypted).CopyTo(data);
         }
 
         // round 3-15
-        public static byte[] DecryptRoundB(byte[] data, uint[] key, uint[][] table)
+        private static void DecryptRoundB(Span<byte> data, ReadOnlySpan<uint> key, uint[][] table)
         {
-            var x1 =
+            Span<uint> decrypted = stackalloc uint[4];
+
+            decrypted[0] =
                 table[0][data[0]] ^
                 table[7][data[7]] ^
                 table[10][data[10]] ^
                 table[13][data[13]] ^
                 key[0];
-            var x2 =
+            decrypted[1] =
                 table[1][data[1]] ^
                 table[4][data[4]] ^
                 table[11][data[11]] ^
                 table[14][data[14]] ^
                 key[1];
-            var x3 =
+            decrypted[2] =
                 table[2][data[2]] ^
                 table[5][data[5]] ^
                 table[8][data[8]] ^
                 table[15][data[15]] ^
                 key[2];
-            var x4 =
+            decrypted[3] =
                 table[3][data[3]] ^
                 table[6][data[6]] ^
                 table[9][data[9]] ^
                 table[12][data[12]] ^
                 key[3];
 
-            //var result = new byte[16];
-            //Array.Copy(BitConverter.GetBytes(x1), 0, result, 0, 4);
-            //Array.Copy(BitConverter.GetBytes(x2), 0, result, 4, 4);
-            //Array.Copy(BitConverter.GetBytes(x3), 0, result, 8, 4);
-            //Array.Copy(BitConverter.GetBytes(x4), 0, result, 12, 4);
-            //return result;
-
-            var result = new byte[16];
-            result[0] = (byte)((x1 >> 0) & 0xFF);
-            result[1] = (byte)((x1 >> 8) & 0xFF);
-            result[2] = (byte)((x1 >> 16) & 0xFF);
-            result[3] = (byte)((x1 >> 24) & 0xFF);
-            result[4] = (byte)((x2 >> 0) & 0xFF);
-            result[5] = (byte)((x2 >> 8) & 0xFF);
-            result[6] = (byte)((x2 >> 16) & 0xFF);
-            result[7] = (byte)((x2 >> 24) & 0xFF);
-            result[8] = (byte)((x3 >> 0) & 0xFF);
-            result[9] = (byte)((x3 >> 8) & 0xFF);
-            result[10] = (byte)((x3 >> 16) & 0xFF);
-            result[11] = (byte)((x3 >> 24) & 0xFF);
-            result[12] = (byte)((x4 >> 0) & 0xFF);
-            result[13] = (byte)((x4 >> 8) & 0xFF);
-            result[14] = (byte)((x4 >> 16) & 0xFF);
-            result[15] = (byte)((x4 >> 24) & 0xFF);
-            return result;
+            MemoryMarshal.AsBytes(decrypted).CopyTo(data);
         }
         
     }
