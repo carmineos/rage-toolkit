@@ -643,6 +643,11 @@ namespace RageLib.GTA5.ArchiveWrappers
         }
 
         /// <summary>
+        /// Gets the encryption type.
+        /// </summary>
+        public RageArchiveEncryption7 Encryption => archiveWrapper.Encryption;
+
+        /// <summary>
         /// Gets or sets a value indicating whether the file is compressed.
         /// </summary>
         public bool IsCompressed

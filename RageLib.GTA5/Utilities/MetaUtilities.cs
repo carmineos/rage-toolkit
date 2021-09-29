@@ -23,6 +23,7 @@
 using RageLib.Compression;
 using RageLib.Cryptography;
 using RageLib.GTA5.Archives;
+using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Cryptography;
 using RageLib.GTA5.PSO;
 using RageLib.GTA5.Resources.PC;
@@ -109,35 +110,9 @@ namespace RageLib.GTA5.Utilities
             {
                 if (file.Name.EndsWith(".ymf") || file.Name.EndsWith(".ymt"))
                 {
-                    var stream = new MemoryStream();
-                    file.Export(stream);
+                    var cleanStream = new MemoryStream();
+                    (file as RageArchiveBinaryFileWrapper7).ExportUncompressed(cleanStream);
 
-                    var buf = new byte[stream.Length];
-                    stream.Position = 0;
-                    stream.Read(buf, 0, buf.Length);
-
-                    if (file.IsEncrypted)
-                    {
-                        if (encryption == RageArchiveEncryption7.AES)
-                        {
-                            buf = AesEncryption.DecryptData(buf, GTA5Constants.PC_AES_KEY);
-                        }
-                        else
-                        {
-                            var indexKey = GTA5Crypto.GetKeyIndex(file.Name, (uint)file.UncompressedSize);
-                            GTA5Crypto.DecryptData(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
-                        }
-                    }
-
-                    if (file.IsCompressed)
-                    {
-                        var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
-                        var bufnew = new byte[file.UncompressedSize];
-                        def.ReadAll(bufnew, 0, (int)file.UncompressedSize);
-                        buf = bufnew;
-                    }
-
-                    var cleanStream = new MemoryStream(buf);
                     if (PsoFile.IsPSO(cleanStream))
                     {
                         PsoFile pso = new PsoFile();
@@ -184,36 +159,10 @@ namespace RageLib.GTA5.Utilities
                 if (file.Name.EndsWith(".meta", StringComparison.OrdinalIgnoreCase) ||
                  file.Name.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
                 {
-                    var fileStream = new MemoryStream();
-                    file.Export(fileStream);
+                    var cleanStream = new MemoryStream();
+                    (file as RageArchiveBinaryFileWrapper7).ExportUncompressed(cleanStream);
 
-                    var buf = new byte[fileStream.Length];
-                    fileStream.Position = 0;
-                    fileStream.Read(buf, 0, buf.Length);
-
-                    if (file.IsEncrypted)
-                    {
-                        if (encryption == RageArchiveEncryption7.AES)
-                        {
-                            buf = AesEncryption.DecryptData(buf, GTA5Constants.PC_AES_KEY);
-                        }
-                        else
-                        {
-                            var indexKey = GTA5Crypto.GetKeyIndex(file.Name, (uint)file.UncompressedSize);
-                            GTA5Crypto.DecryptData(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
-                        }
-                    }
-
-                    if (file.IsCompressed)
-                    {
-                        var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
-                        var bufnew = new byte[file.UncompressedSize];
-                        def.ReadAll(bufnew, 0, (int)file.UncompressedSize);
-                        buf = bufnew;
-                    }
-
-                    var cleanedStream = new MemoryStream(buf);
-                    foreach (string xmlString in GetAllStringsFromXml(cleanedStream))
+                    foreach (string xmlString in GetAllStringsFromXml(cleanStream))
                     {
                         xmlStrings.Add(xmlString);
                     }
@@ -340,35 +289,9 @@ namespace RageLib.GTA5.Utilities
             {
                 if (file.Name.EndsWith(".ymf") || file.Name.EndsWith(".ymt"))
                 {
-                    var stream = new MemoryStream();
-                    file.Export(stream);
+                    var cleanStream = new MemoryStream();
+                    (file as RageArchiveBinaryFileWrapper7).ExportUncompressed(cleanStream);
 
-                    var buf = new byte[stream.Length];
-                    stream.Position = 0;
-                    stream.Read(buf, 0, buf.Length);
-
-                    if (file.IsEncrypted)
-                    {
-                        if (encryption == RageArchiveEncryption7.AES)
-                        {
-                            buf = AesEncryption.DecryptData(buf, GTA5Constants.PC_AES_KEY);
-                        }
-                        else
-                        {
-                            var indexKey = GTA5Crypto.GetKeyIndex(file.Name, (uint)file.UncompressedSize);
-                            GTA5Crypto.DecryptData(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
-                        }
-                    }
-
-                    if (file.IsCompressed)
-                    {
-                        var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
-                        var bufnew = new byte[file.UncompressedSize];
-                        def.ReadAll(bufnew, 0, (int)file.UncompressedSize);
-                        buf = bufnew;
-                    }
-
-                    var cleanStream = new MemoryStream(buf);
                     if (PsoFile.IsPSO(cleanStream))
                     {
                         PsoFile pso = new PsoFile();
