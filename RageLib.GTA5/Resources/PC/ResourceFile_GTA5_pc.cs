@@ -42,7 +42,7 @@ namespace RageLib.Resources.GTA5
 
         public void Load(string fileName)
         {
-            using (var fileStream = new FileStream(fileName, FileMode.Open))
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 Load(fileStream);
         }
 
@@ -97,7 +97,7 @@ namespace RageLib.Resources.GTA5
 
         public static bool IsResourceFile(string fileName)
         {
-            using (var fileStream = new FileStream(fileName, FileMode.Open))
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 return IsResourceFile(fileStream);
         }
 
