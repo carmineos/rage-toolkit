@@ -32,14 +32,9 @@ namespace RageLib.GTA5.Utilities
             var fileNamesWithoutExtension = new HashSet<string>();
             foreach (var fileName in GetAllFileNames(gameDirectoryName))
             {
-                fileNamesWithoutExtension.Add(RemoveExtension(fileName));
+                fileNamesWithoutExtension.Add(Path.GetFileNameWithoutExtension(fileName));
             }
             return fileNamesWithoutExtension;
-        }
-
-        public static string RemoveExtension(string fileName)
-        {
-            return Path.ChangeExtension(fileName, null);
         }
 
         public static HashSet<string> GetAllFileNames(string gameDirectoryName)
