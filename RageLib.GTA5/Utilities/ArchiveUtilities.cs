@@ -87,5 +87,54 @@ namespace RageLib.GTA5.Utilities
                 ForEachFile(fullPathName + "\\" + subDirectory.Name, subDirectory, encryption, processDelegate);
             }
         }
+
+        public static void UnpackArchive(string fileName, string outputPath, bool recursive)
+        {
+            var fileInfo = new FileInfo(fileName);
+
+            var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            var inputArchive = RageArchiveWrapper7.Open(fileStream, fileInfo.Name);
+
+            var path = Path.Combine(outputPath, fileInfo.Name);
+            UnpackDirectory(inputArchive.Root, path, recursive);
+            inputArchive.Dispose();
+        }
+
+        public static void UnpackDirectory(IArchiveDirectory directory, string outputPath, bool unpackArchives)
+        {
+            var directoryPath = Path.Combine(outputPath, directory.Name);
+            
+            var directoryInfo = Directory.CreateDirectory(directoryPath);
+
+            foreach (var file in directory.GetFiles())
+            {
+                var filePath = Path.Combine(directoryPath, file.Name);
+
+                if (file is IArchiveBinaryFile binFile)
+                {
+                    // If it's an archive
+                    if (binFile.Name.EndsWith(".rpf", StringComparison.OrdinalIgnoreCase) && unpackArchives)
+                    {
+                        var fileStream = binFile.GetStream();
+                        var inputArchive = RageArchiveWrapper7.Open(fileStream, binFile.Name);
+                        UnpackDirectory(inputArchive.Root, Path.Combine(directoryPath, binFile.Name), unpackArchives);
+                        inputArchive.Dispose();
+                    }
+                    else
+                    {
+                        (binFile as RageArchiveBinaryFileWrapper7).ExportUncompressed(filePath);
+                    }
+                }
+                else
+                {
+                    file.Export(filePath);
+                }
+            }
+
+            foreach (var subDirectory in directory.GetDirectories())
+            {
+                UnpackDirectory(subDirectory, directoryPath, unpackArchives);
+            }
+        }
     }
 }
