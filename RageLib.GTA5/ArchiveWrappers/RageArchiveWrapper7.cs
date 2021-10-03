@@ -55,7 +55,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// <summary>
         /// The filename of the archive
         /// </summary>
-        public string FileName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets the root directory of the archive.
@@ -70,7 +70,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         private RageArchiveWrapper7(Stream stream, string fileName, bool leaveOpen = false)
         {
             archive = new RageArchive7(stream);
-            this.FileName = fileName;
+            this.Name = fileName;
             this.LeaveOpen = leaveOpen;
             //  archive_.ReadHeader();
         }
@@ -107,7 +107,7 @@ namespace RageLib.GTA5.ArchiveWrappers
 
 
             // calculate key...
-            var indexKey = GTA5Crypto.GetKeyIndex(FileName, (uint)archive.BaseStream.Length);
+            var indexKey = GTA5Crypto.GetKeyIndex(Name, (uint)archive.BaseStream.Length);
 
             //  archive_.key_ = GTA5Crypto.key_gta5;
             archive.WriteHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]);
@@ -368,7 +368,7 @@ namespace RageLib.GTA5.ArchiveWrappers
                 if (GTA5Constants.PC_LUT != null && GTA5Constants.PC_NG_KEYS != null)
                 {
                     // calculate key...
-                    var indexKey = GTA5Crypto.GetKeyIndex(arch.FileName, (uint)finfo.Length);
+                    var indexKey = GTA5Crypto.GetKeyIndex(arch.Name, (uint)finfo.Length);
 
                     arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
                 }
@@ -397,7 +397,7 @@ namespace RageLib.GTA5.ArchiveWrappers
                 if (GTA5Constants.PC_LUT != null && GTA5Constants.PC_NG_KEYS != null)
                 {
                     // calculate key...
-                    var indexKey = GTA5Crypto.GetKeyIndex(arch.FileName, (uint)stream.Length);
+                    var indexKey = GTA5Crypto.GetKeyIndex(arch.Name, (uint)stream.Length);
 
                     arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
                 }

@@ -30,6 +30,11 @@ namespace RageLib.Archives
     public interface IArchive : IDisposable
     {
         /// <summary>
+        /// Gets or sets the name of the archive.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
         /// Gets the root directory of the archive.
         /// </summary>
         IArchiveDirectory Root { get; }
