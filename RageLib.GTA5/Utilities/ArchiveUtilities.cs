@@ -23,6 +23,7 @@
 using RageLib.Archives;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.ArchiveWrappers;
+using RageLib.Resources.GTA5;
 using System;
 using System.IO;
 
@@ -91,19 +92,21 @@ namespace RageLib.GTA5.Utilities
         public static void UnpackArchive(string fileName, string outputPath, bool recursive)
         {
             var fileInfo = new FileInfo(fileName);
-
             var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             var inputArchive = RageArchiveWrapper7.Open(fileStream, fileInfo.Name);
 
-            var path = Path.Combine(outputPath, fileInfo.Name);
-            UnpackDirectory(inputArchive.Root, path, recursive);
+            UnpackArchive(inputArchive, outputPath, recursive);
             inputArchive.Dispose();
+        }
+
+        public static void UnpackArchive(RageArchiveWrapper7 inputArchive, string outputPath, bool recursive)
+        {
+            UnpackDirectory(inputArchive.Root, Path.Combine(outputPath, inputArchive.Name), recursive);
         }
 
         public static void UnpackDirectory(IArchiveDirectory directory, string outputPath, bool unpackArchives)
         {
             var directoryPath = Path.Combine(outputPath, directory.Name);
-            
             var directoryInfo = Directory.CreateDirectory(directoryPath);
 
             foreach (var file in directory.GetFiles())
@@ -134,6 +137,62 @@ namespace RageLib.GTA5.Utilities
             foreach (var subDirectory in directory.GetDirectories())
             {
                 UnpackDirectory(subDirectory, directoryPath, unpackArchives);
+            }
+        }
+
+        public static void PackArchive(string inputPath, string outputPath, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None)
+        {
+            var archive = RageArchiveWrapper7.Create(outputPath);
+            PackDirectory(archive.Root, Path.Combine(inputPath, archive.Root.Name), recursive, encryption);
+            archive.Flush();
+            archive.Dispose();
+        }
+
+        public static void PackDirectory(IArchiveDirectory directory, string inputPath, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None)
+        {
+            var files = Directory.EnumerateFiles(inputPath);
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file);
+                
+                if (ResourceFile_GTA5_pc.IsResourceFile(file))
+                {
+                    var resourceFile = directory.CreateResourceFile();
+                    resourceFile.Name = fileName;
+                    resourceFile.Import(file);
+                }
+                else
+                {
+                    var binaryFile = directory.CreateBinaryFile();
+                    binaryFile.Name = fileName;
+                    binaryFile.Import(file);
+                }
+            }
+
+            var directories = Directory.EnumerateDirectories(inputPath);
+            foreach (var subDirectory in directories)
+            {
+                //var directoryName = Path.GetDirectoryName(subDirectory);
+                
+                // Workaround as Path.GetDirectoryName() seems bugged
+                var directoryInfo = new DirectoryInfo(subDirectory);
+                var directoryName = directoryInfo.Name;
+
+                if(Path.GetExtension(subDirectory) == ".rpf" && recursive)
+                {
+                    // TODO: Add API to avoid creating RPF on filesystem
+                    var tmpPath = Path.Combine(Path.GetTempPath(), directoryName);
+                    PackArchive(subDirectory, tmpPath, recursive, encryption);
+                    var binaryFile = directory.CreateBinaryFile();
+                    binaryFile.Name = Path.GetFileName(tmpPath);
+                    binaryFile.Import(tmpPath);
+                }
+                else
+                {
+                    var archiveSubdirectory = directory.CreateDirectory();
+                    archiveSubdirectory.Name = directoryName;
+                    PackDirectory(archiveSubdirectory, subDirectory, recursive, encryption);
+                }
             }
         }
     }
