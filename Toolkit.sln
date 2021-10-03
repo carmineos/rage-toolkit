@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{36EED776-1944-4C7B-A662-FBB1E36B6773}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RageLib.RDR2", "RageLib.RDR
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Toolkit.Testing", "Toolkit.Testing", "{4E242742-D387-46F5-9D54-F7B8DA45BA52}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing.GTA5", "..\\Toolkit.Testing\Testing.GTA5\Testing.GTA5.csproj", "{E35F87C9-1E39-44E4-BC72-336F5B63CB04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing.GTA5", "..\Toolkit.Testing\Testing.GTA5\Testing.GTA5.csproj", "{E35F87C9-1E39-44E4-BC72-336F5B63CB04}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "..\Toolkit.Testing\Benchmarks\Benchmarks.csproj", "{54965EB4-16F1-4044-B097-FA268BAB864E}"
 EndProject
