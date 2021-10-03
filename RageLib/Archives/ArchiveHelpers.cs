@@ -21,6 +21,7 @@
 */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 
@@ -50,16 +51,8 @@ namespace RageLib.Archives
         public static long FindSpace(List<DataBlock> blocks, DataBlock item)
         {
             // sort list...
-            blocks.Sort(
-                delegate (DataBlock a, DataBlock b)
-                {
-                    if (a.Offset != b.Offset)
-                        return a.Offset.CompareTo(b.Offset);
-                    else
-                        return a.Offset.CompareTo(b.Offset);
-                }
-            );
-            
+            blocks.Sort((a, b) => a.Offset.CompareTo(b.Offset));
+
             // find smallest follow element
             DataBlock next = null;
             foreach (var x in blocks)
@@ -90,19 +83,11 @@ namespace RageLib.Archives
         /// </summary>
         public static long FindOffset(List<DataBlock> blocks, long neededSpace, long blockSize = 1)
         {
-            var lst = new List<DataBlock>();
-            lst.AddRange(blocks);
+            var lst = new List<DataBlock>(blocks);
 
             // sort list...
-            lst.Sort(
-                delegate (DataBlock a, DataBlock b)
-                {
-                    if (a.Offset != b.Offset)
-                        return a.Offset.CompareTo(b.Offset);
-                    else
-                        return a.Offset.CompareTo(b.Offset);
-                }
-            );
+            lst.Sort((a, b) => a.Offset.CompareTo(b.Offset));
+                
 
             if (lst.Count == 0)
                 return 0;
@@ -129,7 +114,7 @@ namespace RageLib.Archives
 
         public static void MoveBytes(Stream stream, long sourceOffset, long destinationOffset, long length)
         {
-            var buffer = new byte[BUFFER_SIZE];
+            var buffer = ArrayPool<byte>.Shared.Rent(BUFFER_SIZE);
             while (length > 0)
             {
                 // read...
@@ -144,6 +129,7 @@ namespace RageLib.Archives
                 destinationOffset += i;
                 length -= i;
             }
+            ArrayPool<byte>.Shared.Return(buffer);
         }
     }
 }
