@@ -173,19 +173,34 @@ namespace RageLib.GTA5.Utilities
             foreach (var subDirectory in directories)
             {
                 //var directoryName = Path.GetDirectoryName(subDirectory);
-                
-                // Workaround as Path.GetDirectoryName() seems bugged
-                var directoryInfo = new DirectoryInfo(subDirectory);
-                var directoryName = directoryInfo.Name;
+
+                // Workaround as Path.GetDirectoryName(subDirectory) seems bugged
+                var directoryName = new DirectoryInfo(subDirectory).Name;
 
                 if(Path.GetExtension(subDirectory) == ".rpf" && recursive)
                 {
-                    // TODO: Add API to avoid creating RPF on filesystem
-                    var tmpPath = Path.Combine(Path.GetTempPath(), directoryName);
+                    var tmpFolder = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+                    var dir = Directory.CreateDirectory(tmpFolder);
+                    var tmpPath = Path.Combine(tmpFolder, directoryName);
                     PackArchive(subDirectory, tmpPath, recursive, encryption);
                     var binaryFile = directory.CreateBinaryFile();
                     binaryFile.Name = Path.GetFileName(tmpPath);
                     binaryFile.Import(tmpPath);
+                    dir.Delete(true);
+
+                    // TODO: Add API to create an RPF archive to a MemoryStream
+                    //using var archiveStream = new MemoryStream();
+                    //{
+                    //    var archive = RageArchiveWrapper7.Create(archiveStream, directoryName);
+                    //    PackDirectory(archive.Root, subDirectory, recursive, encryption);
+                    //    archive.Flush();
+                    //    
+                    //    var binaryFile = directory.CreateBinaryFile();
+                    //    binaryFile.Name = directoryName;
+                    //    binaryFile.Import(archiveStream);
+                    //    
+                    //    archive.Dispose();
+                    //}
                 }
                 else
                 {
