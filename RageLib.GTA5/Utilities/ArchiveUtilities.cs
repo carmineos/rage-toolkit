@@ -144,6 +144,7 @@ namespace RageLib.GTA5.Utilities
         {
             var archive = RageArchiveWrapper7.Create(outputPath);
             PackDirectory(archive.Root, Path.Combine(inputPath, archive.Root.Name), recursive, encryption);
+            archive.Encryption = encryption;
             archive.Flush();
             archive.Dispose();
         }
