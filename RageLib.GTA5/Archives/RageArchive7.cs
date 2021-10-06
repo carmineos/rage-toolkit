@@ -318,16 +318,18 @@ namespace RageLib.GTA5.Archives
             foreach (var entry in entries)
                 entry.Write(ent_wr);
             ent_str.Flush();
-
+            // TODO: Use ArrayPool<byte>.Shared
             var ent_buf = new byte[ent_str.Length];
             ent_str.Position = 0;
             ent_str.Read(ent_buf, 0, ent_buf.Length);
 
             if (Encryption == RageArchiveEncryption7.AES)
-                ent_buf = AesEncryption.EncryptData(ent_buf, aesKey);
-            if (Encryption == RageArchiveEncryption7.NG)
             {
-                Encryption = RageArchiveEncryption7.None;
+                ent_buf = AesEncryption.EncryptData(ent_buf, aesKey);
+            }
+            else if (Encryption == RageArchiveEncryption7.NG)
+            {
+                GTA5Crypto.EncryptData(ent_buf, ngKey);
             }
 
 
@@ -338,17 +340,24 @@ namespace RageLib.GTA5.Archives
             //    n_wr.Write(entry.Name);
             foreach (var entry in nameDict)
                 n_wr.Write(entry.Key);
+            // TODO: Use ArrayPool<byte>.Shared
             var empty = new byte[16 - (n_wr.Length % 16)];
             n_wr.Write(empty);
             n_str.Flush();
-
+            // TODO: Use ArrayPool<byte>.Shared
             var n_buf = new byte[n_str.Length];
             n_str.Position = 0;
             n_str.Read(n_buf, 0, n_buf.Length);
 
             if (Encryption == RageArchiveEncryption7.AES)
+            {
                 n_buf = AesEncryption.EncryptData(n_buf, aesKey);
-            
+            }
+            else if (Encryption == RageArchiveEncryption7.NG)
+            {
+                GTA5Crypto.EncryptData(n_buf, ngKey);
+            }
+
             writer.Position = 0;
             writer.Write((uint)IDENT);
             writer.Write((uint)entries.Count);

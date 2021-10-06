@@ -432,6 +432,10 @@ namespace RageLib.GTA5.Cryptography
         // ng decryption tables...       
         public static uint[][][] PC_NG_DECRYPT_TABLES;
 
+        public static uint[][][] PC_NG_ENCRYPT_TABLES;
+
+        public static GTA5NGLUT[][] PC_NG_ENCRYPT_LUTs;
+
         // hash lookup-table...
         public static byte[] PC_LUT;
 
@@ -495,6 +499,8 @@ namespace RageLib.GTA5.Cryptography
             PC_AES_KEY = File.ReadAllBytes(Path.Combine(path, "gtav_aes_key.dat"));
             PC_NG_KEYS = CryptoIO.ReadNgKeys(Path.Combine(path, "gtav_ng_key.dat"));
             PC_NG_DECRYPT_TABLES = CryptoIO.ReadNgTables(Path.Combine(path, "gtav_ng_decrypt_tables.dat"));
+            PC_NG_ENCRYPT_TABLES = CryptoIO.ReadNgTables(Path.Combine(path, "gtav_ng_encrypt_tables.dat"));
+            PC_NG_ENCRYPT_LUTs = CryptoIO.ReadNgLuts(Path.Combine(path, "gtav_ng_encrypt_luts.dat"));
             PC_LUT = File.ReadAllBytes(Path.Combine(path, "gtav_hash_lut.dat"));
         }
 
@@ -502,7 +508,9 @@ namespace RageLib.GTA5.Cryptography
         {
             File.WriteAllBytes(Path.Combine(path, "gtav_aes_key.dat"), PC_AES_KEY);
             CryptoIO.WriteNgKeys(Path.Combine(path, "gtav_ng_key.dat"), PC_NG_KEYS);
-            CryptoIO.WriteNgTables(Path.Combine(path, "gtav_ng_decrypt_tables.dat"), PC_NG_DECRYPT_TABLES);
+            CryptoIO.WriteNgTables(Path.Combine(path, "gtav_ng_decrypt_tables.dat"), PC_NG_DECRYPT_TABLES); 
+            CryptoIO.WriteNgTables(Path.Combine(path, "gtav_ng_encrypt_tables.dat"), PC_NG_ENCRYPT_TABLES);
+            CryptoIO.WriteNgLuts(Path.Combine(path, "gtav_ng_encrypt_luts.dat"), PC_NG_ENCRYPT_LUTs);
             File.WriteAllBytes(Path.Combine(path, "gtav_hash_lut.dat"), PC_LUT);
         }
 
