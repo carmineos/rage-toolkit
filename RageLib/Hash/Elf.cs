@@ -1,9 +1,11 @@
-﻿namespace RageLib.Hash
+﻿using System;
+
+namespace RageLib.Hash
 {
     public class Elf
     {
         // source: https://en.wikipedia.org/wiki/PJW_hash_function
-        public static uint Hash(string str)
+        public static uint Hash(ReadOnlySpan<char> str)
         {
             uint hash = 0;
             uint high;
@@ -25,7 +27,7 @@
             return hash;
         }
 
-        public static uint HashUppercased(string str)
+        public static uint HashUppercased(ReadOnlySpan<char> str)
         {
             uint hash = 0;
             uint high;
@@ -47,6 +49,16 @@
             }
 
             return hash;
+        }
+
+        public static uint Hash(string str)
+        {
+            return Hash(str.AsSpan());
+        }
+
+        public static uint HashUppercased(string str)
+        {
+            return HashUppercased(str.AsSpan());
         }
     }
 }
