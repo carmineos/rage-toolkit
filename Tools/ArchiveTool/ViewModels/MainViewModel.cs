@@ -20,11 +20,13 @@
     THE SOFTWARE.
 */
 
-using ArchiveTool.Commands;
 using ArchiveTool.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using RageLib.Archives;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -49,108 +51,101 @@ namespace ArchiveTool.ViewModels
         FileViewModel SelectedFile { get; set; }
     }
 
-    class MainViewModel : BaseViewModel
+    class MainViewModel : ObservableObject
     {
-        private MainModel model;
-        private FileViewModel selectedFile;
+        private MainModel _model;
+        private FileViewModel _selectedFile;
+        private ICollection<FileViewModel> _files;
+        private DirectoryViewModel _selectedDirectory;
+        private ICollection<IDirectoryViewModel> _directories;
 
-        public ICollection<IDirectoryViewModel> directories_;
-
-
+        public ICollection<FileViewModel> Files
+        {
+            get => _files;
+            private set => SetProperty(ref _files, value);
+        }
 
         public ICollection<IDirectoryViewModel> Directories
         {
-            get
-            {
-                return directories_;
-            }
+            get => _directories;
+            private set => SetProperty(ref _directories, value);
         }
 
         public DirectoryViewModel SelectedDirectory
         {
-            get
-            {
-                return null;
-            }
-            set
-            {
-                var files = new List<FileViewModel>();
-
-                foreach (var file in value.directory.GetFiles())
-                {
-                    if (file is IArchiveBinaryFile)
-                    {
-                        files.Add(new BinaryFileViewModel(file));
-                    }
-                    else
-                    {
-                        files.Add(new ResourceFileViewModel(file));
-                    }
-                }
-
-                Files = files;
-                NotifyPropertyChanged("Files");
-            }
+            get => _selectedDirectory;
+            set => SetProperty(ref _selectedDirectory, value);
         }
-
-        public ICollection<FileViewModel> Files { get; set; }
 
         public FileViewModel SelectedFile
         {
-            get
-            {
-                return selectedFile;
-            }
-            set
-            {
-                selectedFile = (FileViewModel)value;
-                NotifyPropertyChanged();
-                CommandManager.InvalidateRequerySuggested();
-            }
+            get => _selectedFile;
+            set => SetProperty(ref _selectedFile, value);
         }
 
-        public ICommand OpenCommand { get; private set; }
-        public ICommand CloseCommand { get; private set; }
-        public ICommand ExitCommand { get; private set; }
-        public ICommand ImportCommand { get; private set; }
-        public ICommand ExportCommand { get; private set; }
-        public ICommand ConfigureCommand { get; private set; }
+        public IRelayCommand OpenCommand { get; }
+        public IRelayCommand CloseCommand { get; }
+        public IRelayCommand ExitCommand { get; }
+        public IRelayCommand ImportCommand { get; }
+        public IRelayCommand ExportCommand { get; }
+        public IRelayCommand ConfigureCommand { get; }
         
         public MainViewModel()
         {
-            this.model = new MainModel();
+            this._model = new MainModel();
 
-            this.OpenCommand = new ActionCommand(Open_Clicked, Open_CanClick);
-            this.CloseCommand = new ActionCommand(Close_Clicked, Close_CanClick);
-            this.ExitCommand = new ActionCommand(Exit_Clicked);
-            this.ImportCommand = new ActionCommand(Import_Clicked, Import_CanClick);
-            this.ExportCommand = new ActionCommand(Export_Clicked, Export_CanClick);
-            this.ConfigureCommand = new ActionCommand(Configure_Clicked);
+            this.OpenCommand = new RelayCommand(Open_Clicked, Open_CanClick);
+            this.CloseCommand = new RelayCommand(Close_Clicked, Close_CanClick);
+            this.ExitCommand = new RelayCommand(Exit_Clicked);
+            this.ImportCommand = new RelayCommand(Import_Clicked, Import_CanClick);
+            this.ExportCommand = new RelayCommand(Export_Clicked, Export_CanClick);
+            this.ConfigureCommand = new RelayCommand(Configure_Clicked);
+
+            // TODO: Is this really required?
+            this.PropertyChanged += MainViewModel_PropertyChanged;
         }
 
-        public bool Open_CanClick(object parameter)
+        private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (model.HasKeys)
-                return true;
-            else
-                return false;
+            CloseCommand?.NotifyCanExecuteChanged();
+
+            switch (e.PropertyName)
+            {
+                case nameof(SelectedFile):
+                    ExportCommand?.NotifyCanExecuteChanged();
+                    break;
+
+                case nameof(SelectedDirectory):
+                    Files = _selectedDirectory.GetFiles();
+                    ImportCommand?.NotifyCanExecuteChanged();
+                    break;
+
+                default:
+                    break;
+            }
         }
 
-        public void Open_Clicked(object parameter)
+        public bool Open_CanClick()
+        {
+            return _model.HasKeys;
+        }
+
+        public void Open_Clicked()
         {
             var dlg = new OpenFileDialog();
             dlg.Title = "Select archive";
             if (dlg.ShowDialog() == true)
             {
                 // open archive
-                this.model.Load(dlg.FileName);
+                this._model.Load(dlg.FileName);
 
-                var vm = new DirectoryViewModel(model.Archive.Root, null);
+                var vm = new DirectoryViewModel(_model.Archive.Root, null);
 
-                directories_ = new List<IDirectoryViewModel>();
-                directories_.Add(vm);
+                var directories = new List<IDirectoryViewModel>();
+                directories.Add(vm);
 
-                NotifyPropertyChanged("Directories");
+                Files = null;
+                Directories = directories;
 
                 var dirstack = new Stack<DirectoryViewModel>();
                 dirstack.Push(vm);
@@ -164,75 +159,63 @@ namespace ArchiveTool.ViewModels
                 }
 
                 vm.IsSelected = true;
-                CommandManager.InvalidateRequerySuggested();
-            }                       
+            }
         }
 
-        public bool Close_CanClick(object parameter)
+        public bool Close_CanClick()
         {
-            if (model.Archive != null)
-                return true;
-            else
-                return false;
+            return _model.Archive != null;
         }
 
-        public void Close_Clicked(object parameter)
+        public void Close_Clicked()
         {
             // close archive
-            model.Close();
+            _model.Close();
 
-            directories_ = null;
-            NotifyPropertyChanged("Directories");
-
+            Directories = null;
             Files = null;
-            NotifyPropertyChanged("Files");
-            CommandManager.InvalidateRequerySuggested();
         }
 
-        public void Exit_Clicked(object parameter)
+        public void Exit_Clicked()
         {
             Application.Current.Shutdown();
         }
 
-        public bool Import_CanClick(object parameter)
+        public bool Import_CanClick()
         {
-            if (model.Archive != null)
-                return true;
-            else
-                return false;
+            return _model.Archive != null;
         }
 
-        public void Import_Clicked(object parameter)
+        public void Import_Clicked()
         {
             var dlg = new OpenFileDialog();
             dlg.Title = "Import file";
             if (dlg.ShowDialog() == true)
             {
-                model.Import(SelectedDirectory.directory, dlg.FileName);
+                _model.Import(SelectedDirectory.GetDirectory(), dlg.FileName);
             }
+
+            Files = SelectedDirectory.GetFiles();
         }
 
-        public bool Export_CanClick(object parameter)
+        public bool Export_CanClick()
         {
-            if (model.Archive != null && SelectedFile != null)
-                return true;
-            else
-                return false;
+            return _model.Archive != null && SelectedFile != null;
         }
 
-        public void Export_Clicked(object parameter)
+        public void Export_Clicked()
         {
             var dlg = new SaveFileDialog();
             dlg.Title = "Export file";
             dlg.FileName = SelectedFile.GetFile().Name;
             if (dlg.ShowDialog() == true)
             {
-                model.Export(SelectedFile.GetFile(), dlg.FileName);
+                _model.Export(SelectedFile.GetFile(), dlg.FileName);
             }
         }
 
-        public void Configure_Clicked(object parameter)
-        {        }
+        public void Configure_Clicked()
+        { }
 
         
 

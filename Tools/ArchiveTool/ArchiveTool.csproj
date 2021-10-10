@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\RageLib.GTA5\RageLib.GTA5.csproj" />
     <ProjectReference Include="..\..\RageLib\RageLib.csproj" />
   </ItemGroup>

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArchiveTool.Views"
         mc:Ignorable="d"
-        Title="Archive Tool" Height="346" Width="698">
+        Title="Archive Tool" Height="600" Width="800">
+
     <Grid>
       
         <Grid.RowDefinitions>
@@ -14,11 +15,12 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width=".5*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
             <MenuItem Header="File">
                 <MenuItem Header="Open" Command="{Binding OpenCommand}" />
                 <MenuItem Header="Close" Command="{Binding CloseCommand}" />
@@ -48,16 +50,32 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <ListView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile, Mode=TwoWay}" SelectionMode="Single">
+        <GridSplitter Grid.Row="1"
+                      Grid.Column="1"
+                      ShowsPreview="True"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch"
+                      Width="5"
+                      />
+        
+        <ListView Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile, Mode=TwoWay}" SelectionMode="Single">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" />
-                    <GridViewColumn Header="IsCompressed" DisplayMemberBinding="{Binding IsCompressed}" />
-                    <GridViewColumn Header="IsEncrypted" DisplayMemberBinding="{Binding IsEncrypted}" />
-                    <GridViewColumn Header="IsResource" DisplayMemberBinding="{Binding IsResource}" />
+                    <GridView.Columns>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" />
+                        <GridViewColumn Header="IsCompressed" DisplayMemberBinding="{Binding IsCompressed}" />
+                        <GridViewColumn Header="IsEncrypted" DisplayMemberBinding="{Binding IsEncrypted}" />
+                        <GridViewColumn Header="IsResource" DisplayMemberBinding="{Binding IsResource}" />
+                    </GridView.Columns>
                 </GridView>
             </ListView.View>
+
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Import" Command="{Binding ImportCommand}" />
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
 
     </Grid>

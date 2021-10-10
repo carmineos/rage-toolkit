@@ -20,6 +20,7 @@
     THE SOFTWARE.
 */
 
+using CommunityToolkit.Mvvm.ComponentModel;
 using RageLib.Archives;
 
 namespace ArchiveTool.ViewModels
@@ -55,7 +56,7 @@ namespace ArchiveTool.ViewModels
         bool IsResource { get; }
     }
 
-    public abstract class FileViewModel : BaseViewModel, IFileViewModel
+    public abstract class FileViewModel : ObservableObject, IFileViewModel
     {
         public abstract string Name { get; }
         public abstract long Size { get; }
@@ -68,47 +69,17 @@ namespace ArchiveTool.ViewModels
 
     public class BinaryFileViewModel : FileViewModel
     {
-        public IArchiveBinaryFile file;
+        private IArchiveBinaryFile file;
 
-        public override string Name
-        {
-            get
-            {
-                return file.Name;
-            }
-        }
+        public override string Name => file.Name;
 
-        public override long Size
-        {
-            get
-            {
-                return file.Size;
-            }
-        }
+        public override long Size => file.Size;
 
-        public override bool IsCompressed
-        {
-            get
-            {
-                return file.IsCompressed;
-            }
-        }
+        public override bool IsCompressed => file.IsCompressed;
 
-        public override bool IsEncrypted
-        {
-            get
-            {
-                return file.IsEncrypted;
-            }
-        }
+        public override bool IsEncrypted => file.IsEncrypted;
 
-        public override bool IsResource
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsResource => false;
 
         public BinaryFileViewModel(IArchiveFile file)
         {
@@ -123,47 +94,17 @@ namespace ArchiveTool.ViewModels
 
     public class ResourceFileViewModel : FileViewModel
     {
-        public IArchiveFile file;
+        private IArchiveFile file;
 
-        public override string Name
-        {
-            get
-            {
-                return file.Name;
-            }
-        }
+        public override string Name => file.Name;
 
-        public override long Size
-        {
-            get
-            {
-                return file.Size;
-            }
-        }
+        public override long Size => file.Size;
 
-        public override bool IsCompressed
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsCompressed => true;
 
-        public override bool IsEncrypted
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsEncrypted => false;
 
-        public override bool IsResource
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsResource => true;
 
         public ResourceFileViewModel(IArchiveFile file)
         {

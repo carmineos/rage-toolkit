@@ -21,63 +21,19 @@
 */
 
 using RageLib.Archives;
-using RageLib.Compression;
-using RageLib.Data;
 using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Cryptography;
-using RageLib.Helpers;
 using System.IO;
-using System.IO.Compression;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ArchiveTool.Models
 {
     public class MainModel
     {
-        private string fileName;
         private IArchive archive;
 
+        public IArchive Archive => archive;
 
-        public IArchive Archive
-        {
-            get
-            {
-                return archive;
-            }
-        }
-
-        public bool HasKeys
-        {
-            get
-            {
-                if (GTA5Constants.PC_AES_KEY != null)
-                    return true;
-                else
-                    return false;
-            }
-        }
-
-        public MainModel()
-        {
-
-            //if (File.Exists("gta5_const.dat"))
-            //{
-            //    var fs = new FileStream("gta5_const.dat", FileMode.Open);
-            //    var bf = new BinaryFormatter();
-
-            //    GTA5Constants.PC_AES_KEY = (byte[])bf.Deserialize(fs);
-            //    GTA5Constants.PC_NG_KEYS = (byte[][])bf.Deserialize(fs);
-            //    GTA5Constants.PC_NG_DECRYPT_TABLES = (byte[][])bf.Deserialize(fs);
-            //    GTA5Constants.PC_LUT = (byte[])bf.Deserialize(fs);
-
-            //    fs.Close();
-            //}
-            GTA5Constants.LoadFromPath(".");
-
-        }
-
-
-
+        public bool HasKeys => GTA5Constants.PC_AES_KEY != null;
 
         /// <summary>
         /// Creates an archive.
@@ -88,7 +44,6 @@ namespace ArchiveTool.Models
             Close();
 
             this.archive = RageArchiveWrapper7.Create(fileName);
-            this.fileName = fileName;
         }
 
         /// <summary>
@@ -100,7 +55,6 @@ namespace ArchiveTool.Models
             Close();
 
             this.archive = RageArchiveWrapper7.Open(fileName);
-            this.fileName = fileName;
         }
 
         /// <summary>
@@ -109,54 +63,40 @@ namespace ArchiveTool.Models
         public void Close()
         {
             if (archive != null)
+            {
+                //archive.Flush();
                 archive.Dispose();
+            }
+
             archive = null;
-            fileName = null;
         }
-
-
-
-
-        
 
         /// <summary>
         /// Imports a file.
         /// </summary>
         public void Import(IArchiveDirectory directory, string fileName)
         {
-
-
             var fi = new FileInfo(fileName);
-
-            var fs = new FileStream(fileName, FileMode.Open);
-            var fsR = new DataReader(fs);
-            var ident = fsR.ReadUInt32();
-            fs.Close();
-
+            
+            bool isResource = RageLib.Resources.GTA5.ResourceFile_GTA5_pc.IsResourceFile(fileName);
 
             // delete existing file
             var existingFile = directory.GetFile(fi.Name);
             if (existingFile != null)
                 directory.DeleteFile(existingFile);
 
-
-            if (ident == 0x07435352)
+            if (isResource)
             {
-
                 var newF = directory.CreateResourceFile();
                 newF.Name = fi.Name;
                 newF.Import(fileName);
-
             }
             else
             {
-
                 var newF = directory.CreateBinaryFile();
                 newF.Name = fi.Name;
                 newF.Import(fileName);
-
             }
-
         }
 
         /// <summary>
@@ -164,48 +104,14 @@ namespace ArchiveTool.Models
         /// </summary>
         public void Export(IArchiveFile file, string fileName)
         {
-
-            if (file is IArchiveBinaryFile)
+            if (file is IArchiveBinaryFile binFile)
             {
-                var binFile = (IArchiveBinaryFile)file;
-
-                // export
-                var ms = new MemoryStream();
-                file.Export(ms);
-                ms.Position = 0;
-                
-                var buf = new byte[ms.Length];
-                ms.Position = 0;
-                ms.Read(buf, 0, buf.Length);
-
-                // decrypt...
-                if (binFile.IsEncrypted)
-                {
-                    var indexKey = GTA5Crypto.GetKeyIndex(binFile.Name, (uint)binFile.UncompressedSize);
-
-                    // TODO: if archive encrypted with AES, use AES key...
-
-                    buf = GTA5Crypto.Decrypt(buf, GTA5Constants.PC_NG_KEYS[indexKey]);
-                }
-                
-                // decompress...
-                if (binFile.IsCompressed)
-                {
-                    var def = new DeflateStream(new MemoryStream(buf), CompressionMode.Decompress);
-                    var bufnew = new byte[binFile.UncompressedSize];
-                    def.ReadAll(bufnew, 0, (int)binFile.UncompressedSize);
-                    buf = bufnew;
-                }
-                
-                File.WriteAllBytes(fileName, buf);
+                (binFile as RageArchiveBinaryFileWrapper7).ExportUncompressed(fileName);
             }
             else
             {
-
                 file.Export(fileName);
-
             }
-
         }
 
         /// <summary>
@@ -213,13 +119,6 @@ namespace ArchiveTool.Models
         /// </summary>
         public void Delete()
         { }
-
-
-
-
-
-
-
 
         public void FindConstants(string exeFileName)
         {
