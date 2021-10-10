@@ -8,7 +8,6 @@ namespace RageLib.Helpers.Xml
 {
     public static class XmlWriterExtensions
     {
-        private static readonly NumberFormatInfo numberFormatInfo = NumberFormatInfo.InvariantInfo;
         private const string floatFormat = "0.000000";
 
         public static void WriteAttributeValue(this XmlWriter writer, bool value)
@@ -18,97 +17,97 @@ namespace RageLib.Helpers.Xml
 
         public static void WriteAttributeValue(this XmlWriter writer, byte value)
         {
-            writer.WriteAttributeString("value", value.ToString(numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, sbyte value)
         {
-            writer.WriteAttributeString("value", value.ToString(numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, short value)
         {
-            writer.WriteAttributeString("value", value.ToString(numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, ushort value)
         {
-            writer.WriteAttributeString("value", value.ToString(numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, int value)
         {
-            writer.WriteAttributeString("value", value.ToString(numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, uint value)
         {
-            writer.WriteAttributeString("value", value.ToString(numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, Half value)
         {
-            writer.WriteAttributeString("value", value.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, float value)
         {
-            writer.WriteAttributeString("value", value.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValue(this XmlWriter writer, double value)
         {
-            writer.WriteAttributeString("value", value.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("value", value.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributesXY(this XmlWriter writer, Vector2 value)
         {
-            writer.WriteAttributeString("x", value.X.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("x", value.X.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributesXYZ(this XmlWriter writer, Vector3 value)
         {
-            writer.WriteAttributeString("x", value.X.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("z", value.Z.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("x", value.X.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("z", value.Z.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributesXYZW(this XmlWriter writer, Vector4 value)
         {
-            writer.WriteAttributeString("x", value.X.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("z", value.Z.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("w", value.W.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("x", value.X.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("z", value.Z.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("w", value.W.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributesXYZW(this XmlWriter writer, Quaternion value)
         {
-            writer.WriteAttributeString("x", value.X.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("z", value.Z.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("w", value.W.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("x", value.X.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("y", value.Y.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("z", value.Z.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("w", value.W.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributesXY(this XmlWriter writer, float x, float y)
         {
-            writer.WriteAttributeString("x", x.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("y", y.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("x", x.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("y", y.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributesXYZ(this XmlWriter writer, float x, float y, float z)
         {
-            writer.WriteAttributeString("x", x.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("y", y.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("z", z.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("x", x.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("y", y.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("z", z.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributesXYZW(this XmlWriter writer, float x, float y, float z, float w)
         {
-            writer.WriteAttributeString("x", x.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("y", y.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("z", z.ToString(floatFormat, numberFormatInfo));
-            writer.WriteAttributeString("w", w.ToString(floatFormat, numberFormatInfo));
+            writer.WriteAttributeString("x", x.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("y", y.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("z", z.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
+            writer.WriteAttributeString("w", w.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
         }
 
         public static void WriteAttributeValueAsHex(this XmlWriter writer, uint value)
@@ -124,7 +123,7 @@ namespace RageLib.Helpers.Xml
             foreach (var value in array)
             {
                 writer.WriteInnerIndent();
-                writer.WriteString(value.ToString(numberFormatInfo));
+                writer.WriteString(value.ToString(NumberFormatInfo.InvariantInfo));
                 writer.WriteString(Environment.NewLine);
             }
             writer.WriteOuterIndent();
@@ -138,7 +137,7 @@ namespace RageLib.Helpers.Xml
             foreach (var value in array)
             {
                 writer.WriteInnerIndent();
-                writer.WriteString(value.ToString(numberFormatInfo));
+                writer.WriteString(value.ToString(NumberFormatInfo.InvariantInfo));
                 writer.WriteString(Environment.NewLine);
             }
             writer.WriteOuterIndent();
@@ -152,7 +151,7 @@ namespace RageLib.Helpers.Xml
             foreach (var value in array)
             {
                 writer.WriteInnerIndent();
-                writer.WriteString(value.ToString(numberFormatInfo));
+                writer.WriteString(value.ToString(NumberFormatInfo.InvariantInfo));
                 writer.WriteString(Environment.NewLine);
             }
             writer.WriteOuterIndent();
@@ -166,7 +165,7 @@ namespace RageLib.Helpers.Xml
             foreach (var value in array)
             {
                 writer.WriteInnerIndent();
-                writer.WriteString(value.ToString(floatFormat, numberFormatInfo));
+                writer.WriteString(value.ToString(floatFormat, NumberFormatInfo.InvariantInfo));
                 writer.WriteString(Environment.NewLine);
             }
             writer.WriteOuterIndent();
@@ -180,9 +179,9 @@ namespace RageLib.Helpers.Xml
             foreach (var value in array)
             {
                 writer.WriteInnerIndent();
-                writer.WriteString(value.X.ToString($"{floatFormat}\t", numberFormatInfo));
-                writer.WriteString(value.Y.ToString($"{floatFormat}\t", numberFormatInfo));
-                writer.WriteString(value.Z.ToString($"{floatFormat}\t", numberFormatInfo));
+                writer.WriteString(value.X.ToString($"{floatFormat}\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Y.ToString($"{floatFormat}\t", NumberFormatInfo.InvariantInfo));
+                writer.WriteString(value.Z.ToString($"{floatFormat}\t", NumberFormatInfo.InvariantInfo));
                 writer.WriteString(Environment.NewLine);
             }
             writer.WriteOuterIndent();
