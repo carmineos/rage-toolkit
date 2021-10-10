@@ -21,7 +21,7 @@
 */
 
 using RageLib.Compression;
-using RageLib.ResourceWrappers;
+using RageLib.Helpers.DDS;
 using System.Windows.Media;
 using TextureTool.Models;
 
@@ -55,27 +55,7 @@ namespace TextureTool.ViewModels
             }
         }
 
-        public string Format
-        {
-            get
-            {
-                switch (model.Texture.Format)
-                {
-                    case TextureFormat.D3DFMT_DXT1: return "DXT1";
-                    case TextureFormat.D3DFMT_DXT3: return "DXT3";
-                    case TextureFormat.D3DFMT_DXT5: return "DXT5";
-                    case TextureFormat.D3DFMT_ATI1: return "ATI1";
-                    case TextureFormat.D3DFMT_ATI2: return "ATI2";
-                    case TextureFormat.D3DFMT_BC7: return "BC7";
-                    case TextureFormat.D3DFMT_A1R5G5B5: return "A1R5G5B5";
-                    case TextureFormat.D3DFMT_A8: return "A8";
-                    case TextureFormat.D3DFMT_L8: return "L8";
-                    case TextureFormat.D3DFMT_A8B8G8R8: return "A8B8G8R8";
-                    case TextureFormat.D3DFMT_A8R8G8B8: return "A8R8G8B8";
-                    default: return "Unknown";
-                }
-            }
-        }
+        public string Format => ((D3DFORMAT)model.Texture.Format).ToString()[7..];
 
         public ImageSource Image
         {

@@ -21,6 +21,7 @@
 */
 
 using RageLib.Helpers;
+using RageLib.Helpers.DDS;
 using RageLib.ResourceWrappers;
 
 namespace TextureTool.Models
