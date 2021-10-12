@@ -160,12 +160,18 @@ namespace RageLib.GTA5.Utilities
                 IArchiveFile archiveFile;
 
                 if (ResourceFile_GTA5_pc.IsResourceFile(file))
+                {
                     archiveFile = directory.CreateResourceFile();
+                    archiveFile.Name = fileName;
+                    archiveFile.Import(file);
+                }
                 else
+                {
                     archiveFile = directory.CreateBinaryFile();
-
-                archiveFile.Name = fileName;
-                archiveFile.Import(file);
+                    archiveFile.Name = fileName;
+                    (archiveFile as RageArchiveBinaryFileWrapper7).ImportCompressed(file);
+                }
+                
             }
 
             var directories = Directory.EnumerateDirectories(inputFolderPath);

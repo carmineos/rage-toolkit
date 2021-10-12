@@ -66,5 +66,34 @@ namespace RageLib.GTA5.ArchiveWrappers
             if(bufnew != null)
                 ArrayPool<byte>.Shared.Return(bufnew);
         }
+
+        public static void ImportCompressed(this RageArchiveBinaryFileWrapper7 file, string fileName)
+        {
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                ImportCompressed(file, stream);
+        }
+
+        public static void ImportCompressed(this RageArchiveBinaryFileWrapper7 file, Stream stream)
+        {
+            using MemoryStream compressedStream = new MemoryStream();
+            
+            // Compress the data to memory
+            using var compressor = new DeflateStream(compressedStream, CompressionMode.Compress);
+            compressedStream.Position = 0;
+            stream.Position = 0;
+            stream.CopyTo(compressor);
+            compressor.Flush();
+
+            // Set the binary file as compressed
+            file.UncompressedSize = stream.Length;
+            file.IsCompressed = true;
+
+            // Get the buffer for the compressed file and copy the content
+            var binaryStream = file.GetStream();
+            binaryStream.SetLength(compressedStream.Length);
+            binaryStream.Position = 0;
+            compressedStream.Position = 0;
+            compressedStream.CopyTo(binaryStream);
+        }
     }
 }
