@@ -306,11 +306,11 @@ namespace RageLib.Data
 
         public T ReadStruct<T>() where T : unmanaged, IResourceStruct<T>
         {
-            using Buffer<T> buffer = new Buffer<T>(1);
-            ReadFromStreamRaw(buffer.BytesSpan);
+            T value = default;
+            var span = MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref value, 1));
 
-            var value = buffer.Span[0];
-
+            ReadFromStreamRaw(span);
+           
             // handle endianess
             if (!endianessEqualsHostArchitecture)
                 value = value.ReverseEndianness();
