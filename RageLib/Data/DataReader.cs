@@ -85,6 +85,30 @@ namespace RageLib.Data
             return data;
         }
 
+        /// <summary>
+        /// Reads a <typeparamref name="T"/> from the stream but casts it to a <see cref="Span{TReverseAs}"/>  if it's required to reverse it.
+        /// Should only be used on numerics types like Vectors, Quaternion and Matrix
+        /// </summary>
+        protected T ReadFromStreamAs<T, TReverseAs>() where T : unmanaged where TReverseAs : unmanaged
+        {
+            T data = default;
+            var bytesSpan = MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref data, 1));
+
+            ReadFromStreamRaw(bytesSpan);
+
+            // handle endianess
+            if (!endianessEqualsHostArchitecture)
+            {
+                var sizeOf = Unsafe.SizeOf<TReverseAs>();
+                var count = bytesSpan.Length / sizeOf;
+
+                for (int i = 0; i < count; i++)
+                    bytesSpan.Slice(i * sizeOf, sizeOf).Reverse();
+            }
+
+            return data;
+        }
+
         protected Buffer<T> ReadFromStreamBuffer<T>(int count) where T : unmanaged
         {
             Buffer<T> buffer = new Buffer<T>(count);
@@ -235,8 +259,7 @@ namespace RageLib.Data
         /// <returns></returns>
         public Vector2 ReadVector2()
         {
-            using Buffer<float> buffer = ReadFromStreamBuffer<float>(2);
-            return MemoryMarshal.Cast<float, Vector2>(buffer.Span)[0];
+            return ReadFromStreamAs<Vector2, float>();
         }
 
         /// <summary>
@@ -245,8 +268,7 @@ namespace RageLib.Data
         /// <returns></returns>
         public Vector3 ReadVector3()
         {
-            using Buffer<float> buffer = ReadFromStreamBuffer<float>(3);
-            return MemoryMarshal.Cast<float, Vector3>(buffer.Span)[0];
+            return ReadFromStreamAs<Vector3, float>();
         }
 
         /// <summary>
@@ -255,8 +277,7 @@ namespace RageLib.Data
         /// <returns></returns>
         public Vector4 ReadVector4()
         {
-            using Buffer<float> buffer = ReadFromStreamBuffer<float>(4);
-            return MemoryMarshal.Cast<float, Vector4>(buffer.Span)[0];
+            return ReadFromStreamAs<Vector4, float>();
         }
 
         /// <summary>
@@ -265,8 +286,7 @@ namespace RageLib.Data
         /// <returns></returns>
         public Quaternion ReadQuaternion()
         {
-            using Buffer<float> buffer = ReadFromStreamBuffer<float>(4);
-            return MemoryMarshal.Cast<float, Quaternion>(buffer.Span)[0];
+            return ReadFromStreamAs<Quaternion, float>();
         }
 
         /// <summary>
@@ -275,8 +295,7 @@ namespace RageLib.Data
         /// <returns></returns>
         public Matrix4x4 ReadMatrix4x4()
         {
-            using Buffer<float> buffer = ReadFromStreamBuffer<float>(16);
-            return MemoryMarshal.Cast<float, Matrix4x4>(buffer.Span)[0];
+            return ReadFromStreamAs<Matrix4x4, float>();
         }
 
         public T[] ReadArray<T>(int count) where T : unmanaged
