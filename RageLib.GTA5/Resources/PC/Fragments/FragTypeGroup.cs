@@ -70,11 +70,11 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public float LatchStrength;
         public float Mass;
         public float Unknown_48h; // 0x00000000
-        public byte Unknown_4Ch;
+        public byte FirstChildGroupIndex;
         public byte ParentIndex;
         public byte Index;
-        public byte Unknown_4Fh;
-        public byte Unknown_50h;
+        public byte ChildrenCount;
+        public byte ChildrenGroupCount;
         public byte Unknown_51h;
         public FragTypeGroupFlags GroupFlags;
         public float MinDamageForce;
@@ -119,11 +119,11 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.LatchStrength = reader.ReadSingle();
             this.Mass = reader.ReadSingle();
             this.Unknown_48h = reader.ReadSingle();
-            this.Unknown_4Ch = reader.ReadByte();
+            this.FirstChildGroupIndex = reader.ReadByte();
             this.ParentIndex = reader.ReadByte();
             this.Index = reader.ReadByte();
-            this.Unknown_4Fh = reader.ReadByte();
-            this.Unknown_50h = reader.ReadByte();
+            this.ChildrenCount = reader.ReadByte();
+            this.ChildrenGroupCount = reader.ReadByte();
             this.Unknown_51h = reader.ReadByte();
             this.GroupFlags = (FragTypeGroupFlags)reader.ReadUInt16();
             this.MinDamageForce = reader.ReadSingle();
@@ -169,11 +169,11 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.LatchStrength);
             writer.Write(this.Mass);
             writer.Write(this.Unknown_48h);
-            writer.Write(this.Unknown_4Ch);
+            writer.Write(this.FirstChildGroupIndex);
             writer.Write(this.ParentIndex);
             writer.Write(this.Index);
-            writer.Write(this.Unknown_4Fh);
-            writer.Write(this.Unknown_50h);
+            writer.Write(this.ChildrenCount);
+            writer.Write(this.ChildrenGroupCount);
             writer.Write(this.Unknown_51h);
             writer.Write((ushort)this.GroupFlags);
             writer.Write(this.MinDamageForce);
