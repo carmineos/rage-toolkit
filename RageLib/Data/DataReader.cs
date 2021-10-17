@@ -207,17 +207,17 @@ namespace RageLib.Data
         public string ReadString()
         {
             // TODO: is 256 a reasonable max length for a string?
-            using Buffer<byte> buffer = new Buffer<byte>(256);
+            Span<byte> span = stackalloc byte[256];
+
+            int i = 0;
+            byte c;
+            while ((c = ReadByteFromStreamRaw()) != 0)
             {
-                int i = 0;
-                byte c;
-                while ((c = ReadByteFromStreamRaw()) != 0)
-                {
-                    buffer.Bytes[i] = c;
-                    i++;
-                }
-                return Encoding.ASCII.GetString(buffer.Span.Slice(0, i));
+                span[i] = c;
+                i++;
             }
+
+            return Encoding.ASCII.GetString(span.Slice(0, i));
         }
 
         /// <summary>
