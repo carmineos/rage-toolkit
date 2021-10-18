@@ -62,6 +62,15 @@ namespace RageLib.Archives
         /// Exports a file.
         /// </summary>
         void Export(Stream stream);
+
+        /////////////////////////////////////////////////////////////////////////////
+        // file access
+        /////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Gets the stream that respresents the possibly compressed and encrypted content of the file.
+        /// </summary>
+        Stream GetStream();
     }
 
     /// <summary>
@@ -97,15 +106,6 @@ namespace RageLib.Archives
         /// Gets the compressed size of the file.
         /// </summary>
         long CompressedSize { get; }
-
-        /////////////////////////////////////////////////////////////////////////////
-        // file access
-        /////////////////////////////////////////////////////////////////////////////
-
-        /// <summary>
-        /// Gets the stream that respresents the possibly compressed and encrypted content of the file.
-        /// </summary>
-        Stream GetStream();
     }
 
     /// <summary>

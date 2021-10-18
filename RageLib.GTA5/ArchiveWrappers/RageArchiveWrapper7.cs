@@ -824,5 +824,13 @@ namespace RageLib.GTA5.ArchiveWrappers
 
             resourceStream.CopyTo(stream, (int)resourceStream.Length - 16);
         }
+
+        /// <summary>
+        /// Gets the stream that respresents the possibly compressed content of the file.
+        /// </summary>
+        public Stream GetStream()
+        {
+            return archiveWrapper.GetStream(file);
+        }
     }
 }
