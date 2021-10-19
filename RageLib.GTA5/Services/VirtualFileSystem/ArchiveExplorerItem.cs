@@ -28,7 +28,7 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
             _children = new List<ExplorerItem>();
         }
 
-        public void LoadChildren()
+        public override void LoadChildren()
         {
             var files = _archive.Root.GetFiles();
 

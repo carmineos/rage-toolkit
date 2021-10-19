@@ -25,9 +25,9 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
             _children = new List<ExplorerItem>();
         }
 
-        public void LoadChildren()
+        public override void LoadChildren()
         {
-            var files = _directory.GetFiles();
+            var files = _directory.EnumerateFiles();
 
             foreach (var file in files)
             {
@@ -44,7 +44,7 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
                 }
             }
 
-            var directories = _directory.GetDirectories();
+            var directories = _directory.EnumerateDirectories();
 
             foreach (var directory in directories)
             {

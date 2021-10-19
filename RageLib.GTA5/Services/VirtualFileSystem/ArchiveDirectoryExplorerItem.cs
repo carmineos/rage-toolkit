@@ -7,11 +7,11 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
 {
     public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
     {
-        private readonly IArchiveDirectory _directory;
+        private readonly IArchiveDirectory _archiveDirectory;
         private readonly ContainerExplorerItem _parent;
         private readonly ICollection<ExplorerItem> _children;
 
-        public override string Name => _directory.Name;
+        public override string Name => _archiveDirectory.Name;
         public override string PhysicalPath => _parent.PhysicalPath;
         public override string VirtualPath => Path.Combine(_parent.VirtualPath, Name);
         public override ExplorerItemType ItemType => ExplorerItemType.ArchiveDirectory;
@@ -20,15 +20,15 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
 
         public ArchiveDirectoryExplorerItem(IArchiveDirectory directory, ContainerExplorerItem parent)
         {
-            _directory = directory;
+            _archiveDirectory = directory;
             _parent = parent;
 
             _children = new List<ExplorerItem>();
         }
 
-        public void LoadChildren()
+        public override void LoadChildren()
         {
-            var files = _directory.GetFiles();
+            var files = _archiveDirectory.GetFiles();
 
             foreach (var file in files)
             {
@@ -45,7 +45,7 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
                 }
             }
 
-            var directories = _directory.GetDirectories();
+            var directories = _archiveDirectory.GetDirectories();
 
             foreach (var directory in directories)
             {
