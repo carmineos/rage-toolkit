@@ -89,11 +89,8 @@ namespace RageLib.GTA5.ArchiveWrappers
             file.IsCompressed = true;
 
             // Get the buffer for the compressed file and copy the content
-            var binaryStream = file.GetStream();
-            binaryStream.SetLength(compressedStream.Length);
-            binaryStream.Position = 0;
             compressedStream.Position = 0;
-            compressedStream.CopyTo(binaryStream);
+            file.Import(compressedStream);
         }
     }
 }
