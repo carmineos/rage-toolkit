@@ -177,38 +177,23 @@ namespace RageLib.GTA5.Utilities
             var directories = Directory.EnumerateDirectories(inputFolderPath);
             foreach (var subDirectory in directories)
             {
-                // Workaround as Path.GetDirectoryName(subDirectory) seems bugged
                 var directoryName = new DirectoryInfo(subDirectory).Name;
 
                 if(Path.GetExtension(subDirectory) == ".rpf" && recursive)
                 {
-                    var tmpFolder = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-                    var dir = Directory.CreateDirectory(tmpFolder);
-                    var tmpPath = Path.Combine(tmpFolder, directoryName);
-                    PackArchive(subDirectory, tmpPath, recursive, encryption);
-                    var binaryFile = directory.CreateBinaryFile();
-                    binaryFile.Name = Path.GetFileName(tmpPath);
-                    binaryFile.Import(tmpPath);
-                    dir.Delete(true);
-
-                    // We should write to memory instead of filesystem when possible
-                    // What happens if the archive exceeds MemoryStream max capacity ?
-                    // Should we write to filesystem in that case?
-                    
                     // TODO: Add API to create a RageArchiveWrapper7 from a RageArchiveBinaryFileWrapper7 and viceversa
-                    //using var archiveStream = new MemoryStream();
-                    //{
-                    //    var archive = RageArchiveWrapper7.Create(archiveStream, directoryName);
-                    //    PackDirectory(archive.Root, subDirectory, recursive, encryption);
-                    //    archive.Encryption = encryption;
-                    //    archive.Flush();
-                    //    
-                    //    var binaryFile = directory.CreateBinaryFile();
-                    //    binaryFile.Name = directoryName;
-                    //    binaryFile.Import(archiveStream);
-                    //
-                    //    archive.Dispose();
-                    //}
+                    using var archiveStream = new MemoryStream();
+                    var archive = RageArchiveWrapper7.Create(archiveStream, directoryName);
+                    PackDirectory(archive.Root, subDirectory, recursive, encryption);
+                    archive.Encryption = encryption;
+                    archive.Flush();
+                    archiveStream.Position = 0;
+
+                    var binaryFile = directory.CreateBinaryFile();
+                    binaryFile.Name = directoryName;
+                    binaryFile.Import(archiveStream);
+
+                    archive.Dispose();
                 }
                 else
                 {
