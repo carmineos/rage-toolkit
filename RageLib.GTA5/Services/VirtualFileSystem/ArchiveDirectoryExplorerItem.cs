@@ -9,14 +9,14 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
     {
         private readonly IArchiveDirectory _archiveDirectory;
         private readonly ContainerExplorerItem _parent;
-        private readonly ICollection<ExplorerItem> _children;
+        private readonly List<ExplorerItem> _children;
 
         public override string Name => _archiveDirectory.Name;
         public override string PhysicalPath => _parent.PhysicalPath;
         public override string VirtualPath => Path.Combine(_parent.VirtualPath, Name);
         public override ExplorerItemType ItemType => ExplorerItemType.ArchiveDirectory;
         public override ContainerExplorerItem Parent => _parent;
-        public override ICollection<ExplorerItem> Children => _children;
+        public override List<ExplorerItem> Children => _children;
 
         public ArchiveDirectoryExplorerItem(IArchiveDirectory directory, ContainerExplorerItem parent)
         {
@@ -26,7 +26,7 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
             _children = new List<ExplorerItem>();
         }
 
-        public override void LoadChildren()
+        public override void LoadChildren(bool recursive)
         {
             var files = _archiveDirectory.GetFiles();
 
@@ -36,7 +36,10 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
                 {
                     var archive = RageArchiveWrapper7.Open(file.GetStream(), file.Name);
                     var archiveExplorerItem = new ArchiveExplorerItem(archive, this);
-                    archiveExplorerItem.LoadChildren();
+                    
+                    if (recursive) 
+                        archiveExplorerItem.LoadChildren(recursive);
+
                     _children.Add(archiveExplorerItem);
                 }
                 else
@@ -50,7 +53,10 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
             foreach (var directory in directories)
             {
                 var archiveFolderExplorerItem = new ArchiveDirectoryExplorerItem(directory, this);
-                archiveFolderExplorerItem.LoadChildren();
+                
+                if (recursive) 
+                    archiveFolderExplorerItem.LoadChildren(recursive);
+
                 _children.Add(archiveFolderExplorerItem);
             }
         }

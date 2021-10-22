@@ -1,6 +1,4 @@
-﻿using RageLib.GTA5.ArchiveWrappers;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace RageLib.GTA5.Services.VirtualFileSystem
 {

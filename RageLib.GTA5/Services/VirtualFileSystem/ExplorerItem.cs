@@ -23,8 +23,8 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
 
     public abstract class ContainerExplorerItem : ExplorerItem
     {
-        public abstract ICollection<ExplorerItem> Children { get; }
+        public abstract List<ExplorerItem> Children { get; }
 
-        public abstract void LoadChildren();
+        public abstract void LoadChildren(bool recursive);
     }
 }
