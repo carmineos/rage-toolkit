@@ -4,10 +4,9 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
 {
     public class RootExplorerItem : DirectoryExplorerItem
     {
-        public override string VirtualPath => Path.DirectorySeparatorChar.ToString();
         public override ExplorerItemType ItemType => ExplorerItemType.Root;
 
-        public RootExplorerItem(DirectoryInfo directory) : base (directory, null)
+        public RootExplorerItem(DirectoryInfo directory) : base(directory, null)
         {
         }
 

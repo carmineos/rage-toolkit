@@ -12,7 +12,6 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
 
         public override string Name => _directory.Name;
         public override string PhysicalPath => _directory.FullName;
-        public override string VirtualPath => Path.Combine(_parent.VirtualPath, Name);
         public override ExplorerItemType ItemType => ExplorerItemType.Directory;
         public override DirectoryExplorerItem Parent => _parent;
         public override List<ExplorerItem> Children => _children;

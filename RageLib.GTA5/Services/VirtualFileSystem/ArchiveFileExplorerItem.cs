@@ -10,7 +10,6 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
 
         public override string Name => _archiveFile.Name;
         public override string PhysicalPath => _parent.PhysicalPath;
-        public override string VirtualPath => Path.Combine(_parent.VirtualPath, Name);
         public override ExplorerItemType ItemType => ExplorerItemType.ArchiveFile;
         public override ContainerExplorerItem Parent => _parent;
 
