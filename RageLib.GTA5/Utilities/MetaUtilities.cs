@@ -112,6 +112,7 @@ namespace RageLib.GTA5.Utilities
                 {
                     var cleanStream = new MemoryStream();
                     (file as RageArchiveBinaryFileWrapper7).ExportUncompressed(cleanStream);
+                    cleanStream.Position = 0;
 
                     if (PsoFile.IsPSO(cleanStream))
                     {
@@ -161,6 +162,7 @@ namespace RageLib.GTA5.Utilities
                 {
                     var cleanStream = new MemoryStream();
                     (file as RageArchiveBinaryFileWrapper7).ExportUncompressed(cleanStream);
+                    cleanStream.Position = 0;
 
                     foreach (string xmlString in GetAllStringsFromXml(cleanStream))
                     {
@@ -291,6 +293,7 @@ namespace RageLib.GTA5.Utilities
                 {
                     var cleanStream = new MemoryStream();
                     (file as RageArchiveBinaryFileWrapper7).ExportUncompressed(cleanStream);
+                    cleanStream.Position = 0;
 
                     if (PsoFile.IsPSO(cleanStream))
                     {
