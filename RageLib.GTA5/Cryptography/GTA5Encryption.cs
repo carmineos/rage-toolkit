@@ -104,11 +104,9 @@ namespace RageLib.GTA5.Cryptography
 
         private static void DecryptBlock(Span<byte> data, ReadOnlySpan<uint> key)
         {
-            Span<uint> subkey = stackalloc uint[4];
-
             for (int k = 0; k <= 16; k++)
             {
-                key.Slice(4 * k, 4).CopyTo(subkey);
+                ReadOnlySpan<uint> subkey = key.Slice(4 * k, 4);
 
                 if (k == 0 || k == 1 || k == 16)
                     DecryptRoundA(data, subkey, GTA5Constants.PC_NG_DECRYPT_TABLES[k]);
@@ -221,11 +219,9 @@ namespace RageLib.GTA5.Cryptography
 
         private static void EncryptBlock(Span<byte> data, ReadOnlySpan<byte> key)
         {
-            Span<byte> subkey = stackalloc byte[16];
-
             for (var k = 16; k >= 0; k--)
             {
-                key.Slice(16 * k, 16).CopyTo(subkey);
+                ReadOnlySpan<byte> subkey = key.Slice(16 * k, 16);
 
                 if (k == 0 || k == 1 || k == 16)
                     EncryptRoundA(data, subkey, GTA5Constants.PC_NG_ENCRYPT_TABLES[k]);
