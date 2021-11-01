@@ -6,15 +6,20 @@
     <RootNamespace>ArchiveTool</RootNamespace>
     <AssemblyName>ArchiveTool</AssemblyName>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.0.3" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\RageLib.GTA5\RageLib.GTA5.csproj" />
     <ProjectReference Include="..\..\RageLib\RageLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\*" />
   </ItemGroup>
   
 </Project>
