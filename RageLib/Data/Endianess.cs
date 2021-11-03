@@ -69,17 +69,25 @@ namespace RageLib.Data
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double ReverseEndianness(double value)
         {
-            var int64 = BitConverter.DoubleToInt64Bits(value);
+            var int64 = BitConverter.DoubleToUInt64Bits(value);
             var reversed = BinaryPrimitives.ReverseEndianness(int64);
-            return BitConverter.Int64BitsToDouble(reversed);
+            return BitConverter.UInt64BitsToDouble(reversed);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float ReverseEndianness(float value)
         {
-            var int32 = BitConverter.SingleToInt32Bits(value);
+            var int32 = BitConverter.SingleToUInt32Bits(value);
             var reversed = BinaryPrimitives.ReverseEndianness(int32);
-            return BitConverter.Int32BitsToSingle(reversed);
+            return BitConverter.UInt32BitsToSingle(reversed);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Half ReverseEndianness(Half value)
+        {
+            var int16 = BitConverter.HalfToUInt16Bits(value);
+            var reversed = BinaryPrimitives.ReverseEndianness(int16);
+            return BitConverter.UInt16BitsToHalf(reversed);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
