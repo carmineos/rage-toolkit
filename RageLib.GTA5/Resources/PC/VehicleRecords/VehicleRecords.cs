@@ -30,11 +30,11 @@ namespace RageLib.Resources.GTA5.PC.VehicleRecords
         public override long BlockLength => 0x20;
 
         // structure data
-        public ResourceSimpleList64<VehicleRecordsEntry> Entries;
+        public SimpleList64<VehicleRecordsEntry> Entries;
 
         public VehicleRecords()
         {
-            this.Entries = new ResourceSimpleList64<VehicleRecordsEntry>();
+            this.Entries = new SimpleList64<VehicleRecordsEntry>();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace RageLib.Resources.GTA5.PC.VehicleRecords
             base.Read(reader, parameters);
 
             // read structure data
-            this.Entries = reader.ReadBlock<ResourceSimpleList64<VehicleRecordsEntry>>();
+            this.Entries = reader.ReadBlock<SimpleList64<VehicleRecordsEntry>>();
         }
 
         /// <summary>

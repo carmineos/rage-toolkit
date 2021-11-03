@@ -39,7 +39,7 @@ namespace RageLib.Resources.GTA5.PC.WaypointRecords
         public uint Unknown_2Ch; // 0x00000000
 
         // reference data
-        public ResourceSimpleArray<WaypointRecordEntry> Entries;
+        public SimpleArray<WaypointRecordEntry> Entries;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -58,7 +58,7 @@ namespace RageLib.Resources.GTA5.PC.WaypointRecords
             this.Unknown_2Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Entries = reader.ReadBlockAt<ResourceSimpleArray<WaypointRecordEntry>>(
+            this.Entries = reader.ReadBlockAt<SimpleArray<WaypointRecordEntry>>(
                 this.EntriesPointer, // offset
                 this.EntriesCount
             );

@@ -20,14 +20,14 @@
     THE SOFTWARE.
 */
 
+using RageLib.Data;
+
 namespace RageLib.Resources.GTA5.PC.VehicleRecords
 {
     // this looks exactly like an rrr entry:
     // -> http://www.gtamodding.com/wiki/Carrec
-    public class VehicleRecordsEntry : ResourceSystemBlock
+    public struct VehicleRecordsEntry : IResourceStruct<VehicleRecordsEntry>
     {
-        public override long BlockLength => 0x20;
-
         // structure data
         public uint Time;
         public ushort VelocityX;
@@ -47,54 +47,27 @@ namespace RageLib.Resources.GTA5.PC.VehicleRecords
         public float PositionY;
         public float PositionZ;
 
-        /// <summary>
-        /// Reads the data-block from a stream.
-        /// </summary>
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public VehicleRecordsEntry ReverseEndianness()
         {
-            // read structure data
-            this.Time = reader.ReadUInt32();
-            this.VelocityX = reader.ReadUInt16();
-            this.VelocityY = reader.ReadUInt16();
-            this.VelocityZ = reader.ReadUInt16();
-            this.RightX = reader.ReadByte();
-            this.RightY = reader.ReadByte();
-            this.RightZ = reader.ReadByte();
-            this.TopX = reader.ReadByte();
-            this.TopY = reader.ReadByte();
-            this.TopZ = reader.ReadByte();
-            this.SteeringAngle = reader.ReadByte();
-            this.GasPedalPower = reader.ReadByte();
-            this.BrakePedalPower = reader.ReadByte();
-            this.HandbrakeUsed = reader.ReadByte();
-            this.PositionX = reader.ReadSingle();
-            this.PositionY = reader.ReadSingle();
-            this.PositionZ = reader.ReadSingle();
-        }
-
-        /// <summary>
-        /// Writes the data-block to a stream.
-        /// </summary>
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
-        {
-            // write structure data
-            writer.Write(this.Time);
-            writer.Write(this.VelocityX);
-            writer.Write(this.VelocityY);
-            writer.Write(this.VelocityZ);
-            writer.Write(this.RightX);
-            writer.Write(this.RightY);
-            writer.Write(this.RightZ);
-            writer.Write(this.TopX);
-            writer.Write(this.TopY);
-            writer.Write(this.TopZ);
-            writer.Write(this.SteeringAngle);
-            writer.Write(this.GasPedalPower);
-            writer.Write(this.BrakePedalPower);
-            writer.Write(this.HandbrakeUsed);
-            writer.Write(this.PositionX);
-            writer.Write(this.PositionY);
-            writer.Write(this.PositionZ);
+            return new VehicleRecordsEntry()
+            {
+                Time = EndiannessExtensions.ReverseEndianness(Time),
+                VelocityX = EndiannessExtensions.ReverseEndianness(VelocityX),
+                VelocityY = EndiannessExtensions.ReverseEndianness(VelocityY),
+                VelocityZ = EndiannessExtensions.ReverseEndianness(VelocityZ),
+                RightX = EndiannessExtensions.ReverseEndianness(RightX),
+                RightY = EndiannessExtensions.ReverseEndianness(RightY),
+                RightZ = EndiannessExtensions.ReverseEndianness(RightZ),
+                TopX = EndiannessExtensions.ReverseEndianness(TopX),
+                TopY = EndiannessExtensions.ReverseEndianness(TopY),
+                TopZ = EndiannessExtensions.ReverseEndianness(TopZ),
+                SteeringAngle = EndiannessExtensions.ReverseEndianness(SteeringAngle),
+                GasPedalPower = EndiannessExtensions.ReverseEndianness(GasPedalPower),
+                HandbrakeUsed = EndiannessExtensions.ReverseEndianness(HandbrakeUsed),
+                PositionX = EndiannessExtensions.ReverseEndianness(PositionX),
+                PositionY = EndiannessExtensions.ReverseEndianness(PositionY),
+                PositionZ = EndiannessExtensions.ReverseEndianness(PositionZ),
+            };
         }
     }
 }

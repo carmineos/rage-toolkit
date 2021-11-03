@@ -20,12 +20,12 @@
     THE SOFTWARE.
 */
 
+using RageLib.Data;
+
 namespace RageLib.Resources.GTA5.PC.WaypointRecords
 {
-    public class WaypointRecordEntry : ResourceSystemBlock
+    public struct WaypointRecordEntry : IResourceStruct<WaypointRecordEntry>
     {
-        public override long BlockLength => 20;
-
         // structure data
         public float PositionX;
         public float PositionY;
@@ -35,34 +35,18 @@ namespace RageLib.Resources.GTA5.PC.WaypointRecords
         public ushort Unknown_10h;
         public ushort Unknown_12h;
 
-        /// <summary>
-        /// Reads the data-block from a stream.
-        /// </summary>
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public WaypointRecordEntry ReverseEndianness()
         {
-            // read structure data
-            this.PositionX = reader.ReadSingle();
-            this.PositionY = reader.ReadSingle();
-            this.PositionZ = reader.ReadSingle();
-            this.Unknown_Ch = reader.ReadUInt16();
-            this.Unknown_Eh = reader.ReadUInt16();
-            this.Unknown_10h = reader.ReadUInt16();
-            this.Unknown_12h = reader.ReadUInt16();
-        }
-
-        /// <summary>
-        /// Writes the data-block to a stream.
-        /// </summary>
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
-        {
-            // write structure data
-            writer.Write(this.PositionX);
-            writer.Write(this.PositionY);
-            writer.Write(this.PositionZ);
-            writer.Write(this.Unknown_Ch);
-            writer.Write(this.Unknown_Eh);
-            writer.Write(this.Unknown_10h);
-            writer.Write(this.Unknown_12h);
+            return new WaypointRecordEntry()
+            {
+                PositionX = EndiannessExtensions.ReverseEndianness(PositionX),
+                PositionY = EndiannessExtensions.ReverseEndianness(PositionY),
+                PositionZ = EndiannessExtensions.ReverseEndianness(PositionZ),
+                Unknown_Ch = EndiannessExtensions.ReverseEndianness(Unknown_Ch),
+                Unknown_Eh = EndiannessExtensions.ReverseEndianness(Unknown_Eh),
+                Unknown_10h = EndiannessExtensions.ReverseEndianness(Unknown_10h),
+                Unknown_12h = EndiannessExtensions.ReverseEndianness(Unknown_12h)
+            };
         }
     }
 }
