@@ -47,8 +47,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public short Index;
         public ushort BoneId;
         public ushort Unknown_46h;
-        public uint Unknown_48h; // 0x00000000
-        public uint Unknown_4Ch; // 0x00000000
+        public ulong Unknown_48h; // 0x0000000000000000
 
         // reference data
         public string_r Name;
@@ -72,8 +71,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.Index = reader.ReadInt16();
             this.BoneId = reader.ReadUInt16();
             this.Unknown_46h = reader.ReadUInt16();
-            this.Unknown_48h = reader.ReadUInt32();
-            this.Unknown_4Ch = reader.ReadUInt32();
+            this.Unknown_48h = reader.ReadUInt64();
 
             // read reference data
             this.Name = reader.ReadBlockAt<string_r>(
@@ -87,7 +85,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Rotation);
@@ -104,7 +102,6 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.BoneId);
             writer.Write(this.Unknown_46h);
             writer.Write(this.Unknown_48h);
-            writer.Write(this.Unknown_4Ch);
         }
 
         /// <summary>

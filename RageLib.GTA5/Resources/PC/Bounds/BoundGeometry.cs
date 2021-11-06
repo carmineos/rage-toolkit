@@ -34,19 +34,15 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         // structure data
         public ulong MaterialsPointer;
         public ulong MaterialColoursPointer;
-        public uint Unknown_100h; // 0x00000000
-        public uint Unknown_104h; // 0x00000000
-        public uint Unknown_108h; // 0x00000000
-        public uint Unknown_10Ch; // 0x00000000
-        public uint Unknown_110h; // 0x00000000
-        public uint Unknown_114h; // 0x00000000
+        public ulong Unknown_100h; // 0x0000000000000000
+        public ulong Unknown_108h; // 0x0000000000000000
+        public ulong Unknown_110h; // 0x0000000000000000
         public ulong PolygonMaterialIndicesPointer;
         public byte MaterialsCount;
         public byte MaterialColoursCount;
         public ushort Unknown_122h; // 0x0000
         public uint Unknown_124h; // 0x00000000
-        public uint Unknown_128h; // 0x00000000
-        public uint Unknown_12Ch; // 0x00000000
+        public ulong Unknown_128h; // 0x0000000000000000
 
         // reference data
         public SimpleArray<BoundMaterial> Materials;
@@ -63,19 +59,15 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             // read structure data
             this.MaterialsPointer = reader.ReadUInt64();
             this.MaterialColoursPointer = reader.ReadUInt64();
-            this.Unknown_100h = reader.ReadUInt32();
-            this.Unknown_104h = reader.ReadUInt32();
-            this.Unknown_108h = reader.ReadUInt32();
-            this.Unknown_10Ch = reader.ReadUInt32();
-            this.Unknown_110h = reader.ReadUInt32();
-            this.Unknown_114h = reader.ReadUInt32();
+            this.Unknown_100h = reader.ReadUInt64();
+            this.Unknown_108h = reader.ReadUInt64();
+            this.Unknown_110h = reader.ReadUInt64();
             this.PolygonMaterialIndicesPointer = reader.ReadUInt64();
             this.MaterialsCount = reader.ReadByte();
             this.MaterialColoursCount = reader.ReadByte();
             this.Unknown_122h = reader.ReadUInt16();
             this.Unknown_124h = reader.ReadUInt32();
-            this.Unknown_128h = reader.ReadUInt32();
-            this.Unknown_12Ch = reader.ReadUInt32();
+            this.Unknown_128h = reader.ReadUInt64();
 
             // read reference data
             this.Materials = reader.ReadBlockAt<SimpleArray<BoundMaterial>>(
@@ -100,28 +92,24 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // update structure data
-            this.MaterialsPointer = (ulong)(this.Materials != null ? this.Materials.BlockPosition : 0);
-            this.MaterialColoursPointer = (ulong)(this.MaterialColours != null ? this.MaterialColours.BlockPosition : 0);
-            this.PolygonMaterialIndicesPointer = (ulong)(this.PolygonMaterialIndices != null ? this.PolygonMaterialIndices.BlockPosition : 0);
-            this.MaterialsCount = (byte)(this.Materials != null ? this.Materials.Count : 0);
-            this.MaterialColoursCount = (byte)(this.MaterialColours != null ? this.MaterialColours.Count : 0);
+            this.MaterialsPointer = (ulong)(this.Materials?.BlockPosition ?? 0);
+            this.MaterialColoursPointer = (ulong)(this.MaterialColours?.BlockPosition ?? 0);
+            this.PolygonMaterialIndicesPointer = (ulong)(this.PolygonMaterialIndices?.BlockPosition ?? 0);
+            this.MaterialsCount = (byte)(this.Materials?.Count ?? 0);
+            this.MaterialColoursCount = (byte)(this.MaterialColours?.Count ?? 0);
 
             // write structure data
             writer.Write(this.MaterialsPointer);
             writer.Write(this.MaterialColoursPointer);
             writer.Write(this.Unknown_100h);
-            writer.Write(this.Unknown_104h);
             writer.Write(this.Unknown_108h);
-            writer.Write(this.Unknown_10Ch);
             writer.Write(this.Unknown_110h);
-            writer.Write(this.Unknown_114h);
             writer.Write(this.PolygonMaterialIndicesPointer);
             writer.Write(this.MaterialsCount);
             writer.Write(this.MaterialColoursCount);
             writer.Write(this.Unknown_122h);
             writer.Write(this.Unknown_124h);
             writer.Write(this.Unknown_128h);
-            writer.Write(this.Unknown_12Ch);
         }
 
         /// <summary>

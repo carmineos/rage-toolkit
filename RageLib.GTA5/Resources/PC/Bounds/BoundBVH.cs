@@ -31,13 +31,11 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         // structure data
         public ulong BvhPointer;
-        public uint Unknown_138h; // 0x00000000
-        public uint Unknown_13Ch; // 0x00000000
+        public ulong Unknown_138h; // 0x0000000000000000
         public ushort Unknown_140h; // 0xFFFF
         public ushort Unknown_142h; // 0x0000
         public uint Unknown_144h; // 0x00000000
-        public uint Unknown_148h; // 0x00000000
-        public uint Unknown_14Ch; // 0x00000000
+        public ulong Unknown_148h; // 0x0000000000000000
 
         // reference data
         public BVH BVH;
@@ -51,13 +49,11 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
             // read structure data
             this.BvhPointer = reader.ReadUInt64();
-            this.Unknown_138h = reader.ReadUInt32();
-            this.Unknown_13Ch = reader.ReadUInt32();
+            this.Unknown_138h = reader.ReadUInt64();
             this.Unknown_140h = reader.ReadUInt16();
             this.Unknown_142h = reader.ReadUInt16();
             this.Unknown_144h = reader.ReadUInt32();
-            this.Unknown_148h = reader.ReadUInt32();
-            this.Unknown_14Ch = reader.ReadUInt32();
+            this.Unknown_148h = reader.ReadUInt64();
 
             // read reference data
             this.BVH = reader.ReadBlockAt<BVH>(
@@ -73,17 +69,15 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // update structure data
-            this.BvhPointer = (ulong)(this.BVH != null ? this.BVH.BlockPosition : 0);
+            this.BvhPointer = (ulong)(this.BVH?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.BvhPointer);
             writer.Write(this.Unknown_138h);
-            writer.Write(this.Unknown_13Ch);
             writer.Write(this.Unknown_140h);
             writer.Write(this.Unknown_142h);
             writer.Write(this.Unknown_144h);
             writer.Write(this.Unknown_148h);
-            writer.Write(this.Unknown_14Ch);
         }
 
         /// <summary>

@@ -33,10 +33,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         // structure data
         public SimpleList64_32<BVHNode> Nodes;
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
+        public ulong Unknown_10h; // 0x0000000000000000
+        public ulong Unknown_18h; // 0x0000000000000000
         public Vector4 BoundingBoxMin;
         public Vector4 BoundingBoxMax;
         public Vector4 BoundingBoxCenter;
@@ -51,10 +49,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             // read structure data
             this.Nodes = reader.ReadBlock<SimpleList64_32<BVHNode>>();
-            this.Unknown_10h = reader.ReadUInt32();
-            this.Unknown_14h = reader.ReadUInt32();
-            this.Unknown_18h = reader.ReadUInt32();
-            this.Unknown_1Ch = reader.ReadUInt32();
+            this.Unknown_10h = reader.ReadUInt64();
+            this.Unknown_18h = reader.ReadUInt64();
             this.BoundingBoxMin = reader.ReadVector4();
             this.BoundingBoxMax = reader.ReadVector4();
             this.BoundingBoxCenter = reader.ReadVector4();
@@ -70,9 +66,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             writer.WriteBlock(this.Nodes);
             writer.Write(this.Unknown_10h);
-            writer.Write(this.Unknown_14h);
             writer.Write(this.Unknown_18h);
-            writer.Write(this.Unknown_1Ch);
             writer.Write(this.BoundingBoxMin);
             writer.Write(this.BoundingBoxMax);
             writer.Write(this.BoundingBoxCenter);
