@@ -22,10 +22,22 @@
 
 using System;
 using System.Numerics;
-using RageLib.Resources.Common;
 
 namespace RageLib.Resources.GTA5.PC.Bounds
 {
+    public enum BoundType : byte
+    {
+        BoundSphere = 0,
+        BoundCapsule = 1,
+        BoundBox = 3,
+        BoundGeometry = 4,
+        BoundBVH = 8,
+        BoundComposite = 10,
+        BoundDisc = 12,
+        BoundCylinder = 13,
+        BoundPlane = 15,
+    }
+
     // phBoundBase
     // phBound
     public class Bound : PgBase64, IResourceXXSystemBlock
@@ -33,7 +45,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0x70;
 
         // structure data
-        public byte Type;
+        public BoundType Type;
         public byte Flags;
         public ushort PartIndex;
         public float RadiusAroundCentroid;
@@ -57,7 +69,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Read(reader, parameters);
 
             // read structure data
-            this.Type = reader.ReadByte();
+            this.Type = (BoundType)reader.ReadByte();
             this.Flags = reader.ReadByte();
             this.PartIndex = reader.ReadUInt16();
             this.RadiusAroundCentroid = reader.ReadSingle();
@@ -82,7 +94,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // write structure data
-            writer.Write(this.Type);
+            writer.Write((byte)this.Type);
             writer.Write(this.Flags);
             writer.Write(this.PartIndex);
             writer.Write(this.RadiusAroundCentroid);
@@ -102,22 +114,22 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public IResourceSystemBlock GetType(ResourceDataReader reader, params object[] parameters)
         {
             reader.Position += 16;
-            var type = reader.ReadByte();
+            var type = (BoundType)reader.ReadByte();
             reader.Position -= 17;
 
-            switch (type)
+            return type switch
             {
-                case 0: return new BoundSphere();
-                case 1: return new BoundCapsule();
-                case 3: return new BoundBox();
-                case 4: return new BoundGeometry();
-                case 8: return new BoundBVH();
-                case 10: return new BoundComposite();
-                case 12: return new BoundDisc();
-                case 13: return new BoundCylinder();
-                case 15: return new BoundPlane();
-                default: throw new Exception("Unknown bound type");
-            }
+                BoundType.BoundSphere => new BoundSphere(),
+                BoundType.BoundCapsule => new BoundCapsule(),
+                BoundType.BoundBox => new BoundBox(),
+                BoundType.BoundGeometry => new BoundGeometry(),
+                BoundType.BoundBVH => new BoundBVH(),
+                BoundType.BoundComposite => new BoundComposite(),
+                BoundType.BoundDisc => new BoundDisc(),
+                BoundType.BoundCylinder => new BoundCylinder(),
+                BoundType.BoundPlane => new BoundPlane(),
+                _ => throw new Exception("Unknown bound type"),
+            };
         }
     }
 }
