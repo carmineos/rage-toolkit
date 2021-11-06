@@ -47,7 +47,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public uint Unknown_38h;
         public uint Unknown_3Ch;
         public ResourcePointerList64<Sequence> Sequences;
-        public ResourceSimpleList64<Animation_Unknown> Unknown_50h;
+        public SimpleList64<AnimTrack> Tracks;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -72,7 +72,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
             this.Unknown_38h = reader.ReadUInt32();
             this.Unknown_3Ch = reader.ReadUInt32();
             this.Sequences = reader.ReadBlock<ResourcePointerList64<Sequence>>();
-            this.Unknown_50h = reader.ReadBlock<ResourceSimpleList64<Animation_Unknown>>();
+            this.Tracks = reader.ReadBlock<SimpleList64<AnimTrack>>();
         }
 
         /// <summary>
@@ -98,14 +98,14 @@ namespace RageLib.Resources.GTA5.PC.Clips
             writer.Write(this.Unknown_38h);
             writer.Write(this.Unknown_3Ch);
             writer.WriteBlock(this.Sequences);
-            writer.WriteBlock(this.Unknown_50h);
+            writer.WriteBlock(this.Tracks);
         }
 
         public override Tuple<long, IResourceBlock>[] GetParts()
         {
             return new Tuple<long, IResourceBlock>[] {
                 new Tuple<long, IResourceBlock>(0x40, Sequences),
-                new Tuple<long, IResourceBlock>(0x50, Unknown_50h)
+                new Tuple<long, IResourceBlock>(0x50, Tracks)
             };
         }
     }
