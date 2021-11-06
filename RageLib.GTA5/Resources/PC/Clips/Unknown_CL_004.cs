@@ -27,8 +27,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x30;
 
         // structure data
-        public uint VFT;
-        public uint Unknown_4h; // 0x00000001
+        public ulong VFT;
         public uint Unknown_8h;
         public uint Unknown_Ch; // 0x00000000
         public uint Unknown_10h; // 0x00000000
@@ -46,8 +45,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.VFT = reader.ReadUInt32();
-            this.Unknown_4h = reader.ReadUInt32();
+            this.VFT = reader.ReadUInt64();
             this.Unknown_8h = reader.ReadUInt32();
             this.Unknown_Ch = reader.ReadUInt32();
             this.Unknown_10h = reader.ReadUInt32();
@@ -67,7 +65,6 @@ namespace RageLib.Resources.GTA5.PC.Clips
         {
             // write structure data
             writer.Write(this.VFT);
-            writer.Write(this.Unknown_4h);
             writer.Write(this.Unknown_8h);
             writer.Write(this.Unknown_Ch);
             writer.Write(this.Unknown_10h);
