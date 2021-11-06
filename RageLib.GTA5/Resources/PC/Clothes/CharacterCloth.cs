@@ -36,7 +36,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public override long BlockLength => 0xD0;
 
         // structure data
-        public ResourceSimpleList64<DataVec3V> Poses;
+        public SimpleList64<DataVec3V> Poses;
         public ulong ControllerPointer;
         public ulong BoundCompositePointer;
         public SimpleList64<uint> Unknown_30h;
@@ -64,7 +64,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Read(reader, parameters);
 
             // read structure data
-            this.Poses = reader.ReadBlock<ResourceSimpleList64<DataVec3V>>();
+            this.Poses = reader.ReadBlock<SimpleList64<DataVec3V>>();
             this.ControllerPointer = reader.ReadUInt64();
             this.BoundCompositePointer = reader.ReadUInt64();
             this.Unknown_30h = reader.ReadBlock<SimpleList64<uint>>();

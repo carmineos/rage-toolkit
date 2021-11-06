@@ -39,7 +39,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public uint Unknown_A8h; // 0x00000000
         public uint Unknown_ACh; // 0x00000000
         public SimpleList64<uint> BoneIndexMap;
-        public ResourceSimpleList64<BindingInfo> BindingInfo;
+        public SimpleList64<BindingInfo> BindingInfo;
         public uint Unknown_D0h; // 0x00000000
         public uint Unknown_D4h; // 0x00000000
         public uint Unknown_D8h; // 0x00000000
@@ -61,7 +61,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             this.Unknown_A8h = reader.ReadUInt32();
             this.Unknown_ACh = reader.ReadUInt32();
             this.BoneIndexMap = reader.ReadBlock<SimpleList64<uint>>();
-            this.BindingInfo = reader.ReadBlock<ResourceSimpleList64<BindingInfo>>();
+            this.BindingInfo = reader.ReadBlock<SimpleList64<BindingInfo>>();
             this.Unknown_D0h = reader.ReadUInt32();
             this.Unknown_D4h = reader.ReadUInt32();
             this.Unknown_D8h = reader.ReadUInt32();

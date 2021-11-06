@@ -88,8 +88,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public uint Unknown_F4h; // 0x00000000
         public uint Unknown_F8h;
         public uint Unknown_FCh; // 0x00000000
-        public ResourceSimpleList64<EdgeData> CustomEdgeData;
-        public ResourceSimpleList64<EdgeData> EdgeData;
+        public SimpleList64<EdgeData> CustomEdgeData;
+        public SimpleList64<EdgeData> EdgeData;
         public uint Unknown_120h; // 0x00000000
         public uint Unknown_124h; // 0x00000000
         public uint Unknown_128h; // 0x00000000
@@ -179,8 +179,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             this.Unknown_F4h = reader.ReadUInt32();
             this.Unknown_F8h = reader.ReadUInt32();
             this.Unknown_FCh = reader.ReadUInt32();
-            this.CustomEdgeData = reader.ReadBlock<ResourceSimpleList64<EdgeData>>();
-            this.EdgeData = reader.ReadBlock<ResourceSimpleList64<EdgeData>>();
+            this.CustomEdgeData = reader.ReadBlock<SimpleList64<EdgeData>>();
+            this.EdgeData = reader.ReadBlock<SimpleList64<EdgeData>>();
             this.Unknown_120h = reader.ReadUInt32();
             this.Unknown_124h = reader.ReadUInt32();
             this.Unknown_128h = reader.ReadUInt32();

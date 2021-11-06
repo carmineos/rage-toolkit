@@ -20,13 +20,13 @@
     THE SOFTWARE.
 */
 
+using RageLib.Data;
+
 namespace RageLib.Resources.GTA5.PC.Clothes
 {
     // rage__phEdgeData
-    public class EdgeData : ResourceSystemBlock
+    public struct EdgeData : IResourceStruct<EdgeData>
     {
-        public override long BlockLength => 0x10;
-
         // structure data
         public ushort vertIndices0;
         public ushort vertIndices1;
@@ -34,30 +34,16 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public float Weight0;
         public float CompressionWeight;
 
-        /// <summary>
-        /// Reads the data-block from a stream.
-        /// </summary>
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public EdgeData ReverseEndianness()
         {
-            // read structure data
-            this.vertIndices0 = reader.ReadUInt16();
-            this.vertIndices1 = reader.ReadUInt16();
-            this.EdgeLength2 = reader.ReadSingle();
-            this.Weight0 = reader.ReadSingle();
-            this.CompressionWeight = reader.ReadSingle();
-        }
-
-        /// <summary>
-        /// Writes the data-block to a stream.
-        /// </summary>
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
-        {
-            // write structure data
-            writer.Write(this.vertIndices0);
-            writer.Write(this.vertIndices1);
-            writer.Write(this.EdgeLength2);
-            writer.Write(this.Weight0);
-            writer.Write(this.CompressionWeight);
+            return new EdgeData()
+            {
+                vertIndices0 = EndiannessExtensions.ReverseEndianness(vertIndices0),
+                vertIndices1 = EndiannessExtensions.ReverseEndianness(vertIndices1),
+                EdgeLength2 = EndiannessExtensions.ReverseEndianness(EdgeLength2),
+                Weight0 = EndiannessExtensions.ReverseEndianness(Weight0),
+                CompressionWeight = EndiannessExtensions.ReverseEndianness(CompressionWeight),
+            };
         }
     }
 }

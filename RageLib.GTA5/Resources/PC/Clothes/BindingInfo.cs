@@ -20,46 +20,31 @@
     THE SOFTWARE.
 */
 
+using RageLib.Data;
 using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Clothes
 {
     // rage__characterClothController__BindingInfo
-    public class BindingInfo : ResourceSystemBlock
+    public struct BindingInfo : IResourceStruct<BindingInfo>
     {
-        public override long BlockLength => 0x20;
-
         // structure data
         public Vector4 Weights;
         public uint BlendIndex0;
         public uint BlendIndex1;
         public uint BlendIndex2;
-        public uint BlendIndex4;
+        public uint BlendIndex3;
 
-        /// <summary>
-        /// Reads the data-block from a stream.
-        /// </summary>
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public BindingInfo ReverseEndianness()
         {
-            // read structure data
-            this.Weights = reader.ReadVector4();
-            this.BlendIndex0 = reader.ReadUInt32();
-            this.BlendIndex1 = reader.ReadUInt32();
-            this.BlendIndex2 = reader.ReadUInt32();
-            this.BlendIndex4 = reader.ReadUInt32();
-        }
-
-        /// <summary>
-        /// Writes the data-block to a stream.
-        /// </summary>
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
-        {
-            // write structure data
-            writer.Write(this.Weights);
-            writer.Write(this.BlendIndex0);
-            writer.Write(this.BlendIndex1);
-            writer.Write(this.BlendIndex2);
-            writer.Write(this.BlendIndex4);
+            return new BindingInfo()
+            {
+                Weights = EndiannessExtensions.ReverseEndianness(Weights),
+                BlendIndex0 = EndiannessExtensions.ReverseEndianness(BlendIndex0),
+                BlendIndex1 = EndiannessExtensions.ReverseEndianness(BlendIndex1),
+                BlendIndex2 = EndiannessExtensions.ReverseEndianness(BlendIndex2),
+                BlendIndex3 = EndiannessExtensions.ReverseEndianness(BlendIndex3),
+            };
         }
     }
 }

@@ -20,41 +20,28 @@
     THE SOFTWARE.
 */
 
+using RageLib.Data;
+
 namespace RageLib.Resources.GTA5.PC.Clothes
 {
     // rage__dataVec3V
-    public class DataVec3V : ResourceSystemBlock
+    public struct DataVec3V : IResourceStruct<DataVec3V>
     {
-        public override long BlockLength => 0x10;
-
         // structure data
         public uint Unknown_0h;
         public uint Unknown_4h;
         public uint Unknown_8h;
         public uint Unknown_Ch;
 
-        /// <summary>
-        /// Reads the data-block from a stream.
-        /// </summary>
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public DataVec3V ReverseEndianness()
         {
-            // read structure data
-            this.Unknown_0h = reader.ReadUInt32();
-            this.Unknown_4h = reader.ReadUInt32();
-            this.Unknown_8h = reader.ReadUInt32();
-            this.Unknown_Ch = reader.ReadUInt32();
-        }
-
-        /// <summary>
-        /// Writes the data-block to a stream.
-        /// </summary>
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
-        {
-            // write structure data
-            writer.Write(this.Unknown_0h);
-            writer.Write(this.Unknown_4h);
-            writer.Write(this.Unknown_8h);
-            writer.Write(this.Unknown_Ch);
+            return new DataVec3V()
+            {
+                Unknown_0h = EndiannessExtensions.ReverseEndianness(Unknown_0h),
+                Unknown_4h = EndiannessExtensions.ReverseEndianness(Unknown_4h),
+                Unknown_8h = EndiannessExtensions.ReverseEndianness(Unknown_8h),
+                Unknown_Ch = EndiannessExtensions.ReverseEndianness(Unknown_Ch),
+            };
         }
     }
 }
