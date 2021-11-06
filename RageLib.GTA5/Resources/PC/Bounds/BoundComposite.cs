@@ -50,8 +50,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public SimpleArray<Matrix4x4> CurrentMatrices;
         public SimpleArray<Matrix4x4> LastMatrices;
         public SimpleArray<Aabb> ChildBoundingBoxes;
-        public SimpleArray<ulong> TypeAndIncludeFlags;
-        public SimpleArray<ulong> OwnedTypeAndIncludeFlags;
+        public SimpleArray<BoundCompositeFlags> TypeAndIncludeFlags;
+        public SimpleArray<BoundCompositeFlags> OwnedTypeAndIncludeFlags;
         public BVH BVH;
 
         /// <summary>
@@ -90,11 +90,11 @@ namespace RageLib.Resources.GTA5.PC.Bounds
                 this.ChildBoundingBoxesPointer, // offset
                 this.MaxNumBounds
             );
-            this.TypeAndIncludeFlags = reader.ReadBlockAt<SimpleArray<ulong>>(
+            this.TypeAndIncludeFlags = reader.ReadBlockAt<SimpleArray<BoundCompositeFlags>>(
                 this.TypeAndIncludeFlagsPointer, // offset
                 this.MaxNumBounds
             );
-            this.OwnedTypeAndIncludeFlags = reader.ReadBlockAt<SimpleArray<ulong>>(
+            this.OwnedTypeAndIncludeFlags = reader.ReadBlockAt<SimpleArray<BoundCompositeFlags>>(
                 this.OwnedTypeAndIncludeFlagsPointer, // offset
                 this.MaxNumBounds
             );
@@ -111,15 +111,15 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // update structure data
-            this.BoundsPointer = (ulong)(this.Bounds != null ? this.Bounds.BlockPosition : 0);
-            this.CurrentMatricesPointer = (ulong)(this.CurrentMatrices != null ? this.CurrentMatrices.BlockPosition : 0);
-            this.LastMatricesPointer = (ulong)(this.LastMatrices != null ? this.LastMatrices.BlockPosition : 0);
-            this.ChildBoundingBoxesPointer = (ulong)(this.ChildBoundingBoxes != null ? this.ChildBoundingBoxes.BlockPosition : 0);
-            this.TypeAndIncludeFlagsPointer = (ulong)(this.TypeAndIncludeFlags != null ? this.TypeAndIncludeFlags.BlockPosition : 0);
-            this.OwnedTypeAndIncludeFlagsPointer = (ulong)(this.OwnedTypeAndIncludeFlags != null ? this.OwnedTypeAndIncludeFlags.BlockPosition : 0);
-            this.MaxNumBounds = (ushort)(this.Bounds != null ? this.Bounds.Count : 0);
-            this.NumBounds = (ushort)(this.Bounds != null ? this.Bounds.Count : 0);
-            this.BVHPointer = (ulong)(this.BVH != null ? this.BVH.BlockPosition : 0);
+            this.BoundsPointer = (ulong)(this.Bounds?.BlockPosition ?? 0);
+            this.CurrentMatricesPointer = (ulong)(this.CurrentMatrices?.BlockPosition ?? 0);
+            this.LastMatricesPointer = (ulong)(this.LastMatrices?.BlockPosition ?? 0);
+            this.ChildBoundingBoxesPointer = (ulong)(this.ChildBoundingBoxes?.BlockPosition ?? 0);
+            this.TypeAndIncludeFlagsPointer = (ulong)(this.TypeAndIncludeFlags?.BlockPosition ?? 0);
+            this.OwnedTypeAndIncludeFlagsPointer = (ulong)(this.OwnedTypeAndIncludeFlags?.BlockPosition ?? 0);
+            this.MaxNumBounds = (ushort)(this.Bounds?.Count ?? 0);
+            this.NumBounds = (ushort)(this.Bounds?.Count ?? 0);
+            this.BVHPointer = (ulong)(this.BVH?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.BoundsPointer);
@@ -154,7 +154,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             base.Rebuild();
 
-            if (Bounds is null || Bounds.data_items is null)
+            if (Bounds?.data_items is null)
             {
                 MaxNumBounds = 0;
                 NumBounds = 0;
@@ -170,21 +170,22 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             NumBounds = MaxNumBounds;
 
             // TODO:    Try to reuse existing arrays if already of the required size  
-            UpdateChildrenAabb();
-            
+            UpdateBoundingBoxes();
+
             // This should be invoked only if we aren't editing an existing asset, which might contain actual transform data!
             // TODO:    Once we have bounds wrappers, we should cache transform on loading so we can retrieve it on saving!
-            //UpdateChildrenMatrices();
+            //UpdateMatrices();
+            //UpdateFlags();
         }
 
-        private void UpdateChildrenAabb()
+        private void UpdateBoundingBoxes()
         {
             Aabb[] boundingBoxes = new Aabb[NumBounds];
 
             for (int i = 0; i < NumBounds; i++)
             {
                 var bound = Bounds[i];
-                var min = new Vector4(bound.BoundingBoxMin, BitConverter.Int32BitsToSingle((int)bound.RefCount));
+                var min = new Vector4(bound.BoundingBoxMin, BitConverter.UInt32BitsToSingle(bound.RefCount));
                 var max = new Vector4(bound.BoundingBoxMax, bound.Margin);
                 boundingBoxes[i] = new Aabb(min, max);
             }
@@ -192,7 +193,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             ChildBoundingBoxes = new SimpleArray<Aabb>(boundingBoxes);
         }
 
-        private void UpdateChildrenMatrices()
+        private void UpdateMatrices()
         {
             var mat = Matrix4x4.Identity;
             mat.M14 = FloatHelpers.SignalingNaN;
@@ -204,7 +205,21 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             matrices.AsSpan().Fill(mat);
 
             CurrentMatrices = new SimpleArray<Matrix4x4>(matrices);
-            LastMatrices = new SimpleArray<Matrix4x4>((Matrix4x4[])matrices.Clone());
+            LastMatrices = CurrentMatrices;
+        }
+
+        private void UpdateFlags()
+        {
+            BoundCompositeFlags flags = new BoundCompositeFlags()
+            { 
+                Flags1 = BoundFlags.NONE,
+                Flags2 = BoundFlags.NONE 
+            };
+
+            BoundCompositeFlags[] flagsArray = new BoundCompositeFlags[NumBounds];
+            flagsArray.AsSpan().Fill(flags);
+            OwnedTypeAndIncludeFlags = new SimpleArray<BoundCompositeFlags>(flagsArray);
+            TypeAndIncludeFlags = OwnedTypeAndIncludeFlags;
         }
     }
 }
