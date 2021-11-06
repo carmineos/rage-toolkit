@@ -42,7 +42,9 @@
     <StructureEntry NameHash="0xA2B4F045" Offset="0" Type="51" TypeHash="0x00000000" Unknown="0x00000000" />
     <StructureEntry NameHash="0xE0B18333" Offset="0" Type="52" TypeHash="0x00000000" Unknown="0x00000000" />
     <StructureEntry NameHash="0xA7E3D660" Offset="0" Type="52" TypeHash="0x00000000" Unknown="0x00000000" />
-    <StructureEntry NameHash="0x3B8AF0C2" Offset="0" Type="80" TypeHash="0x00000000" Unknown="0x00000000" />
+    <StructureEntry NameHash="0x3B8AF0C2" Offset="0" Type="80" TypeHash="0x00000000" Unknown="0x00000000">
+      <ArrayType Type="17" TypeHash="0x00000000" />
+    </StructureEntry>
     <StructureEntry NameHash="0x8FF34AB5" Offset="0" Type="64" TypeHash="0x00000000" Unknown="0x00000000" />
     <StructureEntry NameHash="0x17525AB1" Offset="0" Type="74" TypeHash="0x00000000" Unknown="0x00000000" />
     <StructureEntry NameHash="0x10D59C62" Offset="0" Type="74" TypeHash="0x00000000" Unknown="0x00000000" />

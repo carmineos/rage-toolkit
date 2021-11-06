@@ -27,13 +27,18 @@
     <hash_7AE8E34B value="1" />
     <hash_48758F24 value="4294967294" />
     <hash_2DCCF53B value="4294967295" />
-    <hash_7C6BAA24 value="1.2" />
-    <hash_C81C39E6 value="12.0" />
-    <hash_C599B2B0 x="1.2" y="3.4" z="5.6" />
-    <hash_A2B4F045 x="12.0" y="34.0" z="56.0" />
-    <hash_E0B18333 x="1.2" y="3.4" z="5.6" w="7.8" />
-    <hash_A7E3D660 x="12.0" y="34.0" z="56.0" w="78.0" />
-    <hash_3B8AF0C2>0 1 254 255</hash_3B8AF0C2>
+    <hash_7C6BAA24 value="1.200000" />
+    <hash_C81C39E6 value="12.000000" />
+    <hash_C599B2B0 x="1.200000" y="3.400000" z="5.600000" />
+    <hash_A2B4F045 x="12.000000" y="34.000000" z="56.000000" />
+    <hash_E0B18333 x="1.200000" y="3.400000" z="5.600000" w="7.800000" />
+    <hash_A7E3D660 x="12.000000" y="34.000000" z="56.000000" w="78.000000" />
+    <hash_3B8AF0C2 content="char_array">
+      0
+      1
+      254
+      255
+    </hash_3B8AF0C2>
     <hash_8FF34AB5>A String</hash_8FF34AB5>
     <hash_17525AB1>hash_F63A8BC0</hash_17525AB1>
     <hash_10D59C62 />
@@ -70,14 +75,14 @@
       4294967295
     </hash_62AFD2A7>
     <hash_8FD208FE content="float_array">
-      0.1
-      0.2
-      1000.0
-      2000.0
+      0.100000
+      0.200000
+      1000.000000
+      2000.000000
     </hash_8FD208FE>
     <hash_D094EFE2 content="vector3_array">
-      -50.0 -6.0 -30.0
-      50.0 6.0 30.0
+      -50.000000	-6.000000	-30.000000	
+      50.000000	6.000000	30.000000	
     </hash_D094EFE2>
     <hash_68B43521>
       <Item>hash_CA134811</Item>
