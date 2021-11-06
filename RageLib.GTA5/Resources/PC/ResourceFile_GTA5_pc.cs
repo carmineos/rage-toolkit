@@ -193,21 +193,21 @@ namespace RageLib.Resources.GTA5
             var pgBase = (PgBase64)rootBlock;
 
             // If we are building a new resource
-            if(pgBase.PagesInfo is null)
+            if(pgBase.PageMap is null)
             {
-                pgBase.PagesInfo = new PagesInfo(64, 64);
-                systemBlocks.Add(pgBase.PagesInfo);
+                pgBase.PageMap = new DatResourceMap(64, 64);
+                systemBlocks.Add(pgBase.PageMap);
             }
             else
             {
-                pgBase.PagesInfo.VirtualPagesCount = 64;
-                pgBase.PagesInfo.PhysicalPagesCount = 64;
+                pgBase.PageMap.VirtualPagesCount = 64;
+                pgBase.PageMap.PhysicalPagesCount = 64;
             }
 
             ResourceHelpers.AssignPositions(systemBlocks, 0x50000000, out ResourceChunkFlags virtualPageFlags, 0);
             ResourceHelpers.AssignPositions(graphicBlocks, 0x60000000, out ResourceChunkFlags physicalPageFlags, virtualPageFlags.Count);
-            pgBase.PagesInfo.VirtualPagesCount = (byte)virtualPageFlags.Count;
-            pgBase.PagesInfo.PhysicalPagesCount = (byte)physicalPageFlags.Count;
+            pgBase.PageMap.VirtualPagesCount = (byte)virtualPageFlags.Count;
+            pgBase.PageMap.PhysicalPagesCount = (byte)physicalPageFlags.Count;
 
             // Add version to the flags
             virtualPageFlags |= (((uint)Version >> 4) & 0xF) << 28;

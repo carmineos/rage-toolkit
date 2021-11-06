@@ -66,13 +66,13 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Textures
             // structure
 
             textureDictionary.VFT = 0x0000000140570fd0;
-            textureDictionary.PagesInfoPointer = 0x0000000000000000;
+            textureDictionary.PageMapPointer = 0x0000000000000000;
             textureDictionary.Count = 0x00000001;
             textureDictionary.Unknown_1Ch = 0x00000000;
 
             // references
 
-            textureDictionary.PagesInfo = null;
+            textureDictionary.PageMap = null;
 
             if (textureDictionary.Values.Entries != null)
             {

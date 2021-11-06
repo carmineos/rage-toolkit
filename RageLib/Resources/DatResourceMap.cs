@@ -23,12 +23,9 @@
 namespace RageLib.Resources
 {
     // datResourceMap ?
-    public class PagesInfo : ResourceSystemBlock
+    public class DatResourceMap : ResourceSystemBlock
     {
-        public override long BlockLength
-        {
-            get { return 16 + (8 * (VirtualPagesCount + PhysicalPagesCount)); }
-        }
+        public override long BlockLength => 16 + (8 * (VirtualPagesCount + PhysicalPagesCount));
 
         // structure data
         public uint Unknown_0h;
@@ -40,9 +37,9 @@ namespace RageLib.Resources
         public ulong[] VirtualPagesPointers;
         public ulong[] PhysicalPagesPointers;
 
-        public PagesInfo() : this(64, 64) { }
+        public DatResourceMap() : this(64, 64) { }
 
-        public PagesInfo(byte virtualPagesCount, byte physicalPagesCount)
+        public DatResourceMap(byte virtualPagesCount, byte physicalPagesCount)
         {
             VirtualPagesCount = virtualPagesCount;
             PhysicalPagesCount = physicalPagesCount;
@@ -89,27 +86,9 @@ namespace RageLib.Resources
             writer.Write(this.Unknown_Ah);
             writer.Write(this.Unknown_Ch);
 
-            if (VirtualPagesCount > 0)
-            {
-                //if (VirtualPagesPointers != null && VirtualPagesPointers.Length == VirtualPagesCount)
-                //    writer.WriteUlongs(VirtualPagesPointers);
-                //else
-                //{
-                var pad = 8 * VirtualPagesCount;
-                writer.Write(new byte[pad]);
-                //}
-            }
-
-            if (PhysicalPagesCount > 0)
-            {
-                //if (PhysicalPagesPointers != null && PhysicalPagesPointers.Length == PhysicalPagesCount)
-                //    writer.WriteUlongs(PhysicalPagesPointers);
-                //else
-                //{
-                var pad = 8 * PhysicalPagesCount;
-                writer.Write(new byte[pad]);
-                //}
-            }
+            var pages = VirtualPagesCount + PhysicalPagesCount;
+            for (int i = 0; i < pages; i++)
+                writer.Write(0UL);
         }
     }
 }

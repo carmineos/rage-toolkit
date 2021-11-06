@@ -302,7 +302,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Textures
         {
 
             texture.VFT = 0x0000000140619638;
-            texture.PagesInfoPointer = 0x0000000000000000;
+            texture.PageMapPointer = 0x0000000000000000;
             texture.Unknown_10h = 0x00000000;
             texture.Unknown_14h = 0x00000000;
             texture.Unknown_18h = 0x00000000;

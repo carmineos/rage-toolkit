@@ -31,10 +31,10 @@ namespace RageLib.Resources
         public override long BlockLength => 0x10;
 
         // structure data
-        public ulong PagesInfoPointer;
+        public ulong PageMapPointer;
 
         // reference data
-        public PagesInfo PagesInfo;
+        public DatResourceMap PageMap;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -44,11 +44,11 @@ namespace RageLib.Resources
             base.Read(reader, parameters);
 
             // read structure data
-            this.PagesInfoPointer = reader.ReadUInt64();
+            this.PageMapPointer = reader.ReadUInt64();
 
             // read reference data
-            this.PagesInfo = reader.ReadBlockAt<PagesInfo>(
-                this.PagesInfoPointer // offset
+            this.PageMap = reader.ReadBlockAt<DatResourceMap>(
+                this.PageMapPointer // offset
             );
         }
 
@@ -60,10 +60,10 @@ namespace RageLib.Resources
             base.Write(writer, parameters);
 
             // update structure data
-            this.PagesInfoPointer = (ulong)(this.PagesInfo != null ? this.PagesInfo.BlockPosition : 0);
+            this.PageMapPointer = (ulong)(this.PageMap?.BlockPosition ?? 0);
 
             // write structure data
-            writer.Write(this.PagesInfoPointer);
+            writer.Write(this.PageMapPointer);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace RageLib.Resources
         /// </summary>
         public override IResourceBlock[] GetReferences()
         {
-            return PagesInfo == null ? Array.Empty<IResourceBlock>() : new IResourceBlock[] { PagesInfo };
+            return PageMap == null ? Array.Empty<IResourceBlock>() : new IResourceBlock[] { PageMap };
         }
     }
 }

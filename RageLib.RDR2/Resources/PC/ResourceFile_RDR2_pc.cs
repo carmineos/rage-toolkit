@@ -142,7 +142,7 @@ namespace RageLib.Resources.RDR2
             var fileBase = (PgBase64)resBlock;
 
             // Create a temp datResourceMap
-            fileBase.PagesInfo = new PagesInfo(64, 64);
+            fileBase.PageMap = new DatResourceMap(64, 64);
 
 
             ResourceHelpers.GetBlocks(ResourceData, out IList<IResourceBlock> systemBlocks, out IList<IResourceBlock> graphicBlocks);
@@ -151,8 +151,8 @@ namespace RageLib.Resources.RDR2
             
             ResourceHelpers.AssignPositions(graphicBlocks, 0x60000000, out ResourceChunkFlags physicalPageFlags, virtualPageFlags.Count);
 
-            fileBase.PagesInfo.VirtualPagesCount = (byte)virtualPageFlags.Count;
-            fileBase.PagesInfo.PhysicalPagesCount = (byte)physicalPageFlags.Count;
+            fileBase.PageMap.VirtualPagesCount = (byte)virtualPageFlags.Count;
+            fileBase.PageMap.PhysicalPagesCount = (byte)physicalPageFlags.Count;
 
             // Add version to the flags
             virtualPageFlags += ((((uint)Version >> 4) & 0xF) << 28);
