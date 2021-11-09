@@ -12,10 +12,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="ResourceWrappers\PC\Meta\Definitions\XmlInfos.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="PSOWrappers\Xml\PsoDefinitions.xml" />
+    <EmbeddedResource Include="PSOWrappers\Xml\PsoDefinitions.xml" />
   </ItemGroup>
 
 </Project>
