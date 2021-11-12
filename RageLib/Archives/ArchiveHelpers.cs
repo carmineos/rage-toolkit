@@ -83,15 +83,14 @@ namespace RageLib.Archives
         /// </summary>
         public static long FindOffset(List<DataBlock> blocks, long neededSpace, long blockSize = 1)
         {
+            if (blocks.Count == 0)
+                return 0;
+
             var lst = new List<DataBlock>(blocks);
 
             // sort list...
             lst.Sort((a, b) => a.Offset.CompareTo(b.Offset));
                 
-
-            if (lst.Count == 0)
-                return 0;
-
             // patch...
             for (int i = 0; i < lst.Count - 1; i++)
             {

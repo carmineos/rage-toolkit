@@ -34,72 +34,45 @@ namespace RageLib.Data
     /// </summary>
     public class PartialStream : Stream
     {
-        private Stream baseStream;
-        private GetOffsetDelegate getOffsetDelegate;
-        private GetLengthDelegate getLengthDelegate;
-        private SetLengthDelegate setLengthDelegate;
-        private long relativePosiiton;
+        private readonly Stream baseStream;
+        private readonly GetOffsetDelegate getOffsetDelegate;
+        private readonly GetLengthDelegate getLengthDelegate;
+        private readonly SetLengthDelegate setLengthDelegate;
+        private long relativePositon;
 
         /// <summary>
         /// Gets a value indicating whether the stream supports seeking. 
         /// </summary>
-        public override bool CanSeek
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanSeek => true;
 
         /// <summary>
         /// Gets a value indicating whether the stream supports reading. 
         /// </summary>
-        public override bool CanRead
-        {
-            get
-            {
-                return baseStream.CanRead;
-            }
-        }
+        public override bool CanRead => baseStream.CanRead;
 
         /// <summary>
         /// Gets a value indicating whether the stream supports writing. 
         /// </summary>
-        public override bool CanWrite
-        {
-            get
-            {
-                return baseStream.CanWrite;
-            }
-        }
+        public override bool CanWrite => baseStream.CanWrite;
 
         /// <summary>
         /// Gets the length of the stream.
         /// </summary>
-        public override long Length
-        {
-            get
-            {
-                return getLengthDelegate();
-            }
-        }
+        public override long Length => getLengthDelegate();
 
         /// <summary>
         /// Gets or sets the position within the stream.
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return relativePosiiton;
-            }
+            get => relativePositon;
             set
             {
                 //value = Math.Min(value, getLengthDelegate());
                 //value = Math.Max(value, 0);
                 if (Position > Length)
-                    SetLength(Position);                
-                relativePosiiton = value;
+                    SetLength(Position);
+                relativePositon = value;
             }
         }
 
@@ -123,12 +96,12 @@ namespace RageLib.Data
             // backup position
             var positionBackup = baseStream.Position;
 
-            int maxCount = (int)(getLengthDelegate() - relativePosiiton);
+            int maxCount = (int)(getLengthDelegate() - relativePositon);
             int newcount = Math.Min(count, maxCount);
 
-            baseStream.Position = getOffsetDelegate() + relativePosiiton;
+            baseStream.Position = getOffsetDelegate() + relativePositon;
             int r = baseStream.Read(buffer, offset, newcount);
-            relativePosiiton += r;
+            relativePositon += r;
 
             // restore position
             baseStream.Position = positionBackup;
@@ -144,16 +117,16 @@ namespace RageLib.Data
             // backup position
             var positionBackup = baseStream.Position;
 
-            var newlen = relativePosiiton + count;
+            var newlen = relativePositon + count;
             if (newlen > Length)
                 setLengthDelegate(newlen);
 
-            int maxCount = (int)(getLengthDelegate() - relativePosiiton);
+            int maxCount = (int)(getLengthDelegate() - relativePositon);
             var newcount = Math.Min(count, maxCount);
 
-            baseStream.Position = getOffsetDelegate() + relativePosiiton;
+            baseStream.Position = getOffsetDelegate() + relativePositon;
             baseStream.Write(buffer, offset, count);
-            relativePosiiton += count;
+            relativePositon += count;
 
             // restore position
             baseStream.Position = positionBackup;
@@ -168,22 +141,22 @@ namespace RageLib.Data
             {
                 case SeekOrigin.Begin:
                     {
-                        relativePosiiton = offset;
+                        relativePositon = offset;
                         break;
                     }
                 case SeekOrigin.Current:
                     {
-                        relativePosiiton += offset;
+                        relativePositon += offset;
                         break;
                     }
                 case SeekOrigin.End:
                     {
-                        relativePosiiton = getLengthDelegate() + offset;
+                        relativePositon = getLengthDelegate() + offset;
                         break;
                     }
             }
 
-            return relativePosiiton;
+            return relativePositon;
         }
 
         /// <summary>
