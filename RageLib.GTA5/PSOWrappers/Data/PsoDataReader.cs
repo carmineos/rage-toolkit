@@ -55,7 +55,7 @@ namespace RageLib.GTA5.PSOWrappers.Data
 
         public int CurrentSectionHash => currentDataMappingEntry.NameHash;
 
-        public PsoDataReader(PsoFile psoFile) : base(null, Endianess.BigEndian)
+        public PsoDataReader(PsoFile psoFile) : base(null, Endianness.BigEndian)
         {
             this.psoFile = psoFile;
             this.stream = new MemoryStream(psoFile.DataSection.Data);

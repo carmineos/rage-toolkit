@@ -37,12 +37,12 @@ namespace RageLib.Data
     public class DataReader
     {
         private readonly Stream baseStream;
-        protected readonly bool endianessEqualsHostArchitecture;
+        protected readonly bool endiannessEqualsHostArchitecture;
 
         /// <summary>
-        /// Gets or sets the endianess of the underlying stream.
+        /// Gets or sets the endianness of the underlying stream.
         /// </summary>
-        public Endianess Endianess { get; set; }
+        public Endianness Endianness { get; set; }
 
         /// <summary>
         /// Gets the length of the underlying stream.
@@ -61,11 +61,11 @@ namespace RageLib.Data
         /// <summary>
         /// Initializes a new data reader for the specified stream.
         /// </summary>
-        public DataReader(Stream stream, Endianess endianess = Endianess.LittleEndian)
+        public DataReader(Stream stream, Endianness endianness = Endianness.LittleEndian)
         {
             this.baseStream = stream;
-            this.Endianess = endianess;
-            this.endianessEqualsHostArchitecture = endianess.EqualsHostArchitecture();
+            this.Endianness = endianness;
+            this.endiannessEqualsHostArchitecture = endianness.EqualsHostArchitecture();
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace RageLib.Data
 
             ReadFromStreamRaw(bytesSpan);
 
-            // handle endianess
-            if (!endianessEqualsHostArchitecture)
+            // handle endianness
+            if (!endiannessEqualsHostArchitecture)
                 bytesSpan.Reverse();
 
             return data;
@@ -96,8 +96,8 @@ namespace RageLib.Data
 
             ReadFromStreamRaw(bytesSpan);
 
-            // handle endianess
-            if (!endianessEqualsHostArchitecture)
+            // handle endianness
+            if (!endiannessEqualsHostArchitecture)
             {
                 var sizeOf = Unsafe.SizeOf<TReverseAs>();
                 var count = bytesSpan.Length / sizeOf;
@@ -114,8 +114,8 @@ namespace RageLib.Data
             Buffer<T> buffer = new Buffer<T>(count);
             ReadFromStreamRaw(buffer.BytesSpan);
 
-            // handle endianess
-            if (!endianessEqualsHostArchitecture)
+            // handle endianness
+            if (!endiannessEqualsHostArchitecture)
                 buffer.Reverse();
 
             return buffer;
@@ -304,8 +304,8 @@ namespace RageLib.Data
             var bytes = MemoryMarshal.AsBytes(array.AsSpan());
             ReadFromStreamRaw(bytes);
 
-            // handle endianess
-            if (!endianessEqualsHostArchitecture)
+            // handle endianness
+            if (!endiannessEqualsHostArchitecture)
             {
                 // If it's a struct, let it reverse its endianness
                 if (typeof(IResourceStruct<T>).IsAssignableFrom(typeof(T)))
@@ -330,8 +330,8 @@ namespace RageLib.Data
 
             ReadFromStreamRaw(span);
            
-            // handle endianess
-            if (!endianessEqualsHostArchitecture)
+            // handle endianness
+            if (!endiannessEqualsHostArchitecture)
                 value = value.ReverseEndianness();
 
             return value;

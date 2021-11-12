@@ -26,7 +26,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
 {
     public class MetaDataReader : DataReader
     {
-        public MetaDataReader() : base(null, Endianess.LittleEndian)
+        public MetaDataReader() : base(null, Endianness.LittleEndian)
         {
         }
     }

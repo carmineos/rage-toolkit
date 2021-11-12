@@ -88,13 +88,13 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
             }
         }
 
-        public MetaDataWriter() : base(null, Endianess.LittleEndian)
+        public MetaDataWriter() : base(null, Endianness.LittleEndian)
         {
             this.blocks = new List<MetaDataBlock>();
             this.blockIndex = -1;
         }
 
-        public MetaDataWriter(Endianess e) : base(null, e)
+        public MetaDataWriter(Endianness e) : base(null, e)
         {
             this.blocks = new List<MetaDataBlock>();
             this.blockIndex = -1;

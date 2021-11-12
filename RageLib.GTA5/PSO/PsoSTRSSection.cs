@@ -26,7 +26,7 @@ namespace RageLib.GTA5.PSO
         public void Write(DataWriter writer)
         {
             var strStream = new MemoryStream();
-            var strWriter = new DataWriter(strStream, Endianess.BigEndian);
+            var strWriter = new DataWriter(strStream, Endianness.BigEndian);
             foreach (var str in Strings)
             {
                 strWriter.Write(str);

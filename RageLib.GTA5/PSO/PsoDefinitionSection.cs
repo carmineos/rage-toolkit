@@ -77,7 +77,7 @@ namespace RageLib.GTA5.PSO
         {
 
             var entriesStream = new MemoryStream();
-            var entriesWriter = new DataWriter(entriesStream, Endianess.BigEndian);
+            var entriesWriter = new DataWriter(entriesStream, Endianness.BigEndian);
             for (int i = 0; i < Entries.Count; i++)
             {
                 EntriesIdx[i].Offset = 12 + 8 * Entries.Count + (int)entriesWriter.Position;
@@ -87,7 +87,7 @@ namespace RageLib.GTA5.PSO
 
 
             var indexStream = new MemoryStream();
-            var indexWriter = new DataWriter(indexStream, Endianess.BigEndian);
+            var indexWriter = new DataWriter(indexStream, Endianness.BigEndian);
             foreach (var entry in EntriesIdx)
                 entry.Write(indexWriter);
 

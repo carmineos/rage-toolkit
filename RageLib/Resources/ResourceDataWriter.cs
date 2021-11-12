@@ -51,8 +51,8 @@ namespace RageLib.Resources
         /// <summary>
         /// Initializes a new resource data reader for the specified system- and graphics-stream.
         /// </summary>
-        public ResourceDataWriter(Stream virtualStream, Stream physicalStream, Endianess endianess = Endianess.LittleEndian)
-            : base((Stream)null, endianess)
+        public ResourceDataWriter(Stream virtualStream, Stream physicalStream, Endianness endianness = Endianness.LittleEndian)
+            : base((Stream)null, endianness)
         {
             this.virtualStream = virtualStream;
             this.physicalStream = physicalStream;

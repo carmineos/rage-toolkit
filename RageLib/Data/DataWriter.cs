@@ -35,12 +35,12 @@ namespace RageLib.Data
     public class DataWriter
     {
         private readonly Stream baseStream;
-        protected readonly bool endianessEqualsHostArchitecture;
+        protected readonly bool endiannessEqualsHostArchitecture;
 
         /// <summary>
-        /// Gets or sets the endianess of the underlying stream.
+        /// Gets or sets the endianness of the underlying stream.
         /// </summary>
-        public Endianess Endianess { get; set; }
+        public Endianness Endianness { get; set; }
 
         /// <summary>
         /// Gets the length of the underlying stream.
@@ -59,11 +59,11 @@ namespace RageLib.Data
         /// <summary>
         /// Initializes a new data writer for the specified stream.
         /// </summary>
-        public DataWriter(Stream stream, Endianess endianess = Endianess.LittleEndian)
+        public DataWriter(Stream stream, Endianness endianness = Endianness.LittleEndian)
         {
             this.baseStream = stream;
-            this.Endianess = endianess;
-            this.endianessEqualsHostArchitecture = endianess.EqualsHostArchitecture();
+            this.Endianness = endianness;
+            this.endiannessEqualsHostArchitecture = endianness.EqualsHostArchitecture();
         }
 
         /// <summary>
@@ -270,9 +270,9 @@ namespace RageLib.Data
         {
             var span = MemoryMarshal.AsBytes(items.AsSpan());
 
-            if (!endianessEqualsHostArchitecture)
+            if (!endiannessEqualsHostArchitecture)
             {
-                // Don't invert endianess on input array!
+                // Don't invert endianness on input array!
                 using Buffer<T> buffer = new Buffer<T>(items.Length);
                 {
                     span.CopyTo(buffer.BytesSpan);
@@ -298,7 +298,7 @@ namespace RageLib.Data
         {
             var span = MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref value, 1));
 
-            if (!endianessEqualsHostArchitecture)
+            if (!endiannessEqualsHostArchitecture)
                 span.Reverse();
 
             WriteToStreamRaw(span);
@@ -306,7 +306,7 @@ namespace RageLib.Data
 
         public void WriteStruct<T>(T value) where T : unmanaged, IResourceStruct<T>
         {
-            if (!endianessEqualsHostArchitecture)
+            if (!endiannessEqualsHostArchitecture)
                 value = value.ReverseEndianness();
 
             var span = MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref value, 1));

@@ -58,7 +58,7 @@ namespace RageLib.GTA5.PSO
         {
             stream.Position = 0;
 
-            var reader = new DataReader(stream, Endianess.BigEndian);
+            var reader = new DataReader(stream, Endianness.BigEndian);
             while (reader.Position < reader.Length)
             {
                 var ident = (PsoSection)reader.ReadUInt32();
@@ -68,7 +68,7 @@ namespace RageLib.GTA5.PSO
 
                 var sectionData = reader.ReadBytes(length);
                 var sectionStream = new MemoryStream(sectionData);
-                var sectionReader = new DataReader(sectionStream, Endianess.BigEndian);
+                var sectionReader = new DataReader(sectionStream, Endianness.BigEndian);
 
                 switch (ident)
                 {
@@ -118,7 +118,7 @@ namespace RageLib.GTA5.PSO
 
         public virtual void Save(Stream stream)
         {
-            var writer = new DataWriter(stream, Endianess.BigEndian);
+            var writer = new DataWriter(stream, Endianness.BigEndian);
             if (DataSection != null) DataSection.Write(writer);
             if (DataMappingSection != null) DataMappingSection.Write(writer);
             if (DefinitionSection != null) DefinitionSection.Write(writer);
@@ -137,7 +137,7 @@ namespace RageLib.GTA5.PSO
 
         public static bool IsPSO(Stream stream)
         {
-            var reader = new DataReader(stream, Endianess.BigEndian);
+            var reader = new DataReader(stream, Endianness.BigEndian);
             var ident = reader.ReadUInt32();
             stream.Position -= 4;
             return ident == (uint)PsoSection.PSIN;
