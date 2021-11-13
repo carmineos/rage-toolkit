@@ -43,7 +43,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public MetaStructure Import(string xmlFileName)
         {
-            using (var xmlFileStream = new FileStream(xmlFileName, FileMode.Open))
+            using (var xmlFileStream = new FileStream(xmlFileName, FileMode.Open, FileAccess.Read))
             {
                 return Import(xmlFileStream);
             }

@@ -39,7 +39,7 @@ namespace RageLib.GTA5.RBF
 
         public RbfStructure Load(string fileName)
         {
-            using (var fileStream = new FileStream(fileName, FileMode.Open))
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 return Load(fileStream);
             }
@@ -207,7 +207,7 @@ namespace RageLib.GTA5.RBF
 
         public static bool IsRBF(string fileName)
         {
-            using (var stream = new FileStream(fileName, FileMode.Open))
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 return IsRBF(stream);
         }
 

@@ -707,7 +707,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void Import(string fileName)
         {
-            using (var stream = new FileStream(fileName, FileMode.Open))
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 Import(stream);
         }
 
@@ -773,7 +773,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void Import(string fileName)
         {
-            using (var stream = new FileStream(fileName, FileMode.Open))
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 Import(stream);
         }
 

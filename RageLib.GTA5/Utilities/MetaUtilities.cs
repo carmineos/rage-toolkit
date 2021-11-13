@@ -178,7 +178,7 @@ namespace RageLib.GTA5.Utilities
 
         public static HashSet<string> GetAllStringsFromXml(string xmlFileName)
         {
-            using (var xmlFileStream = new FileStream(xmlFileName, FileMode.Open))
+            using (var xmlFileStream = new FileStream(xmlFileName, FileMode.Open, FileAccess.Read))
             {
                 return GetAllStringsFromXml(xmlFileStream);
             }

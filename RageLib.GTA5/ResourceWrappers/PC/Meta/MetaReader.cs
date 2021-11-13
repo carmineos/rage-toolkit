@@ -35,7 +35,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
     {
         public IMetaValue Read(string fileName)
         {
-            using (var fileStream = new FileStream(fileName, FileMode.Open))
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 return Read(fileStream);
             }

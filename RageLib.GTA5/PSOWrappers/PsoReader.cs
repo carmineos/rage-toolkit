@@ -32,7 +32,7 @@ namespace RageLib.GTA5.PSOWrappers
     {
         public IPsoValue Read(string fileName)
         {
-            using (var fileStream = new FileStream(fileName, FileMode.Open))
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 return Read(fileStream);
             }

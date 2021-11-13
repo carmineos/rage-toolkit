@@ -50,7 +50,7 @@ namespace RageLib.GTA5.PSO
 
         public void Load(string fileName)
         {
-            using (var stream = new FileStream(fileName, FileMode.Open))
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 Load(stream);
         }
 
@@ -131,7 +131,7 @@ namespace RageLib.GTA5.PSO
 
         public static bool IsPSO(string fileName)
         {
-            using (var stream = new FileStream(fileName, FileMode.Open))
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 return IsPSO(stream);
         }
 
