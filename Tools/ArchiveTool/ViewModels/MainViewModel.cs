@@ -1,94 +1,78 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using ArchiveTool.Helpers;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.Notifications;
+using Microsoft.UI.Xaml.Controls;
 using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Services.VirtualFileSystem;
 using RageLib.GTA5.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Windows.Foundation;
 
 namespace ArchiveTool.ViewModels
 {
-    class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject
     {
-        private readonly ObservableCollection<ContainerExplorerItem> model;
-        
+        private readonly List<ContainerExplorerItem> _models;
+
+        [ObservableProperty]
         private ObservableCollection<TreeViewItemViewModel> treeViewItems;
-        private TreeViewItemViewModel _selectedTreeViewItem;
-        private ObservableCollection<ExplorerItem> _children;
-        private ObservableCollection<ExplorerItem> _selectedChildren;
-
-        public ObservableCollection<ExplorerItem> Children
-        {
-            get => _children;
-            private set => SetProperty(ref _children, value);
-        }
-
-        public ObservableCollection<TreeViewItemViewModel> TreeViewItems
-        {
-            get => treeViewItems;
-            private set => SetProperty(ref treeViewItems, value);
-        }
-
-        public TreeViewItemViewModel SelectedTreeViewItem
-        {
-            get => _selectedTreeViewItem;
-            set => SetProperty(ref _selectedTreeViewItem, value);
-        }
-
-        public ObservableCollection<ExplorerItem> SelectedChildren
-        {
-            get => _selectedChildren;
-            set => SetProperty(ref _selectedChildren, value);
-        }
-
-        public IRelayCommand OpenFolderCommand { get; }
-        public IRelayCommand OpenArchiveCommand { get; }
-        public IRelayCommand CloseCommand { get; }
-        public IRelayCommand ExitCommand { get; }
-        public IRelayCommand ImportCommand { get; }
-        public IRelayCommand ExportCommand { get; }
-        public IRelayCommand PackFolderCommand { get; }
+        
+        [ObservableProperty]
+        private TreeViewItemViewModel selectedTreeViewItem;
+        
+        [ObservableProperty]
+        private ObservableCollection<DataGridItemViewModel> children;
+        
+        [ObservableProperty]
+        private ObservableCollection<DataGridItemViewModel> selectedChildren;
+        
+        [ObservableProperty]
+        private ObservableCollection<BreadcrumbItemViewModel> breadcrumbs;
         
         public MainViewModel()
         {
-            model = new ObservableCollection<ContainerExplorerItem>();
+            _models = new List<ContainerExplorerItem>();
 
-            Children = new ObservableCollection<ExplorerItem>();
-            TreeViewItems = new ObservableCollection<TreeViewItemViewModel>();
-
-            this.OpenFolderCommand = new RelayCommand(OpenFolder_Clicked);
-            this.OpenArchiveCommand = new RelayCommand(OpenArchive_Clicked);
-            this.CloseCommand = new RelayCommand(Close_Clicked, Close_CanClick);
-            //this.ExitCommand = new RelayCommand(Exit_Clicked);
-            //this.ImportCommand = new RelayCommand(Import_Clicked, Import_CanClick);
-            //this.ExportCommand = new RelayCommand(Export_Clicked, Export_CanClick);
-            this.PackFolderCommand = new RelayCommand(PackFolder_Clicked);
+            children = new ObservableCollection<DataGridItemViewModel>();
+            treeViewItems = new ObservableCollection<TreeViewItemViewModel>();
+            breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
             
             this.PropertyChanged += MainViewModel_PropertyChanged;
+
+            TreeViewCollapsed = new TypedEventHandler<TreeView, TreeViewCollapsedEventArgs>(OnTreeViewCollapsed);
+            TreeViewExpanding = new TypedEventHandler<TreeView, TreeViewExpandingEventArgs>(OnTreeViewExpanding);
+            TreeViewItemInvoked = new TypedEventHandler<TreeView, TreeViewItemInvokedEventArgs>(OnTreeViewItemInvoked);
+            BreadcrumbBarItemClicked = new TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>(OnBreadcrumbBarItemClicked);
+            AutoSuggestBoxTextChanged = new TypedEventHandler<AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs>(OnAutoSuggestBoxTextChanged);
+            AutoSuggestBoxQuerySubmitted = new TypedEventHandler<AutoSuggestBox, AutoSuggestBoxQuerySubmittedEventArgs>(OnAutoSuggestBoxQuerySubmitted);
+            
+            // TEMP
+            //OpenFolder(@"C:\Program Files\Rockstar Games\Grand Theft Auto V\");
+            //SelectedTreeViewItem = TreeViewItems[0];
         }
 
         public void OpenFolder(string path)
         {
             var item = new RootExplorerItem(path);
             item.LoadChildren(true);
-            model.Add(item);
+            _models.Add(item);
 
             var treeRoot = new TreeViewItemViewModel(item, null)
             {
-                IsSelected = true,
+                IsSelected = false,
                 IsExpanded = true
             };
 
             TreeViewItems.Add(treeRoot);
-            Children = new ObservableCollection<ExplorerItem>(item.Children);
-
-            UseSelectionChangedHack(treeRoot);
         }
 
         public void OpenArchive(string path)
@@ -97,68 +81,86 @@ namespace ArchiveTool.ViewModels
             var archive = RageArchiveWrapper7.Open(new FileStream(file.FullName, FileMode.Open, FileAccess.Read), file.Name);
             var item = new ArchiveExplorerItem(archive, null);
             item.LoadChildren(true);
-            model.Add(item);
+            _models.Add(item);
 
             var treeRoot = new TreeViewItemViewModel(item, null)
             {
-                IsSelected = true,
-                IsExpanded = true
+                IsSelected = false,
+                IsExpanded = false
             };
 
             TreeViewItems.Add(treeRoot);
-            Children = new ObservableCollection<ExplorerItem>(item.Children);
-
-            UseSelectionChangedHack(treeRoot);
         }
 
-        public void OpenArchive_Clicked()
+        [ICommand]
+        public async Task OpenArchive()
         {
-            using var fileDialog = new OpenFileDialog()
+            string path = await Pickers.ShowSingleFilePicker(".rpf");
+
+            if (path is null)
+                return;
+
+            if (IsAlreadyOpen(path))
             {
-                DefaultExt = "rpf",
-                AddExtension = true,
-                Multiselect = false,
-                CheckFileExists = true,
-                CheckPathExists = true,
-                Filter = "Rage Pack File 7 (*.rpf)|*.rpf"
-            };
-
-            if(fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var path = fileDialog.FileName;
-
-                if (IsAlreadyOpen(path))
-                {
-                    var msg = MessageBox.Show("The selected path is already open");
-                    return;
-                }
-
-                OpenArchive(path);
+                // TODO: Show Content Dialog here!
+                return;
             }
+
+            OpenArchive(path);
+        }
+        
+        [ICommand]
+        public async Task OpenFolder()
+        {
+            string path = await Pickers.ShowSingleFolderPicker();
+
+            if (path is null)
+                return;
+
+            if (IsAlreadyOpen(path))
+            {
+                // TODO: Show Content Dialog here!
+                return;
+            }
+
+            OpenFolder(path);
         }
 
-        // TODO: Use an EventToCommand utility to avoid using this
-        private void UseSelectionChangedHack(TreeViewItemViewModel treeRoot)
+        [ICommand]
+        public async Task PackFolder()
         {
-            var dirstack = new Stack<TreeViewItemViewModel>();
-            dirstack.Push(treeRoot);
-            while (dirstack.Count > 0)
-            {
-                var qq = dirstack.Pop();
-                qq.OnSelectionChanged = TreeViewItemViewModelSelectionChanged;
+            string path = await Pickers.ShowSingleFolderPicker();
 
-                foreach (var xx in qq.Children)
-                    dirstack.Push(xx);
-            }
+            if (path is null)
+                return;
+
+            var name = new DirectoryInfo(path).Name;
+            name = Path.GetExtension(name) == ".rpf" ? name : Path.ChangeExtension(name, ".rpf");
+
+            string savePath = await Pickers.ShowFileSavePicker(name, new KeyValuePair<string, List<string>>("Rage Pack File 7", new List<string>() { ".rpf" }));
+
+            if (savePath is null)
+                return;
+
+            // TODO: Show Error messages in case of wrong paths
+
+            _ = Task.Run(() =>
+            {
+                ArchiveUtilities.PackArchive(path, savePath, true, RageLib.GTA5.Archives.RageArchiveEncryption7.None);
+                new ToastContentBuilder()
+                .AddText("Pack Folder Completed")
+                .AddText(savePath)
+                .AddButton(new ToastButton("Open Path", "")
+                .SetProtocolActivation(new Uri(new FileInfo(savePath).Directory.FullName)))
+                .Show();
+            });
         }
 
-        public void TreeViewItemViewModelSelectionChanged(TreeViewItemViewModel parameter)
+        [ICommand]
+        public async Task NavigateToParent()
         {
-            if (parameter.IsSelected)
-            {
-                SelectedTreeViewItem = parameter;
-                CloseCommand.NotifyCanExecuteChanged();
-            }
+            if (SelectedTreeViewItem?.Parent is not null)
+                SelectedTreeViewItem = SelectedTreeViewItem.Parent;
         }
 
         private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -170,66 +172,14 @@ namespace ArchiveTool.ViewModels
                     break;
         
                 case nameof(SelectedTreeViewItem):
-                    Children = new ObservableCollection<ExplorerItem>(_selectedTreeViewItem.Model.Children);
+                    UpdateBreadcrumbs();
+                    UpdateChildren();
+                    SelectedTreeViewItem.IsSelected = true;
+                    SelectedTreeViewItem.IsExpanded = true;
                     break;
         
                 default:
                     break;
-            }
-        }
-
-        //public bool Open_CanClick()
-        //{
-        //    return _model.HasKeys;
-        //}
-
-        public void OpenFolder_Clicked()
-        {
-            // It's ridicoulous that this requires WinForms
-            using var dialog = new FolderBrowserDialog()
-            { 
-                SelectedPath = @"C:\Program Files\Rockstar Games\Grand Theft Auto V\",
-            };
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                string path = dialog.SelectedPath;
-
-                if (IsAlreadyOpen(path))
-                {
-                    var msg = MessageBox.Show("The selected path is already open", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
-
-                OpenFolder(path);
-            }
-        }
-
-        public void PackFolder_Clicked()
-        {
-            using var folderDialog = new FolderBrowserDialog();
-
-            if (folderDialog.ShowDialog() == DialogResult.OK)
-            {
-                // TODO: Should the API also check folder content size?
-                string path = folderDialog.SelectedPath;
-                var name = new DirectoryInfo(path).Name;
-                name = Path.GetExtension(name) == ".rpf" ? name : Path.ChangeExtension(name, ".rpf");
-
-                using var saveFileDialog = new SaveFileDialog()
-                { 
-                    DefaultExt = "rpf",
-                    AddExtension = true,
-                    FileName = name,
-                    Filter = "Rage Pack File 7 (*.rpf)|*.rpf"
-                };
-
-                if(saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string outputPath = saveFileDialog.FileName;
-
-                    Task.Run(() => ArchiveUtilities.PackArchive(path, outputPath, true, RageLib.GTA5.Archives.RageArchiveEncryption7.None));
-                }
             }
         }
 
@@ -249,23 +199,6 @@ namespace ArchiveTool.ViewModels
 
             return false;
         }
-
-        public bool Close_CanClick()
-        {
-            // Only allow to close root items
-            return SelectedTreeViewItem != null 
-                && TreeViewItems.Contains(SelectedTreeViewItem);
-        }
-
-        public void Close_Clicked()
-        {
-            
-        }
-
-        //public void Exit_Clicked()
-        //{
-        //    Application.Current.Shutdown();
-        //}
 
         //public bool Import_CanClick()
         //{
@@ -300,7 +233,100 @@ namespace ArchiveTool.ViewModels
         //    }
         //}
 
-        //public void Configure_Clicked()
-        //{ }
+        public TypedEventHandler<TreeView, TreeViewCollapsedEventArgs> TreeViewCollapsed { get; }
+        public TypedEventHandler<TreeView, TreeViewExpandingEventArgs> TreeViewExpanding { get; }
+        public TypedEventHandler<TreeView, TreeViewItemInvokedEventArgs> TreeViewItemInvoked { get; }
+        public TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs> BreadcrumbBarItemClicked { get; }
+        public TypedEventHandler<AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs> AutoSuggestBoxTextChanged { get; }
+        public TypedEventHandler<AutoSuggestBox, AutoSuggestBoxQuerySubmittedEventArgs> AutoSuggestBoxQuerySubmitted { get; }
+
+        private void OnTreeViewItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
+        {
+            if (args?.InvokedItem is TreeViewItemViewModel treeViewItemViewModel)
+                SelectedTreeViewItem = treeViewItemViewModel;
+        }
+
+        private void OnTreeViewExpanding(TreeView sender, TreeViewExpandingEventArgs args)
+        {
+            if (args?.Item is TreeViewItemViewModel treeViewItemViewModel)
+                treeViewItemViewModel.ExpandCommand.Execute(this);
+        }
+
+        private void OnTreeViewCollapsed(TreeView sender, TreeViewCollapsedEventArgs args)
+        {
+            if (args?.Item is TreeViewItemViewModel treeViewItemViewModel)
+                treeViewItemViewModel.CollapseCommand.Execute(this);
+        }
+
+        private void OnBreadcrumbBarItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
+        {
+            if (args?.Item is BreadcrumbItemViewModel breadcrumb)
+            {
+                var selected = SelectedTreeViewItem;
+                
+                while (selected.Model != breadcrumb.Model)
+                {
+                    selected = selected.Parent;
+                }
+
+                SelectedTreeViewItem = selected;
+            }
+        }
+
+
+        private void OnAutoSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            // TODO: cache children collection, only change a filtered copy
+            UpdateChildren();
+
+            var searchText = sender?.Text;
+
+            if (string.IsNullOrEmpty(searchText))
+                return;
+
+            var filteredChildren = Children.Where(c => c.Name.Contains(searchText)).AsEnumerable();
+
+            Children = new ObservableCollection<DataGridItemViewModel>(filteredChildren);
+        }
+
+        private void OnAutoSuggestBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            // TODO: Global search, display results in new tab
+        }
+
+        public void UpdateBreadcrumbs()
+        {
+            if (SelectedTreeViewItem is null)
+                return;
+
+            Breadcrumbs.Clear();
+
+
+            Stack<ContainerExplorerItem> stack = new Stack<ContainerExplorerItem>();
+            
+            var selected = SelectedTreeViewItem;
+            while(selected.Parent is not null)
+            {
+                stack.Push(selected.Model);
+                selected = selected.Parent;
+            }
+            stack.Push(selected.Model);
+
+            while (stack.Count > 0)
+                Breadcrumbs.Add(new BreadcrumbItemViewModel(stack.Pop()));
+        }
+
+        public void UpdateChildren()
+        {
+            if (SelectedTreeViewItem is null)
+                return;
+
+            Children.Clear();
+
+            foreach (var child in SelectedTreeViewItem.Model.Children)
+            {
+                Children.Add(new DataGridItemViewModel(child));
+            }
+        }
     }
 }

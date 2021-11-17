@@ -1,37 +1,36 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using ArchiveTool.ViewModels;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Imaging;
 using RageLib.GTA5.Services.VirtualFileSystem;
 using System;
-using System.Globalization;
-using System.Windows.Data;
 
 namespace ArchiveTool.ValueConverters
 {
     public class ExplorerItemTypeToIconUriValueConverter : IValueConverter
     {
-        private Uri FileUri = new Uri("pack://application:,,,/Icons/file.png");
-        private Uri FolderUri = new Uri("pack://application:,,,/Icons/folder.png");
-        private Uri ArchiveUri = new Uri("pack://application:,,,/Icons/archive.png");
-        private Uri ArchiveFolderUri = new Uri("pack://application:,,,/Icons/archive-folder.png");
-        private Uri ArchiveFileUri = new Uri("pack://application:,,,/Icons/archive-file.png");
+        private BitmapImage FileImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/file.png", UriKind.RelativeOrAbsolute));
+        private BitmapImage FolderImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/folder.png", UriKind.RelativeOrAbsolute));
+        private BitmapImage ArchiveFolderImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/archive-folder.png", UriKind.RelativeOrAbsolute));
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
             var itemType = (ExplorerItemType)value;
-           
+
             return itemType switch
             {
-                ExplorerItemType.Root => FolderUri,
-                ExplorerItemType.File => FileUri,
-                ExplorerItemType.Directory => FolderUri,
-                ExplorerItemType.Archive => ArchiveUri,
-                ExplorerItemType.ArchiveFile => ArchiveFileUri,
-                ExplorerItemType.ArchiveDirectory => ArchiveFolderUri,
-                _ => FileUri,
+                ExplorerItemType.Root => FolderImage,
+                ExplorerItemType.File => FileImage,
+                ExplorerItemType.Directory => FolderImage,
+                ExplorerItemType.Archive => ArchiveFolderImage,
+                ExplorerItemType.ArchiveFile => FileImage,
+                ExplorerItemType.ArchiveDirectory => ArchiveFolderImage,
+                _ => FileImage,
             };
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
