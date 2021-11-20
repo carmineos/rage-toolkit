@@ -7,7 +7,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
     {
         // structure data
         public ushort BoneId;
-        public byte Unknown_02h;
+        public AnimTrackType TrackType;
         public byte TrackId;
 
         public AnimTrack ReverseEndianness()
@@ -15,9 +15,16 @@ namespace RageLib.Resources.GTA5.PC.Clips
             return new AnimTrack()
             {
                 BoneId = EndiannessExtensions.ReverseEndianness(BoneId),
-                Unknown_02h = EndiannessExtensions.ReverseEndianness(Unknown_02h),
+                TrackType = (AnimTrackType)EndiannessExtensions.ReverseEndianness((byte)TrackType),
                 TrackId = EndiannessExtensions.ReverseEndianness(TrackId),
             };
         }
+    }
+
+    public enum AnimTrackType : byte
+    {
+        Position = 0,
+        Rotation = 1,
+        Scale = 2,
     }
 }
