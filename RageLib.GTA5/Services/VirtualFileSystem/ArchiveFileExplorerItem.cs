@@ -1,5 +1,4 @@
 ﻿using RageLib.Archives;
-using System.IO;
 
 namespace RageLib.GTA5.Services.VirtualFileSystem
 {

@@ -1,5 +1,4 @@
 ﻿using RageLib.Archives;
-using RageLib.GTA5.ArchiveWrappers;
 using System.Collections.Generic;
 using System.IO;
 
@@ -33,7 +32,7 @@ namespace RageLib.GTA5.Services.VirtualFileSystem
             {
                 if (Path.GetExtension(file.Name) == ".rpf")
                 {
-                    var archive = RageArchiveWrapper7.Open(file.GetStream(), file.Name);
+                    var archive = ArchiveHelpers.Open(file.GetStream(), file.Name);
                     var archiveExplorerItem = new ArchiveExplorerItem(archive, this);
                     
                     if (recursive) 
