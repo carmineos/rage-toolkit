@@ -53,8 +53,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_88h; // 0x0000000000000000
         public ulong Unknown_90h; // 0x0000000000000000
         public ulong Unknown_98h; // 0x0000000000000000
-        public ulong Drawable1Pointer;
-        public ulong Drawable2Pointer;
+        public ulong PristineDrawablePointer;
+        public ulong DamagedDrawablePointer;
         public ulong EvtSetPointer;
         public ulong Unknown_B8h; // 0x0000000000000000
         public ulong Unknown_C0h; // 0x0000000000000000
@@ -67,8 +67,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_F8h; // 0x0000000000000000
 
         // reference data
-        public FragDrawable Drawable1;
-        public FragDrawable Drawable2;
+        public FragDrawable PristineDrawable;
+        public FragDrawable DamagedDrawable;
         public EvtSet EvtSet;
 
         /// <summary>
@@ -101,8 +101,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.Unknown_88h = reader.ReadUInt64();
             this.Unknown_90h = reader.ReadUInt64();
             this.Unknown_98h = reader.ReadUInt64();
-            this.Drawable1Pointer = reader.ReadUInt64();
-            this.Drawable2Pointer = reader.ReadUInt64();
+            this.PristineDrawablePointer = reader.ReadUInt64();
+            this.DamagedDrawablePointer = reader.ReadUInt64();
             this.EvtSetPointer = reader.ReadUInt64();
             this.Unknown_B8h = reader.ReadUInt64();
             this.Unknown_C0h = reader.ReadUInt64();
@@ -115,11 +115,11 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.Unknown_F8h = reader.ReadUInt64();
 
             // read reference data
-            this.Drawable1 = reader.ReadBlockAt<FragDrawable>(
-                this.Drawable1Pointer // offset
+            this.PristineDrawable = reader.ReadBlockAt<FragDrawable>(
+                this.PristineDrawablePointer // offset
             );
-            this.Drawable2 = reader.ReadBlockAt<FragDrawable>(
-                this.Drawable2Pointer // offset
+            this.DamagedDrawable = reader.ReadBlockAt<FragDrawable>(
+                this.DamagedDrawablePointer // offset
             );
             this.EvtSet = reader.ReadBlockAt<EvtSet>(
                 this.EvtSetPointer // offset
@@ -134,8 +134,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             base.Write(writer, parameters);
 
             // update structure data
-            this.Drawable1Pointer = (ulong)(this.Drawable1 != null ? this.Drawable1.BlockPosition : 0);
-            this.Drawable2Pointer = (ulong)(this.Drawable2 != null ? this.Drawable2.BlockPosition : 0);
+            this.PristineDrawablePointer = (ulong)(this.PristineDrawable != null ? this.PristineDrawable.BlockPosition : 0);
+            this.DamagedDrawablePointer = (ulong)(this.DamagedDrawable != null ? this.DamagedDrawable.BlockPosition : 0);
             this.EvtSetPointer = (ulong)(this.EvtSet != null ? this.EvtSet.BlockPosition : 0);
 
             // write structure data
@@ -161,8 +161,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.Unknown_88h);
             writer.Write(this.Unknown_90h);
             writer.Write(this.Unknown_98h);
-            writer.Write(this.Drawable1Pointer);
-            writer.Write(this.Drawable2Pointer);
+            writer.Write(this.PristineDrawablePointer);
+            writer.Write(this.DamagedDrawablePointer);
             writer.Write(this.EvtSetPointer);
             writer.Write(this.Unknown_B8h);
             writer.Write(this.Unknown_C0h);
@@ -181,8 +181,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (Drawable1 != null) list.Add(Drawable1);
-            if (Drawable2 != null) list.Add(Drawable2);
+            if (PristineDrawable != null) list.Add(PristineDrawable);
+            if (DamagedDrawable != null) list.Add(DamagedDrawable);
             if (EvtSet != null) list.Add(EvtSet);
             return list.ToArray();
         }

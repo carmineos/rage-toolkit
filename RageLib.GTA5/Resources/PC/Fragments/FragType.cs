@@ -41,8 +41,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public Vector3 BoundingSphereCenter;
         public float BoundingSphereRadius;
         public ulong PrimaryDrawablePointer;
-        public ulong DrawablesPointer;
-        public ulong DrawablesNamesPointer;
+        public ulong DamagedDrawablesPointer;
+        public ulong DamagedDrawablesNamesPointer;
         public uint DrawablesCount;
         public uint Unknown_4Ch;
         public ulong Unknown_50h; // 0x0000000000000000
@@ -82,8 +82,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         // reference data
         public FragDrawable PrimaryDrawable;
-        public ResourcePointerArray64<FragDrawable> Drawables;
-        public ResourcePointerArray64<string_r> DrawablesNames;
+        public ResourcePointerArray64<FragDrawable> DamagedDrawables;
+        public ResourcePointerArray64<string_r> DamagedDrawablesNames;
         public string_r Name;
         public MatrixSet MatrixSet;
         public ResourcePointerArray64<GlassPaneModelInfo> GlassPaneModelInfos;
@@ -104,8 +104,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.BoundingSphereCenter = reader.ReadVector3();
             this.BoundingSphereRadius = reader.ReadSingle();
             this.PrimaryDrawablePointer = reader.ReadUInt64();
-            this.DrawablesPointer = reader.ReadUInt64();
-            this.DrawablesNamesPointer = reader.ReadUInt64();
+            this.DamagedDrawablesPointer = reader.ReadUInt64();
+            this.DamagedDrawablesNamesPointer = reader.ReadUInt64();
             this.DrawablesCount = reader.ReadUInt32();
             this.Unknown_4Ch = reader.ReadUInt32();
             this.Unknown_50h = reader.ReadUInt64();
@@ -147,12 +147,12 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.PrimaryDrawable = reader.ReadBlockAt<FragDrawable>(
                 this.PrimaryDrawablePointer // offset
             );
-            this.Drawables = reader.ReadBlockAt<ResourcePointerArray64<FragDrawable>>(
-                this.DrawablesPointer, // offset
+            this.DamagedDrawables = reader.ReadBlockAt<ResourcePointerArray64<FragDrawable>>(
+                this.DamagedDrawablesPointer, // offset
                 this.DrawablesCount
             );
-            this.DrawablesNames = reader.ReadBlockAt<ResourcePointerArray64<string_r>>(
-                this.DrawablesNamesPointer, // offset
+            this.DamagedDrawablesNames = reader.ReadBlockAt<ResourcePointerArray64<string_r>>(
+                this.DamagedDrawablesNamesPointer, // offset
                 this.DrawablesCount
             );
             this.Name = reader.ReadBlockAt<string_r>(
@@ -185,8 +185,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
             // update structure data
             this.PrimaryDrawablePointer = (ulong)(this.PrimaryDrawable != null ? this.PrimaryDrawable.BlockPosition : 0);
-            this.DrawablesPointer = (ulong)(this.Drawables != null ? this.Drawables.BlockPosition : 0);
-            this.DrawablesNamesPointer = (ulong)(this.DrawablesNames != null ? this.DrawablesNames.BlockPosition : 0);
+            this.DamagedDrawablesPointer = (ulong)(this.DamagedDrawables != null ? this.DamagedDrawables.BlockPosition : 0);
+            this.DamagedDrawablesNamesPointer = (ulong)(this.DamagedDrawablesNames != null ? this.DamagedDrawablesNames.BlockPosition : 0);
             this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
             this.MatrixSetPointer = (ulong)(this.MatrixSet != null ? this.MatrixSet.BlockPosition : 0);
             this.GlassPaneModelInfosPointer = (ulong)(this.GlassPaneModelInfos != null ? this.GlassPaneModelInfos.BlockPosition : 0);
@@ -200,8 +200,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.BoundingSphereCenter);
             writer.Write(this.BoundingSphereRadius);
             writer.Write(this.PrimaryDrawablePointer);
-            writer.Write(this.DrawablesPointer);
-            writer.Write(this.DrawablesNamesPointer);
+            writer.Write(this.DamagedDrawablesPointer);
+            writer.Write(this.DamagedDrawablesNamesPointer);
             writer.Write(this.DrawablesCount);
             writer.Write(this.Unknown_4Ch);
             writer.Write(this.Unknown_50h);
@@ -247,8 +247,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         {
             var list = new List<IResourceBlock>(base.GetReferences());
             if (PrimaryDrawable != null) list.Add(PrimaryDrawable);
-            if (Drawables != null) list.Add(Drawables);
-            if (DrawablesNames != null) list.Add(DrawablesNames);
+            if (DamagedDrawables != null) list.Add(DamagedDrawables);
+            if (DamagedDrawablesNames != null) list.Add(DamagedDrawablesNames);
             if (Name != null) list.Add(Name);
             if (MatrixSet != null) list.Add(MatrixSet);
             if (GlassPaneModelInfos != null) list.Add(GlassPaneModelInfos);

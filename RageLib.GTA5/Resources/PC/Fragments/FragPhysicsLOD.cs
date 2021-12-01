@@ -52,12 +52,12 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong GroupNamesPointer;
         public ulong GroupsPointer;
         public ulong ChildrenPointer;
-        public ulong Archetype1Pointer;
-        public ulong Archetype2Pointer;
+        public ulong PristineArchetypePointer;
+        public ulong DamagedArchetypePointer;
         public ulong BoundPointer;
-        public ulong Unknown_F0h_Pointer;
-        public ulong Unknown_F8h_Pointer;
-        public ulong Unknown_100h_Pointer;
+        public ulong PristineAngInertiaPointer;
+        public ulong DamagedAngInertiaPointer;
+        public ulong ChildrenTransformsPointer;
         public ulong Unknown_108h_Pointer;
         public ulong Unknown_110h_Pointer;
         public byte Count1;
@@ -73,16 +73,16 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         // reference data
         public ArticulatedBodyType ArticulatedBodyType;
-        public SimpleArray<uint> Unknown_28h_Data;
+        public SimpleArray<float> Unknown_28h_Data;
         public FragTypeGroupNames GroupNames;
         public ResourcePointerArray64<FragTypeGroup> Groups;
         public ResourcePointerArray64<FragTypeChild> Children;
-        public Archetype Archetype1;
-        public Archetype Archetype2;
+        public Archetype PristineArchetype;
+        public Archetype DamagedArchetype;
         public Bound Bound;
-        public SimpleArray<Vector4> Unknown_F0h_Data;
-        public SimpleArray<Vector4> Unknown_F8h_Data;
-        public Unknown_F_001 Unknown_100h_Data;
+        public SimpleArray<Vector4> PristineAngInertia;
+        public SimpleArray<Vector4> DamagedAngInertia;
+        public Unknown_F_001 ChildrenTransforms;
         public SimpleArray<byte> Unknown_108h_Data;
         public SimpleArray<byte> Unknown_110h_Data;
 
@@ -112,12 +112,12 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.GroupNamesPointer = reader.ReadUInt64();
             this.GroupsPointer = reader.ReadUInt64();
             this.ChildrenPointer = reader.ReadUInt64();
-            this.Archetype1Pointer = reader.ReadUInt64();
-            this.Archetype2Pointer = reader.ReadUInt64();
+            this.PristineArchetypePointer = reader.ReadUInt64();
+            this.DamagedArchetypePointer = reader.ReadUInt64();
             this.BoundPointer = reader.ReadUInt64();
-            this.Unknown_F0h_Pointer = reader.ReadUInt64();
-            this.Unknown_F8h_Pointer = reader.ReadUInt64();
-            this.Unknown_100h_Pointer = reader.ReadUInt64();
+            this.PristineAngInertiaPointer = reader.ReadUInt64();
+            this.DamagedAngInertiaPointer = reader.ReadUInt64();
+            this.ChildrenTransformsPointer = reader.ReadUInt64();
             this.Unknown_108h_Pointer = reader.ReadUInt64();
             this.Unknown_110h_Pointer = reader.ReadUInt64();
             this.Count1 = reader.ReadByte();
@@ -135,7 +135,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.ArticulatedBodyType = reader.ReadBlockAt<ArticulatedBodyType>(
                 this.ArticulatedBodyTypePointer // offset
             );
-            this.Unknown_28h_Data = reader.ReadBlockAt<SimpleArray<uint>>(
+            this.Unknown_28h_Data = reader.ReadBlockAt<SimpleArray<float>>(
                 this.Unknown_28h_Pointer, // offset
                 this.ChildrenCount
             );
@@ -151,25 +151,25 @@ namespace RageLib.Resources.GTA5.PC.Fragments
                 this.ChildrenPointer, // offset
                 this.ChildrenCount
             );
-            this.Archetype1 = reader.ReadBlockAt<Archetype>(
-                this.Archetype1Pointer // offset
+            this.PristineArchetype = reader.ReadBlockAt<Archetype>(
+                this.PristineArchetypePointer // offset
             );
-            this.Archetype2 = reader.ReadBlockAt<Archetype>(
-                this.Archetype2Pointer // offset
+            this.DamagedArchetype = reader.ReadBlockAt<Archetype>(
+                this.DamagedArchetypePointer // offset
             );
             this.Bound = reader.ReadBlockAt<Bound>(
                 this.BoundPointer // offset
             );
-            this.Unknown_F0h_Data = reader.ReadBlockAt<SimpleArray<Vector4>>(
-                this.Unknown_F0h_Pointer, // offset
+            this.PristineAngInertia = reader.ReadBlockAt<SimpleArray<Vector4>>(
+                this.PristineAngInertiaPointer, // offset
                 this.ChildrenCount
             );
-            this.Unknown_F8h_Data = reader.ReadBlockAt<SimpleArray<Vector4>>(
-                this.Unknown_F8h_Pointer, // offset
+            this.DamagedAngInertia = reader.ReadBlockAt<SimpleArray<Vector4>>(
+                this.DamagedAngInertiaPointer, // offset
                 this.ChildrenCount
             );
-            this.Unknown_100h_Data = reader.ReadBlockAt<Unknown_F_001>(
-                this.Unknown_100h_Pointer // offset
+            this.ChildrenTransforms = reader.ReadBlockAt<Unknown_F_001>(
+                this.ChildrenTransformsPointer // offset
             );
             this.Unknown_108h_Data = reader.ReadBlockAt<SimpleArray<byte>>(
                 this.Unknown_108h_Pointer, // offset
@@ -194,12 +194,12 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.GroupNamesPointer = (ulong)(this.GroupNames != null ? this.GroupNames.BlockPosition : 0);
             this.GroupsPointer = (ulong)(this.Groups != null ? this.Groups.BlockPosition : 0);
             this.ChildrenPointer = (ulong)(this.Children != null ? this.Children.BlockPosition : 0);
-            this.Archetype1Pointer = (ulong)(this.Archetype1 != null ? this.Archetype1.BlockPosition : 0);
-            this.Archetype2Pointer = (ulong)(this.Archetype2 != null ? this.Archetype2.BlockPosition : 0);
+            this.PristineArchetypePointer = (ulong)(this.PristineArchetype != null ? this.PristineArchetype.BlockPosition : 0);
+            this.DamagedArchetypePointer = (ulong)(this.DamagedArchetype != null ? this.DamagedArchetype.BlockPosition : 0);
             this.BoundPointer = (ulong)(this.Bound != null ? this.Bound.BlockPosition : 0);
-            this.Unknown_F0h_Pointer = (ulong)(this.Unknown_F0h_Data != null ? this.Unknown_F0h_Data.BlockPosition : 0);
-            this.Unknown_F8h_Pointer = (ulong)(this.Unknown_F8h_Data != null ? this.Unknown_F8h_Data.BlockPosition : 0);
-            this.Unknown_100h_Pointer = (ulong)(this.Unknown_100h_Data != null ? this.Unknown_100h_Data.BlockPosition : 0);
+            this.PristineAngInertiaPointer = (ulong)(this.PristineAngInertia != null ? this.PristineAngInertia.BlockPosition : 0);
+            this.DamagedAngInertiaPointer = (ulong)(this.DamagedAngInertia != null ? this.DamagedAngInertia.BlockPosition : 0);
+            this.ChildrenTransformsPointer = (ulong)(this.ChildrenTransforms != null ? this.ChildrenTransforms.BlockPosition : 0);
             this.Unknown_108h_Pointer = (ulong)(this.Unknown_108h_Data != null ? this.Unknown_108h_Data.BlockPosition : 0);
             this.Unknown_110h_Pointer = (ulong)(this.Unknown_110h_Data != null ? this.Unknown_110h_Data.BlockPosition : 0);
             //this.vvv1 = (byte)(this.pxxxxx_2data != null ? this.pxxxxx_2data.Count : 0);
@@ -226,12 +226,12 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.GroupNamesPointer);
             writer.Write(this.GroupsPointer);
             writer.Write(this.ChildrenPointer);
-            writer.Write(this.Archetype1Pointer);
-            writer.Write(this.Archetype2Pointer);
+            writer.Write(this.PristineArchetypePointer);
+            writer.Write(this.DamagedArchetypePointer);
             writer.Write(this.BoundPointer);
-            writer.Write(this.Unknown_F0h_Pointer);
-            writer.Write(this.Unknown_F8h_Pointer);
-            writer.Write(this.Unknown_100h_Pointer);
+            writer.Write(this.PristineAngInertiaPointer);
+            writer.Write(this.DamagedAngInertiaPointer);
+            writer.Write(this.ChildrenTransformsPointer);
             writer.Write(this.Unknown_108h_Pointer);
             writer.Write(this.Unknown_110h_Pointer);
             writer.Write(this.Count1);
@@ -256,12 +256,12 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             if (Unknown_28h_Data != null) list.Add(Unknown_28h_Data);
             if (Groups != null) list.Add(Groups);
             if (Children != null) list.Add(Children);
-            if (Archetype1 != null) list.Add(Archetype1);
-            if (Archetype2 != null) list.Add(Archetype2);
+            if (PristineArchetype != null) list.Add(PristineArchetype);
+            if (DamagedArchetype != null) list.Add(DamagedArchetype);
             if (Bound != null) list.Add(Bound);
-            if (Unknown_F0h_Data != null) list.Add(Unknown_F0h_Data);
-            if (Unknown_F8h_Data != null) list.Add(Unknown_F8h_Data);
-            if (Unknown_100h_Data != null) list.Add(Unknown_100h_Data);
+            if (PristineAngInertia != null) list.Add(PristineAngInertia);
+            if (DamagedAngInertia != null) list.Add(DamagedAngInertia);
+            if (ChildrenTransforms != null) list.Add(ChildrenTransforms);
             if (Unknown_108h_Data != null) list.Add(Unknown_108h_Data);
             if (Unknown_110h_Data != null) list.Add(Unknown_110h_Data);
             if (GroupNames != null) list.Add(GroupNames);
