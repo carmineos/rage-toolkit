@@ -1,10 +1,11 @@
-// Copyright Â© Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Data;
+using RageLib.Resources;
 
-namespace RageLib.Resources.GTA5.PC.Bounds
+namespace RageLib.Numerics
 {
-    public struct BVHTreeInfo : IResourceStruct<BVHTreeInfo>
+    public struct BVHNode : IResourceStruct<BVHNode>
     {
         public short MinX;
         public short MinY;
@@ -12,21 +13,22 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public short MaxX;
         public short MaxY;
         public short MaxZ;
-        public short NodeIndex1;
-        public short NodeIndex2;
+        public short NodeId;
+        public ushort ChildrenCount;
 
-        public BVHTreeInfo ReverseEndianness()
+        public BVHNode ReverseEndianness()
         {
-            return new BVHTreeInfo()
+            return new BVHNode()
             {
+
                 MinX = EndiannessExtensions.ReverseEndianness(MinX),
                 MinY = EndiannessExtensions.ReverseEndianness(MinY),
                 MinZ = EndiannessExtensions.ReverseEndianness(MinZ),
                 MaxX = EndiannessExtensions.ReverseEndianness(MaxX),
                 MaxY = EndiannessExtensions.ReverseEndianness(MaxY),
                 MaxZ = EndiannessExtensions.ReverseEndianness(MaxZ),
-                NodeIndex1 = EndiannessExtensions.ReverseEndianness(NodeIndex1),
-                NodeIndex2 = EndiannessExtensions.ReverseEndianness(NodeIndex2),
+                NodeId = EndiannessExtensions.ReverseEndianness(NodeId),
+                ChildrenCount = EndiannessExtensions.ReverseEndianness(ChildrenCount),
             };
         }
     }

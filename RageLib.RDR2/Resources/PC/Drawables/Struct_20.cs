@@ -35,7 +35,7 @@ namespace RageLib.Resources.RDR2.PC.Drawables
         public ulong Unknown_68h;
 
         // reference data
-        public ResourcePointerArray<Struct_22> Unknown_8h_Data;
+        public ResourcePointerArray64<Struct_22> Unknown_8h_Data;
 
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
@@ -61,7 +61,7 @@ namespace RageLib.Resources.RDR2.PC.Drawables
             this.Unknown_68h = reader.ReadUInt64();
 
             // read reference data
-            this.Unknown_8h_Data = reader.ReadBlockAt<ResourcePointerArray<Struct_22>>(Unknown_8h_Pointer, Unknown_54h);
+            this.Unknown_8h_Data = reader.ReadBlockAt<ResourcePointerArray64<Struct_22>>(Unknown_8h_Pointer, Unknown_54h);
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)

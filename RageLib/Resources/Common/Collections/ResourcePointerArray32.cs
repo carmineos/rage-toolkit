@@ -8,7 +8,7 @@ namespace RageLib.Resources.Common
     /// <summary>
     /// Represents an array of pointers where each points to an object of type T.
     /// </summary>
-    public class ResourcePointerArray<T> : ResourceSystemBlock, IList<T> where T : IResourceSystemBlock, new()
+    public class ResourcePointerArray32<T> : ResourceSystemBlock, IList<T> where T : IResourceSystemBlock, new()
     {
 
         public override long BlockLength
