@@ -1,4 +1,6 @@
-﻿using RageLib.Hash;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using RageLib.Hash;
 using System.Collections.Generic;
 using System.IO;
 

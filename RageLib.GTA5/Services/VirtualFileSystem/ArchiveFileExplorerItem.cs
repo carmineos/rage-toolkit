@@ -1,4 +1,6 @@
-﻿using RageLib.Archives;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using RageLib.Archives;
 
 namespace RageLib.GTA5.Services.VirtualFileSystem
 {

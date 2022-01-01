@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using System.IO;
 
 namespace RageLib.GTA5.Services.VirtualFileSystem
 {
