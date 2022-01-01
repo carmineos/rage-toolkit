@@ -5,18 +5,14 @@ using System.Collections.Generic;
 
 namespace RageLib.Resources.Common
 {
-    // TODO: Find a better name to these classes
-    public class SimpleList64_32<T> : ResourceSystemBlock where T : unmanaged
+    public class SimpleList32<T> : ResourceSystemBlock where T : unmanaged
     {
-        public override long BlockLength
-        {
-            get { return 16; }
-        }
+        public override long BlockLength => 0x8;
 
         // structure data
-        public ulong EntriesPointer;
-        public uint EntriesCount;
-        public uint EntriesCapacity;
+        public uint EntriesPointer;
+        public ushort EntriesCount;
+        public ushort EntriesCapacity;
 
         // reference data
         public SimpleArray<T> Entries;
@@ -27,17 +23,15 @@ namespace RageLib.Resources.Common
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.EntriesPointer = reader.ReadUInt64();
-            this.EntriesCount = reader.ReadUInt32();
-            this.EntriesCapacity = reader.ReadUInt32();
+            this.EntriesPointer = reader.ReadUInt32();
+            this.EntriesCount = reader.ReadUInt16();
+            this.EntriesCapacity = reader.ReadUInt16();
 
             // read reference data
             this.Entries = reader.ReadBlockAt<SimpleArray<T>>(
                 this.EntriesPointer, // offset
-                this.EntriesCapacity
+                this.EntriesCount
             );
-
-            // TODO: see https://github.com/carmineos/gta-toolkit/issues/13
         }
 
         /// <summary>
@@ -46,9 +40,9 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.EntriesPointer = (ulong)(this.Entries != null ? this.Entries.BlockPosition : 0);
-            this.EntriesCount = (uint)(this.Entries != null ? this.Entries.Count : 0);
-            this.EntriesCapacity = (uint)(this.Entries != null ? this.Entries.Count : 0);
+            this.EntriesPointer = (uint)(this.Entries?.BlockPosition ?? 0);
+            this.EntriesCount = (ushort)(this.Entries != null ? this.Entries.Count : 0);
+            this.EntriesCapacity = (ushort)(this.Entries != null ? this.Entries.Count : 0);
 
             // write structure data
             writer.Write(this.EntriesPointer);

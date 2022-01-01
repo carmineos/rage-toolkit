@@ -1,7 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Numerics;
 using RageLib.Resources.Common;
-using System.Collections.Generic;
 using System;
 using System.Numerics;
 
@@ -12,7 +12,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0x80;
 
         // structure data
-        public SimpleList64_32<BVHNode> Nodes;
+        public SimpleBigList64<BVHNode> Nodes;
         public ulong Unknown_10h; // 0x0000000000000000
         public ulong Unknown_18h; // 0x0000000000000000
         public Vector4 BoundingBoxMin;
@@ -28,7 +28,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.Nodes = reader.ReadBlock<SimpleList64_32<BVHNode>>();
+            this.Nodes = reader.ReadBlock<SimpleBigList64<BVHNode>>();
             this.Unknown_10h = reader.ReadUInt64();
             this.Unknown_18h = reader.ReadUInt64();
             this.BoundingBoxMin = reader.ReadVector4();

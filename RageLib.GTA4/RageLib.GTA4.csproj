@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>RageLib.GTA4</RootNamespace>
+    <AssemblyName>RageLib.GTA4</AssemblyName>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RageLib\RageLib.csproj" />
+  </ItemGroup>
+
+</Project>

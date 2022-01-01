@@ -1,8 +1,9 @@
-// Copyright Â© Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Data;
+using RageLib.Resources;
 
-namespace RageLib.Resources.GTA5.PC.Bounds
+namespace RageLib.Numerics
 {
     public struct BoundVertex : IResourceStruct<BoundVertex>
     {
