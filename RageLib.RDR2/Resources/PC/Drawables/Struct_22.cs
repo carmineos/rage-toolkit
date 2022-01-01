@@ -1,14 +1,9 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RageLib.RDR2.Resources.PC.Drawables
+namespace RageLib.Resources.RDR2.PC.Drawables
 {
     public class Struct_22 : ResourceSystemBlock
     {

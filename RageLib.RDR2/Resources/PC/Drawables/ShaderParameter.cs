@@ -2,30 +2,26 @@
 
 namespace RageLib.Resources.RDR2.PC.Drawables
 {
-    public class Struct_12 : ResourceSystemBlock
+    public class ShaderParameter : ResourceSystemBlock
     {
-        public override long BlockLength => 0x40;
+        public override long BlockLength => 0xB0;
 
         // structure data
-
+        public byte Unknown_00h;
+        public byte Unknown_01h;
+        public ushort Unknown_02h;
+        public ulong DataPointer;
 
         // reference data
 
-
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
-            // read structure data
-
-
-            // read reference data
+            throw new System.NotImplementedException();
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
-            // write structure data
-
-
-            // write reference data
+            throw new System.NotImplementedException();
         }
     }
 }
