@@ -1,4 +1,6 @@
-﻿namespace RageLib.ResourceWrappers.Bounds
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+namespace RageLib.ResourceWrappers.Bounds
 {
     /// <summary>
     /// Representa a drawable dictionary file.

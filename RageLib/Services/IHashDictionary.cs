@@ -1,4 +1,6 @@
-﻿namespace RageLib.Services
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+namespace RageLib.Services
 {
     /// <summary>
     /// A dictionary to store and resolve hashes

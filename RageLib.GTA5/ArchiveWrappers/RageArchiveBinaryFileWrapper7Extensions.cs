@@ -1,4 +1,6 @@
-﻿using RageLib.Compression;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using RageLib.Compression;
 using RageLib.Cryptography;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.Cryptography;

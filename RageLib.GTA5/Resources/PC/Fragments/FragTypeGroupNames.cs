@@ -1,9 +1,7 @@
-﻿using RageLib.Resources.Common;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using RageLib.Resources.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RageLib.Resources.GTA5.PC.Fragments
 {

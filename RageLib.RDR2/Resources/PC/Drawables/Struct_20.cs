@@ -1,4 +1,6 @@
-﻿using RageLib.RDR2.Resources.PC.Drawables;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using RageLib.RDR2.Resources.PC.Drawables;
 using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;

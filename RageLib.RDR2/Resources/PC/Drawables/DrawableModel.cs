@@ -1,4 +1,6 @@
-﻿using RageLib.Numerics;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using RageLib.Numerics;
 using RageLib.Resources.Common;
 
 namespace RageLib.Resources.RDR2.PC.Drawables

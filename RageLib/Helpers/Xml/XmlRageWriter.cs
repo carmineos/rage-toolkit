@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using System.Xml;
 
 namespace RageLib.Helpers.Xml
 {

@@ -1,4 +1,6 @@
-﻿using RageLib.Resources.GTA5;
+﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+
+using RageLib.Resources.GTA5;
 using RageLib.Resources.GTA5.PC.Bounds;
 using RageLib.ResourceWrappers.Bounds;
 using System.IO;
