@@ -201,26 +201,32 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public int GetSize(MetaFile meta, int typeKey)
         {
-            switch (typeKey)
+            var type = (StructureEntryDataType)typeKey;
+
+            switch (type)
             {
-                case 0x00000007:
-                    return 8;
-                case 0x00000010:
+                case StructureEntryDataType.Int8:
+                case StructureEntryDataType.UInt8:
                     return 1;
-                case 0x00000011:
-                    return 1;
-                case 0x00000013:
+                
+                case StructureEntryDataType.Int16:
+                case StructureEntryDataType.UInt16:
                     return 2;
-                case 0x00000015:
+               
+                case StructureEntryDataType.Int32:
+                case StructureEntryDataType.UInt32:
+                case StructureEntryDataType.Float:
+                case StructureEntryDataType.StringHash:
                     return 4;
-                case 0x00000021:
-                    return 4;
-                case 0x00000033:
+
+                case StructureEntryDataType.StructurePointer:
+                    return 8;
+
+                case StructureEntryDataType.Vector3:
                     return 16;
-                case 0x0000004A:
-                    return 4;
+
                 default:
-                    return (int)GetInfo(meta, typeKey).StructureLength;
+                    return GetInfo(meta, typeKey).StructureLength;
             }
         }
     }

@@ -23,8 +23,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="..\..\RageLib.GTA5\ResourceWrappers\PC\Meta\Definitions\XmlInfos.xml" Link="XmlInfos.xml" />
-		<EmbeddedResource Include="..\..\RageLib.GTA5\PSOWrappers\Xml\PsoDefinitions.xml" Link="PsoDefinitions.xml" />
+		<EmbeddedResource Include="..\..\RageLib.GTA5\ResourceWrappers\PC\Meta\Definitions\MetaDefinitions.xml" Link="Definitions\MetaDefinitions.xml" />
+		<EmbeddedResource Include="..\..\RageLib.GTA5\PSOWrappers\Definitions\PsoDefinitions.xml" Link="Definitions\PsoDefinitions.xml" />
 	</ItemGroup>
 
 </Project>

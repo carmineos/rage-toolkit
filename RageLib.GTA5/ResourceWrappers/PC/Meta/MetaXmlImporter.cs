@@ -1,6 +1,6 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
+using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using RageLib.Hash;
 using RageLib.Helpers.Xml;
@@ -18,7 +18,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 {
     public class MetaXmlImporter
     {
-        private MetaInformationXml xmlInfos;
+        private MetaDefinitions xmlInfos;
         private ResourceSimpleArray<StructureInfo> strList;
 
         public MetaStructure Import(string xmlFileName)
@@ -29,7 +29,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        public MetaXmlImporter(MetaInformationXml xmlinfos)
+        public MetaXmlImporter(MetaDefinitions xmlinfos)
         {
             this.xmlInfos = xmlinfos;
             MetaBuildStructureInfos(xmlinfos);
@@ -727,7 +727,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        private void MetaBuildStructureInfos(MetaInformationXml xmlInfo)
+        private void MetaBuildStructureInfos(MetaDefinitions xmlInfo)
         {
             strList = new ResourceSimpleArray<StructureInfo>();
             foreach (var xmlStructureInfo in xmlInfo.Structures)

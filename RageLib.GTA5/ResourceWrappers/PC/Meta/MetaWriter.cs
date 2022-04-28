@@ -1,29 +1,33 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Data;
-using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
+using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using RageLib.Resources.Common;
 using RageLib.Resources.GTA5;
 using RageLib.Resources.GTA5.PC.Meta;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Xml.Serialization;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 {
     public class MetaWriter
     {
+        private readonly MetaDefinitions metaDefinitions;
+
         private MetaFile meta;
         private ISet<int> usedStructureKeys = new HashSet<int>();
+        private ISet<int> usedEnumKeys = new HashSet<int>();
+
+        public MetaWriter(MetaDefinitions definitions)
+        {
+            metaDefinitions = definitions;
+        }
 
         public void Write(IMetaValue value, string fileName)
         {
             using (var fileStream = new FileStream(fileName, FileMode.Create))
-            {
                 Write(value, fileStream);
-            }
         }
 
         public void Write(IMetaValue value, Stream fileStream)
@@ -34,58 +38,24 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             resource.Save(fileStream);
         }
 
-        public MetaFile Build(IMetaValue value)
+        private MetaFile Build(IMetaValue value)
         {
-            MetaInitialize();
-            MetaBuildStructuresAndEnums();
+            meta = new MetaFile();
+            meta.StructureInfos = metaDefinitions.BuildMetaStructureInfos();
+            meta.EnumInfos = metaDefinitions.BuildMetaEnumInfos();
 
             var writer = new MetaDataWriter();
             writer.SelectBlockByNameHash(((MetaStructure)value).info.StructureNameHash);
             WriteStructure(writer, (MetaStructure)value);
 
-            for (int k = meta.StructureInfos.Count - 1; k >= 0; k--)
-            {
-                if (!usedStructureKeys.Contains(meta.StructureInfos[k].StructureKey))
-                {
-                    meta.StructureInfos.RemoveAt(k);
-                }
-            }
-
-            // TODO: refactor this hacky way to remove unused EnumInfos
-            for (int e = meta.EnumInfos.Count - 1; e >= 0; e--)
-            {
-                bool required = false;
-
-                for (int s = 0; s < meta.StructureInfos.Count; s++)
-                {
-                    var entries = meta.StructureInfos[s].Entries;
-
-                    foreach (var entry in entries)
-                    {
-                        if (entry.ReferenceKey == meta.EnumInfos[e].EnumNameHash)
-                        {
-                            required = true;
-                            break;
-                        }
-                    }
-
-                    if (required)
-                        break;
-                }
-
-                if (!required)
-                    meta.EnumInfos.RemoveAt(e);
-            }
-
-            if (meta.EnumInfos.Count < 1)
-                meta.EnumInfos = null;
+            RemoveUnusedInfos();
 
             meta.DataBlocks = new ResourceSimpleArray<DataBlock>();
             foreach (var block in writer.Blocks)
             {
                 var metaDataBlock = new DataBlock();
                 metaDataBlock.StructureNameHash = block.NameHash;
-                metaDataBlock.Data = StreamToResourceBytes(block.Stream);
+                metaDataBlock.Data = block.GetSimpleArray();
                 meta.DataBlocks.Add(metaDataBlock);
             }
 
@@ -100,114 +70,22 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return meta;
         }
 
-        private SimpleArray<byte> StreamToResourceBytes(Stream stream)
+        private void RemoveUnusedInfos()
         {
-            var buffer = new byte[stream.Length];
-            stream.Position = 0;
-            stream.Read(buffer, 0, (int)stream.Length);
-            return new SimpleArray<byte>(buffer);
-        }
-
-        private void MetaInitialize()
-        {
-            meta = new MetaFile();
-            meta.VFT = 0x01405bc808;
-            meta.Unknown_10h = 0x50524430;
-            meta.Unknown_14h = 0x0079;
-        }
-
-        private void MetaBuildStructuresAndEnums()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            using (Stream xmlStream = assembly.GetManifestResourceStream("RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions.XmlInfos.xml"))
+            for (int k = meta.StructureInfos.Count - 1; k >= 0; k--)
             {
-                var ser = new XmlSerializer(typeof(MetaInformationXml));
-                var xml = (MetaInformationXml)ser.Deserialize(xmlStream);
-                MetaBuildStructureInfos(xml);
-                MetaBuildEnumInfos(xml);
+                if (!usedStructureKeys.Contains(meta.StructureInfos[k].StructureKey))
+                    meta.StructureInfos.RemoveAt(k);
             }
-        }
 
-        private void MetaBuildStructureInfos(MetaInformationXml xmlInfo)
-        {
-            meta.StructureInfos = new ResourceSimpleArray<StructureInfo>();
-            foreach (var xmlStructureInfo in xmlInfo.Structures)
+            for (int e = meta.EnumInfos.Count - 1; e >= 0; e--)
             {
-                var structureInfo = new StructureInfo();
-                structureInfo.StructureNameHash = xmlStructureInfo.NameHash;
-                structureInfo.StructureKey = xmlStructureInfo.Key;
-                structureInfo.Unknown_8h = xmlStructureInfo.Unknown;
-                structureInfo.StructureLength = xmlStructureInfo.Length;
-                structureInfo.Entries = new ResourceSimpleArray<StructureEntryInfo>();
-                foreach (var xmlStructureEntryInfo in xmlStructureInfo.Entries)
-                {
-                    var xmlArrayTypeStack = new Stack<MetaStructureArrayTypeXml>();
-                    var xmlArrayType = xmlStructureEntryInfo.ArrayType;
-                    while (xmlArrayType != null)
-                    {
-                        xmlArrayTypeStack.Push(xmlArrayType);
-                        xmlArrayType = xmlArrayType.ArrayType;
-                    }
-
-                    while (xmlArrayTypeStack.Count > 0)
-                    {
-                        xmlArrayType = xmlArrayTypeStack.Pop();
-                        var arrayStructureEntryInfo = new StructureEntryInfo();
-                        arrayStructureEntryInfo.EntryNameHash = 0x100;
-                        arrayStructureEntryInfo.DataOffset = 0;
-                        arrayStructureEntryInfo.DataType = (StructureEntryDataType)xmlArrayType.Type;
-                        arrayStructureEntryInfo.Unknown_9h = 0;
-                        if (arrayStructureEntryInfo.DataType == StructureEntryDataType.Array || arrayStructureEntryInfo.DataType == StructureEntryDataType.ArrayLocal)
-                        {
-                            arrayStructureEntryInfo.ReferenceTypeIndex = (short)(structureInfo.Entries.Count - 1);
-                        }
-                        else
-                        {
-                            arrayStructureEntryInfo.ReferenceTypeIndex = 0;
-                        }
-                        arrayStructureEntryInfo.ReferenceKey = xmlArrayType.TypeHash;
-                        structureInfo.Entries.Add(arrayStructureEntryInfo);
-                    }
-
-                    var structureEntryInfo = new StructureEntryInfo();
-                    structureEntryInfo.EntryNameHash = xmlStructureEntryInfo.NameHash;
-                    structureEntryInfo.DataOffset = xmlStructureEntryInfo.Offset;
-                    structureEntryInfo.DataType = (StructureEntryDataType)xmlStructureEntryInfo.Type;
-                    structureEntryInfo.Unknown_9h = (byte)xmlStructureEntryInfo.Unknown;
-                    if (structureEntryInfo.DataType == StructureEntryDataType.Array || structureEntryInfo.DataType == StructureEntryDataType.ArrayLocal)
-                    {
-                        structureEntryInfo.ReferenceTypeIndex = (short)(structureInfo.Entries.Count - 1);
-                    }
-                    else
-                    {
-                        structureEntryInfo.ReferenceTypeIndex = 0;
-                    }
-                    structureEntryInfo.ReferenceKey = xmlStructureEntryInfo.TypeHash;
-
-                    structureInfo.Entries.Add(structureEntryInfo);
-                }
-                meta.StructureInfos.Add(structureInfo);
+                if (!usedEnumKeys.Contains(meta.EnumInfos[e].EnumKey))
+                    meta.EnumInfos.RemoveAt(e);
             }
-        }
 
-        private void MetaBuildEnumInfos(MetaInformationXml xmlInfo)
-        {
-            meta.EnumInfos = new ResourceSimpleArray<EnumInfo>();
-            foreach (var xmlEnumInfo in xmlInfo.Enums)
-            {
-                var enumInfo = new EnumInfo();
-                enumInfo.EnumNameHash = xmlEnumInfo.NameHash;
-                enumInfo.EnumKey = xmlEnumInfo.Key;
-                enumInfo.Entries = new ResourceSimpleArray<EnumEntryInfo>();
-                foreach (var xmlEnumEntryInfo in xmlEnumInfo.Entries)
-                {
-                    var enumEntryInfo = new EnumEntryInfo();
-                    enumEntryInfo.EntryNameHash = xmlEnumEntryInfo.NameHash;
-                    enumEntryInfo.EntryValue = xmlEnumEntryInfo.Value;
-                    enumInfo.Entries.Add(enumEntryInfo);
-                }
-                meta.EnumInfos.Add(enumInfo);
-            }
+            if (meta.EnumInfos.Count < 1)
+                meta.EnumInfos = null;
         }
 
         private void WriteStructure(MetaDataWriter writer, MetaStructure value)
@@ -226,7 +104,20 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
                 foreach (var structureEntryToCheck in structureToCheck.Values)
                 {
-                    if (structureEntryToCheck.Value is MetaArray)
+                    if(structureEntryToCheck.Value is MetaEnumInt8 enumInt8)
+                        usedEnumKeys.Add(enumInt8.info.EnumKey);
+                    else if (structureEntryToCheck.Value is MetaEnumInt16 enumInt16)
+                        usedEnumKeys.Add(enumInt16.info.EnumKey);
+                    else if (structureEntryToCheck.Value is MetaEnumInt32 enumInt32)
+                        usedEnumKeys.Add(enumInt32.info.EnumKey);
+                    else if (structureEntryToCheck.Value is MetaFlagsInt8 flagInt8)
+                        usedEnumKeys.Add(flagInt8.info.EnumKey);
+                    else if (structureEntryToCheck.Value is MetaFlagsInt16 flagInt16)
+                        usedEnumKeys.Add(flagInt16.info.EnumKey);
+                    else if (structureEntryToCheck.Value is MetaFlagsInt32 flagInt32)
+                        usedEnumKeys.Add(flagInt32.info.EnumKey);
+
+                    else if (structureEntryToCheck.Value is MetaArray)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
 
@@ -240,7 +131,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 {
                                     structuresToCheck.Push(x as MetaStructure);
                                 }
-                                if (x is MetaGeneric)
+                                else if (x is MetaGeneric)
                                 {
                                     updateStack.Push(x);
                                     structuresToCheck.Push((MetaStructure)(x as MetaGeneric).Value);
@@ -248,22 +139,22 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
                         }
                     }
-                    if (structureEntryToCheck.Value is MetaStringPointer)
+                    else if (structureEntryToCheck.Value is MetaStringPointer)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
                     }
-                    if (structureEntryToCheck.Value is MetaDataBlockPointer)
+                    else if(structureEntryToCheck.Value is MetaDataBlockPointer)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
                     }
-                    if (structureEntryToCheck.Value is MetaGeneric)
+                    else if(structureEntryToCheck.Value is MetaGeneric)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
 
                         var genericStructureEntryToCheck = structureEntryToCheck.Value as MetaGeneric;
                         structuresToCheck.Push((MetaStructure)genericStructureEntryToCheck.Value);
                     }
-                    if (structureEntryToCheck.Value is MetaStructure)
+                    else if(structureEntryToCheck.Value is MetaStructure)
                     {
                         structuresToCheck.Push((MetaStructure)structureEntryToCheck.Value);
                     }
@@ -313,7 +204,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         arrayValue.NumberOfEntries = 0;
                     }
                 }
-                if (v is MetaStringPointer)
+                else if (v is MetaStringPointer)
                 {
                     var charPointerValue = (MetaStringPointer)v;
                     if (charPointerValue.Value != null)
@@ -334,7 +225,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         charPointerValue.StringCapacity = 0;
                     }
                 }
-                if (v is MetaDataBlockPointer)
+                else if (v is MetaDataBlockPointer)
                 {
                     var charPointerValue = (MetaDataBlockPointer)v;
                     if (charPointerValue.Data != null)
@@ -349,7 +240,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         charPointerValue.BlockIndex = 0;
                     }
                 }
-                if (v is MetaGeneric)
+                else if (v is MetaGeneric)
                 {
                     var genericValue = (MetaGeneric)v;
                     writer.SelectBlockByNameHash(((MetaStructure)genericValue.Value).info.StructureNameHash);

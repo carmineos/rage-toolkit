@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Data;
+using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,55 +18,32 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
             this.NameHash = nameHash;
             this.Stream = stream;
         }
+
+        public SimpleArray<byte> GetSimpleArray()
+        {
+            var buffer = new byte[Stream.Length];
+            Stream.Position = 0;
+            Stream.Read(buffer, 0, (int)Stream.Length);
+            return new SimpleArray<byte>(buffer);
+        }
     }
 
     public class MetaDataWriter : DataWriter
     {
-        private List<MetaDataBlock> blocks;
-        public List<MetaDataBlock> Blocks
-        {
-            get
-            {
-                return blocks;
-            }
-        }
+        private readonly List<MetaDataBlock> blocks;
+        public List<MetaDataBlock> Blocks => blocks;
 
-        public int BlocksCount
-        {
-            get
-            {
-                return blocks.Count;
-            }
-        }
+        public int BlocksCount => blocks.Count;
 
         private int blockIndex;
-        public int BlockIndex
-        {
-            get
-            {
-                return blockIndex;
-            }
-        }
+        public int BlockIndex => blockIndex;
 
-        public override long Length
-        {
-            get
-            {
-                return blocks[BlockIndex].Stream.Length;
-            }
-        }
+        public override long Length => blocks[blockIndex].Stream.Length;
 
         public override long Position
         {
-            get
-            {
-                return blocks[BlockIndex].Stream.Position;
-            }
-
-            set
-            {
-                blocks[BlockIndex].Stream.Position = value;
-            }
+            get => blocks[blockIndex].Stream.Position;
+            set => blocks[blockIndex].Stream.Position = value;
         }
 
         public MetaDataWriter() : base(null, Endianness.LittleEndian)
@@ -82,13 +60,13 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
 
         protected override void WriteToStreamRaw(Span<byte> value)
         {
-            var currentStream = blocks[BlockIndex].Stream;
+            var currentStream = blocks[blockIndex].Stream;
             currentStream.Write(value);
         }
 
         protected override void WriteToStreamRaw(byte value)
         {
-            var currentStream = blocks[BlockIndex].Stream;
+            var currentStream = blocks[blockIndex].Stream;
             currentStream.WriteByte(value);
         }
 

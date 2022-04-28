@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<PsoDefinitionXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<PsoDefinitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Structure NameHash="0xBDD20BCF" Unknown="0x00000000" Length="312">
     <StructureEntry NameHash="0x235D1478" Offset="8" Type="12" SubType="0" TypeHash="0x1BC567F2" />
     <StructureEntry NameHash="0x2B020DDD" Offset="48" Type="13" SubType="0" TypeHash="0x00000001">
@@ -13910,4 +13910,4 @@
   <Enum NameHash="0x6452A05B">
     <EnumEntry NameHash="0x21569096" Value="0" />
   </Enum>
-</PsoDefinitionXml>
+</PsoDefinitions>

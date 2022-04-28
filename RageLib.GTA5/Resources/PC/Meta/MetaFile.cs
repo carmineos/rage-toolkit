@@ -11,35 +11,35 @@ namespace RageLib.Resources.GTA5.PC.Meta
         public override long BlockLength => 0x70;
 
         // structure data
-        public int Unknown_10h { get; set; } = 0x50524430;
-        public short Unknown_14h { get; set; } = 0x0079;
-        public byte HasUselessData { get; set; }
-        public byte Unknown_17h { get; set; } = 0x00;
-        public int Unknown_18h { get; set; } = 0x00000000;
-        public int RootBlockIndex { get; set; }
-        public long StructureInfosPointer { get; private set; }
-        public long EnumInfosPointer { get; private set; }
-        public long DataBlocksPointer { get; private set; }
-        public long NamePointer { get; private set; }
-        public long UselessPointer { get; private set; }
-        public short StructureInfosCount { get; private set; }
-        public short EnumInfosCount { get; private set; }
-        public short DataBlocksCount { get; private set; }
-        public short Unknown_4Eh { get; set; } = 0x0000;
-        public int Unknown_50h { get; set; } = 0x00000000;
-        public int Unknown_54h { get; set; } = 0x00000000;
-        public int Unknown_58h { get; set; } = 0x00000000;
-        public int Unknown_5Ch { get; set; } = 0x00000000;
-        public int Unknown_60h { get; set; } = 0x00000000;
-        public int Unknown_64h { get; set; } = 0x00000000;
-        public int Unknown_68h { get; set; } = 0x00000000;
-        public int Unknown_6Ch { get; set; } = 0x00000000;
+        private int Unknown_10h = 0x50524430;
+        private short Unknown_14h = 0x0079;
+        private byte HasUselessData;
+        private byte Unknown_17h = 0x00;
+        private int Unknown_18h = 0x00000000;
+        public int RootBlockIndex;
+        private long StructureInfosPointer;
+        private long EnumInfosPointer;
+        private long DataBlocksPointer;
+        private long NamePointer;
+        private long UselessPointer;
+        private short StructureInfosCount;
+        private short EnumInfosCount;
+        private short DataBlocksCount;
+        private short Unknown_4Eh = 0x0000;
+        private int Unknown_50h = 0x00000000;
+        private int Unknown_54h = 0x00000000;
+        private int Unknown_58h = 0x00000000;
+        private int Unknown_5Ch = 0x00000000;
+        private int Unknown_60h = 0x00000000;
+        private int Unknown_64h = 0x00000000;
+        private int Unknown_68h = 0x00000000;
+        private int Unknown_6Ch = 0x00000000;
 
         // reference data
-        public ResourceSimpleArray<StructureInfo> StructureInfos;
-        public ResourceSimpleArray<EnumInfo> EnumInfos;
-        public ResourceSimpleArray<DataBlock> DataBlocks;
-        public string_r Name;
+        public ResourceSimpleArray<StructureInfo> StructureInfos { get; set; }
+        public ResourceSimpleArray<EnumInfo> EnumInfos { get; set; }
+        public ResourceSimpleArray<DataBlock> DataBlocks { get; set; }
+        public string_r Name { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

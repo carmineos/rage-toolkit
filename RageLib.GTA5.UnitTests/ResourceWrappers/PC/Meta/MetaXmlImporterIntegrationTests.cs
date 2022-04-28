@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RageLib.GTA5.ResourceWrappers.PC.Meta;
-using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
+using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using System.Globalization;
 using System.IO;
@@ -38,14 +38,14 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
             AssertValue(refData, x);
         }
 
-        public MetaInformationXml LoadXmls()
+        public MetaDefinitions LoadXmls()
         {
             var assembly = Assembly.GetExecutingAssembly();
             using (Stream xmlStream = assembly.GetManifestResourceStream(TEST_DATASET_DEFINITIONS))
             {
-                var ser = new XmlSerializer(typeof(MetaInformationXml));
-                var xmlInfos = (MetaInformationXml)ser.Deserialize(xmlStream);
-                return xmlInfos;
+                var ser = new XmlSerializer(typeof(MetaDefinitions));
+                var definitions = (MetaDefinitions)ser.Deserialize(xmlStream);
+                return definitions;
             }
         }
 

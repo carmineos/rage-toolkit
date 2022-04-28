@@ -1,13 +1,10 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using System.IO;
-using System.Reflection;
-using System.Xml.Serialization;
 using RageLib.GTA5.PSOWrappers;
 using RageLib.GTA5.RBF;
 using RageLib.GTA5.RBFWrappers;
 using RageLib.GTA5.ResourceWrappers.PC.Meta;
-using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
+using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.Services;
 
 namespace RageLib.GTA5.Services
@@ -15,21 +12,11 @@ namespace RageLib.GTA5.Services
     public class MetaConverter
     {
         private readonly JenkinsDictionary joaatDictionary;
-        private MetaInformationXml metaDefinitions;
+        private MetaDefinitions metaDefinitions;
         
         public MetaConverter(JenkinsDictionary dictionary)
         {
             this.joaatDictionary = dictionary ?? new JenkinsDictionary();
-        }
-
-        private MetaInformationXml LoadMetaDefinitions()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            using (Stream xmlStream = assembly.GetManifestResourceStream("RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions.XmlInfos.xml"))
-            {
-                var ser = new XmlSerializer(typeof(MetaInformationXml));
-                return (MetaInformationXml)ser.Deserialize(xmlStream);
-            }
         }
 
         public void ConvertXmlToResource(string filePath)
@@ -38,13 +25,13 @@ namespace RageLib.GTA5.Services
             string outputFileName = inputFileName.Replace(".xml", "");
 
             // TODO: Maybe provide definitions with DI
-            if(metaDefinitions is null)
-                metaDefinitions = LoadMetaDefinitions();
+            if (metaDefinitions is null)
+                metaDefinitions = MetaDefinitions.LoadEmbedded();
 
             var importer = new MetaXmlImporter2(metaDefinitions);
             var imported = importer.Import(inputFileName);
 
-            var writer = new MetaWriter();
+            var writer = new MetaWriter(metaDefinitions);
             writer.Write(imported, outputFileName);
         }
 

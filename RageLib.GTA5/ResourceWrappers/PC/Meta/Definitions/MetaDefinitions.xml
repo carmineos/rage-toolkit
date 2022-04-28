@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<MetaInformationXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<MetaDefinitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Structure NameHash="0x8DEA3D6B" Key="0x94651E71" Unknown="0x00000300" Length="48">
     <StructureEntry NameHash="0xB3CFD467" Offset="0" Type="82" TypeHash="0x00000000" Unknown="0x00000000">
       <ArrayType Type="5" TypeHash="0xC4B2F638" />
@@ -1089,4 +1089,4 @@
   <Enum Key="0x5E86375F" NameHash="0xB576F04C">
     <EnumEntry NameHash="0x3B7A3A1D" Value="0" />
   </Enum>
-</MetaInformationXml>
+</MetaDefinitions>

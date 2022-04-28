@@ -2,23 +2,35 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
 using RageLib.Helpers.Xml;
 
-namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
+namespace RageLib.GTA5.PSOWrappers.Definitions
 {
     [Serializable]
-    public class MetaInformationXml
+    public class PsoDefinitions
     {
         [XmlElement("Structure")]
-        public List<MetaStructureXml> Structures { get; set; }
+        public List<PsoStructureXml> Structures { get; set; }
 
         [XmlElement("Enum")]
-        public List<MetaEnumXml> Enums { get; set; }
+        public List<PsoEnumXml> Enums { get; set; }
+
+        public static PsoDefinitions LoadEmbedded()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (Stream xmlStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RageLib.GTA5.PSOWrappers.Definitions.PsoDefinitions.xml"))
+            {
+                var ser = new XmlSerializer(typeof(PsoDefinitions));
+                return (PsoDefinitions)ser.Deserialize(xmlStream);
+            }
+        }
     }
 
     [Serializable]
-    public class MetaStructureXml
+    public class PsoStructureXml
     {
         [XmlIgnore]
         public int NameHash { get; set; }
@@ -29,17 +41,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
             get { return HexConverter.ToHex(NameHash); }
             set { NameHash = HexConverter.ToInt32(value); }
         }
-
-        [XmlIgnore]
-        public int Key { get; set; }
-
-        [XmlAttribute("Key")]
-        public string KeyAsHex
-        {
-            get { return HexConverter.ToHex(Key); }
-            set { Key = HexConverter.ToInt32(value); }
-        }
-
+        
         [XmlIgnore]
         public int Unknown { get; set; }
 
@@ -54,11 +56,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         public int Length { get; set; }
 
         [XmlElement("StructureEntry")]
-        public List<MetaStructureEntryXml> Entries { get; set; }
+        public List<PsoStructureEntryXml> Entries { get; set; }
     }
 
     [Serializable]
-    public class MetaStructureEntryXml
+    public class PsoStructureEntryXml
     {
         [XmlIgnore]
         public int NameHash { get; set; }
@@ -71,40 +73,13 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         }
 
         [XmlAttribute("Offset")]
-        public int Offset { get; set; }
+        public ushort Offset { get; set; }
 
         [XmlAttribute("Type")]
-        public int Type { get; set; }
+        public byte Type { get; set; }
 
-        [XmlIgnore]
-        public int TypeHash { get; set; }
-
-        [XmlAttribute("TypeHash")]
-        public string TypeHashAsHex
-        {
-            get { return HexConverter.ToHex(TypeHash); }
-            set { TypeHash = HexConverter.ToInt32(value); }
-        }
-
-        [XmlIgnore]
-        public int Unknown { get; set; }
-
-        [XmlAttribute("Unknown")]
-        public string UnknownAsHex
-        {
-            get { return HexConverter.ToHex(Unknown); }
-            set { Unknown = HexConverter.ToInt32(value); }
-        }
-
-        [XmlElement("ArrayType")]
-        public MetaStructureArrayTypeXml ArrayType { get; set; }
-    }
-
-    [Serializable]
-    public class MetaStructureArrayTypeXml
-    {
-        [XmlAttribute("Type")]
-        public int Type { get; set; }
+        [XmlAttribute("SubType")]
+        public byte SubType { get; set; }
 
         [XmlIgnore]
         public int TypeHash { get; set; }
@@ -117,23 +92,12 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         }
 
         [XmlElement("ArrayType")]
-        public MetaStructureArrayTypeXml ArrayType { get; set; }
+        public PsoStructureEntryXml ArrayType { get; set; }
     }
 
     [Serializable]
-    public class MetaEnumXml
+    public class PsoEnumXml
     {
-        [XmlIgnore]
-        public int Key { get; set; }
-
-        [XmlAttribute("Key")]
-        public string KeyAsHex
-        {
-            get { return HexConverter.ToHex(Key); }
-            set { Key = HexConverter.ToInt32(value); }
-        }
-
-
         [XmlIgnore]
         public int NameHash { get; set; }
 
@@ -145,11 +109,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions
         }
 
         [XmlElement("EnumEntry")]
-        public List<MetaEnumEntryXml> Entries { get; set; }
+        public List<PsoEnumEntryXml> Entries { get; set; }
     }
 
     [Serializable]
-    public class MetaEnumEntryXml
+    public class PsoEnumEntryXml
     {
         [XmlIgnore]
         public int NameHash { get; set; }

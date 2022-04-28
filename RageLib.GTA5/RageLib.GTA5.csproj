@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="ResourceWrappers\PC\Meta\Definitions\XmlInfos.xml" />
-    <EmbeddedResource Include="PSOWrappers\Xml\PsoDefinitions.xml" />
+    <EmbeddedResource Include="ResourceWrappers\PC\Meta\Definitions\MetaDefinitions.xml" />
+    <EmbeddedResource Include="PSOWrappers\Definitions\PsoDefinitions.xml" />
   </ItemGroup>
 
 </Project>

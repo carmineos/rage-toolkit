@@ -1,6 +1,6 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.GTA5.ResourceWrappers.PC.Meta.Descriptions;
+using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using RageLib.Hash;
 using RageLib.Helpers.Xml;
@@ -11,16 +11,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Numerics;
 using System.Xml;
 
 namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 {
     public class MetaXmlImporter2
     {
-        private MetaInformationXml xmlInfos;
-        private ResourceSimpleArray<StructureInfo> strList;
+        // TODO: do we need both definitions and structureInfos?? probably not ...
+        private MetaDefinitions definitions;
+        private ResourceSimpleArray<StructureInfo> structureInfos;
 
         public MetaStructure Import(string xmlFileName)
         {
@@ -30,10 +29,10 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             }
         }
 
-        public MetaXmlImporter2(MetaInformationXml xmlinfos)
+        public MetaXmlImporter2(MetaDefinitions xmlinfos)
         {
-            this.xmlInfos = xmlinfos;
-            MetaBuildStructureInfos(xmlinfos);
+            this.definitions = xmlinfos;
+            this.structureInfos = xmlinfos.BuildMetaStructureInfos();
         }
 
         public MetaStructure Import(Stream xmlFileStream)
@@ -54,7 +53,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         //          do we need to check the structure??
         public MetaStructureXml GetMetaStructureXml(int hash)
         {
-            foreach (var structureXml in xmlInfos.Structures)
+            foreach (var structureXml in definitions.Structures)
                 if (structureXml.NameHash == hash)
                     return structureXml;
             return null;
@@ -62,7 +61,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public MetaEnumXml GetMetaEnumXml(int hash)
         {
-            foreach (var enumXml in xmlInfos.Enums)
+            foreach (var enumXml in definitions.Enums)
                 if (enumXml.NameHash == hash)
                     return enumXml;
             return null;
@@ -543,72 +542,10 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public MetaStructure GetMetaStructure(MetaStructureXml info)
         {
-            foreach (var structureInfo in strList)
+            foreach (var structureInfo in structureInfos)
                 if (structureInfo.StructureKey == info.Key)
                     return new MetaStructure(null, structureInfo);
             return null;
-        }
-
-        private void MetaBuildStructureInfos(MetaInformationXml xmlInfo)
-        {
-            strList = new ResourceSimpleArray<StructureInfo>();
-            foreach (var xmlStructureInfo in xmlInfo.Structures)
-            {
-                var structureInfo = new StructureInfo();
-                structureInfo.StructureNameHash = xmlStructureInfo.NameHash;
-                structureInfo.StructureKey = xmlStructureInfo.Key;
-                structureInfo.Unknown_8h = xmlStructureInfo.Unknown;
-                structureInfo.StructureLength = xmlStructureInfo.Length;
-                structureInfo.Entries = new ResourceSimpleArray<StructureEntryInfo>();
-                foreach (var xmlStructureEntryInfo in xmlStructureInfo.Entries)
-                {
-                    var xmlArrayTypeStack = new Stack<MetaStructureArrayTypeXml>();
-                    var xmlArrayType = xmlStructureEntryInfo.ArrayType;
-                    while (xmlArrayType != null)
-                    {
-                        xmlArrayTypeStack.Push(xmlArrayType);
-                        xmlArrayType = xmlArrayType.ArrayType;
-                    }
-
-                    while (xmlArrayTypeStack.Count > 0)
-                    {
-                        xmlArrayType = xmlArrayTypeStack.Pop();
-                        var arrayStructureEntryInfo = new StructureEntryInfo();
-                        arrayStructureEntryInfo.EntryNameHash = 0x100;
-                        arrayStructureEntryInfo.DataOffset = 0;
-                        arrayStructureEntryInfo.DataType = (StructureEntryDataType)xmlArrayType.Type;
-                        arrayStructureEntryInfo.Unknown_9h = 0;
-                        if (arrayStructureEntryInfo.DataType == StructureEntryDataType.Array)
-                        {
-                            arrayStructureEntryInfo.ReferenceTypeIndex = (short)(structureInfo.Entries.Count - 1);
-                        }
-                        else
-                        {
-                            arrayStructureEntryInfo.ReferenceTypeIndex = 0;
-                        }
-                        arrayStructureEntryInfo.ReferenceKey = xmlArrayType.TypeHash;
-                        structureInfo.Entries.Add(arrayStructureEntryInfo);
-                    }
-
-                    var structureEntryInfo = new StructureEntryInfo();
-                    structureEntryInfo.EntryNameHash = xmlStructureEntryInfo.NameHash;
-                    structureEntryInfo.DataOffset = xmlStructureEntryInfo.Offset;
-                    structureEntryInfo.DataType = (StructureEntryDataType)xmlStructureEntryInfo.Type;
-                    structureEntryInfo.Unknown_9h = (byte)xmlStructureEntryInfo.Unknown;
-                    if (structureEntryInfo.DataType == StructureEntryDataType.Array)
-                    {
-                        structureEntryInfo.ReferenceTypeIndex = (short)(structureInfo.Entries.Count - 1);
-                    }
-                    else
-                    {
-                        structureEntryInfo.ReferenceTypeIndex = 0;
-                    }
-                    structureEntryInfo.ReferenceKey = xmlStructureEntryInfo.TypeHash;
-
-                    structureInfo.Entries.Add(structureEntryInfo);
-                }
-                strList.Add(structureInfo);
-            }
         }
 
         public int GetHashForName(ReadOnlySpan<char> hashName)
