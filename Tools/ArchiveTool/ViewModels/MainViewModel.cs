@@ -92,7 +92,7 @@ namespace ArchiveTool.ViewModels
             TreeViewItems.Add(treeRoot);
         }
 
-        [ICommand]
+        [RelayCommand]
         public async Task OpenArchive()
         {
             string path = await Pickers.ShowSingleFilePicker(".rpf");
@@ -109,7 +109,7 @@ namespace ArchiveTool.ViewModels
             OpenArchive(path);
         }
         
-        [ICommand]
+        [RelayCommand]
         public async Task OpenFolder()
         {
             string path = await Pickers.ShowSingleFolderPicker();
@@ -126,7 +126,7 @@ namespace ArchiveTool.ViewModels
             OpenFolder(path);
         }
 
-        [ICommand]
+        [RelayCommand]
         public async Task PackFolder()
         {
             string path = await Pickers.ShowSingleFolderPicker();
@@ -156,7 +156,7 @@ namespace ArchiveTool.ViewModels
             });
         }
 
-        [ICommand]
+        [RelayCommand]
         public async Task NavigateToParent()
         {
             if (SelectedTreeViewItem?.Parent is not null)

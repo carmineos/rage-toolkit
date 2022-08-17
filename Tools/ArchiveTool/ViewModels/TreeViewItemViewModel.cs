@@ -88,14 +88,14 @@ namespace ArchiveTool.ViewModels
             HasUnrealizedChildren = true;
         }
 
-        [ICommand]
+        [RelayCommand]
         public void Expand()
         {
             if (HasUnrealizedChildren)
                 LoadChildren();
         }
 
-        [ICommand]
+        [RelayCommand]
         public void Collapse()
         {
             ClearChildren();
