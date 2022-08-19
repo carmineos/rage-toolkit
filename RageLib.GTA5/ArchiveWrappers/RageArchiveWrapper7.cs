@@ -468,15 +468,14 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// <summary>
         /// Returns a directory list from the current directory. 
         /// </summary>
-        public IArchiveDirectory[] GetDirectories()
+        public IReadOnlyList<IArchiveDirectory> GetDirectories()
         {
             var directoryList = new List<IArchiveDirectory>();
+            
             foreach (var directory in directory.Directories)
-            {
-                var directoryWrapper = new RageArchiveDirectoryWrapper7(archiveWrapper, directory);
-                directoryList.Add(directoryWrapper);
-            }
-            return directoryList.ToArray();
+                directoryList.Add(new RageArchiveDirectoryWrapper7(archiveWrapper, directory));
+
+            return directoryList.AsReadOnly();
         }
 
         /// <summary>
@@ -516,17 +515,17 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// <summary>
         /// Returns a file list from the current directory. 
         /// </summary>
-        public IArchiveFile[] GetFiles()
+        public IReadOnlyList<IArchiveFile> GetFiles()
         {
             var fileList = new List<IArchiveFile>();
-            foreach (var rawFile in directory.Files)
+            foreach (var file in directory.Files)
             {
-                if (rawFile is RageArchiveBinaryFile7)
-                    fileList.Add(new RageArchiveBinaryFileWrapper7(archiveWrapper, (RageArchiveBinaryFile7)rawFile));
-                if (rawFile is RageArchiveResourceFile7)
-                    fileList.Add(new RageArchiveResourceFileWrapper7(archiveWrapper, (RageArchiveResourceFile7)rawFile));
+                if (file is RageArchiveResourceFile7)
+                    fileList.Add(new RageArchiveResourceFileWrapper7(archiveWrapper, (RageArchiveResourceFile7)file));
+                else
+                    fileList.Add(new RageArchiveBinaryFileWrapper7(archiveWrapper, (RageArchiveBinaryFile7)file));
             }
-            return fileList.ToArray();
+            return fileList.AsReadOnly();
         }
 
         /// <summary>

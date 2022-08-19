@@ -1,5 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using System.Collections.Generic;
+
 namespace RageLib.Archives
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace RageLib.Archives
         /// <summary>
         /// Returns a directory list from the current directory. 
         /// </summary>
-        IArchiveDirectory[] GetDirectories();
+        IReadOnlyList<IArchiveDirectory> GetDirectories();
 
         /// <summary>
         /// Returns a directory from the current directory. 
@@ -43,7 +45,7 @@ namespace RageLib.Archives
         /// <summary>
         /// Returns a file list from the current directory. 
         /// </summary>
-        IArchiveFile[] GetFiles();
+        IReadOnlyList<IArchiveFile> GetFiles();
 
         /// <summary>
         /// Returns a file from the current directory. 
