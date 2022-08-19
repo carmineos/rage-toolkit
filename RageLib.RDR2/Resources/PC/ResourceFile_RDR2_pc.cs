@@ -9,7 +9,7 @@ using System.IO.Compression;
 
 namespace RageLib.Resources.RDR2
 {
-    public class ResourceFile_RDR2_pc : IResourceFile
+    public class ResourceFile_RDR2_pc : IResource
     {
         protected const int RESOURCE_IDENT = 0x38435352;
 
@@ -100,7 +100,7 @@ namespace RageLib.Resources.RDR2
         }
     }
 
-    public class ResourceFile_RDR2_pc<T> : ResourceFile_RDR2_pc, IResourceFile<T> where T : IResourceBlock, new()
+    public class ResourceFile_RDR2_pc<T> : ResourceFile_RDR2_pc, IResource<T> where T : IResourceBlock, new()
     {
         public T ResourceData { get; set; }
 

@@ -9,7 +9,7 @@ using System.IO.Compression;
 
 namespace RageLib.Resources.GTA5
 {
-    public class ResourceFile_GTA5_pc : IResourceFile
+    public class ResourceFile_GTA5_pc : IResource
     {
         protected const int RESOURCE_IDENT = 0x37435352;
 
@@ -90,7 +90,7 @@ namespace RageLib.Resources.GTA5
         }
     }
 
-    public class ResourceFile_GTA5_pc<T> : ResourceFile_GTA5_pc, IResourceFile<T> where T : IResourceBlock, new()
+    public class ResourceFile_GTA5_pc<T> : ResourceFile_GTA5_pc, IResource<T> where T : IResourceBlock, new()
     {
         public T ResourceData { get; set; }
 

@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA4
         Deflate = 0xDA78,
     }
 
-    public class Resource5 : IResourceFile
+    public class Resource5 : IResource
     {
         protected const int RESOURCE_IDENT = 0x05435352;
 
@@ -98,7 +98,7 @@ namespace RageLib.Resources.GTA4
         }
     }
 
-    public class Resource5<T> : Resource5, IResourceFile<T> where T : PgBase32, new()
+    public class Resource5<T> : Resource5, IResource<T> where T : PgBase32, new()
     {
         public T ResourceData { get; set; }
 
