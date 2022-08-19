@@ -1,4 +1,4 @@
-// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+// Copyright � Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Numerics;
 using RageLib.Resources.Common;
@@ -26,13 +26,13 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ulong BVHPointer;
 
         // reference data
-        public ResourcePointerArray64<Bound> Bounds;
-        public SimpleArray<Matrix4x4> CurrentMatrices;
-        public SimpleArray<Matrix4x4> LastMatrices;
-        public SimpleArray<Aabb> ChildBoundingBoxes;
-        public SimpleArray<BoundCompositeFlags> TypeAndIncludeFlags;
-        public SimpleArray<BoundCompositeFlags> OwnedTypeAndIncludeFlags;
-        public BVH BVH;
+        public ResourcePointerArray64<Bound>? Bounds { get; set; }
+        public SimpleArray<Matrix4x4>? CurrentMatrices { get; set; }
+        public SimpleArray<Matrix4x4>? LastMatrices { get; set; }
+        public SimpleArray<Aabb>? ChildBoundingBoxes { get; set; }
+        public SimpleArray<BoundCompositeFlags>? TypeAndIncludeFlags { get; set; }
+        public SimpleArray<BoundCompositeFlags>? OwnedTypeAndIncludeFlags { get; set; }
+        public BVH? BVH { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

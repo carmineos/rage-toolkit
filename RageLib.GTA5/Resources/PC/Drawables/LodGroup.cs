@@ -34,10 +34,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint DrawBucketMaskVeryLow;
 
         // reference data
-        public Lod LodHigh;
-        public Lod LodMedium;
-        public Lod LodLow;
-        public Lod LodVeryLow;
+        public Lod? LodHigh { get; set; }
+        public Lod? LodMedium { get; set; }
+        public Lod? LodLow { get; set; }
+        public Lod? LodVeryLow { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -75,10 +75,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.LodHighPointer = (ulong)(this.LodHigh != null ? this.LodHigh.BlockPosition : 0);
-            this.LodMediumPointer = (ulong)(this.LodMedium != null ? this.LodMedium.BlockPosition : 0);
-            this.LodLowPointer = (ulong)(this.LodLow != null ? this.LodLow.BlockPosition : 0);
-            this.LodVeryLowPointer = (ulong)(this.LodVeryLow != null ? this.LodVeryLow.BlockPosition : 0);
+            this.LodHighPointer = (ulong)(this.LodHigh?.BlockPosition ?? 0);
+            this.LodMediumPointer = (ulong)(this.LodMedium?.BlockPosition ?? 0);
+            this.LodLowPointer = (ulong)(this.LodLow?.BlockPosition ?? 0);
+            this.LodVeryLowPointer = (ulong)(this.LodVeryLow?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.BoundingCenter);

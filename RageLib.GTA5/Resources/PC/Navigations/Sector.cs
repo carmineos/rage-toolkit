@@ -25,11 +25,11 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public uint Unknown_5Ch; // 0x00000000
 
         // reference data
-        public SectorData Data;
-        public Sector SubTree1;
-        public Sector SubTree2;
-        public Sector SubTree3;
-        public Sector SubTree4;
+        public SectorData? Data { get; set; }
+        public Sector? SubTree1 { get; set; }
+        public Sector? SubTree2 { get; set; }
+        public Sector? SubTree3 { get; set; }
+        public Sector? SubTree4 { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -75,11 +75,11 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.DataPointer = (ulong)(this.Data != null ? this.Data.BlockPosition : 0);
-            this.SubTree1Pointer = (ulong)(this.SubTree1 != null ? this.SubTree1.BlockPosition : 0);
-            this.SubTree2Pointer = (ulong)(this.SubTree2 != null ? this.SubTree2.BlockPosition : 0);
-            this.SubTree3Pointer = (ulong)(this.SubTree3 != null ? this.SubTree3.BlockPosition : 0);
-            this.SubTree4Pointer = (ulong)(this.SubTree4 != null ? this.SubTree4.BlockPosition : 0);
+            this.DataPointer = (ulong)(this.Data?.BlockPosition ?? 0);
+            this.SubTree1Pointer = (ulong)(this.SubTree1?.BlockPosition ?? 0);
+            this.SubTree2Pointer = (ulong)(this.SubTree2?.BlockPosition ?? 0);
+            this.SubTree3Pointer = (ulong)(this.SubTree3?.BlockPosition ?? 0);
+            this.SubTree4Pointer = (ulong)(this.SubTree4?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_0h);

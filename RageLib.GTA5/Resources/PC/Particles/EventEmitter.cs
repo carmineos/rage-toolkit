@@ -34,11 +34,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public ulong Unknown_68h; // 0x0000000000000000
 
         // reference data
-        public EvolutionParameters EvolutionParams;
-        public string_r EmitterName;
-        public string_r ParticleName;
-        public EmitterRule EmitterRule;
-        public ParticleRule ParticleRule;
+        public EvolutionParameters? EvolutionParams { get; set; }
+        public string_r? EmitterName { get; set; }
+        public string_r? ParticleName { get; set; }
+        public EmitterRule? EmitterRule { get; set; }
+        public ParticleRule? ParticleRule { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -90,11 +90,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.EvolutionParamsPointer = (ulong)(this.EvolutionParams != null ? this.EvolutionParams.BlockPosition : 0);
-            this.EmitterNamePointer = (ulong)(this.EmitterName != null ? this.EmitterName.BlockPosition : 0);
-            this.ParticleNamePointer = (ulong)(this.ParticleName != null ? this.ParticleName.BlockPosition : 0);
-            this.EmitterRulePointer = (ulong)(this.EmitterRule != null ? this.EmitterRule.BlockPosition : 0);
-            this.ParticleRulePointer = (ulong)(this.ParticleRule != null ? this.ParticleRule.BlockPosition : 0);
+            this.EvolutionParamsPointer = (ulong)(this.EvolutionParams?.BlockPosition ?? 0);
+            this.EmitterNamePointer = (ulong)(this.EmitterName?.BlockPosition ?? 0);
+            this.ParticleNamePointer = (ulong)(this.ParticleName?.BlockPosition ?? 0);
+            this.EmitterRulePointer = (ulong)(this.EmitterRule?.BlockPosition ?? 0);
+            this.ParticleRulePointer = (ulong)(this.ParticleRule?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.VFT);

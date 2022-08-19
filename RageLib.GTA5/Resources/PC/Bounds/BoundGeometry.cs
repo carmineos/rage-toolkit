@@ -25,9 +25,9 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ulong Unknown_128h; // 0x0000000000000000
 
         // reference data
-        public SimpleArray<BoundMaterial> Materials;
-        public SimpleArray<uint> MaterialColours;
-        public SimpleArray<byte> PolygonMaterialIndices;
+        public SimpleArray<BoundMaterial>? Materials { get; set; }
+        public SimpleArray<uint>? MaterialColours { get; set; }
+        public SimpleArray<byte>? PolygonMaterialIndices { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

@@ -51,8 +51,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public ulong Unknown_3B8h; // 0x0000000000000000
 
         // reference data
-        public string_r Name;
-        public EvolutionParameters p4data;
+        public string_r? Name { get; set; }
+        public EvolutionParameters? p4data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -114,9 +114,9 @@ namespace RageLib.Resources.GTA5.PC.Particles
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
             //this.c3b = (ushort)(this.p3data != null ? this.p3data.Count : 0);
-            this.p4 = (ulong)(this.p4data != null ? this.p4data.BlockPosition : 0);
+            this.p4 = (ulong)(this.p4data?.BlockPosition ?? 0);
             //this.refcnt2 = (ushort)(this.refs != null ? this.refs.Count : 0);
 
             // write structure data

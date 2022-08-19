@@ -20,8 +20,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public ulong Unknown_28h; // 0x0000000000000000
 
         // reference data
-        public string_r Name;
-        public Drawable Drawable;
+        public string_r? Name { get; set; }
+        public Drawable? Drawable { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -51,8 +51,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
-            this.DrawablePointer = (ulong)(this.Drawable != null ? this.Drawable.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
+            this.DrawablePointer = (ulong)(this.Drawable?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_0h);

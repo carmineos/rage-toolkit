@@ -10,7 +10,7 @@ namespace RageLib.GTA5.Resources.PC.Drawables
     // crBoneData ?
     public class BoneData : ResourceSystemBlock
     {
-        public override long BlockLength => 0x10 + (Bones != null ? Bones.BlockLength : 0);
+        public override long BlockLength => 0x10 + (Bones?.BlockLength ?? 0);
 
         // structure data
         public uint BonesCount;

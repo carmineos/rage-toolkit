@@ -19,7 +19,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public uint Unknown_6Ch; // 0x00000000
 
         // reference data
-        public Animation Animation;
+        public Animation? Animation { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -47,7 +47,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         {
             base.Write(writer, parameters);
 
-            this.AnimationPointer = (ulong)(this.Animation != null ? this.Animation.BlockPosition : 0);
+            this.AnimationPointer = (ulong)(this.Animation?.BlockPosition ?? 0);
 
             writer.Write(this.AnimationPointer);
             writer.Write(this.StartTime);

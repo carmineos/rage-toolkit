@@ -29,7 +29,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public uint Unknown_4Ch; // 0x00000000
 
         // reference data
-        public string_r Name;
+        public string_r? Name { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

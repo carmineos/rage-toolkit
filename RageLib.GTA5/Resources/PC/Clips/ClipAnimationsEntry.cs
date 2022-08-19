@@ -16,7 +16,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public ulong AnimationPointer;
 
         // reference data
-        public Animation Animation;
+        public Animation? Animation { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -42,7 +42,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.AnimationPointer = (ulong)(this.Animation != null ? this.Animation.BlockPosition : 0);
+            this.AnimationPointer = (ulong)(this.Animation?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.StartTime);

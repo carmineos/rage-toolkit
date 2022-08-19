@@ -32,11 +32,11 @@ namespace RageLib.Resources.GTA5.PC.Nodes
         public uint Unknown_6Ch; // 0x00000000
 
         // reference data
-        public SimpleArray<Node> Nodes;
-        public SimpleArray<Unknown_ND_002> Unknown_28h_Data;
-        public SimpleArray<Unknown_ND_003> Unknown_38h_Data;
-        public SimpleArray<byte> Unknown_40h_Data;
-        public SimpleArray<Unknown_ND_004> Unknown_50h_Data;
+        public SimpleArray<Node>? Nodes { get; set; }
+        public SimpleArray<Unknown_ND_002>? Unknown_28h_Data { get; set; }
+        public SimpleArray<Unknown_ND_003>? Unknown_38h_Data { get; set; }
+        public SimpleArray<byte>? Unknown_40h_Data { get; set; }
+        public SimpleArray<Unknown_ND_004>? Unknown_50h_Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -98,17 +98,17 @@ namespace RageLib.Resources.GTA5.PC.Nodes
             base.Write(writer, parameters);
 
             // update structure data
-            this.NodesPointer = (ulong)(this.Nodes != null ? this.Nodes.BlockPosition : 0);
+            this.NodesPointer = (ulong)(this.Nodes?.BlockPosition ?? 0);
             this.NodesCount = (uint)(this.Nodes != null ? this.Nodes.Count : 0);
-            this.Unknown_28h_Pointer = (ulong)(this.Unknown_28h_Data != null ? this.Unknown_28h_Data.BlockPosition : 0);
+            this.Unknown_28h_Pointer = (ulong)(this.Unknown_28h_Data?.BlockPosition ?? 0);
             this.DataPointer1Length = (uint)(this.Unknown_28h_Data != null ? this.Unknown_28h_Data.Count : 0);
-            this.Unknown_38h_Pointer = (ulong)(this.Unknown_38h_Data != null ? this.Unknown_38h_Data.BlockPosition : 0);
-            this.Unknown_40h_Pointer = (ulong)(this.Unknown_40h_Data != null ? this.Unknown_40h_Data.BlockPosition : 0);
-            this.Unknown_50h_Pointer = (ulong)(this.Unknown_50h_Data != null ? this.Unknown_50h_Data.BlockPosition : 0);
-            this.cnt5a = (ushort)(this.Unknown_50h_Data != null ? this.Unknown_50h_Data.Count : 0);
-            this.cnt5b = (ushort)(this.Unknown_50h_Data != null ? this.Unknown_50h_Data.Count : 0);
-            this.len4 = (uint)(this.Unknown_38h_Data != null ? this.Unknown_38h_Data.Count : 0);
-            this.len5 = (uint)(this.Unknown_40h_Data != null ? this.Unknown_40h_Data.Count : 0);
+            this.Unknown_38h_Pointer = (ulong)(this.Unknown_38h_Data?.BlockPosition ?? 0);
+            this.Unknown_40h_Pointer = (ulong)(this.Unknown_40h_Data?.BlockPosition ?? 0);
+            this.Unknown_50h_Pointer = (ulong)(this.Unknown_50h_Data?.BlockPosition ?? 0);
+            this.cnt5a = (ushort)(this.Unknown_50h_Data?.Count ?? 0);
+            this.cnt5b = (ushort)(this.Unknown_50h_Data?.Count ?? 0);
+            this.len4 = (uint)(this.Unknown_38h_Data?.Count ?? 0);
+            this.len5 = (uint)(this.Unknown_40h_Data?.Count ?? 0);
 
             // write structure data
             writer.Write(this.NodesPointer);

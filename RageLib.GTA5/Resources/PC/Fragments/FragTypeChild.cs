@@ -47,9 +47,9 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_F8h; // 0x0000000000000000
 
         // reference data
-        public FragDrawable PristineDrawable;
-        public FragDrawable DamagedDrawable;
-        public EvtSet EvtSet;
+        public FragDrawable? PristineDrawable { get; set; }
+        public FragDrawable? DamagedDrawable { get; set; }
+        public EvtSet? EvtSet { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -114,9 +114,9 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             base.Write(writer, parameters);
 
             // update structure data
-            this.PristineDrawablePointer = (ulong)(this.PristineDrawable != null ? this.PristineDrawable.BlockPosition : 0);
-            this.DamagedDrawablePointer = (ulong)(this.DamagedDrawable != null ? this.DamagedDrawable.BlockPosition : 0);
-            this.EvtSetPointer = (ulong)(this.EvtSet != null ? this.EvtSet.BlockPosition : 0);
+            this.PristineDrawablePointer = (ulong)(this.PristineDrawable?.BlockPosition ?? 0);
+            this.DamagedDrawablePointer = (ulong)(this.DamagedDrawable?.BlockPosition ?? 0);
+            this.EvtSetPointer = (ulong)(this.EvtSet?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.PristineMass);

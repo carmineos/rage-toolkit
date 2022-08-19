@@ -26,11 +26,11 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public ulong Unknown_78h; // 0x0000000000000000
 
         // reference data
-        public ClothBridgeSimGfx BridgeSimGfx;
-        public MorphController MorphController;
-        public VerletCloth VerletCloth1;
-        public VerletCloth VerletCloth2;
-        public VerletCloth VerletCloth3;
+        public ClothBridgeSimGfx? BridgeSimGfx { get; set; }
+        public MorphController? MorphController { get; set; }
+        public VerletCloth? VerletCloth1 { get; set; }
+        public VerletCloth? VerletCloth2 { get; set; }
+        public VerletCloth? VerletCloth3 { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -79,11 +79,11 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Write(writer, parameters);
 
             // update structure data
-            this.BridgeSimGfxPointer = (ulong)(this.BridgeSimGfx != null ? this.BridgeSimGfx.BlockPosition : 0);
-            this.MorphControllerPointer = (ulong)(this.MorphController != null ? this.MorphController.BlockPosition : 0);
-            this.VerletCloth1Pointer = (ulong)(this.VerletCloth1 != null ? this.VerletCloth1.BlockPosition : 0);
-            this.VerletCloth2Pointer = (ulong)(this.VerletCloth2 != null ? this.VerletCloth2.BlockPosition : 0);
-            this.VerletCloth3Pointer = (ulong)(this.VerletCloth3 != null ? this.VerletCloth3.BlockPosition : 0);
+            this.BridgeSimGfxPointer = (ulong)(this.BridgeSimGfx?.BlockPosition ?? 0);
+            this.MorphControllerPointer = (ulong)(this.MorphController?.BlockPosition ?? 0);
+            this.VerletCloth1Pointer = (ulong)(this.VerletCloth1?.BlockPosition ?? 0);
+            this.VerletCloth2Pointer = (ulong)(this.VerletCloth2?.BlockPosition ?? 0);
+            this.VerletCloth3Pointer = (ulong)(this.VerletCloth3?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.BridgeSimGfxPointer);

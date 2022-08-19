@@ -29,8 +29,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_148h; // 0x0000000000000000
 
         // reference data
-        public Bound Bound;
-        public string_r Name;
+        public Bound? Bound { get; set; }
+        public string_r? Name { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -70,8 +70,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             base.Write(writer, parameters);
 
             // update structure data
-            this.BoundPointer = (ulong)(this.Bound != null ? this.Bound.BlockPosition : 0);
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
+            this.BoundPointer = (ulong)(this.Bound?.BlockPosition ?? 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_A8h);

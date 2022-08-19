@@ -55,8 +55,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public uint Unknown_ACh; // 0x00000000
 
         // reference data
-        public ResourcePointerArray64<JointType> JointTypes;
-        public SimpleArray<Vector4> p2data;
+        public ResourcePointerArray64<JointType>? JointTypes { get; set; }
+        public SimpleArray<Vector4>? p2data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -126,8 +126,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             base.Write(writer, parameters);
 
             // update structure data
-            this.JointTypesPointer = (ulong)(this.JointTypes != null ? this.JointTypes.BlockPosition : 0);
-            this.p2 = (ulong)(this.p2data != null ? this.p2data.BlockPosition : 0);
+            this.JointTypesPointer = (ulong)(this.JointTypes?.BlockPosition ?? 0);
+            this.p2 = (ulong)(this.p2data?.BlockPosition ?? 0);
             //this.c1 = (byte)(this.p2data != null ? this.p2data.Count : 0);
             //this.c2 = (byte)(this.p1data != null ? this.p1data.Count : 0);
 

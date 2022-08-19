@@ -26,8 +26,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint Unknown_3Ch; // 0x00000000
 
         // reference data
-        public ResourceSimpleArray<JointRotationLimit> RotationLimits;
-        public ResourceSimpleArray<JointTranslationLimit> TranslationLimits;
+        public ResourceSimpleArray<JointRotationLimit>? RotationLimits { get; set; }
+        public ResourceSimpleArray<JointTranslationLimit>? TranslationLimits { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -69,10 +69,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Write(writer, parameters);
 
             // update structure data
-            this.RotationLimitsPointer = (ulong)(this.RotationLimits != null ? this.RotationLimits.BlockPosition : 0);
-            this.TranslationLimitsPointer = (ulong)(this.TranslationLimits != null ? this.TranslationLimits.BlockPosition : 0);
-            this.RotationLimitsCount = (ushort)(this.RotationLimits != null ? this.RotationLimits.Count : 0);
-            this.TranslationLimitsCount = (ushort)(this.TranslationLimits != null ? this.TranslationLimits.Count : 0);
+            this.RotationLimitsPointer = (ulong)(this.RotationLimits?.BlockPosition ?? 0);
+            this.TranslationLimitsPointer = (ulong)(this.TranslationLimits?.BlockPosition ?? 0);
+            this.RotationLimitsCount = (ushort)(this.RotationLimits?.Count ?? 0);
+            this.TranslationLimitsCount = (ushort)(this.TranslationLimits?.Count ?? 0);
 
             // write structure data
             writer.Write(this.RotationLimitsPointer);

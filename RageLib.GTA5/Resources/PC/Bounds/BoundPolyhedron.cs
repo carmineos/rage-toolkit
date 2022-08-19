@@ -36,12 +36,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ulong Unknown_E8h; // 0x0000000000000000
 
         // reference data
-        public SimpleArray<BoundVertex> ShrunkVertices;
-        public SimpleArray<BoundPrimitive> Primitives;
-        public SimpleArray<BoundVertex> Vertices;
-        public SimpleArray<uint> VerticesColors;
-        public SimpleArray<uint> Unknown_C0h_Data;
-        public SimpleArrayArray64<uint> Unknown_C8h_Data;
+        public SimpleArray<BoundVertex>? ShrunkVertices { get; set; }
+        public SimpleArray<BoundPrimitive>? Primitives { get; set; }
+        public SimpleArray<BoundVertex>? Vertices { get; set; }
+        public SimpleArray<uint>? VerticesColors { get; set; }
+        public SimpleArray<uint>? Unknown_C0h_Data { get; set; }
+        public SimpleArrayArray64<uint>? Unknown_C8h_Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -107,15 +107,15 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // update structure data
-            this.ShrunkVerticesPointer = (ulong)(this.ShrunkVertices != null ? this.ShrunkVertices.BlockPosition : 0);
-            this.VerticesCount1 = (uint)(this.Vertices != null ? this.Vertices.Count : 0);
-            this.PrimitivesPointer = (ulong)(this.Primitives != null ? this.Primitives.BlockPosition : 0);
-            this.VerticesPointer = (ulong)(this.Vertices != null ? this.Vertices.BlockPosition : 0);
-            this.VerticesColorsPointer = (ulong)(this.VerticesColors != null ? this.VerticesColors.BlockPosition : 0);
-            this.Unknown_C0h_Pointer = (ulong)(this.Unknown_C0h_Data != null ? this.Unknown_C0h_Data.BlockPosition : 0);
-            this.Unknown_C8h_Pointer = (ulong)(this.Unknown_C8h_Data != null ? this.Unknown_C8h_Data.BlockPosition : 0);
-            this.VerticesCount2 = (uint)(this.Vertices != null ? this.Vertices.Count : 0);
-            this.PrimitivesCount = (uint)(this.Primitives != null ? this.Primitives.Count : 0);
+            this.ShrunkVerticesPointer = (ulong)(this.ShrunkVertices?.BlockPosition ?? 0);
+            this.VerticesCount1 = (uint)(this.Vertices?.Count ?? 0);
+            this.PrimitivesPointer = (ulong)(this.Primitives?.BlockPosition ?? 0);
+            this.VerticesPointer = (ulong)(this.Vertices?.BlockPosition ?? 0);
+            this.VerticesColorsPointer = (ulong)(this.VerticesColors?.BlockPosition ?? 0);
+            this.Unknown_C0h_Pointer = (ulong)(this.Unknown_C0h_Data?.BlockPosition ?? 0);
+            this.Unknown_C8h_Pointer = (ulong)(this.Unknown_C8h_Data?.BlockPosition ?? 0);
+            this.VerticesCount2 = (uint)(this.Vertices?.Count ?? 0);
+            this.PrimitivesCount = (uint)(this.Primitives?.Count ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_70h);

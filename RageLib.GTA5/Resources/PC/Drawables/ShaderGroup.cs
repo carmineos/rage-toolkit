@@ -26,7 +26,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint Unknown_3Ch; // 0x00000000
 
         // reference data
-        public PgDictionary64<TextureDX11> TextureDictionary;
+        public PgDictionary64<TextureDX11>? TextureDictionary { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -69,7 +69,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Write(writer, parameters);
 
             // update structure data
-            this.TextureDictionaryPointer = (ulong)(this.TextureDictionary != null ? this.TextureDictionary.BlockPosition : 0);
+            this.TextureDictionaryPointer = (ulong)(this.TextureDictionary?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.TextureDictionaryPointer);

@@ -52,19 +52,19 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_128h; // 0x0000000000000000
 
         // reference data
-        public ArticulatedBodyType ArticulatedBodyType;
-        public SimpleArray<float> Unknown_28h_Data;
-        public FragTypeGroupNames GroupNames;
-        public ResourcePointerArray64<FragTypeGroup> Groups;
-        public ResourcePointerArray64<FragTypeChild> Children;
-        public Archetype PristineArchetype;
-        public Archetype DamagedArchetype;
-        public Bound Bound;
-        public SimpleArray<Vector4> PristineAngInertia;
-        public SimpleArray<Vector4> DamagedAngInertia;
-        public Unknown_F_001 ChildrenTransforms;
-        public SimpleArray<byte> Unknown_108h_Data;
-        public SimpleArray<byte> Unknown_110h_Data;
+        public ArticulatedBodyType? ArticulatedBodyType { get; set; }
+        public SimpleArray<float>? Unknown_28h_Data { get; set; }
+        public FragTypeGroupNames? GroupNames { get; set; }
+        public ResourcePointerArray64<FragTypeGroup>? Groups { get; set; }
+        public ResourcePointerArray64<FragTypeChild>? Children { get; set; }
+        public Archetype? PristineArchetype { get; set; }
+        public Archetype? DamagedArchetype { get; set; }
+        public Bound? Bound { get; set; }
+        public SimpleArray<Vector4>? PristineAngInertia { get; set; }
+        public SimpleArray<Vector4>? DamagedAngInertia { get; set; }
+        public Unknown_F_001? ChildrenTransforms { get; set; }
+        public SimpleArray<byte>? Unknown_108h_Data { get; set; }
+        public SimpleArray<byte>? Unknown_110h_Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -169,19 +169,19 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             base.Write(writer, parameters);
 
             // update structure data
-            this.ArticulatedBodyTypePointer = (ulong)(this.ArticulatedBodyType != null ? this.ArticulatedBodyType.BlockPosition : 0);
-            this.Unknown_28h_Pointer = (ulong)(this.Unknown_28h_Data != null ? this.Unknown_28h_Data.BlockPosition : 0);
-            this.GroupNamesPointer = (ulong)(this.GroupNames != null ? this.GroupNames.BlockPosition : 0);
-            this.GroupsPointer = (ulong)(this.Groups != null ? this.Groups.BlockPosition : 0);
-            this.ChildrenPointer = (ulong)(this.Children != null ? this.Children.BlockPosition : 0);
-            this.PristineArchetypePointer = (ulong)(this.PristineArchetype != null ? this.PristineArchetype.BlockPosition : 0);
-            this.DamagedArchetypePointer = (ulong)(this.DamagedArchetype != null ? this.DamagedArchetype.BlockPosition : 0);
-            this.BoundPointer = (ulong)(this.Bound != null ? this.Bound.BlockPosition : 0);
-            this.PristineAngInertiaPointer = (ulong)(this.PristineAngInertia != null ? this.PristineAngInertia.BlockPosition : 0);
-            this.DamagedAngInertiaPointer = (ulong)(this.DamagedAngInertia != null ? this.DamagedAngInertia.BlockPosition : 0);
-            this.ChildrenTransformsPointer = (ulong)(this.ChildrenTransforms != null ? this.ChildrenTransforms.BlockPosition : 0);
-            this.Unknown_108h_Pointer = (ulong)(this.Unknown_108h_Data != null ? this.Unknown_108h_Data.BlockPosition : 0);
-            this.Unknown_110h_Pointer = (ulong)(this.Unknown_110h_Data != null ? this.Unknown_110h_Data.BlockPosition : 0);
+            this.ArticulatedBodyTypePointer = (ulong)(this.ArticulatedBodyType?.BlockPosition ?? 0);
+            this.Unknown_28h_Pointer = (ulong)(this.Unknown_28h_Data?.BlockPosition ?? 0);
+            this.GroupNamesPointer = (ulong)(this.GroupNames?.BlockPosition ?? 0);
+            this.GroupsPointer = (ulong)(this.Groups?.BlockPosition ?? 0);
+            this.ChildrenPointer = (ulong)(this.Children?.BlockPosition ?? 0);
+            this.PristineArchetypePointer = (ulong)(this.PristineArchetype?.BlockPosition ?? 0);
+            this.DamagedArchetypePointer = (ulong)(this.DamagedArchetype?.BlockPosition ?? 0);
+            this.BoundPointer = (ulong)(this.Bound?.BlockPosition ?? 0);
+            this.PristineAngInertiaPointer = (ulong)(this.PristineAngInertia?.BlockPosition ?? 0);
+            this.DamagedAngInertiaPointer = (ulong)(this.DamagedAngInertia?.BlockPosition ?? 0);
+            this.ChildrenTransformsPointer = (ulong)(this.ChildrenTransforms?.BlockPosition ?? 0);
+            this.Unknown_108h_Pointer = (ulong)(this.Unknown_108h_Data?.BlockPosition ?? 0);
+            this.Unknown_110h_Pointer = (ulong)(this.Unknown_110h_Data?.BlockPosition ?? 0);
             //this.vvv1 = (byte)(this.pxxxxx_2data != null ? this.pxxxxx_2data.Count : 0);
             //this.vvv2 = (byte)(this.pxxxxx_3data != null ? this.pxxxxx_3data.Count : 0);
             //this.GroupsCount = (byte)(this.Groups != null ? this.Groups.Count : 0);

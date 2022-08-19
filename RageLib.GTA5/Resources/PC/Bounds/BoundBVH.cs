@@ -18,7 +18,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ulong Unknown_148h; // 0x0000000000000000
 
         // reference data
-        public BVH BVH;
+        public BVH? BVH { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

@@ -31,9 +31,9 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public uint Unknown_4Ch; // 0x00000000       
 
         // reference data
-        public string_r Name;
-        public Tags Tags;
-        public ResourceHashMap<Property> Properties;
+        public string_r? Name { get; set; }
+        public Tags? Tags { get; set; }
+        public ResourceHashMap<Property>? Properties { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -80,11 +80,11 @@ namespace RageLib.Resources.GTA5.PC.Clips
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
             this.NameLength1 = (ushort)(this.Name != null ? this.Name.Value.Length : 0);
             this.NameLength2 = (ushort)(this.Name != null ? this.Name.Value.Length + 1 : 0);
-            this.TagsPointer = (ulong)(this.Tags != null ? this.Tags.BlockPosition : 0);
-            this.PropertiesPointer = (ulong)(this.Properties != null ? this.Properties.BlockPosition : 0);
+            this.TagsPointer = (ulong)(this.Tags?.BlockPosition ?? 0);
+            this.PropertiesPointer = (ulong)(this.Properties?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Type);

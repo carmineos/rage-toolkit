@@ -44,10 +44,10 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public uint Unknown_62Ch; // 0x00000000
 
         // reference data
-        public string_r Name;
-        public Domain p2data;
-        public Domain p3data;
-        public Domain p4data;
+        public string_r? Name { get; set; }
+        public Domain? p2data { get; set; }
+        public Domain? p3data { get; set; }
+        public Domain? p4data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -109,10 +109,10 @@ namespace RageLib.Resources.GTA5.PC.Particles
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
-            this.p2 = (ulong)(this.p2data != null ? this.p2data.BlockPosition : 0);
-            this.p3 = (ulong)(this.p3data != null ? this.p3data.BlockPosition : 0);
-            this.p4 = (ulong)(this.p4data != null ? this.p4data.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
+            this.p2 = (ulong)(this.p2data?.BlockPosition ?? 0);
+            this.p3 = (ulong)(this.p3data?.BlockPosition ?? 0);
+            this.p4 = (ulong)(this.p4data?.BlockPosition ?? 0);
             //this.refcnt2 = (ushort)(this.refs != null ? this.refs.Count : 0);
 
             // write structure data

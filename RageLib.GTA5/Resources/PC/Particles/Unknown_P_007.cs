@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public ulong p1;
 
         // reference data
-        public Unknown_P_003 p1data;
+        public Unknown_P_003? p1data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -38,7 +38,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.p1 = (ulong)(this.p1data != null ? this.p1data.BlockPosition : 0);
+            this.p1 = (ulong)(this.p1data?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Hash);

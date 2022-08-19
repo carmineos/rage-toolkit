@@ -19,8 +19,8 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public uint Unknown_1Ch; // 0x00000000
 
         // reference data
-        public SimpleArray<ushort> p1data;
-        public SimpleArray<SectorDataUnk> p2data;
+        public SimpleArray<ushort>? p1data { get; set; }
+        public SimpleArray<SectorDataUnk>? p2data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -53,10 +53,10 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.p1 = (ulong)(this.p1data != null ? this.p1data.BlockPosition : 0);
-            this.p2 = (ulong)(this.p2data != null ? this.p2data.BlockPosition : 0);
-            this.c2 = (ushort)(this.p1data != null ? this.p1data.Count : 0);
-            this.c3 = (ushort)(this.p2data != null ? this.p2data.Count : 0);
+            this.p1 = (ulong)(this.p1data?.BlockPosition ?? 0);
+            this.p2 = (ulong)(this.p2data?.BlockPosition ?? 0);
+            this.c2 = (ushort)(this.p1data?.Count ?? 0);
+            this.c3 = (ushort)(this.p2data?.Count ?? 0);
 
             // write structure data
             writer.Write(this.c1);

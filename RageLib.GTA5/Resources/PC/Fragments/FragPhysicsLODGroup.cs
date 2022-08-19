@@ -17,9 +17,9 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_28h; // 0x0000000000000000
 
         // reference data
-        public FragPhysicsLOD PhysicsLOD1;
-        public FragPhysicsLOD PhysicsLOD2;
-        public FragPhysicsLOD PhysicsLOD3;
+        public FragPhysicsLOD? PhysicsLOD1 { get; set; }
+        public FragPhysicsLOD? PhysicsLOD2 { get; set; }
+        public FragPhysicsLOD? PhysicsLOD3 { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -54,9 +54,9 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             base.Write(writer, parameters);
 
             // update structure data
-            this.PhysicsLOD1Pointer = (ulong)(this.PhysicsLOD1 != null ? this.PhysicsLOD1.BlockPosition : 0);
-            this.PhysicsLOD2Pointer = (ulong)(this.PhysicsLOD2 != null ? this.PhysicsLOD2.BlockPosition : 0);
-            this.PhysicsLOD3Pointer = (ulong)(this.PhysicsLOD3 != null ? this.PhysicsLOD3.BlockPosition : 0);
+            this.PhysicsLOD1Pointer = (ulong)(this.PhysicsLOD1?.BlockPosition ?? 0);
+            this.PhysicsLOD2Pointer = (ulong)(this.PhysicsLOD2?.BlockPosition ?? 0);
+            this.PhysicsLOD3Pointer = (ulong)(this.PhysicsLOD3?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.PhysicsLOD1Pointer);

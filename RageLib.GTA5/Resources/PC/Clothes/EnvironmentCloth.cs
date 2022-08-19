@@ -31,9 +31,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public uint Unknown_7Ch; // 0x00000000
 
         // reference data
-        public ClothInstanceTuning InstanceTuning;
-        public FragDrawable Drawable;
-        public ClothController Controller;
+        public ClothInstanceTuning? InstanceTuning { get; set; }
+        public FragDrawable? Drawable { get; set; }
+        public ClothController? Controller { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -78,9 +78,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Write(writer, parameters);
 
             // update structure data
-            this.InstanceTuningPointer = (ulong)(this.InstanceTuning != null ? this.InstanceTuning.BlockPosition : 0);
-            this.DrawablePointer = (ulong)(this.Drawable != null ? this.Drawable.BlockPosition : 0);
-            this.ControllerPointer = (ulong)(this.Controller != null ? this.Controller.BlockPosition : 0);
+            this.InstanceTuningPointer = (ulong)(this.InstanceTuning?.BlockPosition ?? 0);
+            this.DrawablePointer = (ulong)(this.Drawable?.BlockPosition ?? 0);
+            this.ControllerPointer = (ulong)(this.Controller?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.InstanceTuningPointer);

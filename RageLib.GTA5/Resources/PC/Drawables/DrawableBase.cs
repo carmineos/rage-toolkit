@@ -13,7 +13,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong ShaderGroupPointer;
 
         // reference data
-        public ShaderGroup ShaderGroup;
+        public ShaderGroup? ShaderGroup { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -39,7 +39,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Write(writer, parameters);
 
             // update structure data
-            this.ShaderGroupPointer = (ulong)(this.ShaderGroup != null ? this.ShaderGroup.BlockPosition : 0);
+            this.ShaderGroupPointer = (ulong)(this.ShaderGroup?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.ShaderGroupPointer);

@@ -61,15 +61,15 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_128h; // 0x0000000000000000
 
         // reference data
-        public FragDrawable PrimaryDrawable;
-        public ResourcePointerArray64<FragDrawable> DamagedDrawables;
-        public ResourcePointerArray64<string_r> DamagedDrawablesNames;
-        public string_r Name;
-        public MatrixSet MatrixSet;
-        public ResourcePointerArray64<GlassPaneModelInfo> GlassPaneModelInfos;
-        public FragPhysicsLODGroup PhysicsLODGroup;
-        public FragDrawable ClothDrawable;
-        public VehicleGlassWindowData VehicleGlassWindowData;
+        public FragDrawable? PrimaryDrawable { get; set; }
+        public ResourcePointerArray64<FragDrawable>? DamagedDrawables { get; set; }
+        public ResourcePointerArray64<string_r>? DamagedDrawablesNames { get; set; }
+        public string_r? Name { get; set; }
+        public MatrixSet? MatrixSet { get; set; }
+        public ResourcePointerArray64<GlassPaneModelInfo>? GlassPaneModelInfos { get; set; }
+        public FragPhysicsLODGroup? PhysicsLODGroup { get; set; }
+        public FragDrawable? ClothDrawable { get; set; }
+        public VehicleGlassWindowData? VehicleGlassWindowData { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -164,15 +164,15 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             base.Write(writer, parameters);
 
             // update structure data
-            this.PrimaryDrawablePointer = (ulong)(this.PrimaryDrawable != null ? this.PrimaryDrawable.BlockPosition : 0);
-            this.DamagedDrawablesPointer = (ulong)(this.DamagedDrawables != null ? this.DamagedDrawables.BlockPosition : 0);
-            this.DamagedDrawablesNamesPointer = (ulong)(this.DamagedDrawablesNames != null ? this.DamagedDrawablesNames.BlockPosition : 0);
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
-            this.MatrixSetPointer = (ulong)(this.MatrixSet != null ? this.MatrixSet.BlockPosition : 0);
-            this.GlassPaneModelInfosPointer = (ulong)(this.GlassPaneModelInfos != null ? this.GlassPaneModelInfos.BlockPosition : 0);
-            this.PhysicsLODGroupPointer = (ulong)(this.PhysicsLODGroup != null ? this.PhysicsLODGroup.BlockPosition : 0);
-            this.ClothDrawablePointer = (ulong)(this.ClothDrawable != null ? this.ClothDrawable.BlockPosition : 0);
-            this.VehicleGlassWindowDataPointer = (ulong)(this.VehicleGlassWindowData != null ? this.VehicleGlassWindowData.BlockPosition : 0);
+            this.PrimaryDrawablePointer = (ulong)(this.PrimaryDrawable?.BlockPosition ?? 0);
+            this.DamagedDrawablesPointer = (ulong)(this.DamagedDrawables?.BlockPosition ?? 0);
+            this.DamagedDrawablesNamesPointer = (ulong)(this.DamagedDrawablesNames?.BlockPosition ?? 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
+            this.MatrixSetPointer = (ulong)(this.MatrixSet?.BlockPosition ?? 0);
+            this.GlassPaneModelInfosPointer = (ulong)(this.GlassPaneModelInfos?.BlockPosition ?? 0);
+            this.PhysicsLODGroupPointer = (ulong)(this.PhysicsLODGroup?.BlockPosition ?? 0);
+            this.ClothDrawablePointer = (ulong)(this.ClothDrawable?.BlockPosition ?? 0);
+            this.VehicleGlassWindowDataPointer = (ulong)(this.VehicleGlassWindowData?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_10h);

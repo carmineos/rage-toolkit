@@ -31,9 +31,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint Unknown_2Ch; // 0x00000000
 
         // reference data
-        //public ResourceSimpleArray<ShaderParameter_GTA5_pc> Parameters;
-        //public SimpleArrayOFFSET<uint_r> ParameterHashes;
-        public ShaderParametersBlock_GTA5_pc ParametersList;
+        public ShaderParametersBlock_GTA5_pc? ParametersList { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -82,7 +80,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.ParametersPointer = (ulong)(this.ParametersList != null ? this.ParametersList.BlockPosition : 0);
+            this.ParametersPointer = (ulong)(this.ParametersList?.BlockPosition ?? 0);
             //this.ParametersPointer = (ulong)(this.Parameters != null ? this.Parameters.Position : 0);
             //this.ParameterCount = (byte)(this.Parameters != null ? this.Parameters.Count : 0);
 

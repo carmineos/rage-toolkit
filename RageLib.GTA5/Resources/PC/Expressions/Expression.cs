@@ -36,7 +36,7 @@ namespace RageLib.Resources.GTA5.PC.Expressions
         public uint Unknown_8Ch;
 
         // reference data
-        public string_r Name;
+        public string_r? Name { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -82,7 +82,7 @@ namespace RageLib.Resources.GTA5.PC.Expressions
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_10h);

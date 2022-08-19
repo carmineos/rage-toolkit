@@ -33,7 +33,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public uint Unknown_8Ch; // 0x00000000
 
         // reference data
-        public TextureData_GTA5_pc Data;
+        public TextureData_GTA5_pc? Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -81,7 +81,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
         {
             base.Write(writer, parameters);
 
-            this.DataPointer = (ulong)this.Data.BlockPosition;
+            this.DataPointer = (ulong)(this.Data?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Width);
@@ -111,7 +111,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            list.Add(Data);
+            if (Data is not null) list.Add(Data);
             return list.ToArray();
         }
     }

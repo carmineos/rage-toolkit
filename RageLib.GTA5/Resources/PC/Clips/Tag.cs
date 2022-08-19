@@ -15,7 +15,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public ulong TagsPointer;
 
         // reference data
-        public Tags Tags;
+        public Tags? Tags { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -43,7 +43,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
             base.Write(writer, parameters);
 
             // update structure data
-            this.TagsPointer = (ulong)(this.Tags != null ? this.Tags.BlockPosition : 0);
+            this.TagsPointer = (ulong)(this.Tags?.BlockPosition ?? 0);
 
             // write structure data         
             writer.Write(this.Unknown_40h);

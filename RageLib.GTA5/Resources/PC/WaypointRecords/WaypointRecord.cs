@@ -19,7 +19,7 @@ namespace RageLib.Resources.GTA5.PC.WaypointRecords
         public uint Unknown_2Ch; // 0x00000000
 
         // reference data
-        public SimpleArray<WaypointRecordEntry> Entries;
+        public SimpleArray<WaypointRecordEntry>? Entries { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

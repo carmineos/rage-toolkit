@@ -77,13 +77,13 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public uint Unknown_16Ch; // 0x00000000
 
         // reference data
-        public SimpleSplitArray<CompressedVertex> Vertices;
-        public SimpleSplitArray<ushort> Indices;
-        public SimpleSplitArray<AdjPoly> AdjPolys;
-        public SimpleSplitArray<Poly> Polys;
-        public Sector SectorTree;
-        public SimpleArray<Portal> Portals;
-        public SimpleArray<ushort> p8data;
+        public SimpleSplitArray<CompressedVertex>? Vertices { get; set; }
+        public SimpleSplitArray<ushort>? Indices { get; set; }
+        public SimpleSplitArray<AdjPoly>? AdjPolys { get; set; }
+        public SimpleSplitArray<Poly>? Polys { get; set; }
+        public Sector? SectorTree { get; set; }
+        public SimpleArray<Portal>? Portals { get; set; }
+        public SimpleArray<ushort>? p8data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -191,13 +191,13 @@ namespace RageLib.Resources.GTA5.PC.Navigations
             base.Write(writer, parameters);
 
             // update structure data
-            this.VerticesPointer = (ulong)(this.Vertices != null ? this.Vertices.BlockPosition : 0);
-            this.IndicesPointer = (ulong)(this.Indices != null ? this.Indices.BlockPosition : 0);
-            this.AdjPolysPointer = (ulong)(this.AdjPolys != null ? this.AdjPolys.BlockPosition : 0);
-            this.PolysPointer = (ulong)(this.Polys != null ? this.Polys.BlockPosition : 0);
-            this.SectorTreePointer = (ulong)(this.SectorTree != null ? this.SectorTree.BlockPosition : 0);
-            this.PortalsPointer = (ulong)(this.Portals != null ? this.Portals.BlockPosition : 0);
-            this.p8 = (ulong)(this.p8data != null ? this.p8data.BlockPosition : 0);
+            this.VerticesPointer = (ulong)(this.Vertices?.BlockPosition ?? 0);
+            this.IndicesPointer = (ulong)(this.Indices?.BlockPosition ?? 0);
+            this.AdjPolysPointer = (ulong)(this.AdjPolys?.BlockPosition ?? 0);
+            this.PolysPointer = (ulong)(this.Polys?.BlockPosition ?? 0);
+            this.SectorTreePointer = (ulong)(this.SectorTree?.BlockPosition ?? 0);
+            this.PortalsPointer = (ulong)(this.Portals?.BlockPosition ?? 0);
+            this.p8 = (ulong)(this.p8data?.BlockPosition ?? 0);
             // this.c0 = (uint)(this.p7data != null ? this.p7data.Count : 0);
             // this.c1 = (uint)(this.p8data != null ? this.p8data.Count : 0);
 

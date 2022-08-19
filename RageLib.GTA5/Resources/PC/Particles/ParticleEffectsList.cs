@@ -30,12 +30,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public uint Unknown_5Ch; // 0x00000000
 
         // reference data
-        public string_r Name;
-        public PgDictionary64<TextureDX11> TextureDictionary;
-        public PgDictionary64<Drawable> DrawableDictionary;
-        public PgDictionary64<ParticleRule> ParticleRuleDictionary;
-        public PgDictionary64<EffectRule> EffectRuleDictionary;
-        public PgDictionary64<EmitterRule> EmitterRuleDictionary;
+        public string_r? Name;
+        public PgDictionary64<TextureDX11>? TextureDictionary { get; set; }
+        public PgDictionary64<Drawable>? DrawableDictionary { get; set; }
+        public PgDictionary64<ParticleRule>? ParticleRuleDictionary { get; set; }
+        public PgDictionary64<EffectRule>? EffectRuleDictionary { get; set; }
+        public PgDictionary64<EmitterRule>? EmitterRuleDictionary { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -89,12 +89,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
-            this.TextureDictionaryPointer = (ulong)(this.TextureDictionary != null ? this.TextureDictionary.BlockPosition : 0);
-            this.DrawableDictionaryPointer = (ulong)(this.DrawableDictionary != null ? this.DrawableDictionary.BlockPosition : 0);
-            this.ParticleRuleDictionaryPointer = (ulong)(this.ParticleRuleDictionary != null ? this.ParticleRuleDictionary.BlockPosition : 0);
-            this.EmitterRuleDictionaryPointer = (ulong)(this.EffectRuleDictionary != null ? this.EffectRuleDictionary.BlockPosition : 0);
-            this.EffectRuleDictionaryPointer = (ulong)(this.EmitterRuleDictionary != null ? this.EmitterRuleDictionary.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
+            this.TextureDictionaryPointer = (ulong)(this.TextureDictionary?.BlockPosition ?? 0);
+            this.DrawableDictionaryPointer = (ulong)(this.DrawableDictionary?.BlockPosition ?? 0);
+            this.ParticleRuleDictionaryPointer = (ulong)(this.ParticleRuleDictionary?.BlockPosition ?? 0);
+            this.EmitterRuleDictionaryPointer = (ulong)(this.EffectRuleDictionary?.BlockPosition ?? 0);
+            this.EffectRuleDictionaryPointer = (ulong)(this.EmitterRuleDictionary?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.NamePointer);

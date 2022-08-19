@@ -26,8 +26,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ushort GeometriesCount;
 
         // reference data
-        public SimpleArray<Aabb> GeometriesBounds;
-        public SimpleArray<ushort> ShaderMapping;
+        public SimpleArray<Aabb>? GeometriesBounds { get; set; }
+        public SimpleArray<ushort>? ShaderMapping { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -67,8 +67,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Write(writer, parameters);
 
             // update structure data
-            this.GeometriesBoundsPointer = (ulong)(this.GeometriesBounds != null ? this.GeometriesBounds.BlockPosition : 0);
-            this.ShaderMappingPointer = (ulong)(this.ShaderMapping != null ? this.ShaderMapping.BlockPosition : 0);
+            this.GeometriesBoundsPointer = (ulong)(this.GeometriesBounds?.BlockPosition ?? 0);
+            this.ShaderMappingPointer = (ulong)(this.ShaderMapping?.BlockPosition ?? 0);
 
             // write structure data
             writer.WriteBlock(this.Geometries);

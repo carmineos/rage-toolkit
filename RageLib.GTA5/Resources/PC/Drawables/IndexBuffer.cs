@@ -28,7 +28,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong Unknown_58h; // 0x0000000000000000
 
         // reference data
-        public IndexData_GTA5_pc Indices;
+        public IndexData_GTA5_pc? Indices { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -67,7 +67,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // update structure data
             this.IndicesCount = (uint)(this.Indices != null ? this.Indices.BlockLength / 2 : 0);
-            this.IndicesPointer = (ulong)(this.Indices != null ? this.Indices.BlockPosition : 0);
+            this.IndicesPointer = (ulong)(this.Indices?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.IndicesCount);
@@ -97,7 +97,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
     public class IndexData_GTA5_pc : ResourceSystemBlock
     {
-        public override long BlockLength => Data != null ? Data.Length : 0;
+        public override long BlockLength => Data?.Length ?? 0;
 
         // structure data
         public byte[] Data;

@@ -19,9 +19,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public ulong Unknown_38h; // 0x0000000000000000
 
         // reference data
-        public Unknown_C_006 Unknown_18h_Data;
-        public Unknown_C_006 Unknown_20h_Data;
-        public Unknown_C_006 Unknown_28h_Data;
+        public Unknown_C_006? Unknown_18h_Data { get; set; }
+        public Unknown_C_006? Unknown_20h_Data { get; set; }
+        public Unknown_C_006? Unknown_28h_Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -58,9 +58,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Write(writer, parameters);
 
             // update structure data
-            this.Unknown_18h_Pointer = (ulong)(this.Unknown_18h_Data != null ? this.Unknown_18h_Data.BlockPosition : 0);
-            this.Unknown_20h_Pointer = (ulong)(this.Unknown_20h_Data != null ? this.Unknown_20h_Data.BlockPosition : 0);
-            this.Unknown_28h_Pointer = (ulong)(this.Unknown_28h_Data != null ? this.Unknown_28h_Data.BlockPosition : 0);
+            this.Unknown_18h_Pointer = (ulong)(this.Unknown_18h_Data?.BlockPosition ?? 0);
+            this.Unknown_20h_Pointer = (ulong)(this.Unknown_20h_Data?.BlockPosition ?? 0);
+            this.Unknown_28h_Pointer = (ulong)(this.Unknown_28h_Data?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_10h);

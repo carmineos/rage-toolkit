@@ -33,9 +33,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong Unknown_78h; // 0x0000000000000000
 
         // reference data
-        public VertexData_GTA5_pc Data1;
-        public VertexData_GTA5_pc Data2;
-        public VertexDeclaration Info;
+        public VertexData_GTA5_pc? Data1 { get; set; }
+        public VertexData_GTA5_pc? Data2 { get; set; }
+        public VertexDeclaration? Info { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -90,9 +90,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Write(writer, parameters);
 
             // update structure data
-            this.DataPointer1 = (ulong)(this.Data1 != null ? this.Data1.BlockPosition : 0);
-            this.DataPointer2 = (ulong)(this.Data2 != null ? this.Data2.BlockPosition : 0);
-            this.InfoPointer = (ulong)(this.Info != null ? this.Info.BlockPosition : 0);
+            this.DataPointer1 = (ulong)(this.Data1?.BlockPosition ?? 0);
+            this.DataPointer2 = (ulong)(this.Data2?.BlockPosition ?? 0);
+            this.InfoPointer = (ulong)(this.Info?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.VertexStride);
@@ -130,7 +130,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
     public class VertexData_GTA5_pc : ResourceSystemBlock
     {
-        public override long BlockLength => Data != null ? Data.Length : 0;
+        public override long BlockLength => Data?.Length ?? 0;
 
         // structure data
         public byte[] Data;

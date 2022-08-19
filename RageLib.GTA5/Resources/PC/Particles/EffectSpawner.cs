@@ -36,8 +36,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public uint Unknown_6Ch;
 
         // reference data
-        public EffectRule EmitterRule;
-        public string_r Name;
+        public EffectRule? EmitterRule { get; set; }
+        public string_r? Name { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -87,8 +87,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
             base.Write(writer, parameters);
 
             // update structure data
-            this.EmitterRulePointer = (ulong)(this.EmitterRule != null ? this.EmitterRule.BlockPosition : 0);
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
+            this.EmitterRulePointer = (ulong)(this.EmitterRule?.BlockPosition ?? 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_10h);

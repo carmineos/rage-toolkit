@@ -30,7 +30,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong Unknown_48h; // 0x0000000000000000
 
         // reference data
-        public string_r Name;
+        public string_r? Name { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

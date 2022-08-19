@@ -19,8 +19,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong BoundPointer;
 
         // reference data
-        public string_r Name;
-        public Bound Bound;
+        public string_r? Name { get; set; }
+        public Bound? Bound { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -52,8 +52,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
-            this.BoundPointer = (ulong)(this.Bound != null ? this.Bound.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
+            this.BoundPointer = (ulong)(this.Bound?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.NamePointer);

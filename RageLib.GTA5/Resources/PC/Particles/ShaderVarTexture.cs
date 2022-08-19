@@ -22,8 +22,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public uint Unknown_3Ch;
 
         // reference data
-        public TextureDX11 Texture;
-        public string_r Name;
+        public TextureDX11? Texture { get; set; }
+        public string_r? Name { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -59,8 +59,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
             base.Write(writer, parameters);
 
             // update structure data
-            this.TexturePointer = (ulong)(this.Texture != null ? this.Texture.BlockPosition : 0);
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
+            this.TexturePointer = (ulong)(this.Texture?.BlockPosition ?? 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_18h);

@@ -94,9 +94,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public uint Unknown_17Ch; // 0x00000000
 
         // reference data
-        public Bound Bound;
-        public EnvClothVerletBehavior Behavior;
-        public Unknown_C_007 Unknown_140h_Data;
+        public Bound? Bound { get; set; }
+        public EnvClothVerletBehavior? Behavior { get; set; }
+        public Unknown_C_007? Unknown_140h_Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -204,9 +204,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Write(writer, parameters);
 
             // update structure data
-            this.BoundPointer = (ulong)(this.Bound != null ? this.Bound.BlockPosition : 0);
-            this.BehaviorPointer = (ulong)(this.Behavior != null ? this.Behavior.BlockPosition : 0);
-            this.Unknown_140h_Pointer = (ulong)(this.Unknown_140h_Data != null ? this.Unknown_140h_Data.BlockPosition : 0);
+            this.BoundPointer = (ulong)(this.Bound?.BlockPosition ?? 0);
+            this.BehaviorPointer = (ulong)(this.Behavior?.BlockPosition ?? 0);
+            this.Unknown_140h_Pointer = (ulong)(this.Unknown_140h_Data?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_10h);

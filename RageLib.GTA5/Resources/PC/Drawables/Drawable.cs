@@ -1,4 +1,4 @@
-// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+// Copyright � Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Resources.Common;
 using System;
@@ -21,9 +21,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong PrimaryLodPointer;
 
         // reference data
-        public SkeletonData Skeleton;
-        public Joints Joints;
-        public Lod PrimaryLod;
+        public SkeletonData? Skeleton { get; set; }
+        public Joints? Joints { get; set; }
+        public Lod? PrimaryLod { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -61,9 +61,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Write(writer, parameters);
 
             // update structure data
-            this.SkeletonPointer = (ulong)(this.Skeleton != null ? this.Skeleton.BlockPosition : 0);
-            this.JointsPointer = (ulong)(this.Joints != null ? this.Joints.BlockPosition : 0);
-            this.PrimaryLodPointer = (ulong)(this.PrimaryLod != null ? this.PrimaryLod.BlockPosition : 0);
+            this.SkeletonPointer = (ulong)(this.Skeleton?.BlockPosition ?? 0);
+            this.JointsPointer = (ulong)(this.Joints?.BlockPosition ?? 0);
+            this.PrimaryLodPointer = (ulong)(this.PrimaryLod?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.SkeletonPointer);

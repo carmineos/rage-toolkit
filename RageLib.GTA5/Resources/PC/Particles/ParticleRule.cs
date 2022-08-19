@@ -63,9 +63,9 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public ulong Unknown_238h; // 0x0000000000000000
 
         // reference data
-        public string_r Name;
-        public string_r ShaderName;
-        public string_r ShaderTechniqueName;
+        public string_r? Name { get; set; }
+        public string_r? ShaderName { get; set; }
+        public string_r? ShaderTechniqueName { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -143,9 +143,9 @@ namespace RageLib.Resources.GTA5.PC.Particles
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name != null ? this.Name.BlockPosition : 0);
-            this.ShaderNamePointer = (ulong)(this.ShaderName != null ? this.ShaderName.BlockPosition : 0);
-            this.ShaderTechniqueNamePointer = (ulong)(this.ShaderTechniqueName != null ? this.ShaderTechniqueName.BlockPosition : 0);
+            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
+            this.ShaderNamePointer = (ulong)(this.ShaderName?.BlockPosition ?? 0);
+            this.ShaderTechniqueNamePointer = (ulong)(this.ShaderTechniqueName?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_10h);

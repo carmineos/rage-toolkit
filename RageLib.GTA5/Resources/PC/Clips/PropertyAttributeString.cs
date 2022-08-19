@@ -17,7 +17,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public uint Unknown_2Ch; // 0x00000000
 
         // reference data
-        public string_r Value;
+        public string_r? Value { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -46,7 +46,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
             base.Write(writer, parameters);
 
             // update structure data
-            this.ValuePointer = (ulong)(this.Value != null ? this.Value.BlockPosition : 0);
+            this.ValuePointer = (ulong)(this.Value?.BlockPosition ?? 0);
             this.ValueLength1 = (ushort)(this.Value != null ? this.Value.Value.Length : 0);
             this.ValueLength2 = (ushort)(this.Value != null ? this.Value.Value.Length + 1 : 0);
 

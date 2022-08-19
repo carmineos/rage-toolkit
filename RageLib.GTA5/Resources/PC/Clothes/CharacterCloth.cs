@@ -33,8 +33,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public ulong Unknown_C8h; // 0x0000000000000000
 
         // reference data
-        public CharacterClothController Controller;
-        public BoundComposite BoundComposite;
+        public CharacterClothController? Controller { get; set; }
+        public BoundComposite? BoundComposite { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -77,8 +77,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Write(writer, parameters);
 
             // update structure data
-            this.ControllerPointer = (ulong)(this.Controller != null ? this.Controller.BlockPosition : 0);
-            this.BoundCompositePointer = (ulong)(this.BoundComposite != null ? this.BoundComposite.BlockPosition : 0);
+            this.ControllerPointer = (ulong)(this.Controller?.BlockPosition ?? 0);
+            this.BoundCompositePointer = (ulong)(this.BoundComposite?.BlockPosition ?? 0);
 
             // write structure data
             writer.WriteBlock(this.Poses);
