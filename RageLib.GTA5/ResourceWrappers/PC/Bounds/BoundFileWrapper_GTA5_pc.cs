@@ -21,7 +21,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<Bound>();
+            var resource = new Resource7<Bound>();
             resource.Load(stream);
 
             bound = resource.ResourceData;
@@ -32,7 +32,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
         /// </summary>
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<Bound>();
+            var resource = new Resource7<Bound>();
             resource.Load(fileName);
 
             bound = resource.ResourceData;
@@ -40,7 +40,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<Bound>();
+            var resource = new Resource7<Bound>();
             resource.ResourceData = bound;
             resource.Version = 43;
             resource.Save(stream);
@@ -51,7 +51,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
         /// </summary>
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<Bound>();
+            var resource = new Resource7<Bound>();
             resource.ResourceData = bound;
             resource.Version = 43;
             resource.Save(fileName);

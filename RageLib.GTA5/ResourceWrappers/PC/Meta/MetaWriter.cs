@@ -32,7 +32,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public void Write(IMetaValue value, Stream fileStream)
         {
-            var resource = new ResourceFile_GTA5_pc<MetaFile>();
+            var resource = new Resource7<MetaFile>();
             resource.Version = 2;
             resource.ResourceData = Build(value);
             resource.Save(fileStream);

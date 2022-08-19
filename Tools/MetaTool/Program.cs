@@ -65,7 +65,7 @@ namespace MetaTool
                    filePath.EndsWith(".ytyp") ||
                    filePath.EndsWith(".ymt"))
             {
-                if (ResourceFile_GTA5_pc.IsResourceFile(filePath))
+                if (Resource7.IsResourceFile(filePath))
                 {
                     BuildDictionary();
                     converter.ConvertResourceToXml(filePath);

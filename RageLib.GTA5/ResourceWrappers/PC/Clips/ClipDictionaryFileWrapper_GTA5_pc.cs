@@ -12,7 +12,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clips
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<ClipDictionary>();
+            var resource = new Resource7<ClipDictionary>();
             resource.Load(stream);
 
             clipDictionary = resource.ResourceData;
@@ -20,7 +20,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clips
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<ClipDictionary>();
+            var resource = new Resource7<ClipDictionary>();
             resource.Load(fileName);
 
             clipDictionary = resource.ResourceData;
@@ -28,7 +28,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clips
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<ClipDictionary>();
+            var resource = new Resource7<ClipDictionary>();
             resource.ResourceData = clipDictionary;
             resource.Version = 46;
             resource.Save(stream);
@@ -36,7 +36,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clips
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<ClipDictionary>();
+            var resource = new Resource7<ClipDictionary>();
             resource.ResourceData = clipDictionary;
             resource.Version = 46;
             resource.Save(fileName);

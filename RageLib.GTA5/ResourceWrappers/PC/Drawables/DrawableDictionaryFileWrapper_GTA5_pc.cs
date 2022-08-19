@@ -23,7 +23,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<GtaDrawable>>();
+            var resource = new Resource7<PgDictionary64<GtaDrawable>>();
             resource.Load(stream);
 
             drawableDictionary = resource.ResourceData;
@@ -31,7 +31,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<GtaDrawable>>();
+            var resource = new Resource7<PgDictionary64<GtaDrawable>>();
             resource.Load(fileName);
 
             drawableDictionary = resource.ResourceData;
@@ -39,7 +39,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<GtaDrawable>>();
+            var resource = new Resource7<PgDictionary64<GtaDrawable>>();
             resource.ResourceData = drawableDictionary;
             resource.Version = 165;
             resource.Save(stream);
@@ -47,7 +47,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<GtaDrawable>>();
+            var resource = new Resource7<PgDictionary64<GtaDrawable>>();
             resource.ResourceData = drawableDictionary;
             resource.Version = 165;
             resource.Save(fileName);

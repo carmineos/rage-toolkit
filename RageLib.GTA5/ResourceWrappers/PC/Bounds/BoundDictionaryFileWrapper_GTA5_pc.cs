@@ -23,7 +23,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Bound>>();
+            var resource = new Resource7<PgDictionary64<Bound>>();
             resource.Load(stream);
 
             boundDictionary = resource.ResourceData;
@@ -31,7 +31,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Bound>>();
+            var resource = new Resource7<PgDictionary64<Bound>>();
             resource.Load(fileName);
 
             boundDictionary = resource.ResourceData;
@@ -39,7 +39,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Bound>>();
+            var resource = new Resource7<PgDictionary64<Bound>>();
             resource.ResourceData = boundDictionary;
             resource.Version = 43;
             resource.Save(stream);
@@ -47,7 +47,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Bounds
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Bound>>();
+            var resource = new Resource7<PgDictionary64<Bound>>();
             resource.ResourceData = boundDictionary;
             resource.Version = 43;
             resource.Save(fileName);

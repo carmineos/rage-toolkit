@@ -22,7 +22,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<GtaDrawable>();
+            var resource = new Resource7<GtaDrawable>();
             resource.Load(stream);
 
             drawable = resource.ResourceData;
@@ -34,7 +34,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
         /// </summary>
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<GtaDrawable>();
+            var resource = new Resource7<GtaDrawable>();
             resource.Load(fileName);
 
             drawable = resource.ResourceData;
@@ -42,7 +42,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<GtaDrawable>();
+            var resource = new Resource7<GtaDrawable>();
             resource.ResourceData = drawable;
             resource.Version = 165;
             resource.Save(stream);
@@ -54,7 +54,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
         /// </summary>
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<GtaDrawable>();
+            var resource = new Resource7<GtaDrawable>();
             resource.ResourceData = drawable;
             resource.Version = 165;
             resource.Save(fileName);

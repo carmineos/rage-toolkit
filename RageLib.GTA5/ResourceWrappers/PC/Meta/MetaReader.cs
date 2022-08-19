@@ -23,7 +23,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public IMetaValue Read(Stream fileStream)
         {
-            var resource = new ResourceFile_GTA5_pc<MetaFile>();
+            var resource = new Resource7<MetaFile>();
             resource.Load(fileStream);
             return Parse(resource.ResourceData);
         }

@@ -13,7 +13,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Expressions
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Expression>>();
+            var resource = new Resource7<PgDictionary64<Expression>>();
             resource.Load(stream);
 
             expressionDictionary = resource.ResourceData;
@@ -21,7 +21,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Expressions
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Expression>>();
+            var resource = new Resource7<PgDictionary64<Expression>>();
             resource.Load(fileName);
 
             expressionDictionary = resource.ResourceData;
@@ -29,7 +29,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Expressions
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Expression>>();
+            var resource = new Resource7<PgDictionary64<Expression>>();
             resource.ResourceData = expressionDictionary;
             resource.Version = 25;
             resource.Save(stream);
@@ -37,7 +37,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Expressions
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Expression>>();
+            var resource = new Resource7<PgDictionary64<Expression>>();
             resource.ResourceData = expressionDictionary;
             resource.Version = 25;
             resource.Save(fileName);

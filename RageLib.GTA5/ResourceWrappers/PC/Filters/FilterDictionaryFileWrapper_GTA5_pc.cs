@@ -13,7 +13,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Filters
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Filter>>();
+            var resource = new Resource7<PgDictionary64<Filter>>();
             resource.Load(stream);
 
             filterDictionary = resource.ResourceData;
@@ -21,7 +21,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Filters
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Filter>>();
+            var resource = new Resource7<PgDictionary64<Filter>>();
             resource.Load(fileName);
 
             filterDictionary = resource.ResourceData;
@@ -29,7 +29,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Filters
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Filter>>();
+            var resource = new Resource7<PgDictionary64<Filter>>();
             resource.ResourceData = filterDictionary;
             resource.Version = 4;
             resource.Save(stream);
@@ -37,7 +37,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Filters
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<Filter>>();
+            var resource = new Resource7<PgDictionary64<Filter>>();
             resource.ResourceData = filterDictionary;
             resource.Version = 4;
             resource.Save(fileName);

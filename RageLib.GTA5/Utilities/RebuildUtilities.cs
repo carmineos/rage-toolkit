@@ -51,7 +51,7 @@ namespace RageLib.GTA5.Utilities
                 resourceStream.Read(buffer, 0, (int)resourceStream.Length);
                 resourceStream = new MemoryStream(buffer);
 
-                var resource = new ResourceFile_GTA5_pc<T>();
+                var resource = new Resource7<T>();
                 resourceStream.Position = 0;
                 resource.Load(resourceStream);
 

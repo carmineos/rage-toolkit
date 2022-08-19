@@ -140,7 +140,7 @@ namespace RageLib.GTA5.Utilities
 
                 IArchiveFile archiveFile;
 
-                if (ResourceFile_GTA5_pc.IsResourceFile(file))
+                if (Resource7.IsResourceFile(file))
                 {
                     archiveFile = directory.CreateResourceFile();
                     archiveFile.Name = fileName;

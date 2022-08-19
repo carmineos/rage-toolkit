@@ -12,7 +12,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Nodes
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<NodesFile>();
+            var resource = new Resource7<NodesFile>();
             resource.Load(stream);
 
             nodes = resource.ResourceData;
@@ -20,7 +20,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Nodes
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<NodesFile>();
+            var resource = new Resource7<NodesFile>();
             resource.Load(fileName);
 
             nodes = resource.ResourceData;
@@ -28,7 +28,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Nodes
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<NodesFile>();
+            var resource = new Resource7<NodesFile>();
             resource.ResourceData = nodes;
             resource.Version = 1;
             resource.Save(stream);
@@ -36,7 +36,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Nodes
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<NodesFile>();
+            var resource = new Resource7<NodesFile>();
             resource.ResourceData = nodes;
             resource.Version = 1;
             resource.Save(fileName);

@@ -22,7 +22,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Particles
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<ParticleEffectsList>();
+            var resource = new Resource7<ParticleEffectsList>();
             resource.Load(fileName);
 
             particles = resource.ResourceData;
@@ -30,7 +30,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Particles
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<ParticleEffectsList>();
+            var resource = new Resource7<ParticleEffectsList>();
             resource.ResourceData = particles;
             resource.Version = 68;
             resource.Save(fileName);
@@ -38,7 +38,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Particles
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<ParticleEffectsList>();
+            var resource = new Resource7<ParticleEffectsList>();
             resource.Load(stream);
 
             if (resource.Version != 68)
@@ -49,7 +49,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Particles
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<ParticleEffectsList>();
+            var resource = new Resource7<ParticleEffectsList>();
             resource.ResourceData = particles;
             resource.Version = 68;
             resource.Save(stream);

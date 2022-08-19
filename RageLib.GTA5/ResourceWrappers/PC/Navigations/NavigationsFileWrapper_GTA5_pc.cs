@@ -12,7 +12,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Navigations
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<Navigation>();
+            var resource = new Resource7<Navigation>();
             resource.Load(stream);
 
             navigation = resource.ResourceData;
@@ -20,7 +20,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Navigations
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<Navigation>();
+            var resource = new Resource7<Navigation>();
             resource.Load(fileName);
 
             navigation = resource.ResourceData;
@@ -28,7 +28,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Navigations
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<Navigation>();
+            var resource = new Resource7<Navigation>();
             resource.ResourceData = navigation;
             resource.Version = 2;
             resource.Save(stream);
@@ -36,7 +36,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Navigations
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<Navigation>();
+            var resource = new Resource7<Navigation>();
             resource.ResourceData = navigation;
             resource.Version = 2;
             resource.Save(fileName);

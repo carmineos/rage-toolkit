@@ -13,7 +13,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clothes
 
         public void Load(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<CharacterCloth>>();
+            var resource = new Resource7<PgDictionary64<CharacterCloth>>();
             resource.Load(stream);
 
             clothDictionary = resource.ResourceData;
@@ -21,7 +21,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clothes
 
         public void Load(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<CharacterCloth>>();
+            var resource = new Resource7<PgDictionary64<CharacterCloth>>();
             resource.Load(fileName);
 
             clothDictionary = resource.ResourceData;
@@ -29,7 +29,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clothes
 
         public void Save(Stream stream)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<CharacterCloth>>();
+            var resource = new Resource7<PgDictionary64<CharacterCloth>>();
             resource.ResourceData = clothDictionary;
             resource.Version = 8;
             resource.Save(stream);
@@ -37,7 +37,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Clothes
 
         public void Save(string fileName)
         {
-            var resource = new ResourceFile_GTA5_pc<PgDictionary64<CharacterCloth>>();
+            var resource = new Resource7<PgDictionary64<CharacterCloth>>();
             resource.ResourceData = clothDictionary;
             resource.Version = 8;
             resource.Save(fileName);
