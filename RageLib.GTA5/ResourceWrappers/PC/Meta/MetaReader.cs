@@ -23,12 +23,12 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public IMetaValue Read(Stream fileStream)
         {
-            var resource = new Resource7<MetaFile>();
+            var resource = new Resource7<MetaData>();
             resource.Load(fileStream);
             return Parse(resource.ResourceData);
         }
 
-        public IMetaValue Parse(MetaFile meta)
+        public IMetaValue Parse(MetaData meta)
         {
             var blockKeys = new List<int>();
             var blocks = new List<List<IMetaValue>>();
@@ -190,7 +190,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return data.ToArray();
         }
 
-        public static StructureInfo GetInfo(MetaFile meta, int structureKey)
+        public static StructureInfo GetInfo(MetaData meta, int structureKey)
         {
             StructureInfo info = null;
             foreach (var x in meta.StructureInfos)
@@ -199,7 +199,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             return info;
         }
 
-        public int GetSize(MetaFile meta, int typeKey)
+        public int GetSize(MetaData meta, int typeKey)
         {
             var type = (StructureEntryDataType)typeKey;
 

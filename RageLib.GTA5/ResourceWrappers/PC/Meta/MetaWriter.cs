@@ -15,7 +15,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
     {
         private readonly MetaDefinitions metaDefinitions;
 
-        private MetaFile meta;
+        private MetaData meta;
         private ISet<int> usedStructureKeys = new HashSet<int>();
         private ISet<int> usedEnumKeys = new HashSet<int>();
 
@@ -32,15 +32,15 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public void Write(IMetaValue value, Stream fileStream)
         {
-            var resource = new Resource7<MetaFile>();
+            var resource = new Resource7<MetaData>();
             resource.Version = 2;
             resource.ResourceData = Build(value);
             resource.Save(fileStream);
         }
 
-        private MetaFile Build(IMetaValue value)
+        private MetaData Build(IMetaValue value)
         {
-            meta = new MetaFile();
+            meta = new MetaData();
             meta.StructureInfos = metaDefinitions.BuildMetaStructureInfos();
             meta.EnumInfos = metaDefinitions.BuildMetaEnumInfos();
 

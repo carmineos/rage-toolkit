@@ -9,12 +9,12 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
 {
     public class MetaStructure : IMetaValue
     {
-        private readonly MetaFile meta;
+        private readonly MetaData meta;
         public readonly StructureInfo info;
 
         public Dictionary<int, IMetaValue> Values { get; set; }
 
-        public MetaStructure(MetaFile meta, StructureInfo info)
+        public MetaStructure(MetaData meta, StructureInfo info)
         {
             this.meta = meta;
             this.info = info;
@@ -250,7 +250,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
             reader.Position = position + info.StructureLength;
         }
 
-        public static StructureInfo GetStructureInfo(MetaFile meta, int structureKey)
+        public static StructureInfo GetStructureInfo(MetaData meta, int structureKey)
         {
             foreach (var structureInfo in meta.StructureInfos)
                 if (structureInfo.StructureNameHash == structureKey)
@@ -258,7 +258,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Types
             return null;
         }
 
-        public static EnumInfo GetEnumInfo(MetaFile meta, int structureKey)
+        public static EnumInfo GetEnumInfo(MetaData meta, int structureKey)
         {
             foreach (var enumInfo in meta.EnumInfos)
                 if (enumInfo.EnumNameHash == structureKey)
