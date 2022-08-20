@@ -11,7 +11,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x30;
 
         // structure data
-        public ulong ValuePointer;
+        private ulong ValuePointer;
         public ushort ValueLength1;
         public ushort ValueLength2;
         public uint Unknown_2Ch; // 0x00000000

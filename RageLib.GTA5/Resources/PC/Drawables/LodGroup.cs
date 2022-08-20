@@ -20,10 +20,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public float BoundingSphereRadius;
         public Vector4 BoundingBoxMin;
         public Vector4 BoundingBoxMax;
-        public ulong LodHighPointer;
-        public ulong LodMediumPointer;
-        public ulong LodLowPointer;
-        public ulong LodVeryLowPointer;
+        private ulong LodHighPointer;
+        private ulong LodMediumPointer;
+        private ulong LodLowPointer;
+        private ulong LodVeryLowPointer;
         public float LodDistanceHigh;
         public float LodDistanceMedium;
         public float LodDistanceLow;

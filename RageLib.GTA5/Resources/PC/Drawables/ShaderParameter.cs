@@ -13,7 +13,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public byte RegisterIndex;
         public ushort Unknown_2h;
         public uint Unknown_4h;
-        public ulong DataPointer;
+        private ulong DataPointer;
 
         public IResourceBlock Data;
 

@@ -15,11 +15,11 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public uint Unknown_20h;
         public uint Unknown_24h;
         public uint Unknown_28h;
-        public ulong DataPointer;
-        public ulong SubTree1Pointer;
-        public ulong SubTree2Pointer;
-        public ulong SubTree3Pointer;
-        public ulong SubTree4Pointer;
+        private ulong DataPointer;
+        private ulong SubTree1Pointer;
+        private ulong SubTree2Pointer;
+        private ulong SubTree3Pointer;
+        private ulong SubTree4Pointer;
         public uint Unknown_54h; // 0x00000000
         public uint Unknown_58h; // 0x00000000
         public uint Unknown_5Ch; // 0x00000000

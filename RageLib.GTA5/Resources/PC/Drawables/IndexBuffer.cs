@@ -16,7 +16,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public uint IndicesCount;
         public uint Unknown_Ch; // 0x00000000
-        public ulong IndicesPointer;
+        private ulong IndicesPointer;
         public ulong Unknown_18h; // 0x0000000000000000
         public ulong Unknown_20h; // 0x0000000000000000
         public ulong Unknown_28h; // 0x0000000000000000

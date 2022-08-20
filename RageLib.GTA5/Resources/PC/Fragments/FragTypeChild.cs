@@ -33,9 +33,9 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_88h; // 0x0000000000000000
         public ulong Unknown_90h; // 0x0000000000000000
         public ulong Unknown_98h; // 0x0000000000000000
-        public ulong PristineDrawablePointer;
-        public ulong DamagedDrawablePointer;
-        public ulong EvtSetPointer;
+        private ulong PristineDrawablePointer;
+        private ulong DamagedDrawablePointer;
+        private ulong EvtSetPointer;
         public ulong Unknown_B8h; // 0x0000000000000000
         public ulong Unknown_C0h; // 0x0000000000000000
         public ulong Unknown_C8h; // 0x0000000000000000

@@ -15,7 +15,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         // structure data
         public uint Unknown_10h; // 0x00000000
         public uint Unknown_14h; // 0x00000000
-        public ulong AnimationsPointer;
+        private ulong AnimationsPointer;
         public uint Unknown_20h; // 0x00000101
         public uint Unknown_24h; // 0x00000000
         public ResourceHashMap<Clip> Clips;

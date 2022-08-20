@@ -18,11 +18,11 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public uint Unknown_1Ch; // 0x00000000
         public Matrix4x4 Unknown_20h;
         public Vector4 Unknown_60h;
-        public ulong VerticesPointer;
+        private ulong VerticesPointer;
         public uint Unknown_78h; // 0x00000000
         public uint Unknown_7Ch; // 0x00000000
-        public ulong IndicesPointer;
-        public ulong AdjPolysPointer;
+        private ulong IndicesPointer;
+        private ulong AdjPolysPointer;
         public uint Unknown_90h;
         public uint Unknown_94h;
         public uint Unknown_98h;
@@ -57,10 +57,10 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public uint Unknown_10Ch; // 0x00000000
         public uint Unknown_110h; // 0x00000000
         public uint Unknown_114h; // 0x00000000
-        public ulong PolysPointer;
-        public ulong SectorTreePointer;
-        public ulong PortalsPointer;
-        public ulong p8;
+        private ulong PolysPointer;
+        private ulong SectorTreePointer;
+        private ulong PortalsPointer;
+        private ulong p8;
         public uint Unknown_138h;
         public uint Unknown_13Ch;
         public uint Unknown_140h;

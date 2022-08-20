@@ -12,11 +12,11 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public override long BlockLength => 0x80;
 
         // structure data
-        public ulong BridgeSimGfxPointer;
-        public ulong MorphControllerPointer;
-        public ulong VerletCloth1Pointer;
-        public ulong VerletCloth2Pointer;
-        public ulong VerletCloth3Pointer;
+        private ulong BridgeSimGfxPointer;
+        private ulong MorphControllerPointer;
+        private ulong VerletCloth1Pointer;
+        private ulong VerletCloth2Pointer;
+        private ulong VerletCloth3Pointer;
         public ulong Unknown_38h; // 0x0000000000000000
         public ulong Unknown_40h; // 0x0000000000000000
         public ulong Unknown_48h; // 0x0000000000000000

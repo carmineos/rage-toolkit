@@ -10,7 +10,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0x150;
 
         // structure data
-        public ulong BvhPointer;
+        private ulong BvhPointer;
         public ulong Unknown_138h; // 0x0000000000000000
         public ushort Unknown_140h; // 0xFFFF
         public ushort Unknown_142h; // 0x0000

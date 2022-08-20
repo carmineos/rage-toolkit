@@ -17,7 +17,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         // structure data
         public uint Unknown_10h; // 0x00000000
         public uint Unknown_14h; // 0x00000000
-        public ulong BoundPointer;
+        private ulong BoundPointer;
         public uint Unknown_20h; // 0x00000000
         public uint Unknown_24h; // 0x00000000
         public uint Unknown_28h; // 0x00000000
@@ -74,10 +74,10 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public uint Unknown_124h; // 0x00000000
         public uint Unknown_128h; // 0x00000000
         public uint Unknown_12Ch; // 0x00000000
-        public ulong BehaviorPointer;
+        private ulong BehaviorPointer;
         public uint Unknown_138h; // 0x00100000
         public uint Unknown_13Ch; // 0x00000000
-        public ulong Unknown_140h_Pointer;
+        private ulong Unknown_140h_Pointer;
         public uint Unknown_148h;
         public uint Unknown_14Ch; // 0x00000000
         public uint Unknown_150h; // 0x00000000

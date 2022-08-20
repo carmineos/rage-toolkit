@@ -16,14 +16,14 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         // structure data
         public ulong Unknown_A8h; // 0x0000000000000000
-        public Matrix4x4 Unknown_B0h;      
-        public ulong BoundPointer;
+        public Matrix4x4 Unknown_B0h;
+        private ulong BoundPointer;
         public SimpleList64<ulong> Unknown_F8h_Data;
         public SimpleList64<Matrix4x4> Unknown_108h_Data;
         public ulong Unknown_118h; // 0x0000000000000000
         public ulong Unknown_120h; // 0x0000000000000000
         public ulong Unknown_128h; // 0x0000000000000000
-        public ulong NamePointer;
+        private ulong NamePointer;
         public ulong Unknown_138h; // 0x0000000000000000
         public ulong Unknown_140h; // 0x0000000000000000
         public ulong Unknown_148h; // 0x0000000000000000

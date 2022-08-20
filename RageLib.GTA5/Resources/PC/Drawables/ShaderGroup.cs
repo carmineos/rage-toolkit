@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0x40;
 
         // structure data
-        public ulong TextureDictionaryPointer;
+        private ulong TextureDictionaryPointer;
         public ResourcePointerList64<ShaderFX> Shaders;
         public uint Unknown_20h; // 0x00000000
         public uint Unknown_24h; // 0x00000000

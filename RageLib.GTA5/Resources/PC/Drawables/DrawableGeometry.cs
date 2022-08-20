@@ -15,11 +15,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public ulong Unknown_8h; // 0x0000000000000000
         public ulong Unknown_10h; // 0x0000000000000000
-        public ulong VertexBufferPointer;
+        private ulong VertexBufferPointer;
         public ulong Unknown_20h; // 0x0000000000000000
         public ulong Unknown_28h; // 0x0000000000000000
         public ulong Unknown_30h; // 0x0000000000000000
-        public ulong IndexBufferPointer;
+        private ulong IndexBufferPointer;
         public ulong Unknown_40h; // 0x0000000000000000
         public ulong Unknown_48h; // 0x0000000000000000
         public ulong Unknown_50h; // 0x0000000000000000
@@ -28,11 +28,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ushort VerticesCount;
         public ushort IndicesPerFace; // 0x0003
         public uint Unknown_64h; // 0x00000000
-        public ulong BonesIdPointer;
+        private ulong BonesIdPointer;
         public ushort VertexStride;
         public ushort BonesCount;
         public uint Unknown_74h; // 0x00000000
-        public ulong VertexDataPointer;
+        private ulong VertexDataPointer;
         public ulong Unknown_80h; // 0x0000000000000000
         public ulong Unknown_88h; // 0x0000000000000000
         public ulong Unknown_90h; // 0x0000000000000000

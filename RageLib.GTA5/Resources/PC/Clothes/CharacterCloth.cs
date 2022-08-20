@@ -17,8 +17,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
 
         // structure data
         public SimpleList64<DataVec3V> Poses;
-        public ulong ControllerPointer;
-        public ulong BoundCompositePointer;
+        private ulong ControllerPointer;
+        private ulong BoundCompositePointer;
         public SimpleList64<uint> Unknown_30h;
         public ulong Unknown_40h; // 0x0000000000000000
         public ulong Unknown_48h; // 0x0000000000000000

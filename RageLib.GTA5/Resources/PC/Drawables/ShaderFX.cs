@@ -13,7 +13,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0x30;
 
         // structure data
-        public ulong ParametersPointer;
+        private ulong ParametersPointer;
         public uint ShaderHash;
         public uint Unknown_Ch; // 0x00000000
         public byte ParameterCount;

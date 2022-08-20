@@ -14,16 +14,16 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0xB0;
 
         // structure data
-        public ulong BoundsPointer;
-        public ulong CurrentMatricesPointer;
-        public ulong LastMatricesPointer;
-        public ulong ChildBoundingBoxesPointer;
-        public ulong TypeAndIncludeFlagsPointer;
-        public ulong OwnedTypeAndIncludeFlagsPointer;
+        private ulong BoundsPointer;
+        private ulong CurrentMatricesPointer;
+        private ulong LastMatricesPointer;
+        private ulong ChildBoundingBoxesPointer;
+        private ulong TypeAndIncludeFlagsPointer;
+        private ulong OwnedTypeAndIncludeFlagsPointer;
         public ushort MaxNumBounds;
         public ushort NumBounds;
         public uint Unknown_A4h; // 0x00000000
-        public ulong BVHPointer;
+        private ulong BVHPointer;
 
         // reference data
         public ResourcePointerArray64<Bound>? Bounds { get; set; }

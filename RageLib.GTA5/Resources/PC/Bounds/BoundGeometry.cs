@@ -12,12 +12,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0x130;
 
         // structure data
-        public ulong MaterialsPointer;
-        public ulong MaterialColoursPointer;
+        private ulong MaterialsPointer;
+        private ulong MaterialColoursPointer;
         public ulong Unknown_100h; // 0x0000000000000000
         public ulong Unknown_108h; // 0x0000000000000000
         public ulong Unknown_110h; // 0x0000000000000000
-        public ulong PolygonMaterialIndicesPointer;
+        private ulong PolygonMaterialIndicesPointer;
         public byte MaterialsCount;
         public byte MaterialColoursCount;
         public ushort Unknown_122h; // 0x0000

@@ -17,7 +17,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public byte Unknown_11h;
         public ushort Unknown_12h;
         public uint Unknown_14h; // 0x00000000
-        public ulong NamePointer;
+        private ulong NamePointer;
         public ushort NameLength1;
         public ushort NameLength2;
         public uint Unknown_24h; // 0x00000000
@@ -25,8 +25,8 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public uint Unknown_2Ch; // 0x00000000
         public uint Unknown_30h;
         public uint Unknown_34h; // 0x00000000
-        public ulong TagsPointer;
-        public ulong PropertiesPointer;
+        private ulong TagsPointer;
+        private ulong PropertiesPointer;
         public uint Unknown_48h; // 0x00000001
         public uint Unknown_4Ch; // 0x00000000       
 

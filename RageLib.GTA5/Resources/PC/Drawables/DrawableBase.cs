@@ -10,7 +10,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0x18;
 
         // structure data
-        public ulong ShaderGroupPointer;
+        private ulong ShaderGroupPointer;
 
         // reference data
         public ShaderGroup? ShaderGroup { get; set; }

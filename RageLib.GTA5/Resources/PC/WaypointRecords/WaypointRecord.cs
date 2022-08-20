@@ -12,7 +12,7 @@ namespace RageLib.Resources.GTA5.PC.WaypointRecords
         // structure data
         public uint Unknown_10h; // 0x00000000
         public uint Unknown_14h; // 0x00000000
-        public ulong EntriesPointer;
+        private ulong EntriesPointer;
         public uint EntriesCount;
         public uint Unknown_24h; // 0x00000000
         public uint Unknown_28h; // 0x00000000

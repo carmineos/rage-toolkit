@@ -18,7 +18,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public uint Unknown_1Ch; // 0x00000000
         public uint Unknown_20h; // 0x00000000
         public uint Unknown_24h; // 0x00000000
-        public ulong NamePointer;
+        private ulong NamePointer;
         public uint Unknown_30h;
         public uint Unknown_34h; // 0x00000000
         public uint Unknown_38h; // 0x00000000

@@ -11,9 +11,9 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0x30;
 
         // structure data
-        public ulong PhysicsLOD1Pointer;
-        public ulong PhysicsLOD2Pointer;
-        public ulong PhysicsLOD3Pointer;
+        private ulong PhysicsLOD1Pointer;
+        private ulong PhysicsLOD2Pointer;
+        private ulong PhysicsLOD3Pointer;
         public ulong Unknown_28h; // 0x0000000000000000
 
         // reference data

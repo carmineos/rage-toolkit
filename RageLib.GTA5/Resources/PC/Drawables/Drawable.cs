@@ -12,13 +12,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0xA8;
 
         // structure data
-        public ulong SkeletonPointer;
+        private ulong SkeletonPointer;
         public LodGroup LodGroup;
-        public ulong JointsPointer;
+        private ulong JointsPointer;
         public ushort Unknown_98h;
         public ushort Unknown_9Ah;
         public uint Unknown_9Ch; // 0x00000000
-        public ulong PrimaryLodPointer;
+        private ulong PrimaryLodPointer;
 
         // reference data
         public SkeletonData? Skeleton { get; set; }

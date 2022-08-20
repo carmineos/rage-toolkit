@@ -15,8 +15,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // structure data
         public ResourcePointerList64<DrawableGeometry> Geometries;
-        public ulong GeometriesBoundsPointer;
-        public ulong ShaderMappingPointer;
+        private ulong GeometriesBoundsPointer;
+        private ulong ShaderMappingPointer;
         public byte Unknown_28h;
         public byte IsSkinned;
         public byte Unknown_2Ah;

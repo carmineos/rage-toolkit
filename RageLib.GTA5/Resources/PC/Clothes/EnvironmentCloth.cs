@@ -15,10 +15,10 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public override long BlockLength => 0x80;
 
         // structure data
-        public ulong InstanceTuningPointer;
-        public ulong DrawablePointer;
+        private ulong InstanceTuningPointer;
+        private ulong DrawablePointer;
         public ulong Unknown_20h; // 0x0000000000000000
-        public ulong ControllerPointer;
+        private ulong ControllerPointer;
         public ulong Unknown_30h; // 0x0000000000000000
         public ulong Unknown_38h; // 0x0000000000000000
         public ulong Unknown_40h; // 0x0000000000000000

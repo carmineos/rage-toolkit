@@ -39,8 +39,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public uint Unknown_6Ch; // 0x3F800000
         public uint Unknown_70h; // 0x00000000
         public uint Unknown_74h; // 0x00000000
-        public ulong JointTypesPointer;
-        public ulong p2;
+        private ulong JointTypesPointer;
+        private ulong p2;
         public byte c1;
         public byte JointTypesCount;
         public ushort Unknown_8Ah;

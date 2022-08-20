@@ -22,7 +22,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public short NextSiblingIndex;
         public short ParentIndex;
         public uint Unknown_34h; // 0x00000000
-        public ulong NamePointer;
+        private ulong NamePointer;
         public BoneFlags Flags;
         public short Index;
         public ushort BoneId;

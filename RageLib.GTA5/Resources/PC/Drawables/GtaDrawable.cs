@@ -13,10 +13,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0xD0;
 
         // structure data
-        public ulong NamePointer;
+        private ulong NamePointer;
         public ResourceSimpleList64<LightAttributes> LightAttributes;
         public ulong Unknown_C0h; // 0x0000000000000000
-        public ulong BoundPointer;
+        private ulong BoundPointer;
 
         // reference data
         public string_r? Name { get; set; }

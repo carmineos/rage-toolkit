@@ -21,7 +21,7 @@ namespace RageLib.Resources.GTA5.PC.Expressions
         public SimpleList64<uint> Unknown_30h;
         public ResourceSimpleList64<Unknown_E_002> Unknown_40h;
         public SimpleList64<uint> Unknown_50h;
-        public ulong NamePointer;
+        private ulong NamePointer;
         public ushort NameLength1;
         public ushort NameLength2;
         public uint Unknown_6Ch;

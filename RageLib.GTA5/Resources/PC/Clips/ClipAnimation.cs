@@ -10,7 +10,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x70;
 
         // structure data
-        public ulong AnimationPointer;
+        private ulong AnimationPointer;
         public float StartTime;
         public float EndTime;
         public float Rate;

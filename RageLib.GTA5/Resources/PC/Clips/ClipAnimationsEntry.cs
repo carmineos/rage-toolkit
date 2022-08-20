@@ -13,7 +13,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public float EndTime;
         public float Rate;
         public uint Unknown_Ch; // 0x00000000
-        public ulong AnimationPointer;
+        private ulong AnimationPointer;
 
         // reference data
         public Animation? Animation { get; set; }

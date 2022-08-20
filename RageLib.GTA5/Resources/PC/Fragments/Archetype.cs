@@ -19,8 +19,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         // structure data
         public uint Unknown_10h; // 0x00000002 -> type=phArchetypeDamp
         public uint Unknown_14h; // 0x00000000
-        public ulong NamePointer;
-        public ulong BoundPointer;
+        private ulong NamePointer;
+        private ulong BoundPointer;
         public uint TypeFlags; // 0x00000001
         public uint IncludeFlags; // 0xFFFFFFFF
         public uint PropertyFlags; // 0x00010000

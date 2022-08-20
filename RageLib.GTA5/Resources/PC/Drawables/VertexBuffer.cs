@@ -16,12 +16,12 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ushort VertexStride;
         public ushort Unknown_Ah;
         public uint Unknown_Ch; // 0x00000000
-        public ulong DataPointer1;
+        private ulong DataPointer1;
         public uint VertexCount;
         public uint Unknown_1Ch; // 0x00000000
-        public ulong DataPointer2;
+        private ulong DataPointer2;
         public ulong Unknown_28h; // 0x0000000000000000
-        public ulong InfoPointer;
+        private ulong InfoPointer;
         public ulong Unknown_38h; // 0x0000000000000000
         public ulong Unknown_40h; // 0x0000000000000000
         public ulong Unknown_48h; // 0x0000000000000000

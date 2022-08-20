@@ -20,13 +20,13 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_18h; // 0x0000000000000000
         public Vector3 BoundingSphereCenter;
         public float BoundingSphereRadius;
-        public ulong PrimaryDrawablePointer;
-        public ulong DamagedDrawablesPointer;
-        public ulong DamagedDrawablesNamesPointer;
+        private ulong PrimaryDrawablePointer;
+        private ulong DamagedDrawablesPointer;
+        private ulong DamagedDrawablesNamesPointer;
         public uint DrawablesCount;
         public uint Unknown_4Ch;
         public ulong Unknown_50h; // 0x0000000000000000
-        public ulong NamePointer;
+        private ulong NamePointer;
         public ResourcePointerList64<EnvironmentCloth> Clothes;
         public ulong Unknown_70h; // 0x0000000000000000
         public ulong Unknown_78h; // 0x0000000000000000
@@ -35,7 +35,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong Unknown_90h; // 0x0000000000000000
         public ulong Unknown_98h; // 0x0000000000000000
         public ulong Unknown_A0h; // 0x0000000000000000
-        public ulong MatrixSetPointer;
+        private ulong MatrixSetPointer;
         public uint Unknown_B0h;
         public uint Unknown_B4h; // 0x00000000
         public uint Unknown_B8h;
@@ -50,14 +50,14 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public byte GlassPaneModelInfosCount;
         public ushort Unknown_DAh;
         public uint Unknown_DCh; // 0x00000000
-        public ulong GlassPaneModelInfosPointer;
+        private ulong GlassPaneModelInfosPointer;
         public ulong Unknown_E8h; // 0x0000000000000000
-        public ulong PhysicsLODGroupPointer;
-        public ulong ClothDrawablePointer;
+        private ulong PhysicsLODGroupPointer;
+        private ulong ClothDrawablePointer;
         public ulong Unknown_100h; // 0x0000000000000000
         public ulong Unknown_108h; // 0x0000000000000000
         public ResourceSimpleList64<LightAttributes> LightAttributes;
-        public ulong VehicleGlassWindowDataPointer;
+        private ulong VehicleGlassWindowDataPointer;
         public ulong Unknown_128h; // 0x0000000000000000
 
         // reference data

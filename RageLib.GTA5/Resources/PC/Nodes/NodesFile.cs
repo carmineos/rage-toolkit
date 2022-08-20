@@ -10,19 +10,19 @@ namespace RageLib.Resources.GTA5.PC.Nodes
         public override long BlockLength => 0x70;
 
         // structure data
-        public ulong NodesPointer;
+        private ulong NodesPointer;
         public uint NodesCount;
         public uint Unknown_1Ch;
         public uint Unknown_20h;
         public uint Unknown_24h; // 0x00000000
-        public ulong Unknown_28h_Pointer;
+        private ulong Unknown_28h_Pointer;
         public uint DataPointer1Length;
         public uint Unknown_34h; // 0x00000000
-        public ulong Unknown_38h_Pointer;
-        public ulong Unknown_40h_Pointer;
+        private ulong Unknown_38h_Pointer;
+        private ulong Unknown_40h_Pointer;
         public uint Unknown_48h; // 0x00000001
         public uint Unknown_4Ch; // 0x00000000
-        public ulong Unknown_50h_Pointer;
+        private ulong Unknown_50h_Pointer;
         public ushort cnt5a;
         public ushort cnt5b; // same as cnt5a
         public uint Unknown_5Ch; // 0x00000000

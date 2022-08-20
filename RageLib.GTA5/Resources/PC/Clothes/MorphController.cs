@@ -12,9 +12,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
 
         // structure data
         public ulong Unknown_10h; // 0x0000000000000000
-        public ulong Unknown_18h_Pointer;
-        public ulong Unknown_20h_Pointer;
-        public ulong Unknown_28h_Pointer;
+        private ulong Unknown_18h_Pointer;
+        private ulong Unknown_20h_Pointer;
+        private ulong Unknown_28h_Pointer;
         public ulong Unknown_30h; // 0x0000000000000000
         public ulong Unknown_38h; // 0x0000000000000000
 

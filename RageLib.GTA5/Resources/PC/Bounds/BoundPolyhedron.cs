@@ -17,18 +17,18 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         // structure data
         public uint Unknown_70h;
         public uint Unknown_74h;
-        public ulong ShrunkVerticesPointer;
+        private ulong ShrunkVerticesPointer;
         public uint Unknown_80h;
         public uint VerticesCount1;
-        public ulong PrimitivesPointer;
+        private ulong PrimitivesPointer;
         public Vector3 Quantum;
         public float Unknown_9Ch;
         public Vector3 Offset;
         public float Unknown_ACh;
-        public ulong VerticesPointer;
-        public ulong VerticesColorsPointer;
-        public ulong Unknown_C0h_Pointer;
-        public ulong Unknown_C8h_Pointer;
+        private ulong VerticesPointer;
+        private ulong VerticesColorsPointer;
+        private ulong Unknown_C0h_Pointer;
+        private ulong Unknown_C8h_Pointer;
         public uint VerticesCount2;
         public uint PrimitivesCount;
         public ulong Unknown_D8h; // 0x0000000000000000

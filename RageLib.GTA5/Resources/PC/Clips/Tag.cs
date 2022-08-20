@@ -12,7 +12,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         // structure data
         public uint Unknown_40h;
         public uint Unknown_44h;
-        public ulong TagsPointer;
+        private ulong TagsPointer;
 
         // reference data
         public Tags? Tags { get; set; }

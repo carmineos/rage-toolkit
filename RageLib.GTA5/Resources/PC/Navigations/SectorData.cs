@@ -12,8 +12,8 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         // structure data
         public uint c1;
         public uint Unknown_4h; // 0x00000000
-        public ulong p1;
-        public ulong p2;
+        private ulong p1;
+        private ulong p2;
         public ushort c2;
         public ushort c3;
         public uint Unknown_1Ch; // 0x00000000

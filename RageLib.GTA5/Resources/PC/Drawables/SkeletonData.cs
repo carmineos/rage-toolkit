@@ -17,11 +17,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // structure data
         public HashMap BoneMap;
-        public ulong BoneDataPointer; // why this points to the array directly ?
-        public ulong InverseBindPoseMatricesPointer;
-        public ulong DefaultPoseMatricesPointer;
-        public ulong ParentIndicesPointer;
-        public ulong ChildrenIndicesPointer;
+        private ulong BoneDataPointer; // why this points to the array directly ?
+        private ulong InverseBindPoseMatricesPointer;
+        private ulong DefaultPoseMatricesPointer;
+        private ulong ParentIndicesPointer;
+        private ulong ChildrenIndicesPointer;
         public ulong Unknown_48h; // 0x0000000000000000
         public uint Unknown_50h;
         public uint Unknown_54h;
