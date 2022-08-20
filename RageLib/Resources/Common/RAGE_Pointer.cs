@@ -17,9 +17,9 @@ namespace RageLib.Resources.Common
 		public ulong Pointer;
 
 		// reference data
-		public T Data;
+		public T? Data { get; set; }
 
-		public override void Read(ResourceDataReader reader, params object[] parameters)
+        public override void Read(ResourceDataReader reader, params object[] parameters)
 		{
 			// read structure data
 			this.Pointer = reader.ReadUInt64();
@@ -31,7 +31,7 @@ namespace RageLib.Resources.Common
 		public override void Write(ResourceDataWriter writer, params object[] parameters)
 		{
 			// update structure data
-			this.Pointer = (ulong)(this.Data != null ? this.Data.BlockPosition : 0);
+			this.Pointer = (ulong)(this.Data?.BlockPosition ?? 0);
 
 			// write structure data
 			writer.Write(this.Pointer);

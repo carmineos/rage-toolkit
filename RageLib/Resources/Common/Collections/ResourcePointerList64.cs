@@ -7,10 +7,7 @@ namespace RageLib.Resources.Common
 {
     public class ResourcePointerList64<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
     {
-        public override long BlockLength
-        {
-            get { return 16; }
-        }
+        public override long BlockLength => 0x10;
 
         // structure data
         public ulong EntriesPointer;
@@ -18,7 +15,7 @@ namespace RageLib.Resources.Common
         public ushort EntriesCapacity;
 
         // reference data
-        public ResourcePointerArray64<T> Entries;
+        public ResourcePointerArray64<T>? Entries { get; set; }
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
@@ -36,9 +33,9 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update...
-            this.EntriesPointer = (ulong)(this.Entries != null ? this.Entries.BlockPosition : 0);
-            this.EntriesCount = (ushort)(this.Entries != null ? this.Entries.Count : 0);
-            this.EntriesCapacity = (ushort)(this.Entries != null ? this.Entries.Count : 0);
+            this.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
+            this.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
+            this.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
 
             // write...
             writer.Write(EntriesPointer);

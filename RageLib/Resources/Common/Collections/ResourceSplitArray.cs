@@ -28,8 +28,8 @@ namespace RageLib.Resources.Common
         public uint Unknown_2Ch; // 0x00000000
 
         // reference data
-        public ResourceSimpleArray<SplitArrayPart<T>> Parts;
-        public SimpleArray<uint> Offsets;
+        public ResourceSimpleArray<SplitArrayPart<T>>? Parts { get; set; }
+        public SimpleArray<uint>? Offsets { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -64,9 +64,9 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.PartsPointer = (ulong)(this.Parts != null ? this.Parts.BlockPosition : 0);
-            this.OffsetsPointer = (ulong)(this.Offsets != null ? this.Offsets.BlockPosition : 0);
-            this.PartsCount = (uint)(this.Parts != null ? this.Parts.Count : 0);
+            this.PartsPointer = (ulong)(this.Parts?.BlockPosition ?? 0);
+            this.OffsetsPointer = (ulong)(this.Offsets?.BlockPosition ?? 0);
+            this.PartsCount = (uint)(this.Parts?.Count ?? 0);
 
             // write structure data
             writer.Write(this.VFT);
@@ -102,7 +102,7 @@ namespace RageLib.Resources.Common
         public uint Unknown_Ch; // 0x00000000
 
         // reference data
-        public ResourceSimpleArray<T> Entries;
+        public ResourceSimpleArray<T>? Entries { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -127,8 +127,8 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.Pointer = (ulong)(this.Entries != null ? this.Entries.BlockPosition : 0);
-            this.Count = (uint)(this.Entries != null ? this.Entries.Count : 0);
+            this.Pointer = (ulong)(this.Entries?.BlockPosition ?? 0);
+            this.Count = (uint)(this.Entries?.Count ?? 0);
 
             // write structure data
             writer.Write(this.Pointer);

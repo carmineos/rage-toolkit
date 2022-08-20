@@ -13,7 +13,7 @@ namespace RageLib.Resources
         public uint PageMapPointer;
 
         // reference data
-        public DatResourceMap32 PageMap;
+        public DatResourceMap32? PageMap { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

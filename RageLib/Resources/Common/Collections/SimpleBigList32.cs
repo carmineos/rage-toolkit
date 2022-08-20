@@ -15,7 +15,7 @@ namespace RageLib.Resources.Common
         private uint Unknown_0Ch; // 0xCDCDCDCD
 
         // reference data
-        public SimpleArray<T> Entries;
+        public SimpleArray<T>? Entries { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

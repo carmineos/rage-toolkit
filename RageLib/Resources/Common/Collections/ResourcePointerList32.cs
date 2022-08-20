@@ -6,10 +6,7 @@ namespace RageLib.Resources.Common
 {
     public class ResourcePointerList32<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
     {
-        public override long BlockLength
-        {
-            get { return 8; }
-        }
+        public override long BlockLength => 0x8;
 
         // structure data
         public uint EntriesPointer;
@@ -17,8 +14,8 @@ namespace RageLib.Resources.Common
         public ushort EntriesCapacity;
 
         // reference data
-        public ResourcePointerArray32<T> Entries;
-        
+        public ResourcePointerArray32<T>? Entries { get; set; }
+
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             this.EntriesPointer = reader.ReadUInt32();

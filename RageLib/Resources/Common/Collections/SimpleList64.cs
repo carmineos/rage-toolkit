@@ -7,10 +7,7 @@ namespace RageLib.Resources.Common
 {
     public class SimpleList64<T> : ResourceSystemBlock where T : unmanaged
     {
-        public override long BlockLength
-        {
-            get { return 16; }
-        }
+        public override long BlockLength => 0x10;
 
         // structure data
         public ulong EntriesPointer;
@@ -18,7 +15,7 @@ namespace RageLib.Resources.Common
         public ushort EntriesCapacity;
 
         // reference data
-        public SimpleArray<T> Entries;
+        public SimpleArray<T>? Entries { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -44,9 +41,9 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.EntriesPointer = (ulong)(this.Entries != null ? this.Entries.BlockPosition : 0);
-            this.EntriesCount = (ushort)(this.Entries != null ? this.Entries.Count : 0);
-            this.EntriesCapacity = (ushort)(this.Entries != null ? this.Entries.Count : 0);
+            this.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
+            this.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
+            this.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
 
             // write structure data
             writer.Write(this.EntriesPointer);

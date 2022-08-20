@@ -14,7 +14,7 @@ namespace RageLib.Resources.Common
         public ushort EntriesCapacity;
 
         // reference data
-        public ResourceSimpleArray<T> Entries;
+        public ResourceSimpleArray<T>? Entries { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

@@ -14,7 +14,7 @@ namespace RageLib.Resources
         public ulong PageMapPointer;
 
         // reference data
-        public DatResourceMap PageMap;
+        public DatResourceMap? PageMap { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.

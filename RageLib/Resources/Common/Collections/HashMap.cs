@@ -20,7 +20,7 @@ namespace RageLib.Resources.Common
         public byte Initialized;
 
         // reference data
-        public ResourcePointerArray64<HashMapEntry> Buckets;
+        public ResourcePointerArray64<HashMapEntry>? Buckets { get; set; }
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
@@ -42,7 +42,7 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.BucketsPointer = (ulong)(this.Buckets != null ? this.Buckets.BlockPosition : 0);
+            this.BucketsPointer = (ulong)(this.Buckets?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.BucketsPointer);
@@ -179,7 +179,7 @@ namespace RageLib.Resources.Common
         public ulong NextPointer;
 
         // reference data
-        public HashMapEntry Next;
+        public HashMapEntry? Next { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -203,7 +203,7 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.NextPointer = (ulong)(this.Next != null ? this.Next.BlockPosition : 0);
+            this.NextPointer = (ulong)(this.Next?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Hash);

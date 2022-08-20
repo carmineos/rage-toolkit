@@ -18,7 +18,7 @@ namespace RageLib.Resources
         private uint Unknown_1Ch; // 0xCDCDCDCD
 
         // reference data
-        public T Data { get; set; }
+        public T? Data { get; set; }
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {

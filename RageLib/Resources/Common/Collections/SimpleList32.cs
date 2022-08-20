@@ -15,7 +15,7 @@ namespace RageLib.Resources.Common
         public ushort EntriesCapacity;
 
         // reference data
-        public SimpleArray<T> Entries;
+        public SimpleArray<T>? Entries { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -41,8 +41,8 @@ namespace RageLib.Resources.Common
         {
             // update structure data
             this.EntriesPointer = (uint)(this.Entries?.BlockPosition ?? 0);
-            this.EntriesCount = (ushort)(this.Entries != null ? this.Entries.Count : 0);
-            this.EntriesCapacity = (ushort)(this.Entries != null ? this.Entries.Count : 0);
+            this.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
+            this.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
 
             // write structure data
             writer.Write(this.EntriesPointer);
