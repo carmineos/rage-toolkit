@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ArchiveTool (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ArchiveTool (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
