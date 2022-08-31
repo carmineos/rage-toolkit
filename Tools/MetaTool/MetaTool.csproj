@@ -9,7 +9,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\RageLib.GTA5\RageLib.GTA5.csproj" />
-		<ProjectReference Include="..\..\RageLib\RageLib.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
