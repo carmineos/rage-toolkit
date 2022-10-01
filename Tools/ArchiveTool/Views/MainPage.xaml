@@ -7,6 +7,9 @@
     xmlns:local="using:ArchiveTool.Views"
     xmlns:vm="using:ArchiveTool.ViewModels" 
     xmlns:converters="using:ArchiveTool.ValueConverters" 
+    xmlns:convertersWinUI="using:ArchiveTool.ValueConverters.WinUI"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
     d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
     mc:Ignorable="d"
     DataContext="{x:Bind ViewModel}"
@@ -18,6 +21,7 @@
                 <!--<ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />-->
                 <ResourceDictionary>
                     <converters:ExplorerItemTypeToIconUriValueConverter x:Key="TypeToIconConverter" />
+                    <convertersWinUI:WinUIControlEventArgsConverter x:Key="WinUIControlEventArgsConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -158,8 +162,14 @@
             <BreadcrumbBar Grid.Column="1" 
                            VerticalAlignment="Center"
                            ItemsSource="{x:Bind ViewModel.Breadcrumbs}"
-                           ItemClicked="{x:Bind ViewModel.BreadcrumbBarItemClicked}"
                            >
+                <Interactivity:Interaction.Behaviors>
+                    <Interactions:EventTriggerBehavior EventName="ItemClicked">
+                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.BreadcrumbBarItemClickedCommand}" 
+                                                          InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
+                    </Interactions:EventTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+                
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate x:DataType="vm:BreadcrumbItemViewModel">
                         <TextBlock Text="{x:Bind Name}" >
@@ -196,15 +206,27 @@
             </BreadcrumbBar>
 
             <AutoSuggestBox
+                x:Name="autoSuggestBox"
                 Grid.Column="2"
                 Margin="8"
                 PlaceholderText="Search"
-                QueryIcon="Find"
-                TextChanged="{x:Bind ViewModel.AutoSuggestBoxTextChanged}"
-                QuerySubmitted="{x:Bind ViewModel.AutoSuggestBoxQuerySubmitted}">
+                QueryIcon="Find">
                 <AutoSuggestBox.KeyboardAccelerators>
                     <KeyboardAccelerator Key="F" Modifiers="Control" />
                 </AutoSuggestBox.KeyboardAccelerators>
+
+                <Interactivity:Interaction.Behaviors>
+                    <Interactions:EventTriggerBehavior EventName="TextChanged">
+                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxTextChangedCommand}" 
+                                                          CommandParameter="{Binding Path=Text, ElementName=autoSuggestBox}"/>
+                    </Interactions:EventTriggerBehavior>
+
+                    <Interactions:EventTriggerBehavior EventName="QuerySubmitted">
+                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxQuerySubmittedCommand}"
+                                                          InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
+                    </Interactions:EventTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+                        
             </AutoSuggestBox>
         </Grid>
 
@@ -220,11 +242,26 @@
                       CanDragItems="False"
                       SelectionMode="Single"
                       ItemsSource="{x:Bind ViewModel.TreeViewItems, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.SelectedTreeViewItem, Mode=OneWay}"
-                      Collapsed="{x:Bind ViewModel.TreeViewCollapsed}"
-                      Expanding="{x:Bind ViewModel.TreeViewExpanding}"
-                      ItemInvoked="{x:Bind ViewModel.TreeViewItemInvoked}">
+                      SelectedItem="{x:Bind ViewModel.SelectedTreeViewItem, Mode=OneWay}">
+                
+                <Interactivity:Interaction.Behaviors>
+                    <Interactions:EventTriggerBehavior EventName="ItemInvoked">
+                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewItemInvokedCommand}" 
+                                                          InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
+                    </Interactions:EventTriggerBehavior>
 
+                    <Interactions:EventTriggerBehavior EventName="Collapsed">
+                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewCollapsedCommand}" 
+                                                          InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
+                    </Interactions:EventTriggerBehavior>
+
+                    <Interactions:EventTriggerBehavior EventName="Expanding">
+                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewExpandingCommand}" 
+                                                          InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
+                    </Interactions:EventTriggerBehavior>
+                    
+                </Interactivity:Interaction.Behaviors>
+                
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="vm:TreeViewItemViewModel">
                         <TreeViewItem
@@ -254,6 +291,7 @@
             <Grid Grid.Column="2">
 
                 <ListView
+                    x:Name="detailsListView"
                     ItemsSource="{x:Bind ViewModel.Children, Mode=OneWay}"
                     SelectionMode="Extended">
                     <ListView.ItemTemplate>
@@ -261,7 +299,6 @@
                             <StackPanel
                                 Background="Transparent"
                                 Padding="0 8"
-                                DoubleTapped="{x:Bind ItemDoubleTapped}"
                                 Orientation="Horizontal">
                                 <Image 
                                     Margin="4,0" 
@@ -270,10 +307,16 @@
                                     VerticalAlignment="Center"
                                     FontSize="12"
                                     Text="{x:Bind Name}" />
+
+                                <Interactivity:Interaction.Behaviors>
+                                    <Interactions:EventTriggerBehavior EventName="DoubleTapped">
+                                        <Interactions:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}"/>
+                                    </Interactions:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                    
+
                 </ListView>
                 <!--<controls:DataGrid ItemsSource="{x:Bind ViewModel.Children, Mode=OneWay}"
                                    CanUserSortColumns="True"

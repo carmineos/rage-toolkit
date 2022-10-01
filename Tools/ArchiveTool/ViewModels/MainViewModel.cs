@@ -4,7 +4,6 @@ using ArchiveTool.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.Notifications;
-using Microsoft.UI.Xaml.Controls;
 using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Services.VirtualFileSystem;
 using RageLib.GTA5.Utilities;
@@ -15,7 +14,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Foundation;
 
 namespace ArchiveTool.ViewModels
 {
@@ -25,19 +23,19 @@ namespace ArchiveTool.ViewModels
 
         [ObservableProperty]
         private ObservableCollection<TreeViewItemViewModel> treeViewItems;
-        
+
         [ObservableProperty]
         private TreeViewItemViewModel selectedTreeViewItem;
-        
+
         [ObservableProperty]
         private ObservableCollection<DataGridItemViewModel> children;
-        
+
         [ObservableProperty]
         private ObservableCollection<DataGridItemViewModel> selectedChildren;
-        
+
         [ObservableProperty]
         private ObservableCollection<BreadcrumbItemViewModel> breadcrumbs;
-        
+
         public MainViewModel()
         {
             _models = new List<ContainerExplorerItem>();
@@ -45,16 +43,9 @@ namespace ArchiveTool.ViewModels
             children = new ObservableCollection<DataGridItemViewModel>();
             treeViewItems = new ObservableCollection<TreeViewItemViewModel>();
             breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
-            
+
             this.PropertyChanged += MainViewModel_PropertyChanged;
 
-            TreeViewCollapsed = new TypedEventHandler<TreeView, TreeViewCollapsedEventArgs>(OnTreeViewCollapsed);
-            TreeViewExpanding = new TypedEventHandler<TreeView, TreeViewExpandingEventArgs>(OnTreeViewExpanding);
-            TreeViewItemInvoked = new TypedEventHandler<TreeView, TreeViewItemInvokedEventArgs>(OnTreeViewItemInvoked);
-            BreadcrumbBarItemClicked = new TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>(OnBreadcrumbBarItemClicked);
-            AutoSuggestBoxTextChanged = new TypedEventHandler<AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs>(OnAutoSuggestBoxTextChanged);
-            AutoSuggestBoxQuerySubmitted = new TypedEventHandler<AutoSuggestBox, AutoSuggestBoxQuerySubmittedEventArgs>(OnAutoSuggestBoxQuerySubmitted);
-            
             // TEMP
             //OpenFolder(@"C:\Program Files\Rockstar Games\Grand Theft Auto V\");
             //SelectedTreeViewItem = TreeViewItems[0];
@@ -108,7 +99,7 @@ namespace ArchiveTool.ViewModels
 
             OpenArchive(path);
         }
-        
+
         [RelayCommand]
         public async Task OpenFolder()
         {
@@ -165,19 +156,19 @@ namespace ArchiveTool.ViewModels
 
         private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-        
+
             switch (e.PropertyName)
             {
                 case nameof(SelectedChildren):
                     break;
-        
+
                 case nameof(SelectedTreeViewItem):
                     UpdateBreadcrumbs();
                     UpdateChildren();
                     SelectedTreeViewItem.IsSelected = true;
                     SelectedTreeViewItem.IsExpanded = true;
                     break;
-        
+
                 default:
                     break;
             }
@@ -185,7 +176,7 @@ namespace ArchiveTool.ViewModels
 
         public bool IsAlreadyOpen(string path)
         {
-            foreach(var item in TreeViewItems)
+            foreach (var item in TreeViewItems)
             {
                 if (item.Model.PhysicalPath == path)
                     return true;
@@ -233,53 +224,41 @@ namespace ArchiveTool.ViewModels
         //    }
         //}
 
-        public TypedEventHandler<TreeView, TreeViewCollapsedEventArgs> TreeViewCollapsed { get; }
-        public TypedEventHandler<TreeView, TreeViewExpandingEventArgs> TreeViewExpanding { get; }
-        public TypedEventHandler<TreeView, TreeViewItemInvokedEventArgs> TreeViewItemInvoked { get; }
-        public TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs> BreadcrumbBarItemClicked { get; }
-        public TypedEventHandler<AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs> AutoSuggestBoxTextChanged { get; }
-        public TypedEventHandler<AutoSuggestBox, AutoSuggestBoxQuerySubmittedEventArgs> AutoSuggestBoxQuerySubmitted { get; }
 
-        private void OnTreeViewItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
+        [RelayCommand]
+        public async Task TreeViewExpanding(TreeViewItemViewModel treeViewItemViewModel)
         {
-            if (args?.InvokedItem is TreeViewItemViewModel treeViewItemViewModel)
-                SelectedTreeViewItem = treeViewItemViewModel;
+            await Task.CompletedTask;
+            treeViewItemViewModel.ExpandCommand.Execute(this);
         }
 
-        private void OnTreeViewExpanding(TreeView sender, TreeViewExpandingEventArgs args)
+        [RelayCommand]
+        private async Task TreeViewCollapsed(TreeViewItemViewModel treeViewItemViewModel)
         {
-            if (args?.Item is TreeViewItemViewModel treeViewItemViewModel)
-                treeViewItemViewModel.ExpandCommand.Execute(this);
+            await Task.CompletedTask;
+            treeViewItemViewModel.CollapseCommand.Execute(this);
         }
 
-        private void OnTreeViewCollapsed(TreeView sender, TreeViewCollapsedEventArgs args)
+        [RelayCommand]
+        public async Task BreadcrumbBarItemClicked(BreadcrumbItemViewModel breadcrumb)
         {
-            if (args?.Item is TreeViewItemViewModel treeViewItemViewModel)
-                treeViewItemViewModel.CollapseCommand.Execute(this);
-        }
+            await Task.CompletedTask;
+            var selected = SelectedTreeViewItem;
 
-        private void OnBreadcrumbBarItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
-        {
-            if (args?.Item is BreadcrumbItemViewModel breadcrumb)
+            while (selected.Model != breadcrumb.Model)
             {
-                var selected = SelectedTreeViewItem;
-                
-                while (selected.Model != breadcrumb.Model)
-                {
-                    selected = selected.Parent;
-                }
-
-                SelectedTreeViewItem = selected;
+                selected = selected.Parent;
             }
+
+            SelectedTreeViewItem = selected;
         }
 
-
-        private void OnAutoSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        [RelayCommand]
+        public async Task AutoSuggestBoxTextChanged(string searchText)
         {
+            await Task.CompletedTask;
             // TODO: cache children collection, only change a filtered copy
             UpdateChildren();
-
-            var searchText = sender?.Text;
 
             if (string.IsNullOrEmpty(searchText))
                 return;
@@ -289,9 +268,11 @@ namespace ArchiveTool.ViewModels
             Children = new ObservableCollection<DataGridItemViewModel>(filteredChildren);
         }
 
-        private void OnAutoSuggestBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        [RelayCommand]
+        public async Task AutoSuggestBoxQuerySubmitted(string queryText)
         {
             // TODO: Global search, display results in new tab
+            await Task.CompletedTask;
         }
 
         public void UpdateBreadcrumbs()
@@ -303,9 +284,9 @@ namespace ArchiveTool.ViewModels
 
 
             Stack<ContainerExplorerItem> stack = new Stack<ContainerExplorerItem>();
-            
+
             var selected = SelectedTreeViewItem;
-            while(selected.Parent is not null)
+            while (selected.Parent is not null)
             {
                 stack.Push(selected.Model);
                 selected = selected.Parent;
@@ -327,6 +308,13 @@ namespace ArchiveTool.ViewModels
             {
                 Children.Add(new DataGridItemViewModel(child));
             }
+        }
+
+        [RelayCommand]
+        public async Task TreeViewItemInvoked(TreeViewItemViewModel treeViewItemViewModel)
+        {
+            await Task.CompletedTask;
+            SelectedTreeViewItem = treeViewItemViewModel;
         }
     }
 }
