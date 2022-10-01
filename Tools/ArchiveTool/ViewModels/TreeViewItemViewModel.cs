@@ -2,9 +2,9 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RageLib.GTA5.Services.VirtualFileSystem;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Tools.Core.FileSystem;
 
 namespace ArchiveTool.ViewModels
 {

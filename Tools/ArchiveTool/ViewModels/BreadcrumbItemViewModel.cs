@@ -1,9 +1,9 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using RageLib.GTA5.Services.VirtualFileSystem;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Tools.Core.FileSystem;
 
 namespace ArchiveTool.ViewModels
 {

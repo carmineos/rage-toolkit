@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\RageLib.GTA5\RageLib.GTA5.csproj" />
+    <ProjectReference Include="..\Tools.Core\Tools.Core.csproj" />
   </ItemGroup>
 
   <!-- Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging

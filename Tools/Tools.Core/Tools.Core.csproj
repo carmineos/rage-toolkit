@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RageLib.GTA5\RageLib.GTA5.csproj" />
+    <ProjectReference Include="..\..\RageLib\RageLib.csproj" />
+  </ItemGroup>
+
+</Project>

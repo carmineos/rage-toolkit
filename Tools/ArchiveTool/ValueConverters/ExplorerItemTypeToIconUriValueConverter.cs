@@ -1,10 +1,9 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using ArchiveTool.ViewModels;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
-using RageLib.GTA5.Services.VirtualFileSystem;
 using System;
+using Tools.Core.FileSystem;
 
 namespace ArchiveTool.ValueConverters
 {

@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.Notifications;
 using RageLib.GTA5.ArchiveWrappers;
-using RageLib.GTA5.Services.VirtualFileSystem;
 using RageLib.GTA5.Utilities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Tools.Core.FileSystem;
 
 namespace ArchiveTool.ViewModels
 {
