@@ -23,6 +23,7 @@ using RageLib.GTA5.Cryptography;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using RageLib.GTA5.Services;
+using Microsoft.Extensions.Hosting;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,6 +35,8 @@ namespace ArchiveTool
     /// </summary>
     public partial class App : Application
     {
+        public IHost Host { get; }
+
         private Window m_window;
 
         public static IntPtr WindowHandle { get; private set; }
@@ -47,7 +50,15 @@ namespace ArchiveTool
             this.InitializeComponent();
             GTA5Constants.LoadFromPath(System.IO.Path.Combine(Environment.CurrentDirectory, "keys"));
 
-            ConfigureServices();
+            this.Host = Microsoft.Extensions.Hosting.Host
+                .CreateDefaultBuilder()
+                .UseContentRoot(AppContext.BaseDirectory)
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddSingleton<JenkinsDictionary>();
+                    services.AddSingleton<MetaConverter>();
+                })
+                .Build();
         }
 
         /// <summary>
@@ -62,16 +73,6 @@ namespace ArchiveTool
 
             WindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(m_window);
             //m_window.ExtendsContentIntoTitleBar = true;
-        }
-
-        private void ConfigureServices()
-        {
-            // TODO: Configure required services
-            Ioc.Default.ConfigureServices(
-                new ServiceCollection()
-                .AddSingleton<JenkinsDictionary>()
-                .AddSingleton<MetaConverter>()
-                .BuildServiceProvider());
         }
     }
 }
