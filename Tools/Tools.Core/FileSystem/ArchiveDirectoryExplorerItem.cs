@@ -11,9 +11,9 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
     private readonly List<ExplorerItem> _children;
 
     public override string Name => _archiveDirectory.Name;
-    public override string PhysicalPath => _parent.PhysicalPath;
+    public override string? PhysicalPath => null;
     public override ExplorerItemType ItemType => ExplorerItemType.ArchiveDirectory;
-    public override ContainerExplorerItem Parent => _parent;
+    public override ContainerExplorerItem? Parent => _parent;
     public override List<ExplorerItem> Children => _children;
 
     public ArchiveDirectoryExplorerItem(IArchiveDirectory directory, ContainerExplorerItem parent)

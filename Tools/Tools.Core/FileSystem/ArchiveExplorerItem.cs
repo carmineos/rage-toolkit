@@ -11,11 +11,11 @@ public class ArchiveExplorerItem : ContainerExplorerItem
     private readonly List<ExplorerItem> _children;
 
     public override string Name => _archive.Name;
-    public override string PhysicalPath =>
+    public override string? PhysicalPath =>
         _parent.ItemType == ExplorerItemType.Root || _parent.ItemType == ExplorerItemType.Directory
-        ? Path.Combine(_parent.PhysicalPath, Name) : _parent.PhysicalPath;
+        ? Path.Combine(_parent.PhysicalPath!, Name) : null;
     public override ExplorerItemType ItemType => ExplorerItemType.Archive;
-    public override ContainerExplorerItem Parent => _parent;
+    public override ContainerExplorerItem? Parent => _parent;
     public override List<ExplorerItem> Children => _children;
 
     public ArchiveExplorerItem(IArchive archive, ContainerExplorerItem parent)

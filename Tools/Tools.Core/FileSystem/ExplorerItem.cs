@@ -5,9 +5,9 @@ namespace Tools.Core.FileSystem;
 public abstract class ExplorerItem
 {
     public abstract string Name { get; }
-    public abstract string PhysicalPath { get; }
+    public abstract string? PhysicalPath { get; }
     public abstract ExplorerItemType ItemType { get; }
-    public abstract ExplorerItem Parent { get; }
+    public abstract ContainerExplorerItem? Parent { get; }
 
     public virtual string GetRelativePath()
     {

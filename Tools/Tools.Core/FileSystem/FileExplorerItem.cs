@@ -8,9 +8,9 @@ public class FileExplorerItem : ExplorerItem
     private readonly DirectoryExplorerItem _parent;
 
     public override string Name => _file.Name;
-    public override string PhysicalPath => _file.FullName;
+    public override string? PhysicalPath => _file.FullName;
     public override ExplorerItemType ItemType => ExplorerItemType.File;
-    public override DirectoryExplorerItem Parent => _parent;
+    public override ContainerExplorerItem Parent => _parent;
 
     public FileExplorerItem(FileInfo file, DirectoryExplorerItem parent)
     {

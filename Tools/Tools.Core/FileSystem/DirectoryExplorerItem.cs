@@ -9,9 +9,9 @@ public class DirectoryExplorerItem : ContainerExplorerItem
     private readonly List<ExplorerItem> _children;
 
     public override string Name => _directory.Name;
-    public override string PhysicalPath => _directory.FullName;
+    public override string? PhysicalPath => _directory.FullName;
     public override ExplorerItemType ItemType => ExplorerItemType.Directory;
-    public override DirectoryExplorerItem Parent => _parent;
+    public override ContainerExplorerItem? Parent => _parent;
     public override List<ExplorerItem> Children => _children;
 
     public DirectoryExplorerItem(DirectoryInfo directory, DirectoryExplorerItem parent)

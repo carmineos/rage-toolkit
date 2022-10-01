@@ -10,9 +10,9 @@ public class ArchiveFileExplorerItem : ExplorerItem
     private readonly ContainerExplorerItem _parent;
 
     public override string Name => _archiveFile.Name;
-    public override string PhysicalPath => _parent.PhysicalPath;
+    public override string? PhysicalPath => null;
     public override ExplorerItemType ItemType => ExplorerItemType.ArchiveFile;
-    public override ContainerExplorerItem Parent => _parent;
+    public override ContainerExplorerItem? Parent => _parent;
 
     public ArchiveFileExplorerItem(IArchiveFile file, ContainerExplorerItem parent)
     {
