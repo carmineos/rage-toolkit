@@ -120,7 +120,9 @@ public partial class ContainerDetailsViewModel : ObservableObject
     [RelayCommand]
     public async Task UpdateSelectedItems(IList<object> selectedItems)
     {
-        var items = selectedItems.ToList().Cast<DataGridItemViewModel>();
+        await Task.CompletedTask;
+
+        var items = selectedItems.Cast<DataGridItemViewModel>();
         SelectedChildren = new ObservableCollection<DataGridItemViewModel>(items);
     }
 }

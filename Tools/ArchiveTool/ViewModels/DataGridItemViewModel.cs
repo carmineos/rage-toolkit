@@ -3,6 +3,7 @@
 using ArchiveTool.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Tools.Core.FileSystem;
@@ -17,6 +18,8 @@ namespace ArchiveTool.ViewModels
         public string Name => _model.Name;
         public string Extensions => Path.GetExtension(Name);
         public ExplorerItemType ItemType => _model.ItemType;
+
+        public bool CanExport => _model is IExport;
 
         public DataGridItemViewModel(ExplorerItem model)
         {
@@ -34,6 +37,17 @@ namespace ArchiveTool.ViewModels
         {
             var copyPath = Path.Combine(destinationPath, _model.Name);
             _model.ExportItem(copyPath);
+        }
+
+        [RelayCommand]
+        public async Task Export()
+        {
+            var destinationPath = await Pickers.ShowSingleFolderPicker();
+
+            if (destinationPath is null)
+                return;
+
+            Export(destinationPath);    
         }
     }
 }
