@@ -15,8 +15,15 @@ namespace ArchiveTool.Helpers
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
 
-            foreach (var item in filters)
-                picker.FileTypeFilter.Add(item);
+            if (filters.Length is 0)
+            {
+                picker.FileTypeFilter.Add("*");
+            }
+            else
+            {
+                foreach (var item in filters)
+                    picker.FileTypeFilter.Add(item);
+            }
 
             Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
 

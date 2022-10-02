@@ -63,4 +63,14 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
     {
         // TODO: Refactor RageLib.GTA5.Utilities.ArchiveUtilities.UnpackDirectory
     }
+
+    public override void ImportFile(string filePath)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void ImportDirectory(string directoryPath)
+    {
+        throw new NotImplementedException();
+    }
 }

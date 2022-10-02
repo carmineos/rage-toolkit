@@ -17,7 +17,6 @@ namespace ArchiveTool.ViewModels
         public string Name => _model.Name;
         public string Extensions => Path.GetExtension(Name);
         public ExplorerItemType ItemType => _model.ItemType;
-        public bool CanExport => _model is IExportableItem and not RootExplorerItem;
 
         public DataGridItemViewModel(ExplorerItem model)
         {
@@ -31,16 +30,9 @@ namespace ArchiveTool.ViewModels
             await Task.CompletedTask;
         }
 
-        [RelayCommand]
-        public async Task Export()
+        public void Export(string destinationPath)
         {
-            var destinationnPath = await Pickers.ShowSingleFolderPicker();
-            
-            if (destinationnPath is null)
-                return;
-            
-            var copyPath = Path.Combine(destinationnPath, _model.Name);
-
+            var copyPath = Path.Combine(destinationPath, _model.Name);
             _model.ExportItem(copyPath);
         }
     }

@@ -86,4 +86,14 @@ public class ArchiveExplorerItem : ContainerExplorerItem
             // Export it
         }
     }
+
+    public override void ImportFile(string filePath)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void ImportDirectory(string directoryPath)
+    {
+        throw new NotImplementedException();
+    }
 }

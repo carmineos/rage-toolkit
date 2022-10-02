@@ -22,6 +22,7 @@
                 <ResourceDictionary>
                     <converters:ExplorerItemTypeToIconUriValueConverter x:Key="TypeToIconConverter" />
                     <convertersWinUI:WinUIControlEventArgsConverter x:Key="WinUIControlEventArgsConverter" />
+                    <convertersWinUI:SelectionChangedConverter x:Key="SelectionChangedConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -292,7 +293,7 @@
 
                 <ListView
                     x:Name="detailsListView"
-                    ItemsSource="{x:Bind ViewModel.Children, Mode=OneWay}"
+                    ItemsSource="{x:Bind ViewModel.ChildrenDetailsViewModel.Children}"
                     SelectionMode="Extended">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="vm:DataGridItemViewModel">
@@ -313,19 +314,44 @@
                                     </Interactivity:Interaction.Behaviors>
                                 </StackPanel>
 
-                                <ListViewItem.ContextFlyout>
+                                <!--<ListViewItem.ContextFlyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem Text="Export"
                                                         Icon="Download"
                                                         Visibility="{x:Bind CanExport}"
                                                         Command="{x:Bind ExportCommand}"/>
                                     </MenuFlyout>
-                                </ListViewItem.ContextFlyout>
+                                </ListViewItem.ContextFlyout>-->
 
                             </ListViewItem>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    
+                    <ListView.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Import File"
+                                            Icon="Import"                                            
+                                            Visibility="{x:Bind ViewModel.ChildrenDetailsViewModel.CanImportFile, Mode=OneWay}"
+                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ImportFileCommand}"/>
+                            <MenuFlyoutItem Text="Import Directory"
+                                            Icon="ImportAll"                                            
+                                            Visibility="{x:Bind ViewModel.ChildrenDetailsViewModel.CanImportDirectory, Mode=OneWay}"
+                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ImportDirectoryCommand}"/>
+                            <MenuFlyoutItem Text="Export"
+                                            Icon="Download"
+                                            Visibility="{x:Bind ViewModel.ChildrenDetailsViewModel.CanExport, Mode=OneWay}"
+                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ExportCommand}"
+                                            CommandParameter="{x:Bind ViewModel.ChildrenDetailsViewModel.SelectedChildren, Mode=OneWay}"/>
+                        </MenuFlyout>
+                    </ListView.ContextFlyout>
 
+                    <Interactivity:Interaction.Behaviors>
+                        <Interactions:EventTriggerBehavior EventName="SelectionChanged">
+                            <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.UpdateSelectedItemsCommand}"
+                                                              InputConverter="{StaticResource SelectionChangedConverter}"
+                                                              InputConverterParameter="{Binding ElementName=detailsListView}"/>
+                        </Interactions:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
                 </ListView>
                 <!--<controls:DataGrid ItemsSource="{x:Bind ViewModel.Children, Mode=OneWay}"
                                    CanUserSortColumns="True"

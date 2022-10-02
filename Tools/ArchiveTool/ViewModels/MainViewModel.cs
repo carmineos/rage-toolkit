@@ -10,10 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Tools.Core.FileSystem;
+using Windows.UI.Notifications;
 
 namespace ArchiveTool.ViewModels
 {
@@ -28,10 +30,7 @@ namespace ArchiveTool.ViewModels
         private TreeViewItemViewModel selectedTreeViewItem;
 
         [ObservableProperty]
-        private ObservableCollection<DataGridItemViewModel> children;
-
-        [ObservableProperty]
-        private ObservableCollection<DataGridItemViewModel> selectedChildren;
+        private ContainerDetailsViewModel childrenDetailsViewModel;
 
         [ObservableProperty]
         private ObservableCollection<BreadcrumbItemViewModel> breadcrumbs;
@@ -39,8 +38,7 @@ namespace ArchiveTool.ViewModels
         public MainViewModel()
         {
             _models = new List<ContainerExplorerItem>();
-
-            children = new ObservableCollection<DataGridItemViewModel>();
+            childrenDetailsViewModel = new ContainerDetailsViewModel();
             treeViewItems = new ObservableCollection<TreeViewItemViewModel>();
             breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
 
@@ -134,16 +132,44 @@ namespace ArchiveTool.ViewModels
                 return;
 
             // TODO: Show Error messages in case of wrong paths
+            var toastContent = new ToastContentBuilder()
+                .AddText("Packing Archive")
+                .AddVisualChild(new AdaptiveProgressBar()
+                {
+                    Title = $"Packing {name}",
+                    Value = new BindableProgressBarValue("progressValue"),
+                    //ValueStringOverride = new BindableString("progressValueString"),
+                    Status = new BindableString("progressStatus")
+                })
+                .AddButton(new ToastButton("Open Path", "")
+                .SetProtocolActivation(new Uri(new FileInfo(savePath).Directory.FullName)))
+                .GetToastContent();
+
+            Debug.WriteLine(toastContent.GetXml().GetXml());
+
+            var toast = new ToastNotification(toastContent.GetXml());
+            toast.Tag = "packing-archive";
+            toast.Group = "archive";
+            toast.Data = new NotificationData();
+            toast.Data.SequenceNumber = 1;
+            toast.Data.Values["progressValue"] = "indeterminate";
+            toast.Data.Values["progressStatus"] = "Packing...";
+            var notifier = ToastNotificationManager.CreateToastNotifier();
+            notifier.Show(toast);
 
             _ = Task.Run(() =>
             {
                 ArchiveUtilities.PackArchive(path, savePath, true, RageLib.GTA5.Archives.RageArchiveEncryption7.None);
-                new ToastContentBuilder()
-                .AddText("Pack Folder Completed")
-                .AddText(savePath)
-                .AddButton(new ToastButton("Open Path", "")
-                .SetProtocolActivation(new Uri(new FileInfo(savePath).Directory.FullName)))
-                .Show();
+
+                // Update the toast
+                string tag = "packing-archive";
+                var group = "archive";
+                var data = new NotificationData
+                {
+                    SequenceNumber = 2
+                };
+                data.Values["progressValue"] = "1.0";
+                ToastNotificationManager.CreateToastNotifier().Update(data, tag, group);
             });
         }
 
@@ -159,12 +185,9 @@ namespace ArchiveTool.ViewModels
 
             switch (e.PropertyName)
             {
-                case nameof(SelectedChildren):
-                    break;
-
                 case nameof(SelectedTreeViewItem):
                     UpdateBreadcrumbs();
-                    UpdateChildren();
+                    ChildrenDetailsViewModel.Model = SelectedTreeViewItem.Model;
                     SelectedTreeViewItem.IsSelected = true;
                     SelectedTreeViewItem.IsExpanded = true;
                     break;
@@ -256,16 +279,7 @@ namespace ArchiveTool.ViewModels
         [RelayCommand]
         public async Task AutoSuggestBoxTextChanged(string searchText)
         {
-            await Task.CompletedTask;
-            // TODO: cache children collection, only change a filtered copy
-            UpdateChildren();
-
-            if (string.IsNullOrEmpty(searchText))
-                return;
-
-            var filteredChildren = Children.Where(c => c.Name.Contains(searchText)).AsEnumerable();
-
-            Children = new ObservableCollection<DataGridItemViewModel>(filteredChildren);
+            await ChildrenDetailsViewModel.Search(searchText);
         }
 
         [RelayCommand]
@@ -295,19 +309,6 @@ namespace ArchiveTool.ViewModels
 
             while (stack.Count > 0)
                 Breadcrumbs.Add(new BreadcrumbItemViewModel(stack.Pop()));
-        }
-
-        public void UpdateChildren()
-        {
-            if (SelectedTreeViewItem is null)
-                return;
-
-            Children.Clear();
-
-            foreach (var child in SelectedTreeViewItem.Model.Children)
-            {
-                Children.Add(new DataGridItemViewModel(child));
-            }
         }
 
         [RelayCommand]

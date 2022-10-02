@@ -90,4 +90,26 @@ public class DirectoryExplorerItem : ContainerExplorerItem
             CopyAll(diSourceSubDir, nextTargetSubDir);
         }
     }
+
+    public override void ImportFile(string importPath)
+    {
+        // If it's a file
+        if (!File.Exists(importPath))
+            return;
+        
+        var file = new FileInfo(importPath);
+        file.CopyTo(Path.Combine(_directory.FullName, file.Name));
+        return;
+    }
+
+    public override void ImportDirectory(string importPath)
+    {
+        // If it's a directory
+        if (!Directory.Exists(importPath))
+            return;
+
+        var directory = new DirectoryInfo(importPath);
+        var targetDirectory = new DirectoryInfo(Path.Combine(_directory.FullName, directory.Name));
+        CopyAll(directory, targetDirectory);
+    }
 }

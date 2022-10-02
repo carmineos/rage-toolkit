@@ -2,7 +2,7 @@
 
 namespace Tools.Core.FileSystem.Abstractions;
 
-public interface IExportableItem
+public interface IImportDirectory
 {
-    void ExportItem(string exportPath);
+    void ImportDirectory(string directoryPath);
 }
