@@ -153,9 +153,9 @@
                             </AppBarButton.KeyboardAccelerators>
                         </AppBarButton>
                     </CommandBar.PrimaryCommands>
-                    
+
                 </CommandBar>
-                
+
             </StackPanel>
 
             <!--  BreadcrumbBar  -->
@@ -169,7 +169,7 @@
                                                           InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
                     </Interactions:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
-                
+
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate x:DataType="vm:BreadcrumbItemViewModel">
                         <TextBlock Text="{x:Bind Name}" >
@@ -226,7 +226,7 @@
                                                           InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
                     </Interactions:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
-                        
+
             </AutoSuggestBox>
         </Grid>
 
@@ -243,7 +243,7 @@
                       SelectionMode="Single"
                       ItemsSource="{x:Bind ViewModel.TreeViewItems, Mode=OneWay}"
                       SelectedItem="{x:Bind ViewModel.SelectedTreeViewItem, Mode=OneWay}">
-                
+
                 <Interactivity:Interaction.Behaviors>
                     <Interactions:EventTriggerBehavior EventName="ItemInvoked">
                         <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewItemInvokedCommand}" 
@@ -259,9 +259,9 @@
                         <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewExpandingCommand}" 
                                                           InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
                     </Interactions:EventTriggerBehavior>
-                    
+
                 </Interactivity:Interaction.Behaviors>
-                
+
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="vm:TreeViewItemViewModel">
                         <TreeViewItem
@@ -296,24 +296,33 @@
                     SelectionMode="Extended">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="vm:DataGridItemViewModel">
-                            <StackPanel
-                                Background="Transparent"
-                                Padding="0 8"
-                                Orientation="Horizontal">
-                                <Image 
-                                    Margin="4,0" 
-                                    Source="{x:Bind ItemType, Converter={StaticResource TypeToIconConverter}}" />
-                                <TextBlock 
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    Text="{x:Bind Name}" />
+                            <ListViewItem>
+                                <StackPanel Background="Transparent"
+                                            Padding="0 8"
+                                            Orientation="Horizontal">
+                                    <Image Margin="4,0" 
+                                           Source="{x:Bind ItemType, Converter={StaticResource TypeToIconConverter}}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               FontSize="12"
+                                               Text="{x:Bind Name}" />
 
-                                <Interactivity:Interaction.Behaviors>
-                                    <Interactions:EventTriggerBehavior EventName="DoubleTapped">
-                                        <Interactions:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}"/>
-                                    </Interactions:EventTriggerBehavior>
-                                </Interactivity:Interaction.Behaviors>
-                            </StackPanel>
+                                    <Interactivity:Interaction.Behaviors>
+                                        <Interactions:EventTriggerBehavior EventName="DoubleTapped">
+                                            <Interactions:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}"/>
+                                        </Interactions:EventTriggerBehavior>
+                                    </Interactivity:Interaction.Behaviors>
+                                </StackPanel>
+
+                                <ListViewItem.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Export"
+                                                        Icon="Download"
+                                                        Visibility="{x:Bind CanExport}"
+                                                        Command="{x:Bind ExportCommand}"/>
+                                    </MenuFlyout>
+                                </ListViewItem.ContextFlyout>
+
+                            </ListViewItem>
                         </DataTemplate>
                     </ListView.ItemTemplate>
 

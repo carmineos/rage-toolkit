@@ -58,4 +58,9 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
             _children.Add(archiveFolderExplorerItem);
         }
     }
+
+    public override void ExportItem(string exportPath)
+    {
+        // TODO: Refactor RageLib.GTA5.Utilities.ArchiveUtilities.UnpackDirectory
+    }
 }

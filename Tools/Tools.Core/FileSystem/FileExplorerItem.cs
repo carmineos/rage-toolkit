@@ -17,4 +17,9 @@ public class FileExplorerItem : ExplorerItem
         _file = file;
         _parent = parent;
     }
+
+    public override void ExportItem(string exportPath)
+    {
+        _file.CopyTo(exportPath);
+    }
 }

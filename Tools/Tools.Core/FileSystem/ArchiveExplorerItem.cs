@@ -60,4 +60,30 @@ public class ArchiveExplorerItem : ContainerExplorerItem
             _children.Add(archiveFolderExplorerItem);
         }
     }
+
+    public override void ExportItem(string exportPath)
+    {
+        // If it's a physical archive
+        if (!string.IsNullOrEmpty(PhysicalPath))
+        {
+            var fileInfo = new FileInfo(PhysicalPath);
+            fileInfo.CopyTo(exportPath);
+            return;
+        }
+
+        // If it's embedded into another archive
+        var parent = Parent;
+        while (string.IsNullOrEmpty(parent?.PhysicalPath))
+        {
+            parent = parent?.Parent;
+        }
+
+        // Now parent is a physicalFile (likely an archive)
+        if (parent is ArchiveExplorerItem physicalParent)
+        {
+            // Search the IArchiveFile (as binary file not as archive)
+
+            // Export it
+        }
+    }
 }

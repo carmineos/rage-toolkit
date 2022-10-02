@@ -19,4 +19,10 @@ public class ArchiveFileExplorerItem : ExplorerItem
         _archiveFile = file;
         _parent = parent;
     }
+
+    public override void ExportItem(string exportPath)
+    {
+        // TODO: Use ExportUncompressed
+        _archiveFile.Export(exportPath);
+    }
 }
