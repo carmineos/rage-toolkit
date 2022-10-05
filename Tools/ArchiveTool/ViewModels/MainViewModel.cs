@@ -41,12 +41,6 @@ namespace ArchiveTool.ViewModels
             childrenDetailsViewModel = new ContainerDetailsViewModel();
             treeViewItems = new ObservableCollection<TreeViewItemViewModel>();
             breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
-
-            this.PropertyChanged += MainViewModel_PropertyChanged;
-
-            // TEMP
-            //OpenFolder(@"C:\Program Files\Rockstar Games\Grand Theft Auto V\");
-            //SelectedTreeViewItem = TreeViewItems[0];
         }
 
         public void OpenFolder(string path)
@@ -174,27 +168,18 @@ namespace ArchiveTool.ViewModels
         }
 
         [RelayCommand]
-        public async Task NavigateToParent()
+        public void NavigateToParent()
         {
             if (SelectedTreeViewItem?.Parent is not null)
                 SelectedTreeViewItem = SelectedTreeViewItem.Parent;
         }
 
-        private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        partial void OnSelectedTreeViewItemChanged(TreeViewItemViewModel value)
         {
-
-            switch (e.PropertyName)
-            {
-                case nameof(SelectedTreeViewItem):
-                    UpdateBreadcrumbs();
-                    ChildrenDetailsViewModel.Model = SelectedTreeViewItem.Model;
-                    SelectedTreeViewItem.IsSelected = true;
-                    SelectedTreeViewItem.IsExpanded = true;
-                    break;
-
-                default:
-                    break;
-            }
+            UpdateBreadcrumbs();
+            ChildrenDetailsViewModel.Model = value.Model;
+            value.IsSelected = true;
+            value.IsExpanded = true;
         }
 
         public bool IsAlreadyOpen(string path)
@@ -214,58 +199,27 @@ namespace ArchiveTool.ViewModels
             return false;
         }
 
-        //public bool Import_CanClick()
-        //{
-        //    return _model.Archive != null;
-        //}
-
-        //public void Import_Clicked()
-        //{
-        //    var dlg = new OpenFileDialog();
-        //    dlg.Title = "Import file";
-        //    if (dlg.ShowDialog() == true)
-        //    {
-        //        _model.Import(SelectedDirectory.GetDirectory(), dlg.FileName);
-        //    }
-
-        //    Files = SelectedDirectory.GetFiles();
-        //}
-
-        //public bool Export_CanClick()
-        //{
-        //    return _model.Archive != null && SelectedFile != null;
-        //}
-
-        //public void Export_Clicked()
-        //{
-        //    var dlg = new SaveFileDialog();
-        //    dlg.Title = "Export file";
-        //    dlg.FileName = SelectedFile.GetFile().Name;
-        //    if (dlg.ShowDialog() == true)
-        //    {
-        //        _model.Export(SelectedFile.GetFile(), dlg.FileName);
-        //    }
-        //}
-
-
         [RelayCommand]
-        public async Task TreeViewExpanding(TreeViewItemViewModel treeViewItemViewModel)
+        public void TreeViewExpanding(TreeViewItemViewModel treeViewItemViewModel)
         {
-            await Task.CompletedTask;
-            treeViewItemViewModel.ExpandCommand.Execute(this);
+            treeViewItemViewModel.ExpandCommand.Execute(null);
         }
 
         [RelayCommand]
-        private async Task TreeViewCollapsed(TreeViewItemViewModel treeViewItemViewModel)
+        public void TreeViewCollapsed(TreeViewItemViewModel treeViewItemViewModel)
         {
-            await Task.CompletedTask;
-            treeViewItemViewModel.CollapseCommand.Execute(this);
+            treeViewItemViewModel.CollapseCommand.Execute(null);
         }
 
         [RelayCommand]
-        public async Task BreadcrumbBarItemClicked(BreadcrumbItemViewModel breadcrumb)
+        public void TreeViewItemInvoked(TreeViewItemViewModel treeViewItemViewModel)
         {
-            await Task.CompletedTask;
+            SelectedTreeViewItem = treeViewItemViewModel;
+        } 
+
+        [RelayCommand]
+        public void BreadcrumbBarItemClicked(BreadcrumbItemViewModel breadcrumb)
+        {
             var selected = SelectedTreeViewItem;
 
             while (selected.Model != breadcrumb.Model)
@@ -277,29 +231,21 @@ namespace ArchiveTool.ViewModels
         }
 
         [RelayCommand]
-        public async Task AutoSuggestBoxTextChanged(string searchText)
-        {
-            await ChildrenDetailsViewModel.Search(searchText);
-        }
-
-        [RelayCommand]
         public async Task AutoSuggestBoxQuerySubmitted(string queryText)
         {
             // TODO: Global search, display results in new tab
             await Task.CompletedTask;
         }
 
-        public void UpdateBreadcrumbs()
+        private void UpdateBreadcrumbs()
         {
             if (SelectedTreeViewItem is null)
                 return;
 
             Breadcrumbs.Clear();
-
-
             Stack<ContainerExplorerItem> stack = new Stack<ContainerExplorerItem>();
 
-            var selected = SelectedTreeViewItem;
+            var selected = SelectedTreeViewItem;          
             while (selected.Parent is not null)
             {
                 stack.Push(selected.Model);
@@ -309,13 +255,6 @@ namespace ArchiveTool.ViewModels
 
             while (stack.Count > 0)
                 Breadcrumbs.Add(new BreadcrumbItemViewModel(stack.Pop()));
-        }
-
-        [RelayCommand]
-        public async Task TreeViewItemInvoked(TreeViewItemViewModel treeViewItemViewModel)
-        {
-            await Task.CompletedTask;
-            SelectedTreeViewItem = treeViewItemViewModel;
         }
     }
 }

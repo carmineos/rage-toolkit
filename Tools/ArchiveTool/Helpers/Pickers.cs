@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ArchiveTool.Helpers
@@ -48,8 +49,15 @@ namespace ArchiveTool.Helpers
             WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
             
-            foreach (var item in choices)
-                picker.FileTypeChoices.Add(item.Key, item.Value);
+            if (choices.Length is 0)
+            {
+                picker.FileTypeChoices.Add("Placeholder", new List<string> { Path.GetExtension(suggestedFileName) });
+            }
+            else
+            {
+                foreach (var item in choices)
+                    picker.FileTypeChoices.Add(item.Key, item.Value);
+            }
 
             picker.SuggestedFileName = suggestedFileName;
             Windows.Storage.StorageFile file = await picker.PickSaveFileAsync();

@@ -40,24 +40,13 @@ namespace ArchiveTool.ViewModels
 
             _children = new ObservableCollection<TreeViewItemViewModel>();
             LoadChildren();
-
-            this.PropertyChanged += TreeViewItemViewModel_PropertyChanged;
         }
 
-        private void TreeViewItemViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        partial void OnIsExpandedChanged(bool value)
         {
-            switch (e.PropertyName)
+            if (value && Parent is not null)
             {
-                case nameof(IsSelected):
-                    break;
-
-                case nameof(IsExpanded):
-                    if (IsExpanded && Parent is not null)
-                        Parent.IsExpanded = true;
-                    break;
-
-                default:
-                    break;
+                Parent.IsExpanded = true;
             }
         }
 

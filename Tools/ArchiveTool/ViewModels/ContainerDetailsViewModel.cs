@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Tools.Core.FileSystem;
 using Tools.Core.FileSystem.Abstractions;
@@ -18,28 +19,31 @@ namespace ArchiveTool.ViewModels;
 public partial class ContainerDetailsViewModel : ObservableObject
 {
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanExport))]
+    [NotifyPropertyChangedFor(nameof(CanImportFile))]
+    [NotifyPropertyChangedFor(nameof(CanImportDirectory))]
     private ContainerExplorerItem model;
 
     [ObservableProperty]
     private ObservableCollection<DataGridItemViewModel> children;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanExport))]
     private ObservableCollection<DataGridItemViewModel> selectedChildren;
-    
-    [ObservableProperty]
-    private bool canImportFile;
-    
-    [ObservableProperty]
-    private bool canImportDirectory;
 
-    [ObservableProperty]
-    private bool canExport;
+    public bool CanImportFile => model is IImportFile;
+    public bool CanImportDirectory => model is IImportDirectory;
+    public bool CanExport => model is IExport && selectedChildren.Count > 0;
 
     public ContainerDetailsViewModel()
     {
         children = new ObservableCollection<DataGridItemViewModel>();
         selectedChildren = new ObservableCollection<DataGridItemViewModel>();
-        PropertyChanged += OnPropertyChanged;
+    }
+
+    partial void OnModelChanged(ContainerExplorerItem value)
+    {
+        LoadChildren();
     }
 
     private void LoadChildren()
@@ -55,39 +59,20 @@ public partial class ContainerDetailsViewModel : ObservableObject
         }
     }
 
-    private void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        switch (e.PropertyName) { 
-            case nameof(Model):
-                CanImportFile = Model is IImportFile;
-                CanImportDirectory = Model is IImportDirectory;
-                CanExport = Model is IExport && SelectedChildren.Count > 0;
-                LoadChildren();
-                break;
-            case nameof(SelectedChildren):
-                CanExport = Model is IExport && SelectedChildren.Count > 0;
-                break;
-            case nameof(Children):
-                break;
-        }
-    }
-
     [RelayCommand]
-    public async Task Search(string searchText)
+    public void Search(string searchText)
     {
-        await Task.CompletedTask;
-
         LoadChildren();
 
         if (string.IsNullOrEmpty(searchText))
             return;
 
-        var filteredChildren = Children.Where(c => c.Name.Contains(searchText)).AsEnumerable();
+        var filteredChildren = Children.Where(c => c.Name.Contains(searchText));
 
         Children = new ObservableCollection<DataGridItemViewModel>(filteredChildren);
     }
 
-    [RelayCommand]
+    [RelayCommand(AllowConcurrentExecutions = false)]
     public async Task ImportFile()
     {
         var destinationPath = await Pickers.ShowSingleFilePicker();
@@ -106,22 +91,21 @@ public partial class ContainerDetailsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task Export(IList<DataGridItemViewModel> selected)
+    public async Task ExportSelectedItems(CancellationToken token)
     {
         var destinationPath = await Pickers.ShowSingleFolderPicker();
 
         if (destinationPath is null)
             return;
 
-        foreach(var item in selected)
-            item.Export(destinationPath);
+        // TODO: Consider using Parallel Tasks
+        foreach(var item in selectedChildren)
+            await item.ExportAt(destinationPath, token);
     }
 
     [RelayCommand]
-    public async Task UpdateSelectedItems(IList<object> selectedItems)
+    public void SetSelectedItems(IList<object> selectedItems)
     {
-        await Task.CompletedTask;
-
         var items = selectedItems.Cast<DataGridItemViewModel>();
         SelectedChildren = new ObservableCollection<DataGridItemViewModel>(items);
     }

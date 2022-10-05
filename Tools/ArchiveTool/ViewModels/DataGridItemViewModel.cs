@@ -3,8 +3,8 @@
 using ArchiveTool.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Tools.Core.FileSystem;
 using Tools.Core.FileSystem.Abstractions;
@@ -33,21 +33,23 @@ namespace ArchiveTool.ViewModels
             await Task.CompletedTask;
         }
 
-        public void Export(string destinationPath)
+        public async Task ExportAt(string destinationPath, CancellationToken token)
         {
             var copyPath = Path.Combine(destinationPath, _model.Name);
             _model.ExportItem(copyPath);
+
+            await Task.CompletedTask;
         }
 
-        [RelayCommand]
-        public async Task Export()
+        [RelayCommand(AllowConcurrentExecutions = false)]
+        public async Task Export(CancellationToken token)
         {
-            var destinationPath = await Pickers.ShowSingleFolderPicker();
+            var destinationPath = await Pickers.ShowFileSavePicker(_model.Name);
 
             if (destinationPath is null)
                 return;
 
-            Export(destinationPath);    
+            _model.ExportItem(destinationPath);    
         }
     }
 }
