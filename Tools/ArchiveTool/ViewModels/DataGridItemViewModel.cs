@@ -20,6 +20,7 @@ namespace ArchiveTool.ViewModels
         public ExplorerItemType ItemType => _model.ItemType;
 
         public bool CanExport => _model is IExport;
+        public bool CanOpen => true;
 
         public DataGridItemViewModel(ExplorerItem model)
         {

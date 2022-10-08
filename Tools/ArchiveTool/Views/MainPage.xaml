@@ -21,8 +21,6 @@
                 <!--<ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />-->
                 <ResourceDictionary>
                     <converters:ExplorerItemTypeToIconUriValueConverter x:Key="TypeToIconConverter" />
-                    <convertersWinUI:WinUIControlEventArgsConverter x:Key="WinUIControlEventArgsConverter" />
-                    <convertersWinUI:SelectionChangedConverter x:Key="SelectionChangedConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

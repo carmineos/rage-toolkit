@@ -59,6 +59,13 @@ namespace ArchiveTool
                     services.AddSingleton<MetaConverter>();
                 })
                 .Build();
+
+            UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
