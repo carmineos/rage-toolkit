@@ -37,6 +37,8 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public string Name { get; set; }
 
+        public long Size => archive.BaseStream.Length;
+
         /// <summary>
         /// Gets the root directory of the archive.
         /// </summary>

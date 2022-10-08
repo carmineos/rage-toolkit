@@ -15,6 +15,11 @@ namespace RageLib.Archives
         string Name { get; set; }
 
         /// <summary>
+        /// Gets the length of the archive
+        /// </summary>
+        long Size { get; }
+
+        /// <summary>
         /// Gets the root directory of the archive.
         /// </summary>
         IArchiveDirectory Root { get; }
