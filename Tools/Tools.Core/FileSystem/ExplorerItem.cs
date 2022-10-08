@@ -10,6 +10,7 @@ public abstract class ExplorerItem : IExport
     public abstract string? PhysicalPath { get; }
     public abstract ExplorerItemType ItemType { get; }
     public abstract ContainerExplorerItem? Parent { get; }
+    public abstract long? Size { get; }
 
     public abstract void ExportItem(string exportPath);
 

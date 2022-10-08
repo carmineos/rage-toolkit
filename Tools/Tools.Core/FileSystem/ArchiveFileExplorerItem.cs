@@ -13,6 +13,7 @@ public class ArchiveFileExplorerItem : ExplorerItem
     public override string? PhysicalPath => null;
     public override ExplorerItemType ItemType => ExplorerItemType.ArchiveFile;
     public override ContainerExplorerItem? Parent => _parent;
+    public override long? Size => _archiveFile.Size;
 
     public ArchiveFileExplorerItem(IArchiveFile file, ContainerExplorerItem parent)
     {

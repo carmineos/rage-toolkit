@@ -18,6 +18,7 @@ namespace ArchiveTool.ViewModels
         public string Name => _model.Name;
         public string Extensions => Path.GetExtension(Name);
         public ExplorerItemType ItemType => _model.ItemType;
+        public long? Size => _model.Size;
 
         public bool CanExport => _model is IExport;
         public bool CanOpen => true;

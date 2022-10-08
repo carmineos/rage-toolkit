@@ -11,7 +11,7 @@ public class FileExplorerItem : ExplorerItem
     public override string? PhysicalPath => _file.FullName;
     public override ExplorerItemType ItemType => ExplorerItemType.File;
     public override ContainerExplorerItem Parent => _parent;
-
+    public override long? Size => _file.Length;
     public FileExplorerItem(FileInfo file, DirectoryExplorerItem parent)
     {
         _file = file;

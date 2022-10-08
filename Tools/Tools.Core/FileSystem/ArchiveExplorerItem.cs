@@ -17,6 +17,7 @@ public class ArchiveExplorerItem : ContainerExplorerItem
     public override ExplorerItemType ItemType => ExplorerItemType.Archive;
     public override ContainerExplorerItem? Parent => _parent;
     public override List<ExplorerItem> Children => _children;
+    public override long? Size => _archive.Size;
 
     public ArchiveExplorerItem(IArchive archive, ContainerExplorerItem parent)
     {

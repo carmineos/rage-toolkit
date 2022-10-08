@@ -1,22 +1,17 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Controls;
+using ArchiveTool.Helpers;
 using Microsoft.UI.Xaml.Data;
 using System;
 
-namespace ArchiveTool.ValueConverters.WinUI
+namespace ArchiveTool.ValueConverters
 {
-    public class SelectionChangedConverter : IValueConverter
+    public class SizeToStringValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return parameter switch
-            {
-                ListView listView => listView.SelectedItems,
-                DataGrid gridView => gridView.SelectedItems,
-                _ => null,
-            };
+            var size = value as long?;
+            return StringHelper.SizeString(size);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

@@ -13,6 +13,7 @@ public class DirectoryExplorerItem : ContainerExplorerItem
     public override ExplorerItemType ItemType => ExplorerItemType.Directory;
     public override ContainerExplorerItem? Parent => _parent;
     public override List<ExplorerItem> Children => _children;
+    public override long? Size => null;
 
     public DirectoryExplorerItem(DirectoryInfo directory, DirectoryExplorerItem parent)
     {

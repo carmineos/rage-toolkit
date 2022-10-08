@@ -15,6 +15,7 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
     public override ExplorerItemType ItemType => ExplorerItemType.ArchiveDirectory;
     public override ContainerExplorerItem? Parent => _parent;
     public override List<ExplorerItem> Children => _children;
+    public override long? Size => null;
 
     public ArchiveDirectoryExplorerItem(IArchiveDirectory directory, ContainerExplorerItem parent)
     {

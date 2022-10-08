@@ -104,7 +104,7 @@ public partial class ContainerDetailsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void SetSelectedItems(IList<object> selectedItems)
+    public void SetSelectedItems(IList selectedItems)
     {
         var items = selectedItems.Cast<DataGridItemViewModel>();
         SelectedChildren = new ObservableCollection<DataGridItemViewModel>(items);
