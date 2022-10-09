@@ -107,7 +107,7 @@ namespace RageLib.GTA5.Utilities
                     }
                     else
                     {
-                        (binFile as RageArchiveBinaryFileWrapper7).ExportUncompressed(filePath);
+                        binFile.ExportUncompressed(filePath);
                     }
                 }
                 else
@@ -138,19 +138,17 @@ namespace RageLib.GTA5.Utilities
             {
                 var fileName = Path.GetFileName(file);
 
-                IArchiveFile archiveFile;
-
                 if (Resource7.IsResourceFile(file))
                 {
-                    archiveFile = directory.CreateResourceFile();
-                    archiveFile.Name = fileName;
-                    archiveFile.Import(file);
+                    IArchiveResourceFile archiveResourceFile = directory.CreateResourceFile();
+                    archiveResourceFile.Name = fileName;
+                    archiveResourceFile.Import(file);
                 }
                 else
                 {
-                    archiveFile = directory.CreateBinaryFile();
-                    archiveFile.Name = fileName;
-                    (archiveFile as RageArchiveBinaryFileWrapper7).ImportCompressed(file);
+                    IArchiveBinaryFile archiveBinaryFile = directory.CreateBinaryFile();
+                    archiveBinaryFile.Name = fileName;
+                    archiveBinaryFile.ImportCompressed(file);
                 }
                 
             }

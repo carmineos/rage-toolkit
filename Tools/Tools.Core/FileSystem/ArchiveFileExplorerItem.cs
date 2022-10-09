@@ -23,7 +23,9 @@ public class ArchiveFileExplorerItem : ExplorerItem
 
     public override void ExportItem(string exportPath)
     {
-        // TODO: Use ExportUncompressed
-        _archiveFile.Export(exportPath);
+        if(_archiveFile is IArchiveBinaryFile archiveBinaryFile)
+            archiveBinaryFile.ExportUncompressed(exportPath);
+        else
+            _archiveFile.Export(exportPath);
     }
 }

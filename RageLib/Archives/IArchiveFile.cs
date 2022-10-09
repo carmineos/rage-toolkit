@@ -86,6 +86,30 @@ namespace RageLib.Archives
         /// Gets the compressed size of the file.
         /// </summary>
         long CompressedSize { get; }
+
+        /////////////////////////////////////////////////////////////////////////////
+        // compression 
+        /////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Compresses a file and imports it.
+        /// </summary>
+        void ImportCompressed(string fileName);
+
+        /// <summary>
+        /// Compresses a file and imports it.
+        /// </summary>
+        void ImportCompressed(Stream stream);
+
+        /// <summary>
+        /// Decompresses the file and exports it.
+        /// </summary>
+        void ExportUncompressed(string fileName);
+
+        /// <summary>
+        /// Decompresses the file and exports it.
+        /// </summary>
+        void ExportUncompressed(Stream stream);
     }
 
     /// <summary>

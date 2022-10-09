@@ -1,13 +1,17 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Archives;
+using RageLib.Compression;
+using RageLib.Cryptography;
 using RageLib.Data;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.Cryptography;
 using RageLib.Resources;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 
 namespace RageLib.GTA5.ArchiveWrappers
 {
@@ -37,7 +41,10 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public string Name { get; set; }
 
-        public long Size => archive.BaseStream.Length;
+        /// <summary>
+        /// Gets the length of the archive
+        /// </summary>
+        public long Size => archive.BaseStream.Length;  // TODO: Is this true for new/edited archives?
 
         /// <summary>
         /// Gets the root directory of the archive.
@@ -718,6 +725,88 @@ namespace RageLib.GTA5.ArchiveWrappers
         {
             var binaryStream = GetStream();
             binaryStream.CopyTo(stream);
+        }
+
+        public void ExportUncompressed(string fileName)
+        {
+            using (var stream = new FileStream(fileName, FileMode.Create))
+                ExportUncompressed(stream);
+        }
+
+        public void ExportUncompressed(Stream stream)
+        {
+            // export
+            var length = (int)Size;
+            using var ms = new MemoryStream(length);
+            Export(ms);
+            ms.Position = 0;
+
+            var buf = ms.GetBuffer();
+            var span = buf.AsSpan(0, length);
+
+            //var buf = ArrayPool<byte>.Shared.Rent(length);
+            //var span = buf.AsSpan(0, length);
+            //ms.Position = 0;
+            //ms.Read(span);
+
+            var uncompressedSize = (uint)UncompressedSize;
+
+            // decrypt...
+            if (IsEncrypted)
+            {
+                if (Encryption == RageArchiveEncryption7.AES)
+                {
+                    // TODO: edit this to reduce heap allocations
+                    buf = AesEncryption.DecryptData(buf, GTA5Constants.PC_AES_KEY);
+                }
+                else if (Encryption == RageArchiveEncryption7.NG)
+                {
+                    var indexKey = GTA5Crypto.GetKeyIndex(file.Name, uncompressedSize);
+                    GTA5Crypto.DecryptData(span, GTA5Constants.PC_NG_KEYS[indexKey]);
+                }
+            }
+
+            byte[] bufnew = null;
+
+            // decompress...
+            if (IsCompressed)
+            {
+                var def = new DeflateStream(new MemoryStream(buf, 0, length), CompressionMode.Decompress);
+                bufnew = ArrayPool<byte>.Shared.Rent((int)uncompressedSize);
+                def.ReadAll(bufnew, 0, (int)uncompressedSize);
+                buf = bufnew;
+            }
+
+            stream.Write(buf.AsSpan(0, (int)uncompressedSize));
+
+            if (bufnew != null)
+                ArrayPool<byte>.Shared.Return(bufnew);
+        }
+
+        public void ImportCompressed(string fileName)
+        {
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                ImportCompressed(stream);
+        }
+
+        public void ImportCompressed(Stream stream)
+        {
+            using MemoryStream compressedStream = new MemoryStream();
+
+            // Compress the data to memory
+            using var compressor = new DeflateStream(compressedStream, CompressionMode.Compress);
+            compressedStream.Position = 0;
+            stream.Position = 0;
+            stream.CopyTo(compressor);
+            compressor.Flush();
+
+            // Set the binary file as compressed
+            UncompressedSize = stream.Length;
+            IsCompressed = true;
+
+            // Get the buffer for the compressed file and copy the content
+            compressedStream.Position = 0;
+            Import(compressedStream);
         }
     }
 
