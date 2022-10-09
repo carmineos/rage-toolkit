@@ -11,7 +11,7 @@ namespace ArchiveTool.ValueConverters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var size = value as long?;
-            return StringHelper.SizeString(size);
+            return size is null ? "" : SizeHelpers.GetExplorerSize(size.Value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
