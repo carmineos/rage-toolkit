@@ -449,6 +449,17 @@ namespace RageLib.GTA5.ArchiveWrappers
 
             throw new Exception();
         }
+
+        public static bool IsRPF7(string fileName)
+        {
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                return IsRPF7(fileStream);
+    }
+
+        public static bool IsRPF7(Stream stream)
+        {
+            return RageArchive7.IsRPF7(stream);
+        }
     }
 
     /// <summary>

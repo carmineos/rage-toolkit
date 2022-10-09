@@ -54,6 +54,14 @@ namespace RageLib.GTA5.Archives
             BaseStream = fileStream;
         }
 
+        public static bool IsRPF7(Stream stream)
+        {
+            var reader = new DataReader(stream);
+            var ident = reader.ReadInt32();
+            stream.Position -= 4;
+            return ident == IDENT;
+        }
+
         /// <summary>
         /// Reads the archive header.
         /// </summary>
