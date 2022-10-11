@@ -55,7 +55,7 @@ namespace ArchiveTool
                 .UseContentRoot(AppContext.BaseDirectory)
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddSingleton<JenkinsDictionary>();
+                    services.AddSingleton<IJenkinsDictionary, JenkinsDictionary>();
                     services.AddSingleton<MetaConverter>();
                 })
                 .Build();

@@ -14,7 +14,7 @@ namespace RageLib.GTA5.PSOWrappers
 {
     public class PsoXmlExporter
     {
-        public Dictionary<int, string> HashMapping { get; set; }
+        public IDictionary<int, string> HashMapping { get; set; }
 
         public PsoXmlExporter()
         {

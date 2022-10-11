@@ -1,16 +1,16 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Hash;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 
 namespace RageLib.Services
 {
-    public class JenkinsDictionary : Dictionary<int, string>, IHashDictionary<int, string>
+    public class JenkinsDictionary : ConcurrentDictionary<int, string>, IJenkinsDictionary
     {
         public bool TryAdd(string data)
         {
-            return this.TryAdd((int)Jenkins.Hash(data), data);
+            return TryAdd((int)Jenkins.Hash(data), data);
         }
 
         public void AddFromFile(string filePath)
@@ -25,8 +25,10 @@ namespace RageLib.Services
             {
                 while (!reader.EndOfStream)
                 {
-                    string name = reader.ReadLine();
-                    TryAdd(name);
+                    string? name = reader.ReadLine();
+
+                    if(name is not null)
+                        TryAdd(name);
                 }
             }
         }
