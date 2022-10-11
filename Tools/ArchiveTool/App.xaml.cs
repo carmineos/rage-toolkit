@@ -60,6 +60,8 @@ namespace ArchiveTool
                 })
                 .Build();
 
+            Ioc.Default.ConfigureServices(Host.Services);
+
             UnhandledException += App_UnhandledException;
         }
 
