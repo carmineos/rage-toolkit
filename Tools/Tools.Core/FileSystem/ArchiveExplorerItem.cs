@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Archives;
+using RageLib.GTA5.Utilities;
 
 namespace Tools.Core.FileSystem;
 
@@ -96,5 +97,11 @@ public class ArchiveExplorerItem : ContainerExplorerItem
     public override void ImportDirectory(string directoryPath)
     {
         throw new NotImplementedException();
+    }
+
+    public void Extract(string directoryPath, bool recursive)
+    {
+        // TODO: Refactor ArchiveUtilities, create game agnostic service
+        ArchiveUtilities.UnpackArchive(_archive, directoryPath, recursive);
     }
 }

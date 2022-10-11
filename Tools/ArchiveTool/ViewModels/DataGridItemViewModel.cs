@@ -22,6 +22,7 @@ namespace ArchiveTool.ViewModels
 
         public bool CanExport => _model is IExport;
         public bool CanOpen => true;
+        public bool CanExtract => _model is ArchiveExplorerItem;
 
         public DataGridItemViewModel(ExplorerItem model)
         {
@@ -52,6 +53,29 @@ namespace ArchiveTool.ViewModels
                 return;
 
             _model.ExportItem(destinationPath);    
+        }
+
+        [RelayCommand(AllowConcurrentExecutions = false)]
+        public async Task Extract(CancellationToken token)
+        {
+            await ExtractArchive(false, token);
+        }
+
+        [RelayCommand(AllowConcurrentExecutions = false)]
+        public async Task ExtractRecursive(CancellationToken token)
+        {
+            await ExtractArchive(true, token);
+        }
+
+        private async Task ExtractArchive(bool recursive, CancellationToken token)
+        {
+            var destinationPath = await Pickers.ShowSingleFolderPicker();
+
+            if (destinationPath is null)
+                return;
+
+            if (_model is ArchiveExplorerItem archiveExplorerItem)
+                archiveExplorerItem.Extract(destinationPath, recursive);
         }
     }
 }

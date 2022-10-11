@@ -84,7 +84,7 @@ namespace RageLib.GTA5.Utilities
             inputArchive.Dispose();
         }
 
-        public static void UnpackArchive(RageArchiveWrapper7 archive, string outputFolderPath, bool recursive)
+        public static void UnpackArchive(IArchive archive, string outputFolderPath, bool recursive)
         {
             UnpackDirectory(archive.Root, Path.Combine(outputFolderPath, archive.Name), recursive);
         }

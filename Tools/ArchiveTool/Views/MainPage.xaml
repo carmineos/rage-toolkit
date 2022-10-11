@@ -273,9 +273,9 @@
                             ItemsSource="{x:Bind Children, Mode=OneWay}"
                             >
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{x:Bind ItemType, Converter={StaticResource TypeToIconConverter}}" />
+                                <Image Margin="4,0" Source="{x:Bind ItemType, Converter={StaticResource TypeToIconConverter}}" />
                                 <TextBlock
-                                    Margin="4,0,0,0"
+                                    Margin="0,2"
                                     FontSize="12"
                                     Text="{x:Bind Name}" />
                             </StackPanel>
@@ -403,17 +403,31 @@
                                                         Icon="Download"
                                                         IsEnabled="{x:Bind CanExport}"
                                                         Command="{x:Bind ExportCommand}"/>
+                                                <MenuFlyoutSubItem Text="Extract Archive"
+                                                                   Visibility="{x:Bind CanExtract}">
+                                                    <MenuFlyoutItem Text="Top Level Only"
+                                                        Command="{x:Bind ExtractCommand}" />
+                                                    <MenuFlyoutItem Text="Extract Nested Archives"
+                                                        Command="{x:Bind ExtractRecursiveCommand}" />
+                                                </MenuFlyoutSubItem>
                                             </MenuFlyout>
                                         </StackPanel.ContextFlyout>
                                     </StackPanel>
                                 </DataTemplate>
                             </ctcontrols:DataGridTemplateColumn.CellTemplate>
                         </ctcontrols:DataGridTemplateColumn>
-                        <ctcontrols:DataGridTextColumn Header="Type" Binding="{Binding Name,Converter={StaticResource NameToFileTypeValueConverter}}" />
+                        <ctcontrols:DataGridTextColumn Header="Type" Binding="{Binding Name,Converter={StaticResource NameToFileTypeValueConverter}}">
+                            <ctcontrols:DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="12"/>
+                                </Style>
+                            </ctcontrols:DataGridTextColumn.ElementStyle>
+                        </ctcontrols:DataGridTextColumn>
                         <ctcontrols:DataGridTextColumn Header="Size" Binding="{Binding Size, Converter={StaticResource SizeToStringValueConverter}}">
                             <ctcontrols:DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalTextAlignment" Value="Right"/>
+                                    <Setter Property="FontSize" Value="12"/>
                                 </Style>
                             </ctcontrols:DataGridTextColumn.ElementStyle>
                         </ctcontrols:DataGridTextColumn>
