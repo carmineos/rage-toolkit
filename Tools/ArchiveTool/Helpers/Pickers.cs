@@ -51,7 +51,7 @@ namespace ArchiveTool.Helpers
             
             if (choices.Length is 0)
             {
-                picker.FileTypeChoices.Add("Placeholder", new List<string> { Path.GetExtension(suggestedFileName) });
+                picker.FileTypeChoices.Add("All Types (*.*)", new List<string> { Path.GetExtension(suggestedFileName) });
             }
             else
             {

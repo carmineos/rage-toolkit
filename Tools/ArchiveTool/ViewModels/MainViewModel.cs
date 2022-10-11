@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Tools.Core;
 using Tools.Core.FileSystem;
 using Windows.UI.Notifications;
 
@@ -120,7 +121,7 @@ namespace ArchiveTool.ViewModels
             var name = new DirectoryInfo(path).Name;
             name = Path.GetExtension(name) == ".rpf" ? name : Path.ChangeExtension(name, ".rpf");
 
-            string savePath = await Pickers.ShowFileSavePicker(name, new KeyValuePair<string, List<string>>("Rage Pack File 7", new List<string>() { ".rpf" }));
+            string savePath = await Pickers.ShowFileSavePicker(name, new KeyValuePair<string, List<string>>(FileTypes.Rage.RagePackFile.Name, new() { FileTypes.Rage.RagePackFile.Extension }));
 
             if (savePath is null)
                 return;

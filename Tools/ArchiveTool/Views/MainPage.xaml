@@ -23,6 +23,7 @@
                 <ResourceDictionary>
                     <converters:ExplorerItemTypeToIconUriValueConverter x:Key="TypeToIconConverter" />
                     <converters:SizeToStringValueConverter x:Key="SizeToStringValueConverter" />
+                    <converters:NameToFileTypeValueConverter x:Key="NameToFileTypeValueConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -408,7 +409,7 @@
                                 </DataTemplate>
                             </ctcontrols:DataGridTemplateColumn.CellTemplate>
                         </ctcontrols:DataGridTemplateColumn>
-                        <ctcontrols:DataGridTextColumn Header="Type" Binding="{Binding ItemType}" />
+                        <ctcontrols:DataGridTextColumn Header="Type" Binding="{Binding Name,Converter={StaticResource NameToFileTypeValueConverter}}" />
                         <ctcontrols:DataGridTextColumn Header="Size" Binding="{Binding Size, Converter={StaticResource SizeToStringValueConverter}}">
                             <ctcontrols:DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
