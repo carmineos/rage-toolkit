@@ -219,7 +219,7 @@
 
                 <Interactivity:Interaction.Behaviors>
                     <Interactions:EventTriggerBehavior EventName="TextChanged">
-                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SearchCommand}" 
+                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SearchCommand, Mode=OneWay}" 
                                                           CommandParameter="{Binding Path=Text, ElementName=autoSuggestBox}"/>
                     </Interactions:EventTriggerBehavior>
 
@@ -438,22 +438,22 @@
                             <MenuFlyoutItem Text="Import File"
                                             Icon="Import"                                            
                                             IsEnabled="{x:Bind ViewModel.ChildrenDetailsViewModel.CanImportFile, Mode=OneWay}"
-                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ImportFileCommand}"/>
+                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ImportFileCommand, Mode=OneWay}"/>
                             <MenuFlyoutItem Text="Import Directory"
                                             Icon="ImportAll"                                            
                                             IsEnabled="{x:Bind ViewModel.ChildrenDetailsViewModel.CanImportDirectory, Mode=OneWay}"
-                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ImportDirectoryCommand}"/>
+                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ImportDirectoryCommand, Mode=OneWay}"/>
                             <MenuFlyoutItem Text="Export Selected"
                                             Icon="Download"
                                             IsEnabled="{x:Bind ViewModel.ChildrenDetailsViewModel.CanExport, Mode=OneWay}"
-                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ExportSelectedItemsCommand}"
+                                            Command="{x:Bind ViewModel.ChildrenDetailsViewModel.ExportSelectedItemsCommand, Mode=OneWay}"
                                             CommandParameter="{x:Bind ViewModel.ChildrenDetailsViewModel.SelectedChildren, Mode=OneWay}"/>
                         </MenuFlyout>
                     </ctcontrols:DataGrid.ContextFlyout>
 
                     <Interactivity:Interaction.Behaviors>
                         <Interactions:EventTriggerBehavior EventName="SelectionChanged">
-                            <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SetSelectedItemsCommand}"
+                            <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SetSelectedItemsCommand, Mode=OneWay}"
                                                               InputConverter="{StaticResource SelectionChangedConverter}"
                                                               InputConverterParameter="{Binding ElementName=detailsGridView}"/>
                         </Interactions:EventTriggerBehavior>

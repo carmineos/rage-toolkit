@@ -18,11 +18,7 @@ namespace ArchiveTool.ViewModels;
 
 public partial class ContainerDetailsViewModel : ObservableObject
 {
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanExport))]
-    [NotifyPropertyChangedFor(nameof(CanImportFile))]
-    [NotifyPropertyChangedFor(nameof(CanImportDirectory))]
-    private ContainerExplorerItem model;
+    private readonly ContainerExplorerItem _model;
 
     [ObservableProperty]
     private ObservableCollection<DataGridItemViewModel> children;
@@ -31,29 +27,27 @@ public partial class ContainerDetailsViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(CanExport))]
     private ObservableCollection<DataGridItemViewModel> selectedChildren;
 
-    public bool CanImportFile => model is IImportFile;
-    public bool CanImportDirectory => model is IImportDirectory;
-    public bool CanExport => model is IExport && selectedChildren.Count > 0;
+    public bool CanImportFile => _model is IImportFile;
+    public bool CanImportDirectory => _model is IImportDirectory;
+    public bool CanExport => _model is IExport && selectedChildren.Count > 0;
 
-    public ContainerDetailsViewModel()
+    public ContainerDetailsViewModel(ContainerExplorerItem model)
     {
+        _model = model;
         children = new ObservableCollection<DataGridItemViewModel>();
         selectedChildren = new ObservableCollection<DataGridItemViewModel>();
-    }
 
-    partial void OnModelChanged(ContainerExplorerItem value)
-    {
         LoadChildren();
     }
 
     private void LoadChildren()
     {
-        if (Model is null)
+        if (_model is null)
             return;
 
         Children.Clear();
 
-        foreach (var child in Model.Children)
+        foreach (var child in _model.Children)
         {
             Children.Add(new DataGridItemViewModel(child));
         }
@@ -78,7 +72,7 @@ public partial class ContainerDetailsViewModel : ObservableObject
         var destinationPath = await Pickers.ShowSingleFilePicker();
 
         if (destinationPath is not null)
-            ((IImportFile)model).ImportFile(destinationPath);
+            ((IImportFile)_model).ImportFile(destinationPath);
     }
 
     [RelayCommand]
@@ -87,7 +81,7 @@ public partial class ContainerDetailsViewModel : ObservableObject
         var destinationPath = await Pickers.ShowSingleFolderPicker();
 
         if (destinationPath is not null)
-            ((IImportDirectory)model).ImportDirectory(destinationPath);
+            ((IImportDirectory)_model).ImportDirectory(destinationPath);
     }
 
     [RelayCommand]

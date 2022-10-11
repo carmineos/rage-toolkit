@@ -39,7 +39,7 @@ namespace ArchiveTool.ViewModels
         public MainViewModel()
         {
             _models = new List<ContainerExplorerItem>();
-            childrenDetailsViewModel = new ContainerDetailsViewModel();
+            childrenDetailsViewModel = new ContainerDetailsViewModel(null);
             treeViewItems = new ObservableCollection<TreeViewItemViewModel>();
             breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
         }
@@ -126,45 +126,45 @@ namespace ArchiveTool.ViewModels
             if (savePath is null)
                 return;
 
-            // TODO: Show Error messages in case of wrong paths
-            var toastContent = new ToastContentBuilder()
-                .AddText("Packing Archive")
-                .AddVisualChild(new AdaptiveProgressBar()
-                {
-                    Title = $"Packing {name}",
-                    Value = new BindableProgressBarValue("progressValue"),
-                    //ValueStringOverride = new BindableString("progressValueString"),
-                    Status = new BindableString("progressStatus")
-                })
-                .AddButton(new ToastButton("Open Path", "")
-                .SetProtocolActivation(new Uri(new FileInfo(savePath).Directory.FullName)))
-                .GetToastContent();
+            //// TODO: Show Error messages in case of wrong paths
+            //var toastContent = new ToastContentBuilder()
+            //    .AddText("Packing Archive")
+            //    .AddVisualChild(new AdaptiveProgressBar()
+            //    {
+            //        Title = $"Packing {name}",
+            //        Value = new BindableProgressBarValue("progressValue"),
+            //        //ValueStringOverride = new BindableString("progressValueString"),
+            //        Status = new BindableString("progressStatus")
+            //    })
+            //    .AddButton(new ToastButton("Open Path", "")
+            //    .SetProtocolActivation(new Uri(new FileInfo(savePath).Directory.FullName)))
+            //    .GetToastContent();
 
-            Debug.WriteLine(toastContent.GetXml().GetXml());
+            //Debug.WriteLine(toastContent.GetXml().GetXml());
 
-            var toast = new ToastNotification(toastContent.GetXml());
-            toast.Tag = "packing-archive";
-            toast.Group = "archive";
-            toast.Data = new NotificationData();
-            toast.Data.SequenceNumber = 1;
-            toast.Data.Values["progressValue"] = "indeterminate";
-            toast.Data.Values["progressStatus"] = "Packing...";
-            var notifier = ToastNotificationManager.CreateToastNotifier();
-            notifier.Show(toast);
+            //var toast = new ToastNotification(toastContent.GetXml());
+            //toast.Tag = "packing-archive";
+            //toast.Group = "archive";
+            //toast.Data = new NotificationData();
+            //toast.Data.SequenceNumber = 1;
+            //toast.Data.Values["progressValue"] = "indeterminate";
+            //toast.Data.Values["progressStatus"] = "Packing...";
+            //var notifier = ToastNotificationManager.CreateToastNotifier();
+            //notifier.Show(toast);
 
             _ = Task.Run(() =>
             {
                 ArchiveUtilities.PackArchive(path, savePath, true, RageLib.GTA5.Archives.RageArchiveEncryption7.None);
 
                 // Update the toast
-                string tag = "packing-archive";
-                var group = "archive";
-                var data = new NotificationData
-                {
-                    SequenceNumber = 2
-                };
-                data.Values["progressValue"] = "1.0";
-                ToastNotificationManager.CreateToastNotifier().Update(data, tag, group);
+                //string tag = "packing-archive";
+                //var group = "archive";
+                //var data = new NotificationData
+                //{
+                //    SequenceNumber = 2
+                //};
+                //data.Values["progressValue"] = "1.0";
+                //ToastNotificationManager.CreateToastNotifier().Update(data, tag, group);
             });
         }
 
@@ -178,7 +178,7 @@ namespace ArchiveTool.ViewModels
         partial void OnSelectedTreeViewItemChanged(TreeViewItemViewModel value)
         {
             UpdateBreadcrumbs();
-            ChildrenDetailsViewModel.Model = value.Model;
+            ChildrenDetailsViewModel = new ContainerDetailsViewModel(value.Model);
             value.IsSelected = true;
             value.IsExpanded = true;
         }
