@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Resources;
+using RageLib.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,7 @@ namespace RageLib.Data
     {
         private readonly Stream baseStream;
         protected readonly bool endiannessEqualsHostArchitecture;
+        private readonly IJenkinsDictionary jenkinsDictionary;
 
         /// <summary>
         /// Gets or sets the endianness of the underlying stream.
@@ -41,11 +43,12 @@ namespace RageLib.Data
         /// <summary>
         /// Initializes a new data reader for the specified stream.
         /// </summary>
-        public DataReader(Stream stream, Endianness endianness = Endianness.LittleEndian)
+        public DataReader(Stream stream, Endianness endianness = Endianness.LittleEndian, IJenkinsDictionary jenkinsDictionary = null)
         {
             this.baseStream = stream;
             this.Endianness = endianness;
             this.endiannessEqualsHostArchitecture = endianness.EqualsHostArchitecture();
+            this.jenkinsDictionary = jenkinsDictionary ?? JenkinsDictionary.Shared;
         }
 
         /// <summary>
@@ -221,7 +224,10 @@ namespace RageLib.Data
                 i++;
             }
 
-            return Encoding.ASCII.GetString(span.Slice(0, i));
+            string str = Encoding.ASCII.GetString(span.Slice(0, i));
+            jenkinsDictionary?.TryAdd(str);
+
+            return str;
         }
 
         /// <summary>
@@ -230,7 +236,11 @@ namespace RageLib.Data
         public string ReadString(int length)
         {
             using Buffer<byte> buffer = ReadFromStreamBuffer<byte>(length);
-            return Encoding.ASCII.GetString(buffer.Span);
+            string str = Encoding.ASCII.GetString(buffer.Span);
+
+            jenkinsDictionary?.TryAdd(str);
+
+            return str;
         }
 
         /// <summary>

@@ -8,6 +8,8 @@ namespace RageLib.Services
 {
     public class JenkinsDictionary : ConcurrentDictionary<int, string>, IJenkinsDictionary
     {
+        public static readonly JenkinsDictionary Shared = new JenkinsDictionary();
+
         public bool TryAdd(string data)
         {
             return TryAdd((int)Jenkins.Hash(data), data);
