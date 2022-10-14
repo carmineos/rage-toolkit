@@ -24,6 +24,11 @@ namespace RageLib.GTA5.Cryptography
             return (hash + length + (101 - 40)) % 0x65;
         }
 
+        public byte[] Encrypt(byte[] data)
+        {
+            return Encrypt(data, Key);
+        }
+
         ////////////////////////////////////////////////////////////////////////////
         // decryption
         ////////////////////////////////////////////////////////////////////////////

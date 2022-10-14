@@ -92,8 +92,8 @@ namespace RageLib.GTA5.Archives
                 case RageArchiveEncryption7.AES:
                     // AES encryption...                
                     Encryption = RageArchiveEncryption7.AES;
-                    entries_data_dec = AesEncryption.DecryptData(entries_data_dec, aesKey);
-                    names_data_dec = AesEncryption.DecryptData(names_data_dec, aesKey);
+                    AesEncryption.DecryptData(entries_data_dec, aesKey);
+                    AesEncryption.DecryptData(names_data_dec, aesKey);
                     break;
                 case RageArchiveEncryption7.NG:
                     // NG encryption...
@@ -313,7 +313,7 @@ namespace RageLib.GTA5.Archives
 
             if (Encryption == RageArchiveEncryption7.AES)
             {
-                ent_buf = AesEncryption.EncryptData(ent_buf, aesKey);
+                AesEncryption.EncryptData(ent_buf, aesKey);
             }
             else if (Encryption == RageArchiveEncryption7.NG)
             {
@@ -339,7 +339,7 @@ namespace RageLib.GTA5.Archives
 
             if (Encryption == RageArchiveEncryption7.AES)
             {
-                n_buf = AesEncryption.EncryptData(n_buf, aesKey);
+                AesEncryption.EncryptData(n_buf, aesKey);
             }
             else if (Encryption == RageArchiveEncryption7.NG)
             {
@@ -429,7 +429,17 @@ namespace RageLib.GTA5.Archives
         public uint FileUncompressedSize { get; set; }
         public uint Flags { get; set; }
         
-        public bool IsEncrypted { get; set; }
+        public bool IsEncrypted
+        {
+            get => (Flags & 0x1u) == 0x1u;
+            set
+            {
+                if (value)
+                    Flags |= 0x1u;
+                else
+                    Flags &= ~0x1u;
+            }
+        }
 
         public string Name { get; set; }
 
@@ -448,14 +458,6 @@ namespace RageLib.GTA5.Archives
 
             FileUncompressedSize = reader.ReadUInt32();
             Flags = reader.ReadUInt32();
-
-            switch (Flags)
-            {
-                case 0: IsEncrypted = false; break;
-                case 1: IsEncrypted = true; break;
-                default:
-                    throw new Exception("Unknown encryption type in RPF7 file entry.");
-            }
         }
 
         /// <summary>

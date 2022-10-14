@@ -767,8 +767,7 @@ namespace RageLib.GTA5.ArchiveWrappers
             {
                 if (Encryption == RageArchiveEncryption7.AES)
                 {
-                    // TODO: edit this to reduce heap allocations
-                    buf = AesEncryption.DecryptData(buf, GTA5Constants.PC_AES_KEY);
+                    AesEncryption.DecryptData(buf, GTA5Constants.PC_AES_KEY);
                 }
                 else if (Encryption == RageArchiveEncryption7.NG)
                 {

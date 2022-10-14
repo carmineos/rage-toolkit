@@ -23,7 +23,7 @@ namespace RageLib.Cryptography
         /// </summary>
         public byte[] Encrypt(byte[] data)
         {
-            return EncryptData(data, Key, Rounds);
+            return Encrypt(data, Key, Rounds);
         }
 
         /// <summary>
@@ -31,13 +31,13 @@ namespace RageLib.Cryptography
         /// </summary>
         public byte[] Decrypt(byte[] data)
         {
-            return DecryptData(data, Key, Rounds);
+            return Decrypt(data, Key, Rounds);
         }
 
         /// <summary>
         /// Encrypts data.
         /// </summary>
-        public static byte[] EncryptData(byte[] data, byte[] key, int rounds = 1)
+        public static byte[] Encrypt(byte[] data, byte[] key, int rounds = 1)
         {
             var rijndael = Aes.Create();
             rijndael.KeySize = 256;
@@ -63,7 +63,7 @@ namespace RageLib.Cryptography
         /// <summary>
         /// Decrypts data.
         /// </summary>
-        public static byte[] DecryptData(byte[] data, byte[] key, int rounds = 1)
+        public static byte[] Decrypt(byte[] data, byte[] key, int rounds = 1)
         {
             var rijndael = Aes.Create();
             rijndael.KeySize = 256;
@@ -84,6 +84,48 @@ namespace RageLib.Cryptography
             }
 
             return buffer;
+        }
+
+
+        public static void EncryptData(byte[] data, byte[] key, int rounds = 1)
+        {
+            var rijndael = Aes.Create();
+            rijndael.KeySize = 256;
+            rijndael.Key = key;
+            rijndael.BlockSize = 128;
+            rijndael.Mode = CipherMode.ECB;
+            rijndael.Padding = PaddingMode.None;
+
+            var length = data.Length - data.Length % 16;
+
+            // encrypt...
+            if (length > 0)
+            {
+                var encryptor = rijndael.CreateEncryptor();
+                for (var roundIndex = 0; roundIndex < rounds; roundIndex++)
+                    encryptor.TransformBlock(data, 0, length, data, 0);
+            }
+        }
+
+        public static void DecryptData(byte[] data, byte[] key, int rounds = 1)
+        {
+            var rijndael = Aes.Create();
+            rijndael.KeySize = 256;
+            rijndael.Key = key;
+            rijndael.BlockSize = 128;
+            rijndael.Mode = CipherMode.ECB;
+            rijndael.Padding = PaddingMode.None;
+
+            var length = data.Length - data.Length % 16;
+
+            // decrypt...
+            if (length > 0)
+            {
+                var decryptor = rijndael.CreateDecryptor();
+                for (var roundIndex = 0; roundIndex < rounds; roundIndex++)
+                    decryptor.TransformBlock(data, 0, length, data, 0);
+            }
+
         }
     }
 }
