@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RageLib\RageLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\RageLib.GTA5\RageLib.GTA5.csproj" />
   </ItemGroup>
 
