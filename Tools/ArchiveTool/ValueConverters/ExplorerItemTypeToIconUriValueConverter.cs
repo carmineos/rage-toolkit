@@ -9,9 +9,10 @@ namespace ArchiveTool.ValueConverters
 {
     public class ExplorerItemTypeToIconUriValueConverter : IValueConverter
     {
-        private BitmapImage FileImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/file.png", UriKind.RelativeOrAbsolute));
-        private BitmapImage FolderImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/folder.png", UriKind.RelativeOrAbsolute));
-        private BitmapImage ArchiveFolderImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/archive-folder.png", UriKind.RelativeOrAbsolute));
+        private BitmapImage FileImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/Document.png", UriKind.RelativeOrAbsolute));
+        private BitmapImage FolderImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/FolderClosed.png", UriKind.RelativeOrAbsolute));
+        private BitmapImage ArchiveFolderImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/FolderClosedTeal.png", UriKind.RelativeOrAbsolute));
+        private BitmapImage ArchiveImage = new BitmapImage(new Uri($"ms-appx:///Assets/Icons/FolderClosedBlue.png", UriKind.RelativeOrAbsolute));
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -22,7 +23,7 @@ namespace ArchiveTool.ValueConverters
                 ExplorerItemType.Root => FolderImage,
                 ExplorerItemType.File => FileImage,
                 ExplorerItemType.Directory => FolderImage,
-                ExplorerItemType.Archive => ArchiveFolderImage,
+                ExplorerItemType.Archive => ArchiveImage,
                 ExplorerItemType.ArchiveFile => FileImage,
                 ExplorerItemType.ArchiveDirectory => ArchiveFolderImage,
                 _ => FileImage,
