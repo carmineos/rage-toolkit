@@ -306,10 +306,8 @@ namespace RageLib.GTA5.Archives
             foreach (var entry in entries)
                 entry.Write(ent_wr);
             ent_str.Flush();
-            // TODO: Use ArrayPool<byte>.Shared
-            var ent_buf = new byte[ent_str.Length];
-            ent_str.Position = 0;
-            ent_str.Read(ent_buf, 0, ent_buf.Length);
+
+            var ent_buf = ent_str.GetBuffer().AsSpan(0, (int)ent_str.Length);
 
             if (Encryption == RageArchiveEncryption7.AES)
             {
@@ -328,14 +326,11 @@ namespace RageLib.GTA5.Archives
             //    n_wr.Write(entry.Name);
             foreach (var entry in nameDict)
                 n_wr.Write(entry.Key);
-            // TODO: Use ArrayPool<byte>.Shared
-            var empty = new byte[16 - (n_wr.Length % 16)];
-            n_wr.Write(empty);
+
+            n_wr.Write(new byte[16 - (n_wr.Length % 16)]);
             n_str.Flush();
-            // TODO: Use ArrayPool<byte>.Shared
-            var n_buf = new byte[n_str.Length];
-            n_str.Position = 0;
-            n_str.Read(n_buf, 0, n_buf.Length);
+
+            var n_buf = n_str.GetBuffer().AsSpan(0, (int)n_str.Length);
 
             if (Encryption == RageArchiveEncryption7.AES)
             {
