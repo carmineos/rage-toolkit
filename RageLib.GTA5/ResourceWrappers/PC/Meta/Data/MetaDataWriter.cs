@@ -58,7 +58,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Data
             this.blockIndex = -1;
         }
 
-        protected override void WriteToStreamRaw(Span<byte> value)
+        protected override void WriteToStreamRaw(ReadOnlySpan<byte> value)
         {
             var currentStream = blocks[blockIndex].Stream;
             currentStream.Write(value);

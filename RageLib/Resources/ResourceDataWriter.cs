@@ -42,7 +42,7 @@ namespace RageLib.Resources
         /// Writes data to the underlying stream. This is the only method that directly accesses
         /// the data in the underlying stream.
         /// </summary>
-        protected override void WriteToStreamRaw(Span<byte> value)
+        protected override void WriteToStreamRaw(ReadOnlySpan<byte> value)
         {
             Stream stream;
             long basePosition;

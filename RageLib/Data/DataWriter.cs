@@ -50,7 +50,7 @@ namespace RageLib.Data
         /// Writes data to the underlying stream. This is the only method that directly accesses
         /// the data in the underlying stream.
         /// </summary>
-        protected virtual void WriteToStreamRaw(Span<byte> value)
+        protected virtual void WriteToStreamRaw(ReadOnlySpan<byte> value)
         {
             baseStream.Write(value);
         }
@@ -72,6 +72,14 @@ namespace RageLib.Data
         /// Writes a sequence of bytes.
         /// </summary>
         public void Write(byte[] value)
+        {
+            WriteToStreamRaw(value);
+        }
+
+        /// <summary>
+        /// Writes a sequence of bytes.
+        /// </summary>
+        public void Write(ReadOnlySpan<byte> value)
         {
             WriteToStreamRaw(value);
         }
