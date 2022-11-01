@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?>
-<MetaInformationXml xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<MetaDefinitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Structure NameHash="0x22DD6F04" Key="0x4C6CDC4F" Unknown="0x00000000" Length="64">
     <StructureEntry NameHash="0x32A8F2D4" Offset="0" Type="21" TypeHash="0x00000000" Unknown="0x00000000" />
   </Structure>
@@ -125,4 +125,4 @@
     <EnumEntry NameHash="0x01769F10" Value="0" />
     <EnumEntry NameHash="0x3AFAC976" Value="1" />
   </Enum>
-</MetaInformationXml>
+</MetaDefinitions>
