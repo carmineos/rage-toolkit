@@ -7,6 +7,7 @@ using RageLib.Data;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.Cryptography;
 using RageLib.Resources;
+using RageLib.Resources.GTA5;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -454,7 +455,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         {
             using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 return IsRPF7(fileStream);
-    }
+        }
 
         public static bool IsRPF7(Stream stream)
         {
@@ -911,6 +912,26 @@ namespace RageLib.GTA5.ArchiveWrappers
         public Stream GetStream()
         {
             return archiveWrapper.GetStream(file);
+        }
+
+        public void ExportResourceContent(string directoryPath)
+        {
+            var ext = Path.GetExtension(Name);
+            var name = Name.Replace(ext, ext.Replace('.', '_'));
+
+            var directory = Directory.CreateDirectory(Path.Combine(directoryPath, name));
+
+            // export
+            using var ms = new MemoryStream((int)Size);
+            Export(ms);
+            ms.Position = 0;
+
+            var rsc7 = new Resource7();
+            rsc7.Load(ms);
+
+            // TODO: refactor to write the deflated stream directly
+            File.WriteAllBytes(Path.Combine(directory.FullName, Name + ".virtual"), rsc7.VirtualData);
+            File.WriteAllBytes(Path.Combine(directory.FullName, Name + ".physical"), rsc7.PhysicalData);
         }
     }
 }

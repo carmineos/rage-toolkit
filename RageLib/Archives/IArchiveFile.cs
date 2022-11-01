@@ -116,5 +116,7 @@ namespace RageLib.Archives
     /// Represents a resource file in an archive.
     /// </summary>
     public interface IArchiveResourceFile : IArchiveFile
-    { }
+    {
+        void ExportResourceContent(string directoryPath);
+    }
 }
