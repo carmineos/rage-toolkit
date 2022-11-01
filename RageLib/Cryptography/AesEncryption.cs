@@ -1,5 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using System;
+using System.Buffers;
 using System.Security.Cryptography;
 
 namespace RageLib.Cryptography
@@ -87,7 +89,7 @@ namespace RageLib.Cryptography
         }
 
 
-        public static void EncryptData(byte[] data, byte[] key, int rounds = 1)
+        public static void EncryptData(Span<byte> data, byte[] key, int rounds = 1)
         {
             var rijndael = Aes.Create();
             rijndael.KeySize = 256;
@@ -96,18 +98,24 @@ namespace RageLib.Cryptography
             rijndael.Mode = CipherMode.ECB;
             rijndael.Padding = PaddingMode.None;
 
+            var buffer = ArrayPool<byte>.Shared.Rent(data.Length);
+            data.CopyTo(buffer);
+            
             var length = data.Length - data.Length % 16;
-
+            
             // encrypt...
             if (length > 0)
             {
                 var encryptor = rijndael.CreateEncryptor();
                 for (var roundIndex = 0; roundIndex < rounds; roundIndex++)
-                    encryptor.TransformBlock(data, 0, length, data, 0);
+                    encryptor.TransformBlock(buffer, 0, length, buffer, 0);
             }
+
+            buffer.AsSpan(0, length).CopyTo(data);
+            ArrayPool<byte>.Shared.Return(buffer);
         }
 
-        public static void DecryptData(byte[] data, byte[] key, int rounds = 1)
+        public static void DecryptData(Span<byte> data, byte[] key, int rounds = 1)
         {
             var rijndael = Aes.Create();
             rijndael.KeySize = 256;
@@ -115,6 +123,9 @@ namespace RageLib.Cryptography
             rijndael.BlockSize = 128;
             rijndael.Mode = CipherMode.ECB;
             rijndael.Padding = PaddingMode.None;
+
+            var buffer = ArrayPool<byte>.Shared.Rent(data.Length);
+            data.CopyTo(buffer);
 
             var length = data.Length - data.Length % 16;
 
@@ -123,9 +134,11 @@ namespace RageLib.Cryptography
             {
                 var decryptor = rijndael.CreateDecryptor();
                 for (var roundIndex = 0; roundIndex < rounds; roundIndex++)
-                    decryptor.TransformBlock(data, 0, length, data, 0);
+                    decryptor.TransformBlock(buffer, 0, length, buffer, 0);
             }
 
+            buffer.AsSpan(0, length).CopyTo(data);
+            ArrayPool<byte>.Shared.Return(buffer);
         }
     }
 }
