@@ -16,7 +16,7 @@ namespace RageLib.GTA5.Services
         
         public MetaConverter(JenkinsDictionary dictionary)
         {
-            this.joaatDictionary = dictionary ?? new JenkinsDictionary();
+            this.joaatDictionary = dictionary ?? JenkinsDictionary.Shared;
         }
 
         public void ConvertXmlToResource(string filePath)
