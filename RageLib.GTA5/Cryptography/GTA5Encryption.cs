@@ -219,7 +219,7 @@ namespace RageLib.GTA5.Cryptography
 
         private static void EncryptRoundA(Span<byte> data, ReadOnlySpan<byte> key, uint[][] table)
         {
-            // Here it's we could edit data directly
+            // Here we could edit data directly
             Span<byte> x = stackalloc byte[16];
 
             if (Vector.IsHardwareAccelerated)
@@ -234,7 +234,7 @@ namespace RageLib.GTA5.Cryptography
                     x[i] = (byte)(data[i] ^ key[i]);
             }
 
-            Span<uint> encrypted = stackalloc uint[4];
+            Span<uint> encrypted = MemoryMarshal.Cast<byte, uint>(x);
 
             encrypted[0] =
                 table[0][x[0]] ^
