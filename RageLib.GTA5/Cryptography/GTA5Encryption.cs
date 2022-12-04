@@ -2,6 +2,8 @@
 
 using RageLib.Cryptography;
 using System;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace RageLib.GTA5.Cryptography
@@ -217,9 +219,20 @@ namespace RageLib.GTA5.Cryptography
 
         private static void EncryptRoundA(Span<byte> data, ReadOnlySpan<byte> key, uint[][] table)
         {
+            // Here it's we could edit data directly
             Span<byte> x = stackalloc byte[16];
-            for (int i = 0; i < 16; i++)
-                x[i] = (byte)(data[i] ^ key[i]);
+
+            if (Vector.IsHardwareAccelerated)
+            {
+                Vector<byte> x1 = new Vector<byte>(data);
+                Vector<byte> x2 = new Vector<byte>(key);
+                Vector.Xor(x1, x2).CopyTo(x);
+            }
+            else
+            {
+                for (int i = 0; i < 16; i++)
+                    x[i] = (byte)(data[i] ^ key[i]);
+            }
 
             Span<uint> encrypted = stackalloc uint[4];
 
@@ -250,8 +263,18 @@ namespace RageLib.GTA5.Cryptography
         private static void EncryptRoundB_LUT(Span<byte> data, ReadOnlySpan<byte> key, GTA5NGLUT[] lut)
         {
             Span<byte> x = stackalloc byte[16];
-            for (int i = 0; i < 16; i++)
-                x[i] = (byte)(data[i] ^ key[i]);
+
+            if (Vector.IsHardwareAccelerated)
+            {
+                Vector<byte> x1 = new Vector<byte>(data);
+                Vector<byte> x2 = new Vector<byte>(key);
+                Vector.Xor(x1, x2).CopyTo(x);
+            }
+            else
+            {
+                for (int i = 0; i < 16; i++)
+                    x[i] = (byte)(data[i] ^ key[i]);
+            }
 
             Span<uint> y = MemoryMarshal.Cast<byte, uint>(x);
 
