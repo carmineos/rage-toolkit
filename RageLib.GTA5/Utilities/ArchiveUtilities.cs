@@ -125,8 +125,8 @@ namespace RageLib.GTA5.Utilities
         public static void PackArchive(string inputFolderPath, string outputFileName, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None)
         {
             var archive = RageArchiveWrapper7.Create(outputFileName);
-            PackDirectory(archive.Root, Path.Combine(inputFolderPath, archive.Root.Name), recursive, encryption);
             archive.Encryption = encryption;
+            PackDirectory(archive.Root, Path.Combine(inputFolderPath, archive.Root.Name), recursive, encryption);
             archive.Flush();
             archive.Dispose();
         }
@@ -163,8 +163,8 @@ namespace RageLib.GTA5.Utilities
                     // TODO: Add API to create a RageArchiveWrapper7 from a RageArchiveBinaryFileWrapper7 and viceversa
                     using var archiveStream = new MemoryStream();
                     var archive = RageArchiveWrapper7.Create(archiveStream, directoryName);
-                    PackDirectory(archive.Root, subDirectory, recursive, encryption);
                     archive.Encryption = encryption;
+                    PackDirectory(archive.Root, subDirectory, recursive, encryption);
                     archive.Flush();
                     archiveStream.Position = 0;
 

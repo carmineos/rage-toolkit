@@ -817,6 +817,24 @@ namespace RageLib.GTA5.ArchiveWrappers
 
             // Get the buffer for the compressed file and copy the content
             compressedStream.Position = 0;
+            
+            // Warning: Encryption whole binary file is overkill
+            //          Specially with many nested RPF
+            //          Don't use this unless you know what you are doing
+            //var buf = compressedStream.GetBuffer();
+            //var span = buf.AsSpan(0, (int)compressedStream.Length);
+            //if (Encryption == RageArchiveEncryption7.AES)
+            //{
+            //    IsEncrypted = true;
+            //    AesEncryption.EncryptData(buf, GTA5Constants.PC_AES_KEY);
+            //}
+            //else if (Encryption == RageArchiveEncryption7.NG)
+            //{
+            //    IsEncrypted = true;
+            //    var indexKey = GTA5Crypto.GetKeyIndex(file.Name, (uint)UncompressedSize);
+            //    GTA5Crypto.EncryptData(span, GTA5Constants.PC_NG_KEYS[indexKey]);
+            //}
+
             Import(compressedStream);
         }
     }

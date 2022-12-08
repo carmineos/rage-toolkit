@@ -115,9 +115,9 @@ namespace RageLib.GTA5.Utilities
             var fileStream = new FileStream(sourceArchiveFileName, FileMode.Open);
             var sourceArchive = RageArchiveWrapper7.Open(fileStream, fileInfo.Name);
             var destinationArchive = RageArchiveWrapper7.Create(destinationArchiveFileName);
-            RebuildDictionary(sourceArchive.Root, destinationArchive.Root, sourceArchive.Encryption);
             destinationArchive.Name = fileInfo.Name;
             destinationArchive.Encryption = sourceArchive.Encryption;
+            RebuildDictionary(sourceArchive.Root, destinationArchive.Root, sourceArchive.Encryption);
             destinationArchive.Flush();
         }
 
