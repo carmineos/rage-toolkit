@@ -54,7 +54,7 @@ namespace RageLib.Compression
             var deflateStream = new DeflateStream(dataStream, CompressionMode.Decompress);
 
             var buffer = new byte[decompressedLength];
-            deflateStream.ReadAll(buffer, 0, decompressedLength);
+            deflateStream.ReadExactly(buffer, 0, decompressedLength);
             deflateStream.Close();
 
             return buffer;

@@ -784,7 +784,7 @@ namespace RageLib.GTA5.ArchiveWrappers
             {
                 var def = new DeflateStream(new MemoryStream(buf, 0, length), CompressionMode.Decompress);
                 bufnew = ArrayPool<byte>.Shared.Rent((int)uncompressedSize);
-                def.ReadAll(bufnew, 0, (int)uncompressedSize);
+                def.ReadExactly(bufnew, 0, (int)uncompressedSize);
                 buf = bufnew;
             }
 

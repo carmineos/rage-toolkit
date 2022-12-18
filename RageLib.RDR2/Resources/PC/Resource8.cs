@@ -61,8 +61,8 @@ namespace RageLib.Resources.RDR2
             PhysicalData = new byte[physicalSize];
 
             var deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true);
-            deflateStream.ReadAll(VirtualData, 0, (int)virtualSize);
-            deflateStream.ReadAll(PhysicalData, 0, (int)physicalSize);
+            deflateStream.ReadExactly(VirtualData, 0, (int)virtualSize);
+            deflateStream.ReadExactly(PhysicalData, 0, (int)physicalSize);
             deflateStream.Close();
         }
 
