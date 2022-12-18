@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>MetaTool</RootNamespace>
 		<AssemblyName>MetaTool</AssemblyName>
 	</PropertyGroup>
