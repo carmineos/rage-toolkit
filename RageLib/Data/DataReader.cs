@@ -127,6 +127,14 @@ namespace RageLib.Data
         }
 
         /// <summary>
+        /// Reads a sbyte.
+        /// </summary>
+        public sbyte ReadSignedByte()
+        {
+            return (sbyte)ReadByteFromStreamRaw();
+        }
+
+        /// <summary>
         /// Reads a sequence of bytes.
         /// </summary>
         public byte[] ReadBytes(int count)

@@ -69,6 +69,14 @@ namespace RageLib.Data
         }
 
         /// <summary>
+        /// Writes a byte.
+        /// </summary>
+        public void Write(sbyte value)
+        {
+            WriteToStreamRaw((byte)value);
+        }
+
+        /// <summary>
         /// Writes a sequence of bytes.
         /// </summary>
         public void Write(byte[] value)
