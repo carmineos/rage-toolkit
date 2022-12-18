@@ -3,7 +3,6 @@
 using ArchiveTool.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.Notifications;
 using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Utilities;
 using System;
@@ -16,7 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tools.Core;
 using Tools.Core.FileSystem;
-using Windows.UI.Notifications;
+using Microsoft.Windows.AppNotifications.Builder;
+using Microsoft.Windows.AppNotifications;
 
 namespace ArchiveTool.ViewModels
 {
@@ -127,44 +127,38 @@ namespace ArchiveTool.ViewModels
                 return;
 
             //// TODO: Show Error messages in case of wrong paths
-            //var toastContent = new ToastContentBuilder()
+            //var notification = new AppNotificationBuilder()
             //    .AddText("Packing Archive")
-            //    .AddVisualChild(new AdaptiveProgressBar()
+            //    .AddProgressBar(new AppNotificationProgressBar()
             //    {
             //        Title = $"Packing {name}",
-            //        Value = new BindableProgressBarValue("progressValue"),
-            //        //ValueStringOverride = new BindableString("progressValueString"),
-            //        Status = new BindableString("progressStatus")
+            //        Value = 0.0,
+            //        ValueStringOverride = "Packed 0/0",
+            //        Status = "Packing..."
             //    })
-            //    .AddButton(new ToastButton("Open Path", "")
-            //    .SetProtocolActivation(new Uri(new FileInfo(savePath).Directory.FullName)))
-            //    .GetToastContent();
+            //    .AddButton(new AppNotificationButton()
+            //    {
+            //        Content = "Open Path",
+            //        InvokeUri = new Uri(new FileInfo(savePath).Directory.FullName)
+            //    })
+            //    .SetGroup("archives-operations")
+            //    .SetTag("packing-archive")
+            //    .BuildNotification();
 
-            //Debug.WriteLine(toastContent.GetXml().GetXml());
-
-            //var toast = new ToastNotification(toastContent.GetXml());
-            //toast.Tag = "packing-archive";
-            //toast.Group = "archive";
-            //toast.Data = new NotificationData();
-            //toast.Data.SequenceNumber = 1;
-            //toast.Data.Values["progressValue"] = "indeterminate";
-            //toast.Data.Values["progressStatus"] = "Packing...";
-            //var notifier = ToastNotificationManager.CreateToastNotifier();
-            //notifier.Show(toast);
+            //AppNotificationManager.Default.Show(notification);
 
             _ = Task.Run(() =>
             {
                 ArchiveUtilities.PackArchive(path, savePath, true, RageLib.GTA5.Archives.RageArchiveEncryption7.None);
 
-                // Update the toast
-                //string tag = "packing-archive";
-                //var group = "archive";
-                //var data = new NotificationData
+                //AppNotificationManager.Default.UpdateAsync(new AppNotificationProgressData(2)
                 //{
-                //    SequenceNumber = 2
-                //};
-                //data.Values["progressValue"] = "1.0";
-                //ToastNotificationManager.CreateToastNotifier().Update(data, tag, group);
+                //    Title = $"Packing {name}",
+                //    Value = 1.0,
+                //    ValueStringOverride =
+                //    "Packed 1/1",
+                //    Status = "Packing..."
+                //}, "packing-archive");
             });
         }
 
