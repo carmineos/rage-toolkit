@@ -91,15 +91,13 @@ namespace RageLib.GTA5.Cryptography
 
         private static void DecryptBlock(Span<byte> data, ReadOnlySpan<uint> key)
         {
-            for (int k = 0; k <= 16; k++)
-            {
-                ReadOnlySpan<uint> subkey = key.Slice(4 * k, 4);
+            DecryptRoundA(data, key.Slice(0, 4), GTA5Constants.PC_NG_DECRYPT_TABLES[0]);
+            DecryptRoundA(data, key.Slice(4, 4), GTA5Constants.PC_NG_DECRYPT_TABLES[1]);
 
-                if (k == 0 || k == 1 || k == 16)
-                    DecryptRoundA(data, subkey, GTA5Constants.PC_NG_DECRYPT_TABLES[k]);
-                else
-                    DecryptRoundB(data, subkey, GTA5Constants.PC_NG_DECRYPT_TABLES[k]);
-            }
+            for (int k = 2; k <= 15; k++)
+                DecryptRoundB(data, key.Slice(4 * k, 4), GTA5Constants.PC_NG_DECRYPT_TABLES[k]);
+
+            DecryptRoundA(data, key.Slice(64, 4), GTA5Constants.PC_NG_DECRYPT_TABLES[16]);
         }
 
         // round 1,2,16
@@ -206,15 +204,13 @@ namespace RageLib.GTA5.Cryptography
 
         private static void EncryptBlock(Span<byte> data, ReadOnlySpan<byte> key)
         {
-            for (var k = 16; k >= 0; k--)
-            {
-                ReadOnlySpan<byte> subkey = key.Slice(16 * k, 16);
+            EncryptRoundA(data, key.Slice(256, 16), GTA5Constants.PC_NG_ENCRYPT_TABLES[16]);
+            
+            for (var k = 15; k >= 2; k--)
+                EncryptRoundB_LUT(data, key.Slice(16 * k, 16), GTA5Constants.PC_NG_ENCRYPT_LUTs[k]);
 
-                if (k == 0 || k == 1 || k == 16)
-                    EncryptRoundA(data, subkey, GTA5Constants.PC_NG_ENCRYPT_TABLES[k]);
-                else
-                    EncryptRoundB_LUT(data, subkey, GTA5Constants.PC_NG_ENCRYPT_LUTs[k]);
-            }
+            EncryptRoundA(data, key.Slice(16, 16), GTA5Constants.PC_NG_ENCRYPT_TABLES[1]);
+            EncryptRoundA(data, key.Slice(0, 16), GTA5Constants.PC_NG_ENCRYPT_TABLES[0]);
         }
 
         private static void EncryptRoundA(Span<byte> data, ReadOnlySpan<byte> key, uint[][] table)
