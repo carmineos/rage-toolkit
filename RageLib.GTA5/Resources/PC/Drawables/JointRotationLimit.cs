@@ -1,5 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Numerics;
 using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
@@ -9,12 +10,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0xC0;
 
         // structure data
-        public uint Unknown_0h; // 0x00000000
-        public uint Unknown_4h; // 0x00000000
+        public ulong Unknown_0h; // 0x0000000000000000
         public ushort BoneId;
         public ushort Unknown_Ah;
-        public uint Unknown_Ch; // 0x00000001
-        public uint Unknown_10h; // 0x00000003
+        public uint NumControlPoints; // 0x00000001
+        public uint JointDOFs; // 0x00000003
         public uint Unknown_14h; // 0x00000000
         public uint Unknown_18h; // 0x00000000
         public uint Unknown_1Ch; // 0x00000000
@@ -22,38 +22,25 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint Unknown_24h; // 0x00000000
         public uint Unknown_28h; // 0x00000000
         public float Unknown_2Ch; // 1.0
-        public uint Unknown_30h; // 0x00000000
-        public uint Unknown_34h; // 0x00000000
-        public uint Unknown_38h; // 0x00000000
+        public Vector3 ZeroRotationEulers; // 0.0; 0.0; 0.0
         public uint Unknown_3Ch; // 0x00000000
-        public float Unknown_40h; // 1.0
-        public uint Unknown_44h; // 0x00000000
-        public uint Unknown_48h; // 0x00000000
+        public Vector3 TwistAxis; // 1.0; 0.0; 0.0
         public uint Unknown_4Ch; // 0x00000000
-        public float Unknown_50h; // -pi
-        public float Unknown_54h; // pi
-        public float Unknown_58h; // 1.0
+        public float TwistLimitMin; // -pi
+        public float TwistLimitMax; // pi
+        public float SoftLimitScale; // 1.0
         public Vector3 Min; // in rad
         public Vector3 Max; // in rad
-        public float Unknown_74h; // pi
-        public float Unknown_78h; // -pi
-        public float Unknown_7Ch; // pi
-        public float Unknown_80h; // pi
-        public float Unknown_84h; // -pi
-        public float Unknown_88h; // pi
-        public float Unknown_8Ch; // pi
-        public float Unknown_90h; // -pi
-        public float Unknown_94h; // pi
-        public float Unknown_98h; // pi
-        public float Unknown_9Ch; // -pi
-        public float Unknown_A0h; // pi
-        public float Unknown_A4h; // pi
-        public float Unknown_A8h; // -pi
-        public float Unknown_ACh; // pi
-        public float Unknown_B0h; // pi
-        public float Unknown_B4h; // -pi
-        public float Unknown_B8h; // pi
-        public uint Unknown_BCh; // 0x00000100
+        public Vector3 Unknown_74h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        public Vector3 Unknown_80h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        public Vector3 Unknown_8Ch; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        public Vector3 Unknown_98h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        public Vector3 Unknown_A4h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        public Vector3 Unknown_B0h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        public byte UseTwistLimits;
+        public byte UseEulerAngles; // 0x01
+        public byte UsePerControlTwistLimits;
+        public byte Unknown_BFh;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -61,12 +48,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.Unknown_0h = reader.ReadUInt32();
-            this.Unknown_4h = reader.ReadUInt32();
+            this.Unknown_0h = reader.ReadUInt64();
             this.BoneId = reader.ReadUInt16();
             this.Unknown_Ah = reader.ReadUInt16();
-            this.Unknown_Ch = reader.ReadUInt32();
-            this.Unknown_10h = reader.ReadUInt32();
+            this.NumControlPoints = reader.ReadUInt32();
+            this.JointDOFs = reader.ReadUInt32();
             this.Unknown_14h = reader.ReadUInt32();
             this.Unknown_18h = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
@@ -74,38 +60,25 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.Unknown_24h = reader.ReadUInt32();
             this.Unknown_28h = reader.ReadUInt32();
             this.Unknown_2Ch = reader.ReadSingle();
-            this.Unknown_30h = reader.ReadUInt32();
-            this.Unknown_34h = reader.ReadUInt32();
-            this.Unknown_38h = reader.ReadUInt32();
+            this.ZeroRotationEulers = reader.ReadVector3();
             this.Unknown_3Ch = reader.ReadUInt32();
-            this.Unknown_40h = reader.ReadSingle();
-            this.Unknown_44h = reader.ReadUInt32();
-            this.Unknown_48h = reader.ReadUInt32();
+            this.TwistAxis = reader.ReadVector3();
             this.Unknown_4Ch = reader.ReadUInt32();
-            this.Unknown_50h = reader.ReadSingle();
-            this.Unknown_54h = reader.ReadSingle();
-            this.Unknown_58h = reader.ReadSingle();
+            this.TwistLimitMin = reader.ReadSingle();
+            this.TwistLimitMax = reader.ReadSingle();
+            this.SoftLimitScale = reader.ReadSingle();
             this.Min = reader.ReadVector3();
             this.Max = reader.ReadVector3();
-            this.Unknown_74h = reader.ReadSingle();
-            this.Unknown_78h = reader.ReadSingle();
-            this.Unknown_7Ch = reader.ReadSingle();
-            this.Unknown_80h = reader.ReadSingle();
-            this.Unknown_84h = reader.ReadSingle();
-            this.Unknown_88h = reader.ReadSingle();
-            this.Unknown_8Ch = reader.ReadSingle();
-            this.Unknown_90h = reader.ReadSingle();
-            this.Unknown_94h = reader.ReadSingle();
-            this.Unknown_98h = reader.ReadSingle();
-            this.Unknown_9Ch = reader.ReadSingle();
-            this.Unknown_A0h = reader.ReadSingle();
-            this.Unknown_A4h = reader.ReadSingle();
-            this.Unknown_A8h = reader.ReadSingle();
-            this.Unknown_ACh = reader.ReadSingle();
-            this.Unknown_B0h = reader.ReadSingle();
-            this.Unknown_B4h = reader.ReadSingle();
-            this.Unknown_B8h = reader.ReadSingle();
-            this.Unknown_BCh = reader.ReadUInt32();
+            this.Unknown_74h = reader.ReadVector3();
+            this.Unknown_80h = reader.ReadVector3();
+            this.Unknown_8Ch = reader.ReadVector3();
+            this.Unknown_98h = reader.ReadVector3();
+            this.Unknown_A4h = reader.ReadVector3();
+            this.Unknown_B0h = reader.ReadVector3();
+            this.UseTwistLimits = reader.ReadByte();
+            this.UseEulerAngles = reader.ReadByte();
+            this.UsePerControlTwistLimits = reader.ReadByte();
+            this.Unknown_BFh = reader.ReadByte();
         }
 
         /// <summary>
@@ -115,11 +88,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             // write structure data
             writer.Write(this.Unknown_0h);
-            writer.Write(this.Unknown_4h);
             writer.Write(this.BoneId);
             writer.Write(this.Unknown_Ah);
-            writer.Write(this.Unknown_Ch);
-            writer.Write(this.Unknown_10h);
+            writer.Write(this.NumControlPoints);
+            writer.Write(this.JointDOFs);
             writer.Write(this.Unknown_14h);
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_1Ch);
@@ -127,38 +99,25 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.Unknown_24h);
             writer.Write(this.Unknown_28h);
             writer.Write(this.Unknown_2Ch);
-            writer.Write(this.Unknown_30h);
-            writer.Write(this.Unknown_34h);
-            writer.Write(this.Unknown_38h);
+            writer.Write(this.ZeroRotationEulers);
             writer.Write(this.Unknown_3Ch);
-            writer.Write(this.Unknown_40h);
-            writer.Write(this.Unknown_44h);
-            writer.Write(this.Unknown_48h);
+            writer.Write(this.TwistAxis);
             writer.Write(this.Unknown_4Ch);
-            writer.Write(this.Unknown_50h);
-            writer.Write(this.Unknown_54h);
-            writer.Write(this.Unknown_58h);
+            writer.Write(this.TwistLimitMin);
+            writer.Write(this.TwistLimitMax);
+            writer.Write(this.SoftLimitScale);
             writer.Write(this.Min);
             writer.Write(this.Max);
             writer.Write(this.Unknown_74h);
-            writer.Write(this.Unknown_78h);
-            writer.Write(this.Unknown_7Ch);
             writer.Write(this.Unknown_80h);
-            writer.Write(this.Unknown_84h);
-            writer.Write(this.Unknown_88h);
             writer.Write(this.Unknown_8Ch);
-            writer.Write(this.Unknown_90h);
-            writer.Write(this.Unknown_94h);
             writer.Write(this.Unknown_98h);
-            writer.Write(this.Unknown_9Ch);
-            writer.Write(this.Unknown_A0h);
             writer.Write(this.Unknown_A4h);
-            writer.Write(this.Unknown_A8h);
-            writer.Write(this.Unknown_ACh);
             writer.Write(this.Unknown_B0h);
-            writer.Write(this.Unknown_B4h);
-            writer.Write(this.Unknown_B8h);
-            writer.Write(this.Unknown_BCh);
+            writer.Write(this.UseTwistLimits);
+            writer.Write(this.UseEulerAngles);
+            writer.Write(this.UsePerControlTwistLimits);
+            writer.Write(this.Unknown_BFh);
         }
     }
 }

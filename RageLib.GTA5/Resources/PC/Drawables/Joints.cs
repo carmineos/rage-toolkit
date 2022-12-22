@@ -14,16 +14,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public ulong RotationLimitsPointer;
         public ulong TranslationLimitsPointer;
-        public uint Unknown_20h; // 0x00000000
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
+        public ulong ScaleLimitsPointer; // 0x0000000000000000
+        public ulong Unknown_28h; // 0x0000000000000000
         public ushort RotationLimitsCount;
         public ushort TranslationLimitsCount;
-        public ushort Unknown_34h; // 0x0000
+        public ushort ScaleLimitsCount; // 0x0000
         public ushort Unknown_36h; // 0x0001
-        public uint Unknown_38h; // 0x00000000
-        public uint Unknown_3Ch; // 0x00000000
+        public ulong Unknown_38h; // 0x0000000000000000
 
         // reference data
         public ResourceSimpleArray<JointRotationLimit>? RotationLimits { get; set; }
@@ -39,16 +36,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             // read structure data
             this.RotationLimitsPointer = reader.ReadUInt64();
             this.TranslationLimitsPointer = reader.ReadUInt64();
-            this.Unknown_20h = reader.ReadUInt32();
-            this.Unknown_24h = reader.ReadUInt32();
-            this.Unknown_28h = reader.ReadUInt32();
-            this.Unknown_2Ch = reader.ReadUInt32();
+            this.ScaleLimitsPointer = reader.ReadUInt64();
+            this.Unknown_28h = reader.ReadUInt64();
             this.RotationLimitsCount = reader.ReadUInt16();
             this.TranslationLimitsCount = reader.ReadUInt16();
-            this.Unknown_34h = reader.ReadUInt16();
+            this.ScaleLimitsCount = reader.ReadUInt16();
             this.Unknown_36h = reader.ReadUInt16();
-            this.Unknown_38h = reader.ReadUInt32();
-            this.Unknown_3Ch = reader.ReadUInt32();
+            this.Unknown_38h = reader.ReadUInt64();
 
             // read reference data
             this.RotationLimits = reader.ReadBlockAt<ResourceSimpleArray<JointRotationLimit>>(
@@ -77,16 +71,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             // write structure data
             writer.Write(this.RotationLimitsPointer);
             writer.Write(this.TranslationLimitsPointer);
-            writer.Write(this.Unknown_20h);
-            writer.Write(this.Unknown_24h);
+            writer.Write(this.ScaleLimitsPointer);
             writer.Write(this.Unknown_28h);
-            writer.Write(this.Unknown_2Ch);
             writer.Write(this.RotationLimitsCount);
             writer.Write(this.TranslationLimitsCount);
-            writer.Write(this.Unknown_34h);
+            writer.Write(this.ScaleLimitsCount);
             writer.Write(this.Unknown_36h);
             writer.Write(this.Unknown_38h);
-            writer.Write(this.Unknown_3Ch);
         }
 
         /// <summary>
