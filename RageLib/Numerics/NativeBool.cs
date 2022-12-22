@@ -14,6 +14,11 @@ namespace RageLib.Numerics
             value = (byte)(boolean ? 1 : 0);
         }
 
+        public NativeBool(byte boolean)
+        {
+            value = boolean;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator true(NativeBool value) => value.value != 0;
 
@@ -21,9 +26,15 @@ namespace RageLib.Numerics
         public static bool operator false(NativeBool value) => value.value == 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator bool(NativeBool nativeBool) => nativeBool.value != 0;
+        public static explicit operator bool(NativeBool nativeBool) => nativeBool.value != 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator NativeBool(bool boolean) => new NativeBool(boolean);
+        public static explicit operator NativeBool(bool boolean) => new NativeBool(boolean);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator byte(NativeBool nativeBool) => nativeBool.value;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator NativeBool(byte boolean) => new NativeBool(boolean);
     }
 }
