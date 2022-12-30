@@ -4,10 +4,8 @@ using System;
 
 namespace RageLib.Resources.Common
 {
-    public class SimpleBigList64<T> : ResourceSystemBlock where T : unmanaged
+    public struct SimpleBigList64<T>  where T : unmanaged
     {
-        public override long BlockLength => 0x10;
-
         // structure data
         public ulong EntriesPointer;
         public uint EntriesCount;
@@ -19,7 +17,7 @@ namespace RageLib.Resources.Common
         /// <summary>
         /// Reads the data-block from a stream.
         /// </summary>
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
             this.EntriesPointer = reader.ReadUInt64();
@@ -38,7 +36,7 @@ namespace RageLib.Resources.Common
         /// <summary>
         /// Writes the data-block to a stream.
         /// </summary>
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
+        public void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
             this.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
@@ -49,14 +47,6 @@ namespace RageLib.Resources.Common
             writer.Write(this.EntriesPointer);
             writer.Write(this.EntriesCount);
             writer.Write(this.EntriesCapacity);
-        }
-
-        /// <summary>
-        /// Returns a list of data blocks which are referenced by this block.
-        /// </summary>
-        public override IResourceBlock[] GetReferences()
-        {
-            return Entries == null ? Array.Empty<IResourceBlock>() : new IResourceBlock[] { Entries };
         }
     }
 }

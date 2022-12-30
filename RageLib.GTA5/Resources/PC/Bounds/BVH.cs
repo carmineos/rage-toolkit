@@ -29,7 +29,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.Nodes = reader.ReadBlock<SimpleBigList64<BVHNode>>();
+            this.Nodes = reader.ReadBigValueList<BVHNode>();
             this.Unknown_10h = reader.ReadUInt64();
             this.Unknown_18h = reader.ReadUInt64();
             this.BoundingBoxMin = reader.ReadVector4();
@@ -45,7 +45,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         /// </summary>
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
-            writer.WriteBlock(this.Nodes);
+            writer.WriteBigValueList(this.Nodes);
             writer.Write(this.Unknown_10h);
             writer.Write(this.Unknown_18h);
             writer.Write(this.BoundingBoxMin);
@@ -56,16 +56,10 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             writer.WriteValueList(this.Trees);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x00, Nodes),
-            };
-        }
-
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
+            if (Nodes.Entries is not null) list.Add(Nodes.Entries);
             if (Trees.Entries is not null) list.Add(Trees.Entries);
             return list.ToArray();
         }

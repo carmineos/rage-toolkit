@@ -116,6 +116,11 @@ namespace RageLib.Resources
             valueList.Write(this);
         }
 
+        public void WriteBigValueList<T>(SimpleBigList64<T> valueList) where T : unmanaged
+        {
+            valueList.Write(this);
+        }
+
         public void WriteList<T>(ResourceSimpleList64<T> list) where T : IResourceSystemBlock, new()
         {
             list.Write(this);

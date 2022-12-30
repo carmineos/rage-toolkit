@@ -181,24 +181,31 @@ namespace RageLib.Resources
             }
         }
         
-        public SimpleList64<T> ReadValueList<T>() where T : unmanaged
+        public SimpleList64<T> ReadValueList<T>(params object[] parameters) where T : unmanaged
         {
-            var valueList = new SimpleList64<T>();
-            valueList.Read(this);
-            return valueList;
-        }
-
-        public ResourceSimpleList64<T> ReadList<T>() where T : IResourceSystemBlock, new()
-        {
-            var list = new ResourceSimpleList64<T>();
-            list.Read(this);
+            var list = new SimpleList64<T>();
+            list.Read(this, parameters);
             return list;
         }
 
-        public ResourcePointerList64<T> ReadPointerList<T>() where T : IResourceSystemBlock, new()
+        public SimpleBigList64<T> ReadBigValueList<T>(params object[] parameters) where T : unmanaged
+        {
+            var list = new SimpleBigList64<T>();
+            list.Read(this, parameters);
+            return list;
+        }
+
+        public ResourceSimpleList64<T> ReadList<T>(params object[] parameters) where T : IResourceSystemBlock, new()
+        {
+            var list = new ResourceSimpleList64<T>();
+            list.Read(this, parameters);
+            return list;
+        }
+
+        public ResourcePointerList64<T> ReadPointerList<T>(params object[] parameters) where T : IResourceSystemBlock, new()
         {
             var list = new ResourcePointerList64<T>();
-            list.Read(this);
+            list.Read(this, parameters);
             return list;
         }
     }
