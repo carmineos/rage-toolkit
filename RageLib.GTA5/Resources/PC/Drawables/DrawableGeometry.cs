@@ -15,11 +15,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public ulong Unknown_8h; // 0x0000000000000000
         public ulong Unknown_10h; // 0x0000000000000000
-        public ulong VertexBufferPointer;
+        public PgRef64<VertexBuffer> VertexBuffer;
         public ulong Unknown_20h; // 0x0000000000000000
         public ulong Unknown_28h; // 0x0000000000000000
         public ulong Unknown_30h; // 0x0000000000000000
-        public ulong IndexBufferPointer;
+        public PgRef64<IndexBuffer> IndexBuffer;
         public ulong Unknown_40h; // 0x0000000000000000
         public ulong Unknown_48h; // 0x0000000000000000
         public ulong Unknown_50h; // 0x0000000000000000
@@ -28,21 +28,15 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ushort VerticesCount;
         public ushort IndicesPerFace; // 0x0003
         public uint Unknown_64h; // 0x00000000
-        public ulong BonesIdPointer;
+        public PgRef64<SimpleArray<ushort>> BonesId;
         public ushort VertexStride;
         public ushort BonesCount;
         public uint Unknown_74h; // 0x00000000
-        public ulong VertexDataPointer;
+        public PgRef64<VertexData_GTA5_pc> VertexData;
         public ulong Unknown_80h; // 0x0000000000000000
         public ulong Unknown_88h; // 0x0000000000000000
         public ulong Unknown_90h; // 0x0000000000000000
         public ulong Unknown_98h; // 0x0000000000000000
-
-        // reference data
-        public VertexBuffer? VertexBuffer { get; set; }
-        public IndexBuffer? IndexBuffer { get; set; }
-        public SimpleArray<ushort>? BonesId { get; set; }
-        public VertexData_GTA5_pc? VertexData { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -54,11 +48,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             // read structure data
             this.Unknown_8h = reader.ReadUInt64();
             this.Unknown_10h = reader.ReadUInt64();
-            this.VertexBufferPointer = reader.ReadUInt64();
+            this.VertexBuffer = reader.ReadPointer<VertexBuffer>();
             this.Unknown_20h = reader.ReadUInt64();
             this.Unknown_28h = reader.ReadUInt64();
             this.Unknown_30h = reader.ReadUInt64();
-            this.IndexBufferPointer = reader.ReadUInt64();
+            this.IndexBuffer = reader.ReadPointer<IndexBuffer>();
             this.Unknown_40h = reader.ReadUInt64();
             this.Unknown_48h = reader.ReadUInt64();
             this.Unknown_50h = reader.ReadUInt64();
@@ -67,33 +61,18 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.VerticesCount = reader.ReadUInt16();
             this.IndicesPerFace = reader.ReadUInt16();
             this.Unknown_64h = reader.ReadUInt32();
-            this.BonesIdPointer = reader.ReadUInt64();
+            this.BonesId = reader.ReadPointer<SimpleArray<ushort>>(false);
             this.VertexStride = reader.ReadUInt16();
             this.BonesCount = reader.ReadUInt16();
             this.Unknown_74h = reader.ReadUInt32();
-            this.VertexDataPointer = reader.ReadUInt64();
+            this.VertexData = reader.ReadPointer<VertexData_GTA5_pc>(false);
             this.Unknown_80h = reader.ReadUInt64();
             this.Unknown_88h = reader.ReadUInt64();
             this.Unknown_90h = reader.ReadUInt64();
             this.Unknown_98h = reader.ReadUInt64();
 
-            // read reference data
-            this.VertexBuffer = reader.ReadBlockAt<VertexBuffer>(
-                this.VertexBufferPointer // offset
-            );
-            this.IndexBuffer = reader.ReadBlockAt<IndexBuffer>(
-                this.IndexBufferPointer // offset
-            );
-            this.BonesId = reader.ReadBlockAt<SimpleArray<ushort>>(
-                this.BonesIdPointer, // offset
-                this.BonesCount
-            );
-            this.VertexData = reader.ReadBlockAt<VertexData_GTA5_pc>(
-                this.VertexDataPointer, // offset
-                this.VertexStride,
-                this.VerticesCount,
-                this.VertexBuffer.Info
-            );
+            this.BonesId.ReadReference(reader, this.BonesCount);
+            this.VertexData.ReadReference(reader, this.VertexStride, this.VerticesCount, this.VertexBuffer.Data?.Info);
         }
 
         /// <summary>
@@ -103,24 +82,14 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.VertexBufferPointer = (ulong)(this.VertexBuffer?.BlockPosition ?? 0);
-            this.IndexBufferPointer = (ulong)(this.IndexBuffer?.BlockPosition ?? 0);
-            //this.IndicesCount = (uint)(this.IndexBuffer?.Indices?.Count ?? 0);
-            //this.VerticesCount = (ushort)(this.VertexBuffer?.VertexCount ?? 0); // assume vertex buffer is aleady updated
-            this.BonesIdPointer = (ulong)(this.BonesId?.BlockPosition ?? 0);
-            //this.Count1 = (ushort)(this.Unknown_68h_Data?.Length ?? 0);
-            //this.VertexStride = (ushort)(this.VertexData != null ? this.VertexData.Count : 0);
-            this.VertexDataPointer = (ulong)(this.VertexData?.BlockPosition ?? 0);
-
             // write structure data
             writer.Write(this.Unknown_8h);
             writer.Write(this.Unknown_10h);
-            writer.Write(this.VertexBufferPointer);
+            writer.Write(this.VertexBuffer);
             writer.Write(this.Unknown_20h);
             writer.Write(this.Unknown_28h);
             writer.Write(this.Unknown_30h);
-            writer.Write(this.IndexBufferPointer);
+            writer.Write(this.IndexBuffer);
             writer.Write(this.Unknown_40h);
             writer.Write(this.Unknown_48h);
             writer.Write(this.Unknown_50h);
@@ -129,11 +98,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             writer.Write(this.VerticesCount);
             writer.Write(this.IndicesPerFace);
             writer.Write(this.Unknown_64h);
-            writer.Write(this.BonesIdPointer);
+            writer.Write(this.BonesId);
             writer.Write(this.VertexStride);
             writer.Write(this.BonesCount);
             writer.Write(this.Unknown_74h);
-            writer.Write(this.VertexDataPointer);
+            writer.Write(this.VertexData);
             writer.Write(this.Unknown_80h);
             writer.Write(this.Unknown_88h);
             writer.Write(this.Unknown_90h);
@@ -146,10 +115,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (VertexBuffer != null) list.Add(VertexBuffer);
-            if (IndexBuffer != null) list.Add(IndexBuffer);
-            if (BonesId != null) list.Add(BonesId);
-            if (VertexData != null) list.Add(VertexData);
+            if (VertexBuffer.Data != null) list.Add(VertexBuffer.Data);
+            if (IndexBuffer.Data != null) list.Add(IndexBuffer.Data);
+            if (BonesId.Data != null) list.Add(BonesId.Data);
+            if (VertexData.Data != null) list.Add(VertexData.Data);
             return list.ToArray();
         }
     }

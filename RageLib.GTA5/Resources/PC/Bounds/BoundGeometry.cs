@@ -12,22 +12,17 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0x130;
 
         // structure data
-        public ulong MaterialsPointer;
-        public ulong MaterialColoursPointer;
+        public PgRef64<SimpleArray<BoundMaterial>> Materials;
+        public PgRef64<SimpleArray<uint>> MaterialColours;
         public ulong Unknown_100h; // 0x0000000000000000
         public ulong Unknown_108h; // 0x0000000000000000
         public ulong Unknown_110h; // 0x0000000000000000
-        public ulong PolygonMaterialIndicesPointer;
+        public PgRef64<SimpleArray<byte>> PolygonMaterialIndices;
         public byte MaterialsCount;
         public byte MaterialColoursCount;
         public ushort Unknown_122h; // 0x0000
         public uint Unknown_124h; // 0x00000000
         public ulong Unknown_128h; // 0x0000000000000000
-
-        // reference data
-        public SimpleArray<BoundMaterial>? Materials { get; set; }
-        public SimpleArray<uint>? MaterialColours { get; set; }
-        public SimpleArray<byte>? PolygonMaterialIndices { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -37,12 +32,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Read(reader, parameters);
 
             // read structure data
-            this.MaterialsPointer = reader.ReadUInt64();
-            this.MaterialColoursPointer = reader.ReadUInt64();
+            this.Materials = reader.ReadPointer<SimpleArray<BoundMaterial>>(false);
+            this.MaterialColours = reader.ReadPointer<SimpleArray<uint>>(false);
             this.Unknown_100h = reader.ReadUInt64();
             this.Unknown_108h = reader.ReadUInt64();
             this.Unknown_110h = reader.ReadUInt64();
-            this.PolygonMaterialIndicesPointer = reader.ReadUInt64();
+            this.PolygonMaterialIndices = reader.ReadPointer<SimpleArray<byte>>(false);
             this.MaterialsCount = reader.ReadByte();
             this.MaterialColoursCount = reader.ReadByte();
             this.Unknown_122h = reader.ReadUInt16();
@@ -50,18 +45,9 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             this.Unknown_128h = reader.ReadUInt64();
 
             // read reference data
-            this.Materials = reader.ReadBlockAt<SimpleArray<BoundMaterial>>(
-                this.MaterialsPointer, // offset
-                this.MaterialsCount
-            );
-            this.MaterialColours = reader.ReadBlockAt<SimpleArray<uint>>(
-                this.MaterialColoursPointer, // offset
-                this.MaterialColoursCount
-            );
-            this.PolygonMaterialIndices = reader.ReadBlockAt<SimpleArray<byte>>(
-                this.PolygonMaterialIndicesPointer, // offset
-                this.PrimitivesCount
-            );
+            this.Materials.ReadReference(reader, this.MaterialsCount);
+            this.MaterialColours.ReadReference(reader, this.MaterialColoursCount);
+            this.PolygonMaterialIndices.ReadReference(reader, this.PrimitivesCount);
         }
 
         /// <summary>
@@ -72,19 +58,16 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // update structure data
-            this.MaterialsPointer = (ulong)(this.Materials?.BlockPosition ?? 0);
-            this.MaterialColoursPointer = (ulong)(this.MaterialColours?.BlockPosition ?? 0);
-            this.PolygonMaterialIndicesPointer = (ulong)(this.PolygonMaterialIndices?.BlockPosition ?? 0);
-            this.MaterialsCount = (byte)(this.Materials?.Count ?? 0);
-            this.MaterialColoursCount = (byte)(this.MaterialColours?.Count ?? 0);
+            this.MaterialsCount = (byte)(this.Materials.Data?.Count ?? 0);
+            this.MaterialColoursCount = (byte)(this.MaterialColours.Data?.Count ?? 0);
 
             // write structure data
-            writer.Write(this.MaterialsPointer);
-            writer.Write(this.MaterialColoursPointer);
+            writer.Write(this.Materials);
+            writer.Write(this.MaterialColours);
             writer.Write(this.Unknown_100h);
             writer.Write(this.Unknown_108h);
             writer.Write(this.Unknown_110h);
-            writer.Write(this.PolygonMaterialIndicesPointer);
+            writer.Write(this.PolygonMaterialIndices);
             writer.Write(this.MaterialsCount);
             writer.Write(this.MaterialColoursCount);
             writer.Write(this.Unknown_122h);
@@ -98,9 +81,9 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (Materials != null) list.Add(Materials);
-            if (MaterialColours != null) list.Add(MaterialColours);
-            if (PolygonMaterialIndices != null) list.Add(PolygonMaterialIndices);
+            if (Materials.Data != null) list.Add(Materials.Data);
+            if (MaterialColours.Data != null) list.Add(MaterialColours.Data);
+            if (PolygonMaterialIndices.Data != null) list.Add(PolygonMaterialIndices.Data);
             return list.ToArray();
         }
     }

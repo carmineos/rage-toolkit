@@ -17,31 +17,23 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         // structure data
         public uint Unknown_70h;
         public uint Unknown_74h;
-        public ulong ShrunkVerticesPointer;
+        public PgRef64<SimpleArray<BoundVertex>> ShrunkVertices;
         public uint Unknown_80h;
         public uint VerticesCount1;
-        public ulong PrimitivesPointer;
+        public PgRef64<SimpleArray<BoundPrimitive>> Primitives;
         public Vector3 Quantum;
         public float Unknown_9Ch;
         public Vector3 Offset;
         public float Unknown_ACh;
-        public ulong VerticesPointer;
-        public ulong VerticesColorsPointer;
-        public ulong Unknown_C0h_Pointer;
-        public ulong Unknown_C8h_Pointer;
+        public PgRef64<SimpleArray<BoundVertex>> Vertices;
+        public PgRef64<SimpleArray<uint>> VerticesColors;
+        public PgRef64<SimpleArray<uint>> Unknown_C0h_Data;
+        public PgRef64<SimpleArrayArray64<uint>> Unknown_C8h_Data;
         public uint VerticesCount2;
         public uint PrimitivesCount;
         public ulong Unknown_D8h; // 0x0000000000000000
         public ulong Unknown_E0h; // 0x0000000000000000
         public ulong Unknown_E8h; // 0x0000000000000000
-
-        // reference data
-        public SimpleArray<BoundVertex>? ShrunkVertices { get; set; }
-        public SimpleArray<BoundPrimitive>? Primitives { get; set; }
-        public SimpleArray<BoundVertex>? Vertices { get; set; }
-        public SimpleArray<uint>? VerticesColors { get; set; }
-        public SimpleArray<uint>? Unknown_C0h_Data { get; set; }
-        public SimpleArrayArray64<uint>? Unknown_C8h_Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -53,18 +45,18 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             // read structure data
             this.Unknown_70h = reader.ReadUInt32();
             this.Unknown_74h = reader.ReadUInt32();
-            this.ShrunkVerticesPointer = reader.ReadUInt64();
+            this.ShrunkVertices = reader.ReadPointer<SimpleArray<BoundVertex>>(false);
             this.Unknown_80h = reader.ReadUInt32();
             this.VerticesCount1 = reader.ReadUInt32();
-            this.PrimitivesPointer = reader.ReadUInt64();
+            this.Primitives = reader.ReadPointer<SimpleArray<BoundPrimitive>>(false);
             this.Quantum = reader.ReadVector3();
             this.Unknown_9Ch = reader.ReadSingle();
             this.Offset = reader.ReadVector3();
             this.Unknown_ACh = reader.ReadSingle();
-            this.VerticesPointer = reader.ReadUInt64();
-            this.VerticesColorsPointer = reader.ReadUInt64();
-            this.Unknown_C0h_Pointer = reader.ReadUInt64();
-            this.Unknown_C8h_Pointer = reader.ReadUInt64();
+            this.Vertices = reader.ReadPointer<SimpleArray<BoundVertex>>(false);
+            this.VerticesColors = reader.ReadPointer<SimpleArray<uint>>(false);
+            this.Unknown_C0h_Data = reader.ReadPointer<SimpleArray<uint>>(false);
+            this.Unknown_C8h_Data = reader.ReadPointer<SimpleArrayArray64<uint>>(false);
             this.VerticesCount2 = reader.ReadUInt32();
             this.PrimitivesCount = reader.ReadUInt32();
             this.Unknown_D8h = reader.ReadUInt64();
@@ -72,31 +64,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             this.Unknown_E8h = reader.ReadUInt64();
 
             // read reference data
-            this.ShrunkVertices = reader.ReadBlockAt<SimpleArray<BoundVertex>>(
-                this.ShrunkVerticesPointer, // offset
-                this.VerticesCount2
-            );
-            this.Primitives = reader.ReadBlockAt<SimpleArray<BoundPrimitive>>(
-                this.PrimitivesPointer, // offset
-                this.PrimitivesCount
-            );
-            this.Vertices = reader.ReadBlockAt<SimpleArray<BoundVertex>>(
-                this.VerticesPointer, // offset
-                this.VerticesCount2
-            );
-            this.VerticesColors = reader.ReadBlockAt<SimpleArray<uint>>(
-                this.VerticesColorsPointer, // offset
-                this.VerticesCount2
-            );
-            this.Unknown_C0h_Data = reader.ReadBlockAt<SimpleArray<uint>>(
-                this.Unknown_C0h_Pointer, // offset
-                8
-            );
-            this.Unknown_C8h_Data = reader.ReadBlockAt<SimpleArrayArray64<uint>>(
-                this.Unknown_C8h_Pointer, // offset
-                8,
-                this.Unknown_C0h_Data
-            );
+            this.ShrunkVertices.ReadReference(reader, this.VerticesCount2);
+            this.Primitives.ReadReference(reader, this.PrimitivesCount);
+            this.Vertices.ReadReference(reader, this.VerticesCount2);
+            this.VerticesColors.ReadReference(reader, this.VerticesCount2);
+            this.Unknown_C0h_Data.ReadReference(reader, 8);
+            this.Unknown_C8h_Data.ReadReference(reader, 8, this.Unknown_C0h_Data);
         }
 
         /// <summary>
@@ -107,31 +80,25 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // update structure data
-            this.ShrunkVerticesPointer = (ulong)(this.ShrunkVertices?.BlockPosition ?? 0);
-            this.VerticesCount1 = (uint)(this.Vertices?.Count ?? 0);
-            this.PrimitivesPointer = (ulong)(this.Primitives?.BlockPosition ?? 0);
-            this.VerticesPointer = (ulong)(this.Vertices?.BlockPosition ?? 0);
-            this.VerticesColorsPointer = (ulong)(this.VerticesColors?.BlockPosition ?? 0);
-            this.Unknown_C0h_Pointer = (ulong)(this.Unknown_C0h_Data?.BlockPosition ?? 0);
-            this.Unknown_C8h_Pointer = (ulong)(this.Unknown_C8h_Data?.BlockPosition ?? 0);
-            this.VerticesCount2 = (uint)(this.Vertices?.Count ?? 0);
-            this.PrimitivesCount = (uint)(this.Primitives?.Count ?? 0);
+            this.VerticesCount1 = (uint)(this.Vertices.Data?.Count ?? 0);
+            this.VerticesCount2 = (uint)(this.Vertices.Data?.Count ?? 0);
+            this.PrimitivesCount = (uint)(this.Primitives.Data?.Count ?? 0);
 
             // write structure data
             writer.Write(this.Unknown_70h);
             writer.Write(this.Unknown_74h);
-            writer.Write(this.ShrunkVerticesPointer);
+            writer.Write(this.ShrunkVertices);
             writer.Write(this.Unknown_80h);
             writer.Write(this.VerticesCount1);
-            writer.Write(this.PrimitivesPointer);
+            writer.Write(this.Primitives);
             writer.Write(this.Quantum);
             writer.Write(this.Unknown_9Ch);
             writer.Write(this.Offset);
             writer.Write(this.Unknown_ACh);
-            writer.Write(this.VerticesPointer);
-            writer.Write(this.VerticesColorsPointer);
-            writer.Write(this.Unknown_C0h_Pointer);
-            writer.Write(this.Unknown_C8h_Pointer);
+            writer.Write(this.Vertices);
+            writer.Write(this.VerticesColors);
+            writer.Write(this.Unknown_C0h_Data);
+            writer.Write(this.Unknown_C8h_Data);
             writer.Write(this.VerticesCount2);
             writer.Write(this.PrimitivesCount);
             writer.Write(this.Unknown_D8h);
@@ -145,12 +112,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (ShrunkVertices != null) list.Add(ShrunkVertices);
-            if (Primitives != null) list.Add(Primitives);
-            if (Vertices != null) list.Add(Vertices);
-            if (VerticesColors != null) list.Add(VerticesColors);
-            if (Unknown_C0h_Data != null) list.Add(Unknown_C0h_Data);
-            if (Unknown_C8h_Data != null) list.Add(Unknown_C8h_Data);
+            if (ShrunkVertices.Data != null) list.Add(ShrunkVertices.Data);
+            if (Primitives.Data != null) list.Add(Primitives.Data);
+            if (Vertices.Data != null) list.Add(Vertices.Data);
+            if (VerticesColors.Data != null) list.Add(VerticesColors.Data);
+            if (Unknown_C0h_Data.Data != null) list.Add(Unknown_C0h_Data.Data);
+            if (Unknown_C8h_Data.Data != null) list.Add(Unknown_C8h_Data.Data);
             return list.ToArray();
         }
         
@@ -163,7 +130,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector3 GetVertex(int index)
         {
-            var quantizedVertex = Vertices[index];
+            var quantizedVertex = Vertices.Data[index];
             return new Vector3(quantizedVertex.X * Quantum.X, quantizedVertex.Y * Quantum.Y, quantizedVertex.Z * Quantum.Z);
         }
 
@@ -186,7 +153,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
             for (int i = 0; i < VerticesCount2; i++)
             {
-                var vertex = GetVertex(Vertices[i]);
+                var vertex = GetVertex(Vertices.Data[i]);
 
                 aabbMin = Vector3.Min(aabbMin, vertex);
                 aabbMax = Vector3.Max(aabbMax, vertex);
@@ -210,7 +177,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             base.Rebuild();
 
-            if(Vertices is null || Primitives is null)
+            if(Vertices.Data is null || Primitives.Data is null)
             {
                 return;
             }
@@ -224,7 +191,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         public void ComputeShrunkVertices()
         {
-            if (ShrunkVertices is null)
+            if (ShrunkVertices.Data is null)
                 return;
 
             // Margin is used to shrink vertices
@@ -232,8 +199,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             // OctantMap only seems to be present if ShrunkVertices are present too
             for (int i = 0; i < VerticesCount2; i++)
             {
-                var vertex = GetVertexOffset(GetVertex(Vertices[i]));
-                var shrunk = GetVertexOffset(GetVertex(ShrunkVertices[i]));
+                var vertex = GetVertexOffset(GetVertex(Vertices.Data[i]));
+                var shrunk = GetVertexOffset(GetVertex(ShrunkVertices.Data[i]));
 
                 var test = vertex - new Vector3(Margin);
             }
@@ -241,7 +208,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         public void ComputeTrianglesArea()
         {
-            var primitivesSpan = Primitives.AsSpan();
+            var primitivesSpan = Primitives.Data.AsSpan();
 
             for (int i = 0; i < PrimitivesCount; i++)
             {
@@ -250,9 +217,9 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
                 ref BoundPrimitiveTriangle triangle = ref primitivesSpan[i].AsTriangle();
                 
-                var vertex1 = GetVertex(Vertices[triangle.VertexIndex1]);
-                var vertex2 = GetVertex(Vertices[triangle.VertexIndex2]);
-                var vertex3 = GetVertex(Vertices[triangle.VertexIndex3]);
+                var vertex1 = GetVertex(Vertices.Data[triangle.VertexIndex1]);
+                var vertex2 = GetVertex(Vertices.Data[triangle.VertexIndex2]);
+                var vertex3 = GetVertex(Vertices.Data[triangle.VertexIndex3]);
 
                 triangle.Area = Vector3.Cross(vertex2 - vertex1, vertex3 - vertex1).Length() * 0.5f;
             }
@@ -265,7 +232,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             Dictionary <ValueTuple<ushort, ushort>, ValueTuple<int, int>> edgesMap = new();
             ValueTuple<ushort, ushort>[] edges = new (ushort, ushort)[3];
 
-            var primitivesSpan = Primitives.AsSpan();
+            var primitivesSpan = Primitives.Data.AsSpan();
 
             for (int i = 0; i < PrimitivesCount; i++)
             {

@@ -12,18 +12,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0xA8;
 
         // structure data
-        public ulong SkeletonPointer;
+        public PgRef64<SkeletonData> Skeleton;
         public LodGroup LodGroup;
-        public ulong JointsPointer;
+        public PgRef64<Joints> Joints;
         public ushort Unknown_98h;
         public ushort Unknown_9Ah;
         public uint Unknown_9Ch; // 0x00000000
-        public ulong PrimaryLodPointer;
-
-        // reference data
-        public SkeletonData? Skeleton { get; set; }
-        public Joints? Joints { get; set; }
-        public Lod? PrimaryLod { get; set; }
+        public PgRef64<Lod> PrimaryLod;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -33,24 +28,13 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Read(reader, parameters);
 
             // read structure data
-            this.SkeletonPointer = reader.ReadUInt64();
+            this.Skeleton = reader.ReadPointer<SkeletonData>();
             this.LodGroup = reader.ReadBlock<LodGroup>();
-            this.JointsPointer = reader.ReadUInt64();
+            this.Joints = reader.ReadPointer<Joints>();
             this.Unknown_98h = reader.ReadUInt16();
             this.Unknown_9Ah = reader.ReadUInt16();
             this.Unknown_9Ch = reader.ReadUInt32();
-            this.PrimaryLodPointer = reader.ReadUInt64();
-
-            // read reference data
-            this.Skeleton = reader.ReadBlockAt<SkeletonData>(
-                this.SkeletonPointer // offset
-            );
-            this.Joints = reader.ReadBlockAt<Joints>(
-                this.JointsPointer // offset
-            );
-            this.PrimaryLod = reader.ReadBlockAt<Lod>(
-                this.PrimaryLodPointer // offset
-            );
+            this.PrimaryLod = reader.ReadPointer<Lod>();
         }
 
         /// <summary>
@@ -60,19 +44,14 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.SkeletonPointer = (ulong)(this.Skeleton?.BlockPosition ?? 0);
-            this.JointsPointer = (ulong)(this.Joints?.BlockPosition ?? 0);
-            this.PrimaryLodPointer = (ulong)(this.PrimaryLod?.BlockPosition ?? 0);
-
             // write structure data
-            writer.Write(this.SkeletonPointer);
+            writer.Write(this.Skeleton);
             writer.WriteBlock(this.LodGroup);
-            writer.Write(this.JointsPointer);
+            writer.Write(this.Joints);
             writer.Write(this.Unknown_98h);
             writer.Write(this.Unknown_9Ah);
             writer.Write(this.Unknown_9Ch);
-            writer.Write(this.PrimaryLodPointer);
+            writer.Write(this.PrimaryLod);
         }
 
         /// <summary>
@@ -81,9 +60,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (Skeleton != null) list.Add(Skeleton);
-            if (Joints != null) list.Add(Joints);
-            if (PrimaryLod != null) list.Add(PrimaryLod);
+            if (Skeleton.Data != null) list.Add(Skeleton.Data);
+            if (Joints.Data != null) list.Add(Joints.Data);
+            if (PrimaryLod.Data != null) list.Add(PrimaryLod.Data);
             return list.ToArray();
         }
 

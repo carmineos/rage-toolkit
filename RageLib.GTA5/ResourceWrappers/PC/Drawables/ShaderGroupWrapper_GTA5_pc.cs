@@ -24,8 +24,8 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
         {
             get
             {
-                if (shaderGroup.TextureDictionary != null)
-                    return new TextureDictionaryWrapper_GTA5_pc(shaderGroup.TextureDictionary);
+                if (shaderGroup.TextureDictionary.Data != null)
+                    return new TextureDictionaryWrapper_GTA5_pc(shaderGroup.TextureDictionary.Data);
                 else
                     return null;
             }

@@ -20,10 +20,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public float BoundingSphereRadius;
         public Vector4 BoundingBoxMin;
         public Vector4 BoundingBoxMax;
-        public ulong LodHighPointer;
-        public ulong LodMediumPointer;
-        public ulong LodLowPointer;
-        public ulong LodVeryLowPointer;
+        public PgRef64<Lod> LodHigh;
+        public PgRef64<Lod> LodMedium;
+        public PgRef64<Lod> LodLow;
+        public PgRef64<Lod> LodVeryLow;
         public float LodDistanceHigh;
         public float LodDistanceMedium;
         public float LodDistanceLow;
@@ -32,12 +32,6 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public LodDrawBucketMask DrawBucketMaskMedium;
         public LodDrawBucketMask DrawBucketMaskLow;
         public LodDrawBucketMask DrawBucketMaskVeryLow;
-
-        // reference data
-        public Lod? LodHigh { get; set; }
-        public Lod? LodMedium { get; set; }
-        public Lod? LodLow { get; set; }
-        public Lod? LodVeryLow { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -49,10 +43,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.BoundingSphereRadius = reader.ReadSingle();
             this.BoundingBoxMin = reader.ReadVector4();
             this.BoundingBoxMax = reader.ReadVector4();
-            this.LodHighPointer = reader.ReadUInt64();
-            this.LodMediumPointer = reader.ReadUInt64();
-            this.LodLowPointer = reader.ReadUInt64();
-            this.LodVeryLowPointer = reader.ReadUInt64();
+            this.LodHigh = reader.ReadPointer<Lod>();
+            this.LodMedium = reader.ReadPointer<Lod>();
+            this.LodLow = reader.ReadPointer<Lod>();
+            this.LodVeryLow = reader.ReadPointer<Lod>();
             this.LodDistanceHigh = reader.ReadSingle();
             this.LodDistanceMedium = reader.ReadSingle();
             this.LodDistanceLow = reader.ReadSingle();
@@ -61,12 +55,6 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.DrawBucketMaskMedium = reader.ReadUInt32();
             this.DrawBucketMaskLow = reader.ReadUInt32();
             this.DrawBucketMaskVeryLow = reader.ReadUInt32();
-
-            // read reference data
-            this.LodHigh = reader.ReadBlockAt<Lod>(this.LodHighPointer);
-            this.LodMedium = reader.ReadBlockAt<Lod>(this.LodMediumPointer);
-            this.LodLow = reader.ReadBlockAt<Lod>(this.LodLowPointer);
-            this.LodVeryLow = reader.ReadBlockAt<Lod>(this.LodVeryLowPointer);
         }
 
         /// <summary>
@@ -74,21 +62,15 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         /// </summary>
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
-            // update structure data
-            this.LodHighPointer = (ulong)(this.LodHigh?.BlockPosition ?? 0);
-            this.LodMediumPointer = (ulong)(this.LodMedium?.BlockPosition ?? 0);
-            this.LodLowPointer = (ulong)(this.LodLow?.BlockPosition ?? 0);
-            this.LodVeryLowPointer = (ulong)(this.LodVeryLow?.BlockPosition ?? 0);
-
             // write structure data
             writer.Write(this.BoundingCenter);
             writer.Write(this.BoundingSphereRadius);
             writer.Write(this.BoundingBoxMin);
             writer.Write(this.BoundingBoxMax);
-            writer.Write(this.LodHighPointer);
-            writer.Write(this.LodMediumPointer);
-            writer.Write(this.LodLowPointer);
-            writer.Write(this.LodVeryLowPointer);
+            writer.Write(this.LodHigh);
+            writer.Write(this.LodMedium);
+            writer.Write(this.LodLow);
+            writer.Write(this.LodVeryLow);
             writer.Write(this.LodDistanceHigh);
             writer.Write(this.LodDistanceMedium);
             writer.Write(this.LodDistanceLow);
@@ -105,10 +87,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (LodHigh != null) list.Add(LodHigh);
-            if (LodMedium != null) list.Add(LodMedium);
-            if (LodLow != null) list.Add(LodLow);
-            if (LodVeryLow != null) list.Add(LodVeryLow);
+            if (LodHigh.Data is not null) list.Add(LodHigh.Data);
+            if (LodMedium.Data is not null) list.Add(LodMedium.Data);
+            if (LodLow.Data is not null) list.Add(LodLow.Data);
+            if (LodVeryLow.Data is not null) list.Add(LodVeryLow.Data);
             return list.ToArray();
         }
 

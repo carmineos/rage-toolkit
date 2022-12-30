@@ -107,7 +107,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
         {
             get
             {
-                if (drawable.ShaderGroup != null)
+                if (drawable.ShaderGroup.Data != null)
                     return new ShaderGroupWrapper_GTA5_pc(drawable.ShaderGroup);
                 else
                     return null;
@@ -118,7 +118,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Drawables
         {
             get
             {
-                return (string)drawable.Name;
+                return (string)drawable.Name.Data;
             }
         }
 

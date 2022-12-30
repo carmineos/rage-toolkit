@@ -1,9 +1,11 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Data;
+using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace RageLib.Resources
 {
@@ -178,6 +180,18 @@ namespace RageLib.Resources
             {
                 return default(T);
             }
-        }        
+        }
+
+
+        public PgRef64<T> ReadPointer<T>(bool readReference = true, params object[] parameters) where T : IResourceBlock, new()
+        {
+            var pointer = new PgRef64<T>();
+            pointer.Read(this);
+
+            if (readReference)
+                pointer.ReadReference(this, parameters);
+
+            return pointer;
+        }
     }
 }

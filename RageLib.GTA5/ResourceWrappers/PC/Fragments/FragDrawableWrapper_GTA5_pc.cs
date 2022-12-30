@@ -28,7 +28,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Fragments
         {
             get
             {
-                if (fragDrawable.ShaderGroup != null)
+                if (fragDrawable.ShaderGroup.Data != null)
                     return new ShaderGroupWrapper_GTA5_pc(fragDrawable.ShaderGroup);
                 else
                     return null;

@@ -116,7 +116,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Textures
         {
             get
             {
-                return (string)texture.Name;
+                return (string)texture.Name.Data;
             }
             set
             {
@@ -234,7 +234,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Textures
             }
 
             byte[] buf = new byte[length];
-            Buffer.BlockCopy(texture.Data.FullData, offset, buf, 0, buf.Length);
+            Buffer.BlockCopy(texture.Data.Data.FullData, offset, buf, 0, buf.Length);
 
             return buf;
         }
@@ -251,19 +251,19 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Textures
 
             //texture.Data.Data[mipMapLevel] = (byte[])data.Clone();
             byte[] buf = new byte[length];
-            Buffer.BlockCopy(data, 0, texture.Data.FullData, offset, data.Length);
+            Buffer.BlockCopy(data, 0, texture.Data.Data.FullData, offset, data.Length);
         }
 
 
 
         public byte[] GetTextureData()
         {
-            return (byte[])texture.Data.FullData.Clone();
+            return (byte[])texture.Data.Data.FullData.Clone();
         }
 
         public void SetTextureData(byte[] data)
         {
-            texture.Data.FullData = (byte[])data.Clone();
+            texture.Data.Data.FullData = (byte[])data.Clone();
         }
 
         public void Reset(int width, int height, int mipMapLevels, int stride, TextureFormat format)

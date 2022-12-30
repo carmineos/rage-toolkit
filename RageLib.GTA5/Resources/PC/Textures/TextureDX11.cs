@@ -1,5 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
 
@@ -24,16 +25,13 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public uint Unknown_64h; // 0x00000000
         public uint Unknown_68h; // 0x00000000
         public uint Unknown_6Ch; // 0x00000000
-        public ulong DataPointer;
+        public PgRef64<TextureData_GTA5_pc> Data;
         public uint Unknown_78h; // 0x00000000
         public uint Unknown_7Ch; // 0x00000000
         public uint Unknown_80h; // 0x00000000
         public uint Unknown_84h; // 0x00000000
         public uint Unknown_88h; // 0x00000000
         public uint Unknown_8Ch; // 0x00000000
-
-        // reference data
-        public TextureData_GTA5_pc? Data { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -55,7 +53,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
             this.Unknown_64h = reader.ReadUInt32();
             this.Unknown_68h = reader.ReadUInt32();
             this.Unknown_6Ch = reader.ReadUInt32();
-            this.DataPointer = reader.ReadUInt64();
+            this.Data = reader.ReadPointer<TextureData_GTA5_pc>(false);
             this.Unknown_78h = reader.ReadUInt32();
             this.Unknown_7Ch = reader.ReadUInt32();
             this.Unknown_80h = reader.ReadUInt32();
@@ -64,14 +62,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
             this.Unknown_8Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Data = reader.ReadBlockAt<TextureData_GTA5_pc>(
-                this.DataPointer, // offset
-                this.Format,
-                this.Width,
-                this.Height,
-                this.Levels,
-                this.Stride
-            );
+            this.Data.ReadReference(reader, this.Format, this.Width, this.Height, this.Levels, this.Stride);
         }
 
         /// <summary>
@@ -80,8 +71,6 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             base.Write(writer, parameters);
-
-            this.DataPointer = (ulong)(this.Data?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(this.Width);
@@ -96,7 +85,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
             writer.Write(this.Unknown_64h);
             writer.Write(this.Unknown_68h);
             writer.Write(this.Unknown_6Ch);
-            writer.Write(this.DataPointer);
+            writer.Write(this.Data);
             writer.Write(this.Unknown_78h);
             writer.Write(this.Unknown_7Ch);
             writer.Write(this.Unknown_80h);
@@ -111,7 +100,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (Data is not null) list.Add(Data);
+            if (Data.Data is not null) list.Add(Data.Data);
             return list.ToArray();
         }
     }

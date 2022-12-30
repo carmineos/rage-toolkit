@@ -14,25 +14,16 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0xB0;
 
         // structure data
-        public ulong BoundsPointer;
-        public ulong CurrentMatricesPointer;
-        public ulong LastMatricesPointer;
-        public ulong ChildBoundingBoxesPointer;
-        public ulong TypeAndIncludeFlagsPointer;
-        public ulong OwnedTypeAndIncludeFlagsPointer;
+        public PgRef64<ResourcePointerArray64<Bound>> Bounds;
+        public PgRef64<SimpleArray<Matrix4x4>> CurrentMatrices;
+        public PgRef64<SimpleArray<Matrix4x4>> LastMatrices;
+        public PgRef64<SimpleArray<Aabb>> ChildBoundingBoxes;
+        public PgRef64<SimpleArray<BoundCompositeFlags>> TypeAndIncludeFlags;
+        public PgRef64<SimpleArray<BoundCompositeFlags>> OwnedTypeAndIncludeFlags;
         public ushort MaxNumBounds;
         public ushort NumBounds;
         public uint Unknown_A4h; // 0x00000000
-        public ulong BVHPointer;
-
-        // reference data
-        public ResourcePointerArray64<Bound>? Bounds { get; set; }
-        public SimpleArray<Matrix4x4>? CurrentMatrices { get; set; }
-        public SimpleArray<Matrix4x4>? LastMatrices { get; set; }
-        public SimpleArray<Aabb>? ChildBoundingBoxes { get; set; }
-        public SimpleArray<BoundCompositeFlags>? TypeAndIncludeFlags { get; set; }
-        public SimpleArray<BoundCompositeFlags>? OwnedTypeAndIncludeFlags { get; set; }
-        public BVH? BVH { get; set; }
+        public PgRef64<BVH> BVH;
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -42,45 +33,24 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Read(reader, parameters);
 
             // read structure data
-            this.BoundsPointer = reader.ReadUInt64();
-            this.CurrentMatricesPointer = reader.ReadUInt64();
-            this.LastMatricesPointer = reader.ReadUInt64();
-            this.ChildBoundingBoxesPointer = reader.ReadUInt64();
-            this.TypeAndIncludeFlagsPointer = reader.ReadUInt64();
-            this.OwnedTypeAndIncludeFlagsPointer = reader.ReadUInt64();
+            this.Bounds = reader.ReadPointer<ResourcePointerArray64<Bound>>(false);
+            this.CurrentMatrices = reader.ReadPointer<SimpleArray<Matrix4x4>>(false);
+            this.LastMatrices = reader.ReadPointer<SimpleArray<Matrix4x4>>(false);
+            this.ChildBoundingBoxes = reader.ReadPointer<SimpleArray<Aabb>>(false);
+            this.TypeAndIncludeFlags = reader.ReadPointer<SimpleArray<BoundCompositeFlags>>(false);
+            this.OwnedTypeAndIncludeFlags = reader.ReadPointer<SimpleArray<BoundCompositeFlags>>(false);
             this.MaxNumBounds = reader.ReadUInt16();
             this.NumBounds = reader.ReadUInt16();
             this.Unknown_A4h = reader.ReadUInt32();
-            this.BVHPointer = reader.ReadUInt64();
+            this.BVH = reader.ReadPointer<BVH>();
 
             // read reference data
-            this.Bounds = reader.ReadBlockAt<ResourcePointerArray64<Bound>>(
-                this.BoundsPointer, // offset
-                this.MaxNumBounds
-            );
-            this.CurrentMatrices = reader.ReadBlockAt<SimpleArray<Matrix4x4>>(
-                this.CurrentMatricesPointer, // offset
-                this.MaxNumBounds
-            );
-            this.LastMatrices = reader.ReadBlockAt<SimpleArray<Matrix4x4>>(
-                this.LastMatricesPointer, // offset
-                this.MaxNumBounds
-            );
-            this.ChildBoundingBoxes = reader.ReadBlockAt<SimpleArray<Aabb>>(
-                this.ChildBoundingBoxesPointer, // offset
-                this.MaxNumBounds
-            );
-            this.TypeAndIncludeFlags = reader.ReadBlockAt<SimpleArray<BoundCompositeFlags>>(
-                this.TypeAndIncludeFlagsPointer, // offset
-                this.MaxNumBounds
-            );
-            this.OwnedTypeAndIncludeFlags = reader.ReadBlockAt<SimpleArray<BoundCompositeFlags>>(
-                this.OwnedTypeAndIncludeFlagsPointer, // offset
-                this.MaxNumBounds
-            );
-            this.BVH = reader.ReadBlockAt<BVH>(
-                this.BVHPointer // offset
-            );
+            this.Bounds.ReadReference(reader, this.MaxNumBounds);
+            this.CurrentMatrices.ReadReference(reader, this.MaxNumBounds);
+            this.LastMatrices.ReadReference(reader, this.MaxNumBounds);
+            this.ChildBoundingBoxes.ReadReference(reader, this.MaxNumBounds);
+            this.TypeAndIncludeFlags.ReadReference(reader, this.MaxNumBounds);
+            this.OwnedTypeAndIncludeFlags.ReadReference(reader, this.MaxNumBounds);
         }
 
         /// <summary>
@@ -91,27 +61,20 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Write(writer, parameters);
 
             // update structure data
-            this.BoundsPointer = (ulong)(this.Bounds?.BlockPosition ?? 0);
-            this.CurrentMatricesPointer = (ulong)(this.CurrentMatrices?.BlockPosition ?? 0);
-            this.LastMatricesPointer = (ulong)(this.LastMatrices?.BlockPosition ?? 0);
-            this.ChildBoundingBoxesPointer = (ulong)(this.ChildBoundingBoxes?.BlockPosition ?? 0);
-            this.TypeAndIncludeFlagsPointer = (ulong)(this.TypeAndIncludeFlags?.BlockPosition ?? 0);
-            this.OwnedTypeAndIncludeFlagsPointer = (ulong)(this.OwnedTypeAndIncludeFlags?.BlockPosition ?? 0);
-            this.MaxNumBounds = (ushort)(this.Bounds?.Count ?? 0);
-            this.NumBounds = (ushort)(this.Bounds?.Count ?? 0);
-            this.BVHPointer = (ulong)(this.BVH?.BlockPosition ?? 0);
+            this.MaxNumBounds = (ushort)(this.Bounds.Data?.Count ?? 0);
+            this.NumBounds = (ushort)(this.Bounds.Data?.Count ?? 0);
 
             // write structure data
-            writer.Write(this.BoundsPointer);
-            writer.Write(this.CurrentMatricesPointer);
-            writer.Write(this.LastMatricesPointer);
-            writer.Write(this.ChildBoundingBoxesPointer);
-            writer.Write(this.TypeAndIncludeFlagsPointer);
-            writer.Write(this.OwnedTypeAndIncludeFlagsPointer);
+            writer.Write(this.Bounds);
+            writer.Write(this.CurrentMatrices);
+            writer.Write(this.LastMatrices);
+            writer.Write(this.ChildBoundingBoxes);
+            writer.Write(this.TypeAndIncludeFlags);
+            writer.Write(this.OwnedTypeAndIncludeFlags);
             writer.Write(this.MaxNumBounds);
             writer.Write(this.NumBounds);
             writer.Write(this.Unknown_A4h);
-            writer.Write(this.BVHPointer);
+            writer.Write(this.BVH);
         }
 
         /// <summary>
@@ -120,13 +83,13 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (Bounds != null) list.Add(Bounds);
-            if (CurrentMatrices != null) list.Add(CurrentMatrices);
-            if (LastMatrices != null) list.Add(LastMatrices);
-            if (ChildBoundingBoxes != null) list.Add(ChildBoundingBoxes);
-            if (TypeAndIncludeFlags != null) list.Add(TypeAndIncludeFlags);
-            if (OwnedTypeAndIncludeFlags != null) list.Add(OwnedTypeAndIncludeFlags);
-            if (BVH != null) list.Add(BVH);
+            if (Bounds.Data != null) list.Add(Bounds.Data);
+            if (CurrentMatrices.Data != null) list.Add(CurrentMatrices.Data);
+            if (LastMatrices.Data != null) list.Add(LastMatrices.Data);
+            if (ChildBoundingBoxes.Data != null) list.Add(ChildBoundingBoxes.Data);
+            if (TypeAndIncludeFlags.Data != null) list.Add(TypeAndIncludeFlags.Data);
+            if (OwnedTypeAndIncludeFlags.Data != null) list.Add(OwnedTypeAndIncludeFlags.Data);
+            if (BVH.Data != null) list.Add(BVH.Data);
             return list.ToArray();
         }
 
@@ -134,7 +97,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             base.Rebuild();
 
-            if (Bounds?.data_items is null)
+            if (Bounds.Data?.data_items is null)
             {
                 MaxNumBounds = 0;
                 NumBounds = 0;
@@ -146,7 +109,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
                 return;
             }
 
-            MaxNumBounds = (ushort)Bounds.Count;
+            MaxNumBounds = (ushort)Bounds.Data.Count;
             NumBounds = MaxNumBounds;
 
             // TODO:    Try to reuse existing arrays if already of the required size  
@@ -164,7 +127,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
             for (int i = 0; i < NumBounds; i++)
             {
-                var bound = Bounds[i];
+                var bound = Bounds.Data[i];
                 var min = new Vector4(bound.BoundingBoxMin, BitConverter.UInt32BitsToSingle(bound.RefCount));
                 var max = new Vector4(bound.BoundingBoxMax, bound.Margin);
                 boundingBoxes[i] = new Aabb(min, max);

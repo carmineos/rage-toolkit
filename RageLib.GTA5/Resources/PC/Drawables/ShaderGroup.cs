@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override long BlockLength => 0x40;
 
         // structure data
-        public ulong TextureDictionaryPointer;
+        public PgRef64<PgDictionary64<TextureDX11>> TextureDictionary;
         public ResourcePointerList64<ShaderFX> Shaders;
         public uint Unknown_20h; // 0x00000000
         public uint Unknown_24h; // 0x00000000
@@ -25,9 +25,6 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint Unknown_38h; // 0x00000000
         public uint Unknown_3Ch; // 0x00000000
 
-        // reference data
-        public PgDictionary64<TextureDX11>? TextureDictionary { get; set; }
-
         /// <summary>
         /// Reads the data-block from a stream.
         /// </summary>
@@ -35,21 +32,15 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Read(reader, parameters);
 
-            // read structure data
-            this.TextureDictionaryPointer = reader.ReadUInt64();
-
-            // HACK:    read texture dictionary first!
+            // NOTE:    be sure to read texture dictionary first!
             //          this will make sure ShaderParameter Data will point to the already read TextureDX11
             //          instead of creating duplicated Texture blocks
 
             // TODO:    edit ResourceDataReader block pool to handle these scenarios!
             //          see https://github.com/carmineos/gta-toolkit/issues/11
 
-            // read reference data
-            this.TextureDictionary = reader.ReadBlockAt<PgDictionary64<TextureDX11>>(
-                this.TextureDictionaryPointer // offset
-            );
-
+            // read structure data
+            this.TextureDictionary = reader.ReadPointer<PgDictionary64<TextureDX11>>();
             this.Shaders = reader.ReadBlock<ResourcePointerList64<ShaderFX>>();
             this.Unknown_20h = reader.ReadUInt32();
             this.Unknown_24h = reader.ReadUInt32();
@@ -68,11 +59,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.TextureDictionaryPointer = (ulong)(this.TextureDictionary?.BlockPosition ?? 0);
-
             // write structure data
-            writer.Write(this.TextureDictionaryPointer);
+            writer.Write(this.TextureDictionary);
             writer.WriteBlock(this.Shaders);
             writer.Write(this.Unknown_20h);
             writer.Write(this.Unknown_24h);
@@ -90,7 +78,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
-            if (TextureDictionary != null) list.Add(TextureDictionary);
+            if (TextureDictionary.Data is not null) list.Add(TextureDictionary.Data);
             return list.ToArray();
         }
 

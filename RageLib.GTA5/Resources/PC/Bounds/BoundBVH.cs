@@ -1,5 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Resources.Common;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Bounds
@@ -10,15 +11,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0x150;
 
         // structure data
-        public ulong BvhPointer;
+        public PgRef64<BVH> BVH;
         public ulong Unknown_138h; // 0x0000000000000000
         public ushort Unknown_140h; // 0xFFFF
         public ushort Unknown_142h; // 0x0000
         public uint Unknown_144h; // 0x00000000
         public ulong Unknown_148h; // 0x0000000000000000
-
-        // reference data
-        public BVH? BVH { get; set; }
 
         /// <summary>
         /// Reads the data-block from a stream.
@@ -28,17 +26,12 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             base.Read(reader, parameters);
 
             // read structure data
-            this.BvhPointer = reader.ReadUInt64();
+            this.BVH = reader.ReadPointer<BVH>();
             this.Unknown_138h = reader.ReadUInt64();
             this.Unknown_140h = reader.ReadUInt16();
             this.Unknown_142h = reader.ReadUInt16();
             this.Unknown_144h = reader.ReadUInt32();
             this.Unknown_148h = reader.ReadUInt64();
-
-            // read reference data
-            this.BVH = reader.ReadBlockAt<BVH>(
-                this.BvhPointer // offset
-            );
         }
 
         /// <summary>
@@ -48,11 +41,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             base.Write(writer, parameters);
 
-            // update structure data
-            this.BvhPointer = (ulong)(this.BVH?.BlockPosition ?? 0);
-
             // write structure data
-            writer.Write(this.BvhPointer);
+            writer.Write(this.BVH);
             writer.Write(this.Unknown_138h);
             writer.Write(this.Unknown_140h);
             writer.Write(this.Unknown_142h);
@@ -66,7 +56,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
-            if (BVH != null) list.Add(BVH);
+            if (BVH.Data is not null) list.Add(BVH.Data);
             return list.ToArray();
         }
     }
