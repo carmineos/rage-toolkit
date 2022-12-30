@@ -34,7 +34,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
             this.Unknown_14h = reader.ReadUInt32();
             this.NameHash = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
-            this.Attributes = reader.ReadBlock<ResourcePointerList64<PropertyAttribute>>();
+            this.Attributes = reader.ReadPointerList<PropertyAttribute>();
             this.Unknown_30h = reader.ReadUInt32();
             this.Unknown_34h = reader.ReadUInt32();
             this.Unknown_38h = reader.ReadUInt32();
@@ -53,18 +53,18 @@ namespace RageLib.Resources.GTA5.PC.Clips
             writer.Write(this.Unknown_14h);
             writer.Write(this.NameHash);
             writer.Write(this.Unknown_1Ch);
-            writer.WriteBlock(this.Attributes);
+            writer.WritePointerList(this.Attributes);
             writer.Write(this.Unknown_30h);
             writer.Write(this.Unknown_34h);
             writer.Write(this.Unknown_38h);
             writer.Write(this.Unknown_3Ch);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x20, Attributes),
-            };
+            var list = new List<IResourceBlock>();
+            if (Attributes.Entries != null) list.Add(Attributes.Entries);
+            return list.ToArray();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace RageLib.Resources.GTA5.PC.Expressions
             this.Unknown_14h = reader.ReadUInt32();
             this.Unknown_18h = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
-            this.Unknown_20h = reader.ReadBlock<ResourcePointerList64<Unknown_E_001>>();
+            this.Unknown_20h = reader.ReadPointerList<Unknown_E_001>();
             this.Unknown_30h = reader.ReadValueList<uint>();
             this.Unknown_40h = reader.ReadList<Unknown_E_002>();
             this.Unknown_50h = reader.ReadValueList<uint>();
@@ -89,7 +89,7 @@ namespace RageLib.Resources.GTA5.PC.Expressions
             writer.Write(this.Unknown_14h);
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_1Ch);
-            writer.WriteBlock(this.Unknown_20h);
+            writer.WritePointerList(this.Unknown_20h);
             writer.WriteValueList(this.Unknown_30h);
             writer.WriteList(this.Unknown_40h);
             writer.WriteValueList(this.Unknown_50h);
@@ -115,17 +115,11 @@ namespace RageLib.Resources.GTA5.PC.Expressions
         {
             var list = new List<IResourceBlock>(base.GetReferences());
             if (Name != null) list.Add(Name);
+            if (Unknown_20h.Entries != null) list.Add(Unknown_20h.Entries);
             if (Unknown_30h.Entries != null) list.Add(Unknown_30h.Entries);
             if (Unknown_40h.Entries != null) list.Add(Unknown_40h.Entries);
             if (Unknown_50h.Entries != null) list.Add(Unknown_50h.Entries);
             return list.ToArray();
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x20, Unknown_20h)
-            };
         }
     }
 }

@@ -69,7 +69,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.NamePointer = reader.ReadUInt64();
             this.Unknown_28h = reader.ReadUInt64();
             this.VFTx2 = reader.ReadUInt64();
-            this.EventEmitters = reader.ReadBlock<ResourcePointerList64<EventEmitter>>();
+            this.EventEmitters = reader.ReadPointerList<EventEmitter>();
             this.p4 = reader.ReadUInt64();
             this.Unknown_50h = reader.ReadUInt32();
             this.Unknown_54h = reader.ReadUInt32();
@@ -89,7 +89,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.KeyframeProp2 = reader.ReadBlock<KeyframeProp>();
             this.KeyframeProp3 = reader.ReadBlock<KeyframeProp>();
             this.KeyframeProp4 = reader.ReadBlock<KeyframeProp>();
-            this.KeyframeProps = reader.ReadBlock<ResourcePointerList64<KeyframeProp>>();
+            this.KeyframeProps = reader.ReadPointerList<KeyframeProp>();
             this.Unknown_3A0h = reader.ReadUInt32();
             this.Unknown_3A4h = reader.ReadUInt32();
             this.Unknown_3A8h = reader.ReadSingle();
@@ -127,7 +127,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.Write(this.NamePointer);
             writer.Write(this.Unknown_28h);
             writer.Write(this.VFTx2);
-            writer.WriteBlock(this.EventEmitters);
+            writer.WritePointerList(this.EventEmitters);
             writer.Write(this.p4);
             writer.Write(this.Unknown_50h);
             writer.Write(this.Unknown_54h);
@@ -147,7 +147,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.WriteBlock(this.KeyframeProp2);
             writer.WriteBlock(this.KeyframeProp3);
             writer.WriteBlock(this.KeyframeProp4);
-            writer.WriteBlock(this.KeyframeProps);
+            writer.WritePointerList(this.KeyframeProps);
             writer.Write(this.Unknown_3A0h);
             writer.Write(this.Unknown_3A4h);
             writer.Write(this.Unknown_3A8h);
@@ -164,19 +164,19 @@ namespace RageLib.Resources.GTA5.PC.Particles
             var list = new List<IResourceBlock>(base.GetReferences());
             if (Name != null) list.Add(Name);
             if (p4data != null) list.Add(p4data);
+            if (EventEmitters.Entries != null) list.Add(EventEmitters.Entries);
+            if (KeyframeProps.Entries != null) list.Add(KeyframeProps.Entries);
             return list.ToArray();
         }
 
         public override Tuple<long, IResourceBlock>[] GetParts()
         {
             return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(56, EventEmitters),
                 new Tuple<long, IResourceBlock>(192, KeyframeProp0),
                 new Tuple<long, IResourceBlock>(336, KeyframeProp1),
                 new Tuple<long, IResourceBlock>(480, KeyframeProp2),
                 new Tuple<long, IResourceBlock>(624, KeyframeProp3),
-                new Tuple<long, IResourceBlock>(768, KeyframeProp4),
-                new Tuple<long, IResourceBlock>(912, KeyframeProps)
+                new Tuple<long, IResourceBlock>(768, KeyframeProp4)
             };
         }
     }

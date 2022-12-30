@@ -2,6 +2,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Particles
 {
@@ -48,7 +49,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.KeyframeProp3 = reader.ReadBlock<KeyframeProp>();
             this.Unknown_258h = reader.ReadSingle();
             this.Unknown_25Ch = reader.ReadUInt32();
-            this.KeyframeProps = reader.ReadBlock<ResourcePointerList64<KeyframeProp>>();
+            this.KeyframeProps = reader.ReadPointerList<KeyframeProp>();
             this.Unknown_270h = reader.ReadUInt64();
             this.Unknown_278h = reader.ReadUInt64();
         }
@@ -73,7 +74,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.WriteBlock(this.KeyframeProp3);
             writer.Write(this.Unknown_258h);
             writer.Write(this.Unknown_25Ch);
-            writer.WriteBlock(this.KeyframeProps);
+            writer.WritePointerList(this.KeyframeProps);
             writer.Write(this.Unknown_270h);
             writer.Write(this.Unknown_278h);
         }
@@ -84,9 +85,15 @@ namespace RageLib.Resources.GTA5.PC.Particles
                 new Tuple<long, IResourceBlock>(24, KeyframeProp0),
                 new Tuple<long, IResourceBlock>(168, KeyframeProp1),
                 new Tuple<long, IResourceBlock>(312, KeyframeProp2),
-                new Tuple<long, IResourceBlock>(456, KeyframeProp3),
-                new Tuple<long, IResourceBlock>(0x260, KeyframeProps)
+                new Tuple<long, IResourceBlock>(456, KeyframeProp3)
             };
+        }
+
+        public override IResourceBlock[] GetReferences()
+        {
+            var list = new List<IResourceBlock>();
+            if (KeyframeProps.Entries != null) list.Add(KeyframeProps.Entries);
+            return list.ToArray();
         }
 
         public IResourceSystemBlock GetType(ResourceDataReader reader, params object[] parameters)

@@ -90,7 +90,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.Unknown_4Ch = reader.ReadUInt32();
             this.Unknown_50h = reader.ReadUInt64();
             this.NamePointer = reader.ReadUInt64();
-            this.Clothes = reader.ReadBlock<ResourcePointerList64<EnvironmentCloth>>();
+            this.Clothes = reader.ReadPointerList<EnvironmentCloth>();
             this.Unknown_70h = reader.ReadUInt64();
             this.Unknown_78h = reader.ReadUInt64();
             this.Unknown_80h = reader.ReadUInt64();
@@ -186,7 +186,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.Unknown_4Ch);
             writer.Write(this.Unknown_50h);
             writer.Write(this.NamePointer);
-            writer.WriteBlock(this.Clothes);
+            writer.WritePointerList(this.Clothes);
             writer.Write(this.Unknown_70h);
             writer.Write(this.Unknown_78h);
             writer.Write(this.Unknown_80h);
@@ -229,6 +229,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             if (PrimaryDrawable != null) list.Add(PrimaryDrawable);
             if (DamagedDrawables != null) list.Add(DamagedDrawables);
             if (DamagedDrawablesNames != null) list.Add(DamagedDrawablesNames);
+            if (Clothes.Entries != null) list.Add(Clothes.Entries);
             if (Name != null) list.Add(Name);
             if (MatrixSet != null) list.Add(MatrixSet);
             if (GlassPaneModelInfos != null) list.Add(GlassPaneModelInfos);
@@ -237,13 +238,6 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             if (LightAttributes.Entries != null) list.Add(LightAttributes.Entries);
             if (VehicleGlassWindowData != null) list.Add(VehicleGlassWindowData);
             return list.ToArray();
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x60, Clothes)
-            };
         }
     }
 }

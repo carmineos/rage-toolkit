@@ -32,7 +32,7 @@ namespace RageLib.Resources.Common
             this.Count = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
             this.Hashes = reader.ReadValueList<uint>();
-            this.Values = reader.ReadBlock<ResourcePointerList64<T>>();
+            this.Values = reader.ReadPointerList<T>();
         }
 
         /// <summary>
@@ -47,20 +47,14 @@ namespace RageLib.Resources.Common
             writer.Write(this.Count);
             writer.Write(this.Unknown_1Ch);
             writer.WriteValueList(this.Hashes);
-            writer.WriteBlock(this.Values);
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x30, Values)
-            };
+            writer.WritePointerList(this.Values);
         }
 
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
             if(Hashes.Entries is not null) list.Add(Hashes.Entries);
+            if(Values.Entries is not null) list.Add(Values.Entries);
             return list.ToArray();
         }
     }

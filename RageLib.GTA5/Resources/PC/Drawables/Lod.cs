@@ -2,6 +2,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
 {
@@ -15,20 +16,19 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
-            Models = reader.ReadBlock<ResourcePointerList64<DrawableModel>>(reader, parameters);
+            Models = reader.ReadPointerList<DrawableModel>();
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
-            writer.WriteBlock(Models);
+            writer.WritePointerList(Models);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[]
-            {
-                new Tuple<long, IResourceBlock>(0x0,Models),
-            };
+            var list = new List<IResourceBlock>();
+            if (Models.Entries != null) list.Add(Models.Entries);
+            return list.ToArray();
         }
     }
 }

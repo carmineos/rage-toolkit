@@ -120,5 +120,10 @@ namespace RageLib.Resources
         {
             list.Write(this);
         }
+
+        public void WritePointerList<T>(ResourcePointerList64<T> list) where T : IResourceSystemBlock, new()
+        {
+            list.Write(this);
+        }
     }
 }

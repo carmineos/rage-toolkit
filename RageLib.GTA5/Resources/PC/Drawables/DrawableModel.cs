@@ -4,6 +4,7 @@ using RageLib.Numerics;
 using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
 {
@@ -37,7 +38,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             base.Read(reader, parameters);
 
             // read structure data
-            this.Geometries = reader.ReadBlock<ResourcePointerList64<DrawableGeometry>>();
+            this.Geometries = reader.ReadPointerList<DrawableGeometry>();
             this.GeometriesBoundsPointer = reader.ReadUInt64();
             this.ShaderMappingPointer = reader.ReadUInt64();
             this.Unknown_28h = reader.ReadByte();
@@ -71,7 +72,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             this.ShaderMappingPointer = (ulong)(this.ShaderMapping?.BlockPosition ?? 0);
 
             // write structure data
-            writer.WriteBlock(this.Geometries);
+            writer.WritePointerList(this.Geometries);
             writer.Write(this.GeometriesBoundsPointer);
             writer.Write(this.ShaderMappingPointer);
             writer.Write(this.Unknown_28h);
@@ -89,16 +90,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>();
+            if (Geometries.Entries != null) list.Add(Geometries.Entries);
             if (GeometriesBounds != null) list.Add(GeometriesBounds);
             if (ShaderMapping != null) list.Add(ShaderMapping);
             return list.ToArray();
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x8, Geometries)
-            };
         }
     }
 }

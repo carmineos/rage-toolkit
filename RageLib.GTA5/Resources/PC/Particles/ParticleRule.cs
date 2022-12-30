@@ -89,11 +89,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.Unknown_118h = reader.ReadUInt32();
             this.Unknown_11Ch = reader.ReadUInt32();
             this.NamePointer = reader.ReadUInt64();
-            this.Unknown_128h = reader.ReadBlock<ResourcePointerList64<Behaviour>>();
-            this.Unknown_138h = reader.ReadBlock<ResourcePointerList64<Behaviour>>();
-            this.Unknown_148h = reader.ReadBlock<ResourcePointerList64<Behaviour>>();
-            this.Unknown_158h = reader.ReadBlock<ResourcePointerList64<Behaviour>>();
-            this.Unknown_168h = reader.ReadBlock<ResourcePointerList64<Behaviour>>();
+            this.Unknown_128h = reader.ReadPointerList<Behaviour>();
+            this.Unknown_138h = reader.ReadPointerList<Behaviour>();
+            this.Unknown_148h = reader.ReadPointerList<Behaviour>();
+            this.Unknown_158h = reader.ReadPointerList<Behaviour>();
+            this.Unknown_168h = reader.ReadPointerList<Behaviour>();
             this.Unknown_178h = reader.ReadUInt64();
             this.Unknown_180h = reader.ReadUInt64();
             this.Unknown_188h = reader.ReadList<Unknown_P_013>();
@@ -111,7 +111,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.Unknown_1E4h = reader.ReadUInt32();
             this.Unknown_1E8h = reader.ReadUInt32();
             this.Unknown_1ECh = reader.ReadUInt32();
-            this.ShaderVars = reader.ReadBlock<ResourcePointerList64<ShaderVar>>();
+            this.ShaderVars = reader.ReadPointerList<ShaderVar>();
             this.Unknown_200h = reader.ReadUInt32();
             this.Unknown_204h = reader.ReadUInt32();
             this.ShaderNameHash = reader.ReadUInt32();
@@ -162,11 +162,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.Write(this.Unknown_118h);
             writer.Write(this.Unknown_11Ch);
             writer.Write(this.NamePointer);
-            writer.WriteBlock(this.Unknown_128h);
-            writer.WriteBlock(this.Unknown_138h);
-            writer.WriteBlock(this.Unknown_148h);
-            writer.WriteBlock(this.Unknown_158h);
-            writer.WriteBlock(this.Unknown_168h);
+            writer.WritePointerList(this.Unknown_128h);
+            writer.WritePointerList(this.Unknown_138h);
+            writer.WritePointerList(this.Unknown_148h);
+            writer.WritePointerList(this.Unknown_158h);
+            writer.WritePointerList(this.Unknown_168h);
             writer.Write(this.Unknown_178h);
             writer.Write(this.Unknown_180h);
             writer.WriteList(this.Unknown_188h);
@@ -184,7 +184,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.Write(this.Unknown_1E4h);
             writer.Write(this.Unknown_1E8h);
             writer.Write(this.Unknown_1ECh);
-            writer.WriteBlock(this.ShaderVars);
+            writer.WritePointerList(this.ShaderVars);
             writer.Write(this.Unknown_200h);
             writer.Write(this.Unknown_204h);
             writer.Write(this.ShaderNameHash);
@@ -208,6 +208,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
             if (ShaderTechniqueName != null) list.Add(ShaderTechniqueName);
             if (Unknown_188h.Entries != null) list.Add(Unknown_188h.Entries);
             if (Unknown_210h.Entries != null) list.Add(Unknown_210h.Entries);
+            if (Unknown_128h.Entries != null) list.Add(Unknown_128h.Entries);
+            if (Unknown_138h.Entries != null) list.Add(Unknown_138h.Entries);
+            if (Unknown_148h.Entries != null) list.Add(Unknown_148h.Entries);
+            if (Unknown_158h.Entries != null) list.Add(Unknown_158h.Entries);
+            if (Unknown_168h.Entries != null) list.Add(Unknown_168h.Entries);
+            if (ShaderVars.Entries != null) list.Add(ShaderVars.Entries);
             return list.ToArray();
         }
 
@@ -215,13 +221,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
         {
             return new Tuple<long, IResourceBlock>[] {
                 new Tuple<long, IResourceBlock>(88, emb1),
-                new Tuple<long, IResourceBlock>(96, emb2),
-                new Tuple<long, IResourceBlock>(0x128, Unknown_128h),
-                new Tuple<long, IResourceBlock>(0x138, Unknown_138h),
-                new Tuple<long, IResourceBlock>(0x148, Unknown_148h),
-                new Tuple<long, IResourceBlock>(0x158, Unknown_158h),
-                new Tuple<long, IResourceBlock>(0x168, Unknown_168h),
-                new Tuple<long, IResourceBlock>(0x1F0, ShaderVars),
+                new Tuple<long, IResourceBlock>(96, emb2)
             };
         }
     }

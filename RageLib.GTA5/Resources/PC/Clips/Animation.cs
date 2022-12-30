@@ -52,7 +52,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
             this.Unknown_34h = reader.ReadUInt32();
             this.Unknown_38h = reader.ReadUInt32();
             this.Unknown_3Ch = reader.ReadUInt32();
-            this.Sequences = reader.ReadBlock<ResourcePointerList64<Sequence>>();
+            this.Sequences = reader.ReadPointerList<Sequence>();
             this.Tracks = reader.ReadValueList<AnimTrack>();
         }
 
@@ -78,20 +78,14 @@ namespace RageLib.Resources.GTA5.PC.Clips
             writer.Write(this.Unknown_34h);
             writer.Write(this.Unknown_38h);
             writer.Write(this.Unknown_3Ch);
-            writer.WriteBlock(this.Sequences);
+            writer.WritePointerList(this.Sequences);
             writer.WriteValueList(this.Tracks);
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x40, Sequences)
-            };
         }
 
         public override IResourceBlock[] GetReferences()
         {
             var list = new List<IResourceBlock>(base.GetReferences());
+            if (Sequences.Entries is not null) list.Add(Sequences.Entries);
             if (Tracks.Entries is not null) list.Add(Tracks.Entries);
             return list.ToArray();
         }

@@ -1,14 +1,9 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using System;
-using System.Collections.Generic;
-
 namespace RageLib.Resources.Common
 {
-    public class ResourcePointerList64<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
+    public struct ResourcePointerList64<T> where T : IResourceSystemBlock, new()
     {
-        public override long BlockLength => 0x10;
-
         // structure data
         public ulong EntriesPointer;
         public ushort EntriesCount;
@@ -17,7 +12,7 @@ namespace RageLib.Resources.Common
         // reference data
         public ResourcePointerArray64<T>? Entries { get; set; }
 
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public void Read(ResourceDataReader reader, params object[] parameters)
         {
             this.EntriesPointer = reader.ReadUInt64();
             this.EntriesCount = reader.ReadUInt16();
@@ -30,7 +25,7 @@ namespace RageLib.Resources.Common
             );
         }
 
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
+        public void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update...
             this.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
@@ -42,11 +37,6 @@ namespace RageLib.Resources.Common
             writer.Write(EntriesCount);
             writer.Write(EntriesCapacity);
             writer.Write((uint)0x0000000);
-        }
-
-        public override IResourceBlock[] GetReferences()
-        {
-            return Entries == null ? Array.Empty<IResourceBlock>() : new IResourceBlock[] { Entries };
         }
     }
 }

@@ -2,6 +2,8 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace RageLib.Resources.GTA5.PC.Clips
 {
@@ -22,7 +24,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.TagList = reader.ReadBlock<ResourcePointerList64<Tag>>();
+            this.TagList = reader.ReadPointerList<Tag>();
             this.Unknown_10h = reader.ReadUInt32();
             this.Unknown_14h = reader.ReadUInt32();
             this.Unknown_18h = reader.ReadUInt32();
@@ -35,18 +37,18 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // write structure data
-            writer.WriteBlock(this.TagList);
+            writer.WritePointerList(this.TagList);
             writer.Write(this.Unknown_10h);
             writer.Write(this.Unknown_14h);
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_1Ch);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x0, TagList),
-            };
+            var list = new List<IResourceBlock>();
+            if (TagList.Entries != null) list.Add(TagList.Entries);
+            return list.ToArray();
         }
     }
 }

@@ -82,7 +82,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.KeyframeProp7 = reader.ReadBlock<KeyframeProp>();
             this.KeyframeProp8 = reader.ReadBlock<KeyframeProp>();
             this.KeyframeProp9 = reader.ReadBlock<KeyframeProp>();
-            this.KeyframeProps = reader.ReadBlock<ResourcePointerList64<KeyframeProp>>();
+            this.KeyframeProps = reader.ReadPointerList<KeyframeProp>();
             this.Unknown_628h = reader.ReadUInt32();
             this.Unknown_62Ch = reader.ReadUInt32();
 
@@ -141,7 +141,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.WriteBlock(this.KeyframeProp7);
             writer.WriteBlock(this.KeyframeProp8);
             writer.WriteBlock(this.KeyframeProp9);
-            writer.WriteBlock(this.KeyframeProps);
+            writer.WritePointerList(this.KeyframeProps);
             writer.Write(this.Unknown_628h);
             writer.Write(this.Unknown_62Ch);
         }
@@ -156,6 +156,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             if (p2data != null) list.Add(p2data);
             if (p3data != null) list.Add(p3data);
             if (p4data != null) list.Add(p4data);
+            if (KeyframeProps.Entries != null) list.Add(KeyframeProps.Entries);
             return list.ToArray();
         }
 
@@ -171,8 +172,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
                 new Tuple<long, IResourceBlock>(984, KeyframeProp6),
                 new Tuple<long, IResourceBlock>(1128, KeyframeProp7),
                 new Tuple<long, IResourceBlock>(1272, KeyframeProp8),
-                new Tuple<long, IResourceBlock>(1416, KeyframeProp9),
-                new Tuple<long, IResourceBlock>(1560, KeyframeProps),
+                new Tuple<long, IResourceBlock>(1416, KeyframeProp9)
             };
         }
     }

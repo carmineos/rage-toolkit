@@ -194,5 +194,12 @@ namespace RageLib.Resources
             list.Read(this);
             return list;
         }
+
+        public ResourcePointerList64<T> ReadPointerList<T>() where T : IResourceSystemBlock, new()
+        {
+            var list = new ResourcePointerList64<T>();
+            list.Read(this);
+            return list;
+        }
     }
 }

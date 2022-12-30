@@ -50,7 +50,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
                 this.TextureDictionaryPointer // offset
             );
 
-            this.Shaders = reader.ReadBlock<ResourcePointerList64<ShaderFX>>();
+            this.Shaders = reader.ReadPointerList<ShaderFX>();
             this.Unknown_20h = reader.ReadUInt32();
             this.Unknown_24h = reader.ReadUInt32();
             this.Unknown_28h = reader.ReadUInt32();
@@ -73,7 +73,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // write structure data
             writer.Write(this.TextureDictionaryPointer);
-            writer.WriteBlock(this.Shaders);
+            writer.WritePointerList(this.Shaders);
             writer.Write(this.Unknown_20h);
             writer.Write(this.Unknown_24h);
             writer.Write(this.Unknown_28h);
@@ -91,14 +91,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             var list = new List<IResourceBlock>();
             if (TextureDictionary != null) list.Add(TextureDictionary);
+            if (Shaders.Entries != null) list.Add(Shaders.Entries);
             return list.ToArray();
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x10, Shaders)
-            };
         }
     }
 }
