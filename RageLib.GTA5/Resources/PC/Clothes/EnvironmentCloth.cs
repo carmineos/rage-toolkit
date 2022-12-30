@@ -53,7 +53,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             this.Unknown_48h = reader.ReadUInt64();
             this.Unknown_50h = reader.ReadUInt64();
             this.Unknown_58h = reader.ReadUInt64();
-            this.UserData = reader.ReadBlock<SimpleList64<uint>>();
+            this.UserData = reader.ReadValueList<uint>();
             this.Unknown_70h = reader.ReadUInt64();
             this.Unknown_78h = reader.ReadUInt32();
             this.Unknown_7Ch = reader.ReadUInt32();
@@ -93,7 +93,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             writer.Write(this.Unknown_48h);
             writer.Write(this.Unknown_50h);
             writer.Write(this.Unknown_58h);
-            writer.WriteBlock(this.UserData);
+            writer.WriteValueList(this.UserData);
             writer.Write(this.Unknown_70h);
             writer.Write(this.Unknown_78h);
             writer.Write(this.Unknown_7Ch);
@@ -108,14 +108,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             if (InstanceTuning != null) list.Add(InstanceTuning);
             if (Drawable != null) list.Add(Drawable);
             if (Controller != null) list.Add(Controller);
+            if (UserData.Entries != null) list.Add(UserData.Entries);
             return list.ToArray();
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x60, UserData)
-            };
         }
     }
 }

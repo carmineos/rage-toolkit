@@ -2,6 +2,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Clothes
 {
@@ -48,24 +49,24 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             this.Unknown_14h = reader.ReadUInt32();
             this.Unknown_18h = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
-            this.PinRadius0 = reader.ReadBlock<SimpleList64<float>>();
-            this.PinRadius1 = reader.ReadBlock<SimpleList64<float>>();
-            this.PinRadius2 = reader.ReadBlock<SimpleList64<float>>();
-            this.PinRadius3 = reader.ReadBlock<SimpleList64<float>>();
-            this.VertexWeight0 = reader.ReadBlock<SimpleList64<float>>();
-            this.VertexWeight1 = reader.ReadBlock<SimpleList64<float>>();
-            this.VertexWeight2 = reader.ReadBlock<SimpleList64<float>>();
-            this.VertexWeight3 = reader.ReadBlock<SimpleList64<float>>();
-            this.InflationScale0 = reader.ReadBlock<SimpleList64<float>>();
-            this.InflationScale1 = reader.ReadBlock<SimpleList64<float>>();
-            this.InflationScale2 = reader.ReadBlock<SimpleList64<float>>();
-            this.InflationScale3 = reader.ReadBlock<SimpleList64<float>>();
-            this.ClothDisplayMap0 = reader.ReadBlock<SimpleList64<ushort>>();
-            this.ClothDisplayMap1 = reader.ReadBlock<SimpleList64<ushort>>();
-            this.ClothDisplayMap2 = reader.ReadBlock<SimpleList64<ushort>>();
-            this.ClothDisplayMap3 = reader.ReadBlock<SimpleList64<ushort>>();
+            this.PinRadius0 = reader.ReadValueList<float>();
+            this.PinRadius1 = reader.ReadValueList<float>();
+            this.PinRadius2 = reader.ReadValueList<float>();
+            this.PinRadius3 = reader.ReadValueList<float>();
+            this.VertexWeight0 = reader.ReadValueList<float>();
+            this.VertexWeight1 = reader.ReadValueList<float>();
+            this.VertexWeight2 = reader.ReadValueList<float>();
+            this.VertexWeight3 = reader.ReadValueList<float>();
+            this.InflationScale0 = reader.ReadValueList<float>();
+            this.InflationScale1 = reader.ReadValueList<float>();
+            this.InflationScale2 = reader.ReadValueList<float>();
+            this.InflationScale3 = reader.ReadValueList<float>();
+            this.ClothDisplayMap0 = reader.ReadValueList<ushort>();
+            this.ClothDisplayMap1 = reader.ReadValueList<ushort>();
+            this.ClothDisplayMap2 = reader.ReadValueList<ushort>();
+            this.ClothDisplayMap3 = reader.ReadValueList<ushort>();
             this.Unknown_120h = reader.ReadUInt64();
-            this.Unknown_128h = reader.ReadBlock<SimpleList64<uint>>();
+            this.Unknown_128h = reader.ReadValueList<uint>();
             this.Unknown_138h = reader.ReadUInt64();
         }
 
@@ -81,48 +82,48 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             writer.Write(this.Unknown_14h);
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_1Ch);
-            writer.WriteBlock(this.PinRadius0);
-            writer.WriteBlock(this.PinRadius1);
-            writer.WriteBlock(this.PinRadius2);
-            writer.WriteBlock(this.PinRadius3);
-            writer.WriteBlock(this.VertexWeight0);
-            writer.WriteBlock(this.VertexWeight1);
-            writer.WriteBlock(this.VertexWeight2);
-            writer.WriteBlock(this.VertexWeight3);
-            writer.WriteBlock(this.InflationScale0);
-            writer.WriteBlock(this.InflationScale1);
-            writer.WriteBlock(this.InflationScale2);
-            writer.WriteBlock(this.InflationScale3);
-            writer.WriteBlock(this.ClothDisplayMap0);
-            writer.WriteBlock(this.ClothDisplayMap1);
-            writer.WriteBlock(this.ClothDisplayMap2);
-            writer.WriteBlock(this.ClothDisplayMap3);
+            writer.WriteValueList(this.PinRadius0);
+            writer.WriteValueList(this.PinRadius1);
+            writer.WriteValueList(this.PinRadius2);
+            writer.WriteValueList(this.PinRadius3);
+            writer.WriteValueList(this.VertexWeight0);
+            writer.WriteValueList(this.VertexWeight1);
+            writer.WriteValueList(this.VertexWeight2);
+            writer.WriteValueList(this.VertexWeight3);
+            writer.WriteValueList(this.InflationScale0);
+            writer.WriteValueList(this.InflationScale1);
+            writer.WriteValueList(this.InflationScale2);
+            writer.WriteValueList(this.InflationScale3);
+            writer.WriteValueList(this.ClothDisplayMap0);
+            writer.WriteValueList(this.ClothDisplayMap1);
+            writer.WriteValueList(this.ClothDisplayMap2);
+            writer.WriteValueList(this.ClothDisplayMap3);
             writer.Write(this.Unknown_120h);
-            writer.WriteBlock(this.Unknown_128h);
+            writer.WriteValueList(this.Unknown_128h);
             writer.Write(this.Unknown_138h);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x20, PinRadius0),
-                new Tuple<long, IResourceBlock>(0x30, PinRadius1),
-                new Tuple<long, IResourceBlock>(0x40, PinRadius2),
-                new Tuple<long, IResourceBlock>(0x50, PinRadius3),
-                new Tuple<long, IResourceBlock>(0x60, VertexWeight0),
-                new Tuple<long, IResourceBlock>(0x70, VertexWeight1),
-                new Tuple<long, IResourceBlock>(0x80, VertexWeight2),
-                new Tuple<long, IResourceBlock>(0x90, VertexWeight3),
-                new Tuple<long, IResourceBlock>(0xA0, InflationScale0),
-                new Tuple<long, IResourceBlock>(0xB0, InflationScale1),
-                new Tuple<long, IResourceBlock>(0xC0, InflationScale2),
-                new Tuple<long, IResourceBlock>(0xD0, InflationScale3),
-                new Tuple<long, IResourceBlock>(0xE0, ClothDisplayMap0),
-                new Tuple<long, IResourceBlock>(0xF0, ClothDisplayMap1),
-                new Tuple<long, IResourceBlock>(0x100, ClothDisplayMap2),
-                new Tuple<long, IResourceBlock>(0x110, ClothDisplayMap3),
-                new Tuple<long, IResourceBlock>(0x128, Unknown_128h)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (PinRadius0.Entries is not null) list.Add(PinRadius0.Entries);
+            if (PinRadius1.Entries is not null) list.Add(PinRadius1.Entries);
+            if (PinRadius2.Entries is not null) list.Add(PinRadius2.Entries);
+            if (PinRadius3.Entries is not null) list.Add(PinRadius3.Entries);
+            if (VertexWeight0.Entries is not null) list.Add(VertexWeight0.Entries);
+            if (VertexWeight1.Entries is not null) list.Add(VertexWeight1.Entries);
+            if (VertexWeight2.Entries is not null) list.Add(VertexWeight2.Entries);
+            if (VertexWeight3.Entries is not null) list.Add(VertexWeight3.Entries);
+            if (InflationScale0.Entries is not null) list.Add(InflationScale0.Entries);
+            if (InflationScale1.Entries is not null) list.Add(InflationScale1.Entries);
+            if (InflationScale2.Entries is not null) list.Add(InflationScale2.Entries);
+            if (InflationScale3.Entries is not null) list.Add(InflationScale3.Entries);
+            if (ClothDisplayMap0.Entries is not null) list.Add(ClothDisplayMap0.Entries);
+            if (ClothDisplayMap1.Entries is not null) list.Add(ClothDisplayMap1.Entries);
+            if (ClothDisplayMap2.Entries is not null) list.Add(ClothDisplayMap2.Entries);
+            if (ClothDisplayMap3.Entries is not null) list.Add(ClothDisplayMap3.Entries);
+            if (Unknown_128h.Entries is not null) list.Add(Unknown_128h.Entries);
+            return list.ToArray();
         }
     }
 }

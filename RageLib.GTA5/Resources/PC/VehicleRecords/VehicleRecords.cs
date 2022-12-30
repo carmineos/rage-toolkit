@@ -2,6 +2,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.VehicleRecords
 {
@@ -25,7 +26,7 @@ namespace RageLib.Resources.GTA5.PC.VehicleRecords
             base.Read(reader, parameters);
 
             // read structure data
-            this.Entries = reader.ReadBlock<SimpleList64<VehicleRecordsEntry>>();
+            this.Entries = reader.ReadValueList<VehicleRecordsEntry>();
         }
 
         /// <summary>
@@ -36,14 +37,14 @@ namespace RageLib.Resources.GTA5.PC.VehicleRecords
             base.Write(writer, parameters);
 
             // write structure data
-            writer.WriteBlock(this.Entries);
+            writer.WriteValueList(this.Entries);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(16, Entries)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Entries.Entries != null) list.Add(Entries.Entries);
+            return list.ToArray();
         }
     }
 }

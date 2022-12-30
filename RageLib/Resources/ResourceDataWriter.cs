@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Data;
+using RageLib.Resources.Common;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -108,6 +109,11 @@ namespace RageLib.Resources
         public void WriteBlock(IResourceBlock value)
         {
             value.Write(this);
+        }
+
+        public void WriteValueList<T>(SimpleList64<T> valueList) where T : unmanaged
+        {
+            valueList.Write(this);
         }
     }
 }

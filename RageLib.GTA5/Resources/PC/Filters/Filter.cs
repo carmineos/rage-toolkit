@@ -2,6 +2,8 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace RageLib.Resources.GTA5.PC.Filters
 {
@@ -31,8 +33,8 @@ namespace RageLib.Resources.GTA5.PC.Filters
             this.Unknown_Ch = reader.ReadUInt32();
             this.Unknown_10h = reader.ReadUInt32();
             this.Unknown_14h = reader.ReadUInt32();
-            this.Unknown_18h = reader.ReadBlock<SimpleList64<ulong>>();
-            this.Unknown_28h = reader.ReadBlock<SimpleList64<float>>();
+            this.Unknown_18h = reader.ReadValueList<ulong>();
+            this.Unknown_28h = reader.ReadValueList<float>();
             this.Unknown_38h = reader.ReadUInt64();
         }
 
@@ -47,17 +49,17 @@ namespace RageLib.Resources.GTA5.PC.Filters
             writer.Write(this.Unknown_Ch);
             writer.Write(this.Unknown_10h);
             writer.Write(this.Unknown_14h);
-            writer.WriteBlock(this.Unknown_18h);
-            writer.WriteBlock(this.Unknown_28h);
+            writer.WriteValueList(this.Unknown_18h);
+            writer.WriteValueList(this.Unknown_28h);
             writer.Write(this.Unknown_38h);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x18, Unknown_18h),
-                new Tuple<long, IResourceBlock>(0x28, Unknown_28h)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Unknown_18h.Entries != null) list.Add(Unknown_18h.Entries);
+            if (Unknown_28h.Entries != null) list.Add(Unknown_28h.Entries);
+            return list.ToArray();
         }
     }
 }

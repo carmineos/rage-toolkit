@@ -2,6 +2,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Clothes
@@ -34,19 +35,19 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Read(reader, parameters);
 
             // read structure data         
-            this.TriIndices = reader.ReadBlock<SimpleList64<ushort>>();
-            this.OriginalPos = reader.ReadBlock<SimpleList64<Vector4>>();
+            this.TriIndices = reader.ReadValueList<ushort>();
+            this.OriginalPos = reader.ReadValueList<Vector4>();
             this.Unknown_A0h = reader.ReadSingle();
             this.Unknown_A4h = reader.ReadUInt32();
             this.Unknown_A8h = reader.ReadUInt32();
             this.Unknown_ACh = reader.ReadUInt32();
-            this.BoneIndexMap = reader.ReadBlock<SimpleList64<uint>>();
-            this.BindingInfo = reader.ReadBlock<SimpleList64<BindingInfo>>();
+            this.BoneIndexMap = reader.ReadValueList<uint>();
+            this.BindingInfo = reader.ReadValueList<BindingInfo>();
             this.Unknown_D0h = reader.ReadUInt32();
             this.Unknown_D4h = reader.ReadUInt32();
             this.Unknown_D8h = reader.ReadUInt32();
             this.Unknown_DCh = reader.ReadSingle();
-            this.BoneIDMap = reader.ReadBlock<SimpleList64<uint>>();
+            this.BoneIDMap = reader.ReadValueList<uint>();
         }
 
         /// <summary>
@@ -57,30 +58,30 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Write(writer, parameters);
 
             // write structure data           
-            writer.WriteBlock(this.TriIndices);
-            writer.WriteBlock(this.OriginalPos);
+            writer.WriteValueList(this.TriIndices);
+            writer.WriteValueList(this.OriginalPos);
             writer.Write(this.Unknown_A0h);
             writer.Write(this.Unknown_A4h);
             writer.Write(this.Unknown_A8h);
             writer.Write(this.Unknown_ACh);
-            writer.WriteBlock(this.BoneIndexMap);
-            writer.WriteBlock(this.BindingInfo);
+            writer.WriteValueList(this.BoneIndexMap);
+            writer.WriteValueList(this.BindingInfo);
             writer.Write(this.Unknown_D0h);
             writer.Write(this.Unknown_D4h);
             writer.Write(this.Unknown_D8h);
             writer.Write(this.Unknown_DCh);
-            writer.WriteBlock(this.BoneIDMap);
+            writer.WriteValueList(this.BoneIDMap);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x80, TriIndices),
-                new Tuple<long, IResourceBlock>(0x90, OriginalPos),
-                new Tuple<long, IResourceBlock>(0xB0, BoneIndexMap),
-                new Tuple<long, IResourceBlock>(0xC0, BindingInfo),
-                new Tuple<long, IResourceBlock>(0xE0, BoneIDMap)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (TriIndices.Entries != null) list.Add(TriIndices.Entries);
+            if (OriginalPos.Entries != null) list.Add(OriginalPos.Entries);
+            if (BoneIndexMap.Entries != null) list.Add(BoneIndexMap.Entries);
+            if (BindingInfo.Entries != null) list.Add(BindingInfo.Entries);
+            if (BoneIDMap.Entries != null) list.Add(BoneIDMap.Entries);
+            return list.ToArray();
         }
     }
 }

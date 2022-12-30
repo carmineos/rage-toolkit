@@ -3,6 +3,7 @@
 using RageLib.Numerics;
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Bounds
@@ -36,7 +37,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             this.BoundingBoxCenter = reader.ReadVector4();
             this.QuantumInverse = reader.ReadVector4();
             this.Quantum = reader.ReadVector4();
-            this.Trees = reader.ReadBlock<SimpleList64<BVHTreeInfo>>();
+            this.Trees = reader.ReadValueList<BVHTreeInfo>();
         }
 
         /// <summary>
@@ -52,15 +53,21 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             writer.Write(this.BoundingBoxCenter);
             writer.Write(this.QuantumInverse);
             writer.Write(this.Quantum);
-            writer.WriteBlock(this.Trees);
+            writer.WriteValueList(this.Trees);
         }
 
         public override Tuple<long, IResourceBlock>[] GetParts()
         {
             return new Tuple<long, IResourceBlock>[] {
                 new Tuple<long, IResourceBlock>(0x00, Nodes),
-                new Tuple<long, IResourceBlock>(0x70, Trees)
             };
+        }
+
+        public override IResourceBlock[] GetReferences()
+        {
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Trees.Entries is not null) list.Add(Trees.Entries);
+            return list.ToArray();
         }
     }
 }

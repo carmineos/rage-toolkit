@@ -44,14 +44,14 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             base.Read(reader, parameters);
 
             // read structure data
-            this.Poses = reader.ReadBlock<SimpleList64<DataVec3V>>();
+            this.Poses = reader.ReadValueList<DataVec3V>();
             this.ControllerPointer = reader.ReadUInt64();
             this.BoundCompositePointer = reader.ReadUInt64();
-            this.Unknown_30h = reader.ReadBlock<SimpleList64<uint>>();
+            this.Unknown_30h = reader.ReadValueList<uint>();
             this.Unknown_40h = reader.ReadUInt64();
             this.Unknown_48h = reader.ReadUInt64();
             this.Unknown_50h = reader.ReadMatrix4x4();
-            this.BoneIndex = reader.ReadBlock<SimpleList64<uint>>();
+            this.BoneIndex = reader.ReadValueList<uint>();
             this.Unknown_A0h = reader.ReadUInt64();
             this.Unknown_A8h = reader.ReadUInt64();
             this.Unknown_B0h = reader.ReadUInt64();
@@ -81,14 +81,14 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             this.BoundCompositePointer = (ulong)(this.BoundComposite?.BlockPosition ?? 0);
 
             // write structure data
-            writer.WriteBlock(this.Poses);
+            writer.WriteValueList(this.Poses);
             writer.Write(this.ControllerPointer);
             writer.Write(this.BoundCompositePointer);
-            writer.WriteBlock(this.Unknown_30h);
+            writer.WriteValueList(this.Unknown_30h);
             writer.Write(this.Unknown_40h);
             writer.Write(this.Unknown_48h);
             writer.Write(this.Unknown_50h);
-            writer.WriteBlock(this.BoneIndex);
+            writer.WriteValueList(this.BoneIndex);
             writer.Write(this.Unknown_A0h);
             writer.Write(this.Unknown_A8h);
             writer.Write(this.Unknown_B0h);
@@ -106,16 +106,10 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             var list = new List<IResourceBlock>(base.GetReferences());
             if (Controller != null) list.Add(Controller);
             if (BoundComposite != null) list.Add(BoundComposite);
+            if (Poses.Entries != null) list.Add(Poses.Entries);
+            if (Unknown_30h.Entries != null) list.Add(Unknown_30h.Entries);
+            if (BoneIndex.Entries != null) list.Add(BoneIndex.Entries);
             return list.ToArray();
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x10, Poses),
-                new Tuple<long, IResourceBlock>(0x30, Unknown_30h),
-                new Tuple<long, IResourceBlock>(0x90, BoneIndex)
-            };
         }
     }
 }

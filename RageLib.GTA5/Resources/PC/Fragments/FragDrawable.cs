@@ -43,8 +43,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.Unknown_A8h = reader.ReadUInt64();
             this.Unknown_B0h = reader.ReadMatrix4x4();
             this.BoundPointer = reader.ReadUInt64();
-            this.Unknown_F8h_Data = reader.ReadBlock<SimpleList64<ulong>>();
-            this.Unknown_108h_Data = reader.ReadBlock<SimpleList64<Matrix4x4>>();
+            this.Unknown_F8h_Data = reader.ReadValueList<ulong>();
+            this.Unknown_108h_Data = reader.ReadValueList<Matrix4x4>();
             this.Unknown_118h = reader.ReadUInt64();
             this.Unknown_120h = reader.ReadUInt64();
             this.Unknown_128h = reader.ReadUInt64();
@@ -77,8 +77,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.Unknown_A8h);
             writer.Write(this.Unknown_B0h);
             writer.Write(this.BoundPointer);
-            writer.WriteBlock(this.Unknown_F8h_Data);
-            writer.WriteBlock(this.Unknown_108h_Data);
+            writer.WriteValueList(this.Unknown_F8h_Data);
+            writer.WriteValueList(this.Unknown_108h_Data);
             writer.Write(this.Unknown_118h);
             writer.Write(this.Unknown_120h);
             writer.Write(this.Unknown_128h);
@@ -96,14 +96,10 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             var list = new List<IResourceBlock>(base.GetReferences());
             if (Bound != null) list.Add(Bound);
             if (Name != null) list.Add(Name);
-            return list.ToArray();
-        }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            var list = new List<Tuple<long, IResourceBlock>>(base.GetParts());
-            list.Add(new Tuple<long, IResourceBlock>(0xF8, Unknown_F8h_Data));
-            list.Add(new Tuple<long, IResourceBlock>(0x108, Unknown_108h_Data));
+            if (Unknown_F8h_Data.Entries != null) list.Add(Unknown_F8h_Data.Entries);
+            if (Unknown_108h_Data.Entries != null) list.Add(Unknown_108h_Data.Entries);
+
             return list.ToArray();
         }
     }

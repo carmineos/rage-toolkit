@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Data;
+using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -178,6 +179,13 @@ namespace RageLib.Resources
             {
                 return default(T);
             }
-        }        
+        }
+        
+        public SimpleList64<T> ReadValueList<T>() where T : unmanaged
+        {
+            var valueList = new SimpleList64<T>();
+            valueList.Read(this);
+            return valueList;
+        }
     }
 }

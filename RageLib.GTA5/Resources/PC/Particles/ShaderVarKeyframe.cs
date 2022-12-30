@@ -2,6 +2,7 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Particles
 {
@@ -30,7 +31,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.Unknown_18h = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
             this.Unknown_20h = reader.ReadUInt64();
-            this.Unknown_28h = reader.ReadBlock<SimpleList64<Unknown_P_009>>();
+            this.Unknown_28h = reader.ReadValueList<Unknown_P_009>();
             this.Unknown_38h = reader.ReadUInt64();
             this.Unknown_40h = reader.ReadUInt64();
             this.Unknown_48h = reader.ReadUInt64();
@@ -47,17 +48,17 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_1Ch);
             writer.Write(this.Unknown_20h);
-            writer.WriteBlock(this.Unknown_28h);
+            writer.WriteValueList(this.Unknown_28h);
             writer.Write(this.Unknown_38h);
             writer.Write(this.Unknown_40h);
             writer.Write(this.Unknown_48h);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x28, Unknown_28h)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Unknown_28h.Entries != null) list.Add(Unknown_28h.Entries);
+            return list.ToArray();
         }
     }
 }

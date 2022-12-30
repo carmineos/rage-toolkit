@@ -1,7 +1,9 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Resources.Common;
+using RageLib.Resources.GTA5.PC.Drawables;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Clothes
@@ -102,16 +104,16 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             this.Unknown_44h = reader.ReadUInt32();
             this.Unknown_48h = reader.ReadUInt32();
             this.Unknown_4Ch = reader.ReadUInt32();
-            this.Unknown_50h = reader.ReadBlock<SimpleList64<Vector4>>();
-            this.Unknown_60h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_70h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_80h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_90h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_A0h = reader.ReadBlock<SimpleList64<Vector4>>();
-            this.Unknown_B0h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_C0h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_D0h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_E0h = reader.ReadBlock<SimpleList64<ushort>>();
+            this.Unknown_50h = reader.ReadValueList<Vector4>();
+            this.Unknown_60h = reader.ReadValueList<ushort>();
+            this.Unknown_70h = reader.ReadValueList<ushort>();
+            this.Unknown_80h = reader.ReadValueList<ushort>();
+            this.Unknown_90h = reader.ReadValueList<ushort>();
+            this.Unknown_A0h = reader.ReadValueList<Vector4>();
+            this.Unknown_B0h = reader.ReadValueList<ushort>();
+            this.Unknown_C0h = reader.ReadValueList<ushort>();
+            this.Unknown_D0h = reader.ReadValueList<ushort>();
+            this.Unknown_E0h = reader.ReadValueList<ushort>();
             this.Unknown_F0h = reader.ReadUInt32();
             this.Unknown_F4h = reader.ReadUInt32();
             this.Unknown_F8h = reader.ReadUInt32();
@@ -136,8 +138,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             this.Unknown_144h = reader.ReadUInt32();
             this.Unknown_148h = reader.ReadUInt32();
             this.Unknown_14Ch = reader.ReadUInt32();
-            this.Unknown_150h = reader.ReadBlock<SimpleList64<ushort>>();
-            this.Unknown_160h = reader.ReadBlock<SimpleList64<ushort>>();
+            this.Unknown_150h = reader.ReadValueList<ushort>();
+            this.Unknown_160h = reader.ReadValueList<ushort>();
             this.Unknown_170h = reader.ReadUInt32();
             this.Unknown_174h = reader.ReadUInt32();
             this.Unknown_178h = reader.ReadUInt32();
@@ -174,16 +176,16 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             writer.Write(this.Unknown_44h);
             writer.Write(this.Unknown_48h);
             writer.Write(this.Unknown_4Ch);
-            writer.WriteBlock(this.Unknown_50h);
-            writer.WriteBlock(this.Unknown_60h);
-            writer.WriteBlock(this.Unknown_70h);
-            writer.WriteBlock(this.Unknown_80h);
-            writer.WriteBlock(this.Unknown_90h);
-            writer.WriteBlock(this.Unknown_A0h);
-            writer.WriteBlock(this.Unknown_B0h);
-            writer.WriteBlock(this.Unknown_C0h);
-            writer.WriteBlock(this.Unknown_D0h);
-            writer.WriteBlock(this.Unknown_E0h);
+            writer.WriteValueList(this.Unknown_50h);
+            writer.WriteValueList(this.Unknown_60h);
+            writer.WriteValueList(this.Unknown_70h);
+            writer.WriteValueList(this.Unknown_80h);
+            writer.WriteValueList(this.Unknown_90h);
+            writer.WriteValueList(this.Unknown_A0h);
+            writer.WriteValueList(this.Unknown_B0h);
+            writer.WriteValueList(this.Unknown_C0h);
+            writer.WriteValueList(this.Unknown_D0h);
+            writer.WriteValueList(this.Unknown_E0h);
             writer.Write(this.Unknown_F0h);
             writer.Write(this.Unknown_F4h);
             writer.Write(this.Unknown_F8h);
@@ -208,8 +210,8 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             writer.Write(this.Unknown_144h);
             writer.Write(this.Unknown_148h);
             writer.Write(this.Unknown_14Ch);
-            writer.WriteBlock(this.Unknown_150h);
-            writer.WriteBlock(this.Unknown_160h);
+            writer.WriteValueList(this.Unknown_150h);
+            writer.WriteValueList(this.Unknown_160h);
             writer.Write(this.Unknown_170h);
             writer.Write(this.Unknown_174h);
             writer.Write(this.Unknown_178h);
@@ -220,22 +222,22 @@ namespace RageLib.Resources.GTA5.PC.Clothes
             writer.Write(this.Unknown_18Ch);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x50, Unknown_50h),
-                new Tuple<long, IResourceBlock>(0x60, Unknown_60h),
-                new Tuple<long, IResourceBlock>(0x70, Unknown_70h),
-                new Tuple<long, IResourceBlock>(0x80, Unknown_80h),
-                new Tuple<long, IResourceBlock>(0x90, Unknown_90h),
-                new Tuple<long, IResourceBlock>(0xA0, Unknown_A0h),
-                new Tuple<long, IResourceBlock>(0xB0, Unknown_B0h),
-                new Tuple<long, IResourceBlock>(0xC0, Unknown_C0h),
-                new Tuple<long, IResourceBlock>(0xD0, Unknown_D0h),
-                new Tuple<long, IResourceBlock>(0xE0, Unknown_E0h),
-                new Tuple<long, IResourceBlock>(0x150, Unknown_150h),
-                new Tuple<long, IResourceBlock>(0x160, Unknown_160h)
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Unknown_50h.Entries is not null) list.Add(Unknown_50h.Entries);
+            if (Unknown_60h.Entries is not null) list.Add(Unknown_60h.Entries);
+            if (Unknown_70h.Entries is not null) list.Add(Unknown_70h.Entries);
+            if (Unknown_80h.Entries is not null) list.Add(Unknown_80h.Entries);
+            if (Unknown_90h.Entries is not null) list.Add(Unknown_90h.Entries);
+            if (Unknown_A0h.Entries is not null) list.Add(Unknown_A0h.Entries);
+            if (Unknown_B0h.Entries is not null) list.Add(Unknown_B0h.Entries);
+            if (Unknown_C0h.Entries is not null) list.Add(Unknown_C0h.Entries);
+            if (Unknown_D0h.Entries is not null) list.Add(Unknown_D0h.Entries);
+            if (Unknown_E0h.Entries is not null) list.Add(Unknown_E0h.Entries);
+            if (Unknown_150h.Entries is not null) list.Add(Unknown_150h.Entries);
+            if (Unknown_160h.Entries is not null) list.Add(Unknown_160h.Entries);
+            return list.ToArray();
         }
     }
 }

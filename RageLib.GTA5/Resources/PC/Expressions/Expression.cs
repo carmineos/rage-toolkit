@@ -51,9 +51,9 @@ namespace RageLib.Resources.GTA5.PC.Expressions
             this.Unknown_18h = reader.ReadUInt32();
             this.Unknown_1Ch = reader.ReadUInt32();
             this.Unknown_20h = reader.ReadBlock<ResourcePointerList64<Unknown_E_001>>();
-            this.Unknown_30h = reader.ReadBlock<SimpleList64<uint>>();
+            this.Unknown_30h = reader.ReadValueList<uint>();
             this.Unknown_40h = reader.ReadBlock<ResourceSimpleList64<Unknown_E_002>>();
-            this.Unknown_50h = reader.ReadBlock<SimpleList64<uint>>();
+            this.Unknown_50h = reader.ReadValueList<uint>();
             this.NamePointer = reader.ReadUInt64();
             this.NameLength1 = reader.ReadUInt16();
             this.NameLength2 = reader.ReadUInt16();
@@ -90,9 +90,9 @@ namespace RageLib.Resources.GTA5.PC.Expressions
             writer.Write(this.Unknown_18h);
             writer.Write(this.Unknown_1Ch);
             writer.WriteBlock(this.Unknown_20h);
-            writer.WriteBlock(this.Unknown_30h);
+            writer.WriteValueList(this.Unknown_30h);
             writer.WriteBlock(this.Unknown_40h);
-            writer.WriteBlock(this.Unknown_50h);
+            writer.WriteValueList(this.Unknown_50h);
             writer.Write(this.NamePointer);
             writer.Write(this.NameLength1);
             writer.Write(this.NameLength2);
@@ -115,6 +115,8 @@ namespace RageLib.Resources.GTA5.PC.Expressions
         {
             var list = new List<IResourceBlock>(base.GetReferences());
             if (Name != null) list.Add(Name);
+            if (Unknown_30h.Entries != null) list.Add(Unknown_30h.Entries);
+            if (Unknown_50h.Entries != null) list.Add(Unknown_50h.Entries);
             return list.ToArray();
         }
 
@@ -122,9 +124,7 @@ namespace RageLib.Resources.GTA5.PC.Expressions
         {
             return new Tuple<long, IResourceBlock>[] {
                 new Tuple<long, IResourceBlock>(0x20, Unknown_20h),
-                new Tuple<long, IResourceBlock>(0x30, Unknown_30h),
-                new Tuple<long, IResourceBlock>(0x40, Unknown_40h),
-                new Tuple<long, IResourceBlock>(0x50, Unknown_50h)
+                new Tuple<long, IResourceBlock>(0x40, Unknown_40h)
             };
         }
     }
