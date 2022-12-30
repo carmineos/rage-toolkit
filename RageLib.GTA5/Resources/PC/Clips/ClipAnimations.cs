@@ -3,6 +3,7 @@
 using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RageLib.Resources.GTA5.PC.Clips
 {
@@ -25,7 +26,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         {
             base.Read(reader, parameters);
 
-            this.Animations = reader.ReadBlock<ResourceSimpleList64<ClipAnimationsEntry>>();
+            this.Animations = reader.ReadList<ClipAnimationsEntry>();
             this.Duration = reader.ReadSingle();
             this.Unknown_64h = reader.ReadUInt32();
             this.Unknown_68h = reader.ReadUInt32();
@@ -39,18 +40,18 @@ namespace RageLib.Resources.GTA5.PC.Clips
         {
             base.Write(writer, parameters);
 
-            writer.WriteBlock(this.Animations);
+            writer.WriteList(this.Animations);
             writer.Write(this.Duration);
             writer.Write(this.Unknown_64h);
             writer.Write(this.Unknown_68h);
             writer.Write(this.Unknown_6Ch);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x50, Animations),
-            };
+            var list = new List<IResourceBlock>(base.GetReferences());
+            if (Animations.Entries != null) list.Add(Animations.Entries);
+            return list.ToArray();
         }
     }
 }

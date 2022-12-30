@@ -96,7 +96,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.Unknown_168h = reader.ReadBlock<ResourcePointerList64<Behaviour>>();
             this.Unknown_178h = reader.ReadUInt64();
             this.Unknown_180h = reader.ReadUInt64();
-            this.Unknown_188h = reader.ReadBlock<ResourceSimpleList64<Unknown_P_013>>();
+            this.Unknown_188h = reader.ReadList<Unknown_P_013>();
             this.Unknown_198h = reader.ReadUInt64();
             this.Unknown_1A0h = reader.ReadUInt64();
             this.Unknown_1A8h = reader.ReadUInt64();
@@ -116,7 +116,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.Unknown_204h = reader.ReadUInt32();
             this.ShaderNameHash = reader.ReadUInt32();
             this.Unknown_20Ch = reader.ReadUInt32();
-            this.Unknown_210h = reader.ReadBlock<ResourceSimpleList64<Unknown_P_012>>();
+            this.Unknown_210h = reader.ReadList<Unknown_P_012>();
             this.Unknown_220h = reader.ReadUInt32();
             this.Unknown_224h = reader.ReadUInt32();
             this.Unknown_228h = reader.ReadUInt64();
@@ -169,7 +169,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.WriteBlock(this.Unknown_168h);
             writer.Write(this.Unknown_178h);
             writer.Write(this.Unknown_180h);
-            writer.WriteBlock(this.Unknown_188h);
+            writer.WriteList(this.Unknown_188h);
             writer.Write(this.Unknown_198h);
             writer.Write(this.Unknown_1A0h);
             writer.Write(this.Unknown_1A8h);
@@ -189,7 +189,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
             writer.Write(this.Unknown_204h);
             writer.Write(this.ShaderNameHash);
             writer.Write(this.Unknown_20Ch);
-            writer.WriteBlock(this.Unknown_210h);
+            writer.WriteList(this.Unknown_210h);
             writer.Write(this.Unknown_220h);
             writer.Write(this.Unknown_224h);
             writer.Write(this.Unknown_228h);
@@ -206,6 +206,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
             if (Name != null) list.Add(Name);
             if (ShaderName != null) list.Add(ShaderName);
             if (ShaderTechniqueName != null) list.Add(ShaderTechniqueName);
+            if (Unknown_188h.Entries != null) list.Add(Unknown_188h.Entries);
+            if (Unknown_210h.Entries != null) list.Add(Unknown_210h.Entries);
             return list.ToArray();
         }
 
@@ -219,9 +221,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
                 new Tuple<long, IResourceBlock>(0x148, Unknown_148h),
                 new Tuple<long, IResourceBlock>(0x158, Unknown_158h),
                 new Tuple<long, IResourceBlock>(0x168, Unknown_168h),
-                new Tuple<long, IResourceBlock>(0x188, Unknown_188h),
                 new Tuple<long, IResourceBlock>(0x1F0, ShaderVars),
-                new Tuple<long, IResourceBlock>(0x210, Unknown_210h)
             };
         }
     }

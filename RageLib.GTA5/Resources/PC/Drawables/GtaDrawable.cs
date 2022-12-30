@@ -31,7 +31,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // read structure data
             this.NamePointer = reader.ReadUInt64();
-            this.LightAttributes = reader.ReadBlock<SimpleList64<LightAttributes>>();
+            this.LightAttributes = reader.ReadValueList<LightAttributes>();
             this.Unknown_C0h = reader.ReadUInt64();
             this.BoundPointer = reader.ReadUInt64();
 
@@ -57,7 +57,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // write structure data
             writer.Write(this.NamePointer);
-            writer.WriteBlock(this.LightAttributes);
+            writer.WriteValueList(this.LightAttributes);
             writer.Write(this.Unknown_C0h);
             writer.Write(this.BoundPointer);
         }
@@ -70,13 +70,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             var list = new List<IResourceBlock>(base.GetReferences());
             if (Name != null) list.Add(Name);
             if (Bound != null) list.Add(Bound);
-            return list.ToArray();
-        }
-
-        public override Tuple<long, IResourceBlock>[] GetParts()
-        {
-            var list = new List<Tuple<long, IResourceBlock>>(base.GetParts());
-            list.Add(new Tuple<long, IResourceBlock>(0xB0, LightAttributes));
+            if (LightAttributes.Entries != null) list.Add(LightAttributes.Entries);
             return list.ToArray();
         }
     }

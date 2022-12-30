@@ -119,7 +119,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.ClothDrawablePointer = reader.ReadUInt64();
             this.Unknown_100h = reader.ReadUInt64();
             this.Unknown_108h = reader.ReadUInt64();
-            this.LightAttributes = reader.ReadBlock<SimpleList64<LightAttributes>>();
+            this.LightAttributes = reader.ReadValueList<LightAttributes>();
             this.VehicleGlassWindowDataPointer = reader.ReadUInt64();
             this.Unknown_128h = reader.ReadUInt64();
 
@@ -215,7 +215,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(this.ClothDrawablePointer);
             writer.Write(this.Unknown_100h);
             writer.Write(this.Unknown_108h);
-            writer.WriteBlock(this.LightAttributes);
+            writer.WriteValueList(this.LightAttributes);
             writer.Write(this.VehicleGlassWindowDataPointer);
             writer.Write(this.Unknown_128h);
         }
@@ -234,6 +234,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             if (GlassPaneModelInfos != null) list.Add(GlassPaneModelInfos);
             if (PhysicsLODGroup != null) list.Add(PhysicsLODGroup);
             if (ClothDrawable != null) list.Add(ClothDrawable);
+            if (LightAttributes.Entries != null) list.Add(LightAttributes.Entries);
             if (VehicleGlassWindowData != null) list.Add(VehicleGlassWindowData);
             return list.ToArray();
         }
@@ -241,8 +242,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override Tuple<long, IResourceBlock>[] GetParts()
         {
             return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0x60, Clothes),
-                new Tuple<long, IResourceBlock>(0x110, LightAttributes)
+                new Tuple<long, IResourceBlock>(0x60, Clothes)
             };
         }
     }

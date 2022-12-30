@@ -187,5 +187,12 @@ namespace RageLib.Resources
             valueList.Read(this);
             return valueList;
         }
+
+        public ResourceSimpleList64<T> ReadList<T>() where T : IResourceSystemBlock, new()
+        {
+            var list = new ResourceSimpleList64<T>();
+            list.Read(this);
+            return list;
+        }
     }
 }

@@ -1,7 +1,9 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Resources.Common;
+using RageLib.Resources.GTA5.PC.Clips;
 using System;
+using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Particles
 {
@@ -24,11 +26,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.EvolutionNames = reader.ReadBlock<ResourceSimpleList64<EvolutionName>>();
-            this.Unknown_10h = reader.ReadBlock<ResourceSimpleList64<Unknown_P_003>>();
+            this.EvolutionNames = reader.ReadList<EvolutionName>();
+            this.Unknown_10h = reader.ReadList<Unknown_P_003>();
             this.Unknown_20h = reader.ReadUInt32();
             this.Unknown_24h = reader.ReadUInt32();
-            this.Unknown_28h = reader.ReadBlock<ResourceSimpleList64<Unknown_P_007>>();
+            this.Unknown_28h = reader.ReadList<Unknown_P_007>();
             this.Unknown_38h = reader.ReadUInt32();
             this.Unknown_3Ch = reader.ReadUInt32();
         }
@@ -39,22 +41,22 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // write structure data
-            writer.WriteBlock(this.EvolutionNames);
-            writer.WriteBlock(this.Unknown_10h);
+            writer.WriteList(this.EvolutionNames);
+            writer.WriteList(this.Unknown_10h);
             writer.Write(this.Unknown_20h);
             writer.Write(this.Unknown_24h);
-            writer.WriteBlock(this.Unknown_28h);
+            writer.WriteList(this.Unknown_28h);
             writer.Write(this.Unknown_38h);
             writer.Write(this.Unknown_3Ch);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0, EvolutionNames),
-                new Tuple<long, IResourceBlock>(0x10, Unknown_10h),
-                new Tuple<long, IResourceBlock>(0x28, Unknown_28h)
-            };
+            var list = new List<IResourceBlock>();
+            if (EvolutionNames.Entries != null) list.Add(EvolutionNames.Entries);
+            if (Unknown_10h.Entries != null) list.Add(Unknown_10h.Entries);
+            if (Unknown_28h.Entries != null) list.Add(Unknown_28h.Entries);
+            return list.ToArray();
         }
     }
 }

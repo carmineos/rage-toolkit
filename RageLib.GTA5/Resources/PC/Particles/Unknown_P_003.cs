@@ -2,6 +2,8 @@
 
 using RageLib.Resources.Common;
 using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace RageLib.Resources.GTA5.PC.Particles
 {
@@ -20,7 +22,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.Unknown_0h = reader.ReadBlock<ResourceSimpleList64<Unknown_P_006>>();
+            this.Unknown_0h = reader.ReadList<Unknown_P_006>();
             this.Hash = reader.ReadUInt32();
             this.Unknown_14h = reader.ReadUInt32();
         }
@@ -31,16 +33,16 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // write structure data
-            writer.WriteBlock(this.Unknown_0h);
+            writer.WriteList(this.Unknown_0h);
             writer.Write(this.Hash);
             writer.Write(this.Unknown_14h);
         }
 
-        public override Tuple<long, IResourceBlock>[] GetParts()
+        public override IResourceBlock[] GetReferences()
         {
-            return new Tuple<long, IResourceBlock>[] {
-                new Tuple<long, IResourceBlock>(0, Unknown_0h)
-            };
+            var list = new List<IResourceBlock>();
+            if (Unknown_0h.Entries != null) list.Add(Unknown_0h.Entries);
+            return list.ToArray();
         }
     }
 }

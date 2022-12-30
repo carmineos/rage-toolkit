@@ -115,5 +115,10 @@ namespace RageLib.Resources
         {
             valueList.Write(this);
         }
+
+        public void WriteList<T>(ResourceSimpleList64<T> list) where T : IResourceSystemBlock, new()
+        {
+            list.Write(this);
+        }
     }
 }
