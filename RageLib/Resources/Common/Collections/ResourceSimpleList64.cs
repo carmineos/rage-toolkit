@@ -1,16 +1,11 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using System;
-using System.Collections.Generic;
-
 namespace RageLib.Resources.Common
 {
     public struct ResourceSimpleList64<T>  where T : IResourceSystemBlock, new()
     {
         // structure data
-        public ulong EntriesPointer;
-        public ushort EntriesCount;
-        public ushort EntriesCapacity;
+        public ArrayInfo64 ArrayInfo;
 
         // reference data
         public ResourceSimpleArray<T>? Entries { get; set; }
@@ -21,15 +16,12 @@ namespace RageLib.Resources.Common
         public void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.EntriesPointer = reader.ReadUInt64();
-            this.EntriesCount = reader.ReadUInt16();
-            this.EntriesCapacity = reader.ReadUInt16();
-            reader.Position += 4;
+            this.ArrayInfo = reader.ReadStruct<ArrayInfo64>();
 
             // read reference data
             this.Entries = reader.ReadBlockAt<ResourceSimpleArray<T>>(
-                this.EntriesPointer, // offset
-                this.EntriesCount
+                this.ArrayInfo.EntriesPointer, // offset
+                this.ArrayInfo.EntriesCount
             );
         }
 
@@ -39,15 +31,12 @@ namespace RageLib.Resources.Common
         public void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
-            this.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
-            this.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
+            this.ArrayInfo.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
+            this.ArrayInfo.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
+            this.ArrayInfo.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
 
             // write structure data
-            writer.Write(this.EntriesPointer);
-            writer.Write(this.EntriesCount);
-            writer.Write(this.EntriesCapacity);
-            writer.Write((uint)0x00000000);
+            writer.WriteStruct(this.ArrayInfo);
         }
     }
 }

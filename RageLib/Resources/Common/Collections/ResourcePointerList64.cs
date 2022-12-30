@@ -5,38 +5,37 @@ namespace RageLib.Resources.Common
     public struct ResourcePointerList64<T> where T : IResourceSystemBlock, new()
     {
         // structure data
-        public ulong EntriesPointer;
-        public ushort EntriesCount;
-        public ushort EntriesCapacity;
+        public ArrayInfo64 ArrayInfo;
 
         // reference data
         public ResourcePointerArray64<T>? Entries { get; set; }
-
+        
+        /// <summary>
+        /// Reads the data-block from a stream.
+        /// </summary>
         public void Read(ResourceDataReader reader, params object[] parameters)
         {
-            this.EntriesPointer = reader.ReadUInt64();
-            this.EntriesCount = reader.ReadUInt16();
-            this.EntriesCapacity = reader.ReadUInt16();
-            reader.Position += 4;
+            // read structure data
+            this.ArrayInfo = reader.ReadStruct<ArrayInfo64>();
 
             this.Entries = reader.ReadBlockAt<ResourcePointerArray64<T>>(
-                this.EntriesPointer, // offset
-                this.EntriesCount
+                this.ArrayInfo.EntriesPointer, // offset
+                this.ArrayInfo.EntriesCount
             );
         }
 
+        /// <summary>
+        /// Writes the data-block to a stream.
+        /// </summary>
         public void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update...
-            this.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
-            this.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
-            this.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
+            this.ArrayInfo.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
+            this.ArrayInfo.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
+            this.ArrayInfo.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
 
             // write...
-            writer.Write(EntriesPointer);
-            writer.Write(EntriesCount);
-            writer.Write(EntriesCapacity);
-            writer.Write((uint)0x0000000);
+            writer.WriteStruct(ArrayInfo);
         }
     }
 }
