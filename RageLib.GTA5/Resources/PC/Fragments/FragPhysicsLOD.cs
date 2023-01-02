@@ -2,8 +2,11 @@
 
 using RageLib.Resources.Common;
 using RageLib.Resources.GTA5.PC.Bounds;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace RageLib.Resources.GTA5.PC.Fragments
 {
@@ -247,5 +250,55 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             if (GroupNames != null) list.Add(GroupNames);
             return list.ToArray();
         }
+
+        public override void Rebuild()
+        {
+            base.Rebuild();
+
+            ComputeAngInertiaVectors();
+        }
+
+        private void ComputeAngInertiaVectors()
+        {
+            if (Children is null)
+                return;
+            
+            var angInertiaVectors = new Vector4[ChildrenCount];
+            var damagedAngInertiaVectors = new Vector4[ChildrenCount];
+
+            angInertiaVectors.AsSpan().Fill(Vector4.Zero);
+            damagedAngInertiaVectors.AsSpan().Fill(Vector4.Zero);
+
+            for (int i = 0; i < Children.Count; i++)
+            {
+                var child = Children[i];
+
+                if (child is null)
+                    continue;
+
+                var pristineBound = child.PristineDrawable?.Bound;
+                if (pristineBound is not null)
+                    angInertiaVectors[i] = child.PristineMass * pristineBound.VolumeDistribution;
+
+                var damagedBound = child.DamagedDrawable?.Bound;
+                if (damagedBound is not null)
+                    damagedAngInertiaVectors[i] = child.DamagedMass * damagedBound.VolumeDistribution;
+
+                //Debug.Assert(WithinEpsilon(angInertiaVectors[i], PristineAngInertia[i]));
+                //Debug.Assert(WithinEpsilon(damagedAngInertiaVectors[i], DamagedAngInertia[i]));
+            }
+
+            PristineAngInertia = new SimpleArray<Vector4>(angInertiaVectors);
+            DamagedAngInertia = new SimpleArray<Vector4>(damagedAngInertiaVectors);
+        }
+
+        //static bool WithinEpsilon(Vector4 v1, Vector4 v2, float epsilon = 0.001f)
+        //{
+        //    return
+        //        (MathF.Abs(v1.X - v2.X) < epsilon) &&
+        //        (MathF.Abs(v1.Y - v2.Y) < epsilon) &&
+        //        (MathF.Abs(v1.Z - v2.Z) < epsilon) &&
+        //        (MathF.Abs(v1.W - v2.W) < epsilon);
+        //}
     }
 }
