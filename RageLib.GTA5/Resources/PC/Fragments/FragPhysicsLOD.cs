@@ -1,5 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Helpers;
 using RageLib.Resources.Common;
 using RageLib.Resources.GTA5.PC.Bounds;
 using System;
@@ -255,16 +256,31 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         {
             base.Rebuild();
 
+            RebuildGroups();
+            RebuildChildren();
+        }
+
+        private void RebuildChildren()
+        {
+            if (Children is null)
+            {
+                ChildrenCount = 0;
+                PristineAngInertia = null;
+                DamagedAngInertia = null;
+                ChildrenTransforms = null;
+                Unknown_28h_Data = null;
+                return;
+            }
+
+            ChildrenCount = (byte)Children.Count;
+
             ComputeAngInertiaVectors();
         }
 
         private void ComputeAngInertiaVectors()
         {
-            if (Children is null)
-                return;
-            
-            var angInertiaVectors = new Vector4[ChildrenCount];
-            var damagedAngInertiaVectors = new Vector4[ChildrenCount];
+            var angInertiaVectors = new Vector4[Children.Count];
+            var damagedAngInertiaVectors = new Vector4[Children.Count];
 
             angInertiaVectors.AsSpan().Fill(Vector4.Zero);
             damagedAngInertiaVectors.AsSpan().Fill(Vector4.Zero);
@@ -284,21 +300,39 @@ namespace RageLib.Resources.GTA5.PC.Fragments
                 if (damagedBound is not null)
                     damagedAngInertiaVectors[i] = child.DamagedMass * damagedBound.VolumeDistribution;
 
-                //Debug.Assert(WithinEpsilon(angInertiaVectors[i], PristineAngInertia[i]));
-                //Debug.Assert(WithinEpsilon(damagedAngInertiaVectors[i], DamagedAngInertia[i]));
+                //Debug.Assert(MathHelpers.WithinEpsilon(angInertiaVectors[i], PristineAngInertia[i]));
+                //Debug.Assert(MathHelpers.WithinEpsilon(damagedAngInertiaVectors[i], DamagedAngInertia[i]));
             }
 
             PristineAngInertia = new SimpleArray<Vector4>(angInertiaVectors);
             DamagedAngInertia = new SimpleArray<Vector4>(damagedAngInertiaVectors);
         }
 
-        //static bool WithinEpsilon(Vector4 v1, Vector4 v2, float epsilon = 0.001f)
-        //{
-        //    return
-        //        (MathF.Abs(v1.X - v2.X) < epsilon) &&
-        //        (MathF.Abs(v1.Y - v2.Y) < epsilon) &&
-        //        (MathF.Abs(v1.Z - v2.Z) < epsilon) &&
-        //        (MathF.Abs(v1.W - v2.W) < epsilon);
-        //}
+        private void RebuildGroups()
+        {
+            if (Groups is null)
+            {
+                GroupsCount = 0;
+                GroupNames = null;
+                return;
+            }
+
+            GroupsCount = (byte)Groups.Count;
+
+            RebuildGroupNames();
+        }
+
+        private void RebuildGroupNames()
+        {
+            var groupNames = new ResourcePointerArray64<string32_r>();
+            for (int i = 0; i < Groups.Count; i++)
+            {
+                var group = Groups[i];
+                groupNames.Add(group.Name);
+            }
+
+            GroupNames ??= new FragTypeGroupNames();
+            GroupNames.GroupNames = groupNames;
+        }
     }
 }

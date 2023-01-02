@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using RageLib.GTA5.Resources.PC.Drawables;
+using RageLib.Helpers;
 using RageLib.Resources.Common;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
@@ -271,31 +272,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
                 worldTransformationsInverted[i] = worldMatrixInverted;
 
                 //var oldMat = DefaultPoseMatrices[i];
-                //var oldMatInv = InverseBindMatrices[i];
-                //Debug.Assert(MatrixAlmostEquals(localMatrix, oldMat));
-                //Debug.Assert(MatrixAlmostEquals(worldMatrix, oldMat));
-                //Debug.Assert(MatrixAlmostEquals(worldMatrixInverted, oldMatInv));
-
-                //bool MatrixAlmostEquals(Matrix4x4 m1, Matrix4x4 m2, float epsilon = 0.001f)
-                //{
-                //    return
-                //        (MathF.Abs(m1.M11 - m2.M11) < epsilon) &&
-                //        (MathF.Abs(m1.M12 - m2.M12) < epsilon) &&
-                //        (MathF.Abs(m1.M13 - m2.M13) < epsilon) &&
-                //        (MathF.Abs(m1.M14 - m2.M14) < epsilon) &&
-                //        (MathF.Abs(m1.M21 - m2.M21) < epsilon) &&
-                //        (MathF.Abs(m1.M22 - m2.M22) < epsilon) &&
-                //        (MathF.Abs(m1.M23 - m2.M23) < epsilon) &&
-                //        (MathF.Abs(m1.M24 - m2.M24) < epsilon) &&
-                //        (MathF.Abs(m1.M31 - m2.M31) < epsilon) &&
-                //        (MathF.Abs(m1.M32 - m2.M32) < epsilon) &&
-                //        (MathF.Abs(m1.M33 - m2.M33) < epsilon) &&
-                //        (MathF.Abs(m1.M34 - m2.M34) < epsilon) &&
-                //        (MathF.Abs(m1.M41 - m2.M41) < epsilon) &&
-                //        (MathF.Abs(m1.M42 - m2.M42) < epsilon) &&
-                //        (MathF.Abs(m1.M43 - m2.M43) < epsilon) &&
-                //        (MathF.Abs(m1.M44 - m2.M44) < epsilon);
-                //}
+                //var oldMatInv = InverseBindPoseMatrices[i];
+                //Debug.Assert(MathHelpers.WithinEpsilon(localMatrix, oldMat));
+                //Debug.Assert(MathHelpers.WithinEpsilon(worldMatrix, oldMat));
+                //Debug.Assert(MathHelpers.WithinEpsilon(worldMatrixInverted, oldMatInv));
             }
 
             DefaultPoseMatrices = new SimpleArray<Matrix4x4>(localTransformations);
