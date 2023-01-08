@@ -1,16 +1,13 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Data;
 using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
 {
     // CLightAttr
-    public class LightAttributes : ResourceSystemBlock
+    public struct LightAttributes : IResourceStruct<LightAttributes>
     {
-        public override long BlockLength => 0xA8;
-
-        // structure data
         public uint Unknown_0h; // 0x00000000
         public uint Unknown_4h; // 0x00000000
         public Vector3 Position;
@@ -57,110 +54,56 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public uint ProjectedTextureHash;
         public uint Unknown_A4h; // 0x00000000
 
-        /// <summary>
-        /// Reads the data-block from a stream.
-        /// </summary>
-        public override void Read(ResourceDataReader reader, params object[] parameters)
+        public LightAttributes ReverseEndianness()
         {
-            // read structure data
-            this.Unknown_0h = reader.ReadUInt32();
-            this.Unknown_4h = reader.ReadUInt32();
-            this.Position = reader.ReadVector3();
-            this.Unknown_14h = reader.ReadUInt32();
-            this.ColorR = reader.ReadByte();
-            this.ColorG = reader.ReadByte();
-            this.ColorB = reader.ReadByte();
-            this.Flashiness = reader.ReadByte();
-            this.Intensity = reader.ReadSingle();
-            this.Flags = reader.ReadUInt32();
-            this.BoneId = reader.ReadUInt16();
-            this.Type = reader.ReadByte();
-            this.GroupId = reader.ReadByte();
-            this.TimeFlags = reader.ReadUInt32();
-            this.Falloff = reader.ReadSingle();
-            this.FalloffExponent = reader.ReadSingle();
-            this.CullingPlaneNormal = reader.ReadVector3();
-            this.CullingPlaneOffset = reader.ReadSingle();
-            this.ShadowBlur = reader.ReadByte();
-            this.Unknown_45h = reader.ReadByte();
-            this.Unknown_46h = reader.ReadUInt16();
-            this.Unknown_48h = reader.ReadUInt32();
-            this.VolumeIntensity = reader.ReadSingle();
-            this.VolumeSizeScale = reader.ReadSingle();
-            this.VolumeOuterColorR = reader.ReadByte();
-            this.VolumeOuterColorG = reader.ReadByte();
-            this.VolumeOuterColorB = reader.ReadByte();
-            this.LightHash = reader.ReadByte();
-            this.VolumeOuterIntensity = reader.ReadSingle();
-            this.CoronaSize = reader.ReadSingle();
-            this.VolumeOuterExponent = reader.ReadSingle();
-            this.LightFadeDistance = reader.ReadByte();
-            this.ShadowFadeDistance = reader.ReadByte();
-            this.SpecularFadeDistance = reader.ReadByte();
-            this.VolumetricFadeDistance = reader.ReadByte();
-            this.ShadowNearClip = reader.ReadSingle();
-            this.CoronaIntensity = reader.ReadSingle();
-            this.CoronaZBias = reader.ReadSingle();
-            this.Direction = reader.ReadVector3();
-            this.Tangent = reader.ReadVector3();
-            this.ConeInnerAngle = reader.ReadSingle();
-            this.ConeOuterAngle = reader.ReadSingle();
-            this.Extent = reader.ReadVector3();
-            this.ProjectedTextureHash = reader.ReadUInt32();
-            this.Unknown_A4h = reader.ReadUInt32();
-        }
-
-        /// <summary>
-        /// Writes the data-block to a stream.
-        /// </summary>
-        public override void Write(ResourceDataWriter writer, params object[] parameters)
-        {
-            // write structure data
-            writer.Write(this.Unknown_0h);
-            writer.Write(this.Unknown_4h);
-            writer.Write(this.Position);
-            writer.Write(this.Unknown_14h);
-            writer.Write(this.ColorR);
-            writer.Write(this.ColorG);
-            writer.Write(this.ColorB);
-            writer.Write(this.Flashiness);
-            writer.Write(this.Intensity);
-            writer.Write(this.Flags);
-            writer.Write(this.BoneId);
-            writer.Write(this.Type);
-            writer.Write(this.GroupId);
-            writer.Write(this.TimeFlags);
-            writer.Write(this.Falloff);
-            writer.Write(this.FalloffExponent);
-            writer.Write(this.CullingPlaneNormal);
-            writer.Write(this.CullingPlaneOffset);
-            writer.Write(this.ShadowBlur);
-            writer.Write(this.Unknown_45h);
-            writer.Write(this.Unknown_46h);
-            writer.Write(this.Unknown_48h);
-            writer.Write(this.VolumeIntensity);
-            writer.Write(this.VolumeSizeScale);
-            writer.Write(this.VolumeOuterColorR);
-            writer.Write(this.VolumeOuterColorG);
-            writer.Write(this.VolumeOuterColorB);
-            writer.Write(this.LightHash);
-            writer.Write(this.VolumeOuterIntensity);
-            writer.Write(this.CoronaSize);
-            writer.Write(this.VolumeOuterExponent);
-            writer.Write(this.LightFadeDistance);
-            writer.Write(this.ShadowFadeDistance);
-            writer.Write(this.SpecularFadeDistance);
-            writer.Write(this.VolumetricFadeDistance);
-            writer.Write(this.ShadowNearClip);
-            writer.Write(this.CoronaIntensity);
-            writer.Write(this.CoronaZBias);
-            writer.Write(this.Direction);
-            writer.Write(this.Tangent);
-            writer.Write(this.ConeInnerAngle);
-            writer.Write(this.ConeOuterAngle);
-            writer.Write(this.Extent);
-            writer.Write(this.ProjectedTextureHash);
-            writer.Write(this.Unknown_A4h);
+            return new LightAttributes()
+            {
+                Unknown_0h = EndiannessExtensions.ReverseEndianness(Unknown_0h),
+                Unknown_4h = EndiannessExtensions.ReverseEndianness(Unknown_4h),
+                Position = EndiannessExtensions.ReverseEndianness(Position),
+                Unknown_14h = EndiannessExtensions.ReverseEndianness(Unknown_14h),
+                ColorR = EndiannessExtensions.ReverseEndianness(ColorR),
+                ColorG = EndiannessExtensions.ReverseEndianness(ColorG),
+                ColorB = EndiannessExtensions.ReverseEndianness(ColorB),
+                Flashiness = EndiannessExtensions.ReverseEndianness(Flashiness),
+                Intensity = EndiannessExtensions.ReverseEndianness(Intensity),
+                Flags = EndiannessExtensions.ReverseEndianness(Flags),
+                BoneId = EndiannessExtensions.ReverseEndianness(BoneId),
+                Type = EndiannessExtensions.ReverseEndianness(Type),
+                GroupId = EndiannessExtensions.ReverseEndianness(GroupId),
+                TimeFlags = EndiannessExtensions.ReverseEndianness(TimeFlags),
+                Falloff = EndiannessExtensions.ReverseEndianness(Falloff),
+                FalloffExponent = EndiannessExtensions.ReverseEndianness(FalloffExponent),
+                CullingPlaneNormal = EndiannessExtensions.ReverseEndianness(CullingPlaneNormal),
+                CullingPlaneOffset = EndiannessExtensions.ReverseEndianness(CullingPlaneOffset),
+                ShadowBlur = EndiannessExtensions.ReverseEndianness(ShadowBlur),
+                Unknown_45h = EndiannessExtensions.ReverseEndianness(Unknown_45h),
+                Unknown_46h = EndiannessExtensions.ReverseEndianness(Unknown_46h),
+                Unknown_48h = EndiannessExtensions.ReverseEndianness(Unknown_48h),
+                VolumeIntensity = EndiannessExtensions.ReverseEndianness(VolumeIntensity),
+                VolumeSizeScale = EndiannessExtensions.ReverseEndianness(VolumeSizeScale),
+                VolumeOuterColorR = EndiannessExtensions.ReverseEndianness(VolumeOuterColorR),
+                VolumeOuterColorG = EndiannessExtensions.ReverseEndianness(VolumeOuterColorG),
+                VolumeOuterColorB = EndiannessExtensions.ReverseEndianness(VolumeOuterColorB),
+                LightHash = EndiannessExtensions.ReverseEndianness(LightHash),
+                VolumeOuterIntensity = EndiannessExtensions.ReverseEndianness(VolumeOuterIntensity),
+                CoronaSize = EndiannessExtensions.ReverseEndianness(CoronaSize),
+                VolumeOuterExponent = EndiannessExtensions.ReverseEndianness(VolumeOuterExponent),
+                LightFadeDistance = EndiannessExtensions.ReverseEndianness(LightFadeDistance),
+                ShadowFadeDistance = EndiannessExtensions.ReverseEndianness(ShadowFadeDistance),
+                SpecularFadeDistance = EndiannessExtensions.ReverseEndianness(SpecularFadeDistance),
+                VolumetricFadeDistance = EndiannessExtensions.ReverseEndianness(VolumetricFadeDistance),
+                ShadowNearClip = EndiannessExtensions.ReverseEndianness(ShadowNearClip),
+                CoronaIntensity = EndiannessExtensions.ReverseEndianness(CoronaIntensity),
+                CoronaZBias = EndiannessExtensions.ReverseEndianness(CoronaZBias),
+                Direction = EndiannessExtensions.ReverseEndianness(Direction),
+                Tangent = EndiannessExtensions.ReverseEndianness(Tangent),
+                ConeInnerAngle = EndiannessExtensions.ReverseEndianness(ConeInnerAngle),
+                ConeOuterAngle = EndiannessExtensions.ReverseEndianness(ConeOuterAngle),
+                Extent = EndiannessExtensions.ReverseEndianness(Extent),
+                ProjectedTextureHash = EndiannessExtensions.ReverseEndianness(ProjectedTextureHash),
+                Unknown_A4h = EndiannessExtensions.ReverseEndianness(Unknown_A4h),
+            };
         }
     }
 }

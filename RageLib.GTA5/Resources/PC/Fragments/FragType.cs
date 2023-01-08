@@ -56,7 +56,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong ClothDrawablePointer;
         public ulong Unknown_100h; // 0x0000000000000000
         public ulong Unknown_108h; // 0x0000000000000000
-        public ResourceSimpleList64<LightAttributes> LightAttributes;
+        public SimpleList64<LightAttributes> LightAttributes;
         public ulong VehicleGlassWindowDataPointer;
         public ulong Unknown_128h; // 0x0000000000000000
 
@@ -119,7 +119,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             this.ClothDrawablePointer = reader.ReadUInt64();
             this.Unknown_100h = reader.ReadUInt64();
             this.Unknown_108h = reader.ReadUInt64();
-            this.LightAttributes = reader.ReadBlock<ResourceSimpleList64<LightAttributes>>();
+            this.LightAttributes = reader.ReadBlock<SimpleList64<LightAttributes>>();
             this.VehicleGlassWindowDataPointer = reader.ReadUInt64();
             this.Unknown_128h = reader.ReadUInt64();
 

@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // structure data
         public ulong NamePointer;
-        public ResourceSimpleList64<LightAttributes> LightAttributes;
+        public SimpleList64<LightAttributes> LightAttributes;
         public ulong Unknown_C0h; // 0x0000000000000000
         public ulong BoundPointer;
 
@@ -31,7 +31,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // read structure data
             this.NamePointer = reader.ReadUInt64();
-            this.LightAttributes = reader.ReadBlock<ResourceSimpleList64<LightAttributes>>();
+            this.LightAttributes = reader.ReadBlock<SimpleList64<LightAttributes>>();
             this.Unknown_C0h = reader.ReadUInt64();
             this.BoundPointer = reader.ReadUInt64();
 
