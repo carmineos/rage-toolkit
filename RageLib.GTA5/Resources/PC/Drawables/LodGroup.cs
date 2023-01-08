@@ -28,10 +28,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public float LodDistanceMedium;
         public float LodDistanceLow;
         public float LodDistanceVeryLow;
-        public uint DrawBucketMaskHigh;
-        public uint DrawBucketMaskMedium;
-        public uint DrawBucketMaskLow;
-        public uint DrawBucketMaskVeryLow;
+        public LodDrawBucketMask DrawBucketMaskHigh;
+        public LodDrawBucketMask DrawBucketMaskMedium;
+        public LodDrawBucketMask DrawBucketMaskLow;
+        public LodDrawBucketMask DrawBucketMaskVeryLow;
 
         // reference data
         public Lod? LodHigh { get; set; }
@@ -110,6 +110,38 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             if (LodLow != null) list.Add(LodLow);
             if (LodVeryLow != null) list.Add(LodVeryLow);
             return list.ToArray();
+        }
+
+        public override void Rebuild()
+        {
+            base.Rebuild();
+
+            ComputeDrawBucketMasks();
+        }
+
+        private void ComputeDrawBucketMasks()
+        {
+            DrawBucketMaskHigh.Mask = GetDrawBucketMaskForLod(LodHigh);
+            DrawBucketMaskMedium.Mask = GetDrawBucketMaskForLod(LodMedium);
+            DrawBucketMaskLow.Mask = GetDrawBucketMaskForLod(LodLow);
+            DrawBucketMaskVeryLow.Mask = GetDrawBucketMaskForLod(LodVeryLow);
+        }
+
+        private byte GetDrawBucketMaskForLod(Lod? lod)
+        {
+            byte mask = 0x0;
+
+            var models = lod?.Models?.Entries;
+
+            if (models is null)
+                return mask;
+
+            foreach(var model in models)
+            {
+                mask |= model.Mask;
+            }
+
+            return mask;
         }
     }
 }
