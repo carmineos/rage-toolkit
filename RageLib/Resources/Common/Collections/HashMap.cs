@@ -15,8 +15,8 @@ namespace RageLib.Resources.Common.Collections
         public ulong BucketsPointer;
         public ushort BucketsCount;
         public ushort Count;
-        public ushort Unknown_Ch;
-        public byte Unknown_Eh;
+        private ushort Unknown_Ch;
+        private byte Unknown_Eh;
         public byte Initialized;
 
         // reference data

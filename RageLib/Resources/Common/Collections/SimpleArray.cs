@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace RageLib.Resources.Common.Collections
@@ -55,8 +54,8 @@ namespace RageLib.Resources.Common.Collections
 
         public int Count => Data.Length;
 
-        public T this[int index] 
-        { 
+        public T this[int index]
+        {
             get => Data[index];
             set => Data[index] = value;
         }

@@ -1,7 +1,6 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using System;
-using System.Collections.Generic;
 
 namespace RageLib.Resources.Common.Collections
 {

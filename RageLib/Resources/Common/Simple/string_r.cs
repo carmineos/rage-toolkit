@@ -1,6 +1,6 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Simple
 {
     /// <summary>
     /// Represents a string that can be referenced in a resource structure.
@@ -29,7 +29,7 @@ namespace RageLib.Resources.Common
         {
             writer.Write(Value);
         }
-        
+
         public static explicit operator string(string_r value)
         {
             return value.Value;

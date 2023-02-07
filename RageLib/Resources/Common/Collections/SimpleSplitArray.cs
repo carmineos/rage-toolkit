@@ -19,13 +19,13 @@ namespace RageLib.Resources.Common.Collections
         // structure data
         public ulong VFT;
         public uint EntriesCount;
-        public uint Unknown_Ch; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
         public ulong PartsPointer;
         public ulong OffsetsPointer;
         public uint PartsCount;
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
 
         // reference data
         public ResourceSimpleArray<SimpleSplitArrayPart<T>>? Parts { get; set; }

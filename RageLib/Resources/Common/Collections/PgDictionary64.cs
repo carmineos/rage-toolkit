@@ -1,6 +1,5 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
 using System;
 
 namespace RageLib.Resources.Common.Collections
@@ -15,7 +14,7 @@ namespace RageLib.Resources.Common.Collections
         // structure data
         public ulong ParentPointer; // 0x0000000000000000
         public uint Count; // 0x00000001
-        private uint Unknown_1Ch; // 0x00000000
+        public uint Unknown_1Ch; // 0x00000000
         public SimpleList64<uint> Hashes;
         public ResourcePointerList64<T> Values;
 
