@@ -25,32 +25,32 @@ namespace RageLib.Resources.Common.Collections
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.BucketsPointer = reader.ReadUInt64();
-            this.BucketsCount = reader.ReadUInt16();
-            this.Count = reader.ReadUInt16();
-            this.Unknown_Ch = reader.ReadUInt16();
-            this.Unknown_Eh = reader.ReadByte();
-            this.Initialized = reader.ReadByte();
+            BucketsPointer = reader.ReadUInt64();
+            BucketsCount = reader.ReadUInt16();
+            Count = reader.ReadUInt16();
+            Unknown_Ch = reader.ReadUInt16();
+            Unknown_Eh = reader.ReadByte();
+            Initialized = reader.ReadByte();
 
             // read reference data
-            this.Buckets = reader.ReadBlockAt<ResourcePointerArray64<HashMapEntry>>(
-                this.BucketsPointer, // offset
-                this.BucketsCount
+            Buckets = reader.ReadBlockAt<ResourcePointerArray64<HashMapEntry>>(
+                BucketsPointer, // offset
+                BucketsCount
             );
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.BucketsPointer = (ulong)(this.Buckets?.BlockPosition ?? 0);
+            BucketsPointer = (ulong)(Buckets?.BlockPosition ?? 0);
 
             // write structure data
-            writer.Write(this.BucketsPointer);
-            writer.Write(this.BucketsCount);
-            writer.Write(this.Count);
-            writer.Write(this.Unknown_Ch);
-            writer.Write(this.Unknown_Eh);
-            writer.Write(this.Initialized);
+            writer.Write(BucketsPointer);
+            writer.Write(BucketsCount);
+            writer.Write(Count);
+            writer.Write(Unknown_Ch);
+            writer.Write(Unknown_Eh);
+            writer.Write(Initialized);
         }
 
         /// <summary>
@@ -187,13 +187,13 @@ namespace RageLib.Resources.Common.Collections
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.Hash = reader.ReadUInt32();
-            this.Data = reader.ReadUInt32();
-            this.NextPointer = reader.ReadUInt64();
+            Hash = reader.ReadUInt32();
+            Data = reader.ReadUInt32();
+            NextPointer = reader.ReadUInt64();
 
             // read reference data
-            this.Next = reader.ReadBlockAt<HashMapEntry>(
-                this.NextPointer // offset
+            Next = reader.ReadBlockAt<HashMapEntry>(
+                NextPointer // offset
             );
         }
 
@@ -203,12 +203,12 @@ namespace RageLib.Resources.Common.Collections
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.NextPointer = (ulong)(this.Next?.BlockPosition ?? 0);
+            NextPointer = (ulong)(Next?.BlockPosition ?? 0);
 
             // write structure data
-            writer.Write(this.Hash);
-            writer.Write(this.Data);
-            writer.Write(this.NextPointer);
+            writer.Write(Hash);
+            writer.Write(Data);
+            writer.Write(NextPointer);
         }
 
         /// <summary>

@@ -24,32 +24,32 @@ namespace RageLib.Resources.Common.Collections
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.BucketsPointer = reader.ReadUInt64();
-            this.BucketsCount = reader.ReadUInt16();
-            this.Count = reader.ReadUInt16();
-            this.Unknown_Ch = reader.ReadUInt16();
-            this.Unknown_Eh = reader.ReadByte();
-            this.Initialized = reader.ReadByte();
+            BucketsPointer = reader.ReadUInt64();
+            BucketsCount = reader.ReadUInt16();
+            Count = reader.ReadUInt16();
+            Unknown_Ch = reader.ReadUInt16();
+            Unknown_Eh = reader.ReadByte();
+            Initialized = reader.ReadByte();
 
             // read reference data
-            this.Buckets = reader.ReadBlockAt<ResourcePointerArray64<ResourceHashMapEntry<T>>>(
-                this.BucketsPointer, // offset
-                this.BucketsCount
+            Buckets = reader.ReadBlockAt<ResourcePointerArray64<ResourceHashMapEntry<T>>>(
+                BucketsPointer, // offset
+                BucketsCount
             );
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.BucketsPointer = (ulong)(this.Buckets?.BlockPosition ?? 0);
+            BucketsPointer = (ulong)(Buckets?.BlockPosition ?? 0);
 
             // write structure data
-            writer.Write(this.BucketsPointer);
-            writer.Write(this.BucketsCount);
-            writer.Write(this.Count);
-            writer.Write(this.Unknown_Ch);
-            writer.Write(this.Unknown_Eh);
-            writer.Write(this.Initialized);
+            writer.Write(BucketsPointer);
+            writer.Write(BucketsCount);
+            writer.Write(Count);
+            writer.Write(Unknown_Ch);
+            writer.Write(Unknown_Eh);
+            writer.Write(Initialized);
         }
 
         /// <summary>
@@ -191,19 +191,19 @@ namespace RageLib.Resources.Common.Collections
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.Hash = reader.ReadUInt32();
-            this.Unknown_4h = reader.ReadUInt32();
-            this.DataPointer = reader.ReadUInt64();
-            this.NextPointer = reader.ReadUInt64();
-            this.Unknown_18h = reader.ReadUInt32();
-            this.Unknown_1Ch = reader.ReadUInt32();
+            Hash = reader.ReadUInt32();
+            Unknown_4h = reader.ReadUInt32();
+            DataPointer = reader.ReadUInt64();
+            NextPointer = reader.ReadUInt64();
+            Unknown_18h = reader.ReadUInt32();
+            Unknown_1Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Data = reader.ReadBlockAt<T>(
-                this.DataPointer // offset
+            Data = reader.ReadBlockAt<T>(
+                DataPointer // offset
             );
-            this.Next = reader.ReadBlockAt<ResourceHashMapEntry<T>>(
-                this.NextPointer // offset
+            Next = reader.ReadBlockAt<ResourceHashMapEntry<T>>(
+                NextPointer // offset
             );
         }
 
@@ -213,16 +213,16 @@ namespace RageLib.Resources.Common.Collections
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.DataPointer = (ulong)(this.Data?.BlockPosition ?? 0);
-            this.NextPointer = (ulong)(this.Next?.BlockPosition ?? 0);
+            DataPointer = (ulong)(Data?.BlockPosition ?? 0);
+            NextPointer = (ulong)(Next?.BlockPosition ?? 0);
 
             // write structure data
-            writer.Write(this.Hash);
-            writer.Write(this.Unknown_4h);
-            writer.Write(this.DataPointer);
-            writer.Write(this.NextPointer);
-            writer.Write(this.Unknown_18h);
-            writer.Write(this.Unknown_1Ch);
+            writer.Write(Hash);
+            writer.Write(Unknown_4h);
+            writer.Write(DataPointer);
+            writer.Write(NextPointer);
+            writer.Write(Unknown_18h);
+            writer.Write(Unknown_1Ch);
         }
 
         /// <summary>

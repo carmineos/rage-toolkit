@@ -29,7 +29,7 @@ namespace RageLib.Resources.Common.Collections
             Unknown_0Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Entries = reader.ReadBlockAt<SimpleArray<T>>(EntriesPointer, EntriesCapacity);
+            Entries = reader.ReadBlockAt<SimpleArray<T>>(EntriesPointer, EntriesCapacity);
 
             // TODO: see https://github.com/carmineos/gta-toolkit/issues/13
         }

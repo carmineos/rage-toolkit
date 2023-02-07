@@ -15,7 +15,7 @@ namespace RageLib.Resources.Common.Collections
         // structure data
         public ulong ParentPointer; // 0x0000000000000000
         public uint Count; // 0x00000001
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
         public SimpleList64<uint> Hashes;
         public ResourcePointerList64<T> Values;
 
@@ -27,11 +27,11 @@ namespace RageLib.Resources.Common.Collections
             base.Read(reader, parameters);
 
             // read structure data
-            this.ParentPointer = reader.ReadUInt64();
-            this.Count = reader.ReadUInt32();
-            this.Unknown_1Ch = reader.ReadUInt32();
-            this.Hashes = reader.ReadBlock<SimpleList64<uint>>();
-            this.Values = reader.ReadBlock<ResourcePointerList64<T>>();
+            ParentPointer = reader.ReadUInt64();
+            Count = reader.ReadUInt32();
+            Unknown_1Ch = reader.ReadUInt32();
+            Hashes = reader.ReadBlock<SimpleList64<uint>>();
+            Values = reader.ReadBlock<ResourcePointerList64<T>>();
         }
 
         /// <summary>
@@ -42,11 +42,11 @@ namespace RageLib.Resources.Common.Collections
             base.Write(writer, parameters);
 
             // write structure data
-            writer.Write(this.ParentPointer);
-            writer.Write(this.Count);
-            writer.Write(this.Unknown_1Ch);
-            writer.WriteBlock(this.Hashes);
-            writer.WriteBlock(this.Values);
+            writer.Write(ParentPointer);
+            writer.Write(Count);
+            writer.Write(Unknown_1Ch);
+            writer.WriteBlock(Hashes);
+            writer.WriteBlock(Values);
         }
 
         public override Tuple<long, IResourceBlock>[] GetParts()
