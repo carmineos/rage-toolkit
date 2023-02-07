@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     // aiSplitArray<T, C>
     // C is used as max capacity of each SplitArrayPart<T>

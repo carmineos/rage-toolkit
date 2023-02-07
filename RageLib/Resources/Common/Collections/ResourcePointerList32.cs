@@ -2,7 +2,7 @@
 
 using System;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     public class ResourcePointerList32<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
     {

@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     public class ResourcePointerList64<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
     {

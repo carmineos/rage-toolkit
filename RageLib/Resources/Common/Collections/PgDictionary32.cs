@@ -3,7 +3,7 @@
 using RageLib.Resources.Common;
 using System;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     // pgBase
     // pgDictionaryBase

@@ -2,7 +2,7 @@
 
 using System;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     public class SimpleBigList32<T> : ResourceSystemBlock where T : unmanaged
     {

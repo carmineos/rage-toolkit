@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     /// <summary>
     /// A <see cref="ResourceSystemBlock"/> which holds an array of unmanaged type.

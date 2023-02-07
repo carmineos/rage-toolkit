@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     // TODO: create a common base class for this and AtHashMap
     public class ResourceHashMap<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
