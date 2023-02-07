@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Bounds;
 using RageLib.Resources.GTA5.PC.Drawables;
 using System;
@@ -16,7 +17,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         // structure data
         public ulong Unknown_A8h; // 0x0000000000000000
-        public Matrix4x4 Unknown_B0h;      
+        public Matrix4x4 Unknown_B0h;
         public ulong BoundPointer;
         public SimpleList64<ulong> Unknown_F8h_Data;
         public SimpleList64<Matrix4x4> Unknown_108h_Data;

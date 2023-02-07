@@ -1,6 +1,6 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Meta;
 using System.Collections.Generic;
 
@@ -11,7 +11,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions
         public static ResourceSimpleArray<StructureInfo> BuildMetaStructureInfos(this MetaDefinitions definitions)
         {
             var structureInfos = new ResourceSimpleArray<StructureInfo>();
-            
+
             foreach (var xmlStructureInfo in definitions.Structures)
                 structureInfos.Add(xmlStructureInfo.ToStructureInfo());
 
@@ -21,7 +21,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions
         public static ResourceSimpleArray<EnumInfo> BuildMetaEnumInfos(this MetaDefinitions definitions)
         {
             var enumInfos = new ResourceSimpleArray<EnumInfo>();
-            
+
             foreach (var xmlEnumInfo in definitions.Enums)
                 enumInfos.Add(xmlEnumInfo.ToEnumInfo());
 

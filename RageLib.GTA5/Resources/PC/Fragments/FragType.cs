@@ -1,10 +1,11 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
-using RageLib.Resources.GTA5.PC.Drawables;
-using System.Collections.Generic;
-using System;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Clothes;
+using RageLib.Resources.GTA5.PC.Drawables;
+using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Fragments

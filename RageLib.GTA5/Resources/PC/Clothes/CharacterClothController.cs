@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Numerics;
 
@@ -25,7 +25,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public uint Unknown_D8h; // 0x00000000
         public float Unknown_DCh; // 0x3F800000
         public SimpleList64<uint> BoneIDMap;
-        
+
         /// <summary>
         /// Reads the data-block from a stream.
         /// </summary>

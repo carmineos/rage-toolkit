@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -29,7 +29,7 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public uint Unknown_9Ch;
         public uint Unknown_A0h;
         public uint Unknown_A4h;
-        public uint Unknown_A8h;  
+        public uint Unknown_A8h;
         public uint Unknown_ACh;
         public uint Unknown_B0h; // 0x00000000
         public uint Unknown_B4h; // 0x00000000

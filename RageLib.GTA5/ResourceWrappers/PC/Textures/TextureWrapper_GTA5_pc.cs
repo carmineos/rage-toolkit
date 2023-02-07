@@ -1,6 +1,6 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Textures;
 using RageLib.ResourceWrappers;
 using System;
@@ -74,7 +74,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Textures
 
         public IEnumerator<ITexture> GetEnumerator()
         {
-            foreach(var x in list)
+            foreach (var x in list)
                 yield return new TextureWrapper_GTA5_pc(x);
         }
 

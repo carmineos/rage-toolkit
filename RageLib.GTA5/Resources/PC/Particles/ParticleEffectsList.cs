@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Drawables;
 using RageLib.Resources.GTA5.PC.Textures;
 using System.Collections.Generic;
@@ -67,16 +68,16 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.TextureDictionary = reader.ReadBlockAt<PgDictionary64<TextureDX11>>(
                 this.TextureDictionaryPointer // offset
             );
-            this.DrawableDictionary = reader.ReadBlockAt< PgDictionary64<Drawable>>(
+            this.DrawableDictionary = reader.ReadBlockAt<PgDictionary64<Drawable>>(
                 this.DrawableDictionaryPointer // offset
             );
-            this.ParticleRuleDictionary = reader.ReadBlockAt< PgDictionary64<ParticleRule>>(
+            this.ParticleRuleDictionary = reader.ReadBlockAt<PgDictionary64<ParticleRule>>(
                 this.ParticleRuleDictionaryPointer // offset
             );
-            this.EffectRuleDictionary = reader.ReadBlockAt< PgDictionary64<EffectRule>>(
+            this.EffectRuleDictionary = reader.ReadBlockAt<PgDictionary64<EffectRule>>(
                 this.EmitterRuleDictionaryPointer // offset
             );
-            this.EmitterRuleDictionary = reader.ReadBlockAt< PgDictionary64<EmitterRule>>(
+            this.EmitterRuleDictionary = reader.ReadBlockAt<PgDictionary64<EmitterRule>>(
                 this.EffectRuleDictionaryPointer // offset
             );
         }

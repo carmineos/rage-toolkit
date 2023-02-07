@@ -9,9 +9,9 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         // structure data
         public float CapsuleHalfHeight; // 0x00000000
-        public uint Unknown_74h; // 0x00000000
-        public uint Unknown_78h; // 0x00000000
-        public uint Unknown_7Ch; // 0x00000000
+        private uint Unknown_74h; // 0x00000000
+        private uint Unknown_78h; // 0x00000000
+        private uint Unknown_7Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

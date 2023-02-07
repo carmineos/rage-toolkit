@@ -4,7 +4,7 @@ using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using RageLib.Hash;
 using RageLib.Helpers.Xml;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Meta;
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(xmlFileStream);
             var rootOfData = xmlDoc.LastChild;
-            
+
             var rootInfo = FindAndCheckStructure(rootOfData);
 
             var res = ParseStructure(rootOfData, rootInfo);
@@ -359,7 +359,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             floatVectorValue.Value = new Vector4(x, y, z, w);
             return floatVectorValue;
         }
-        
+
         private MetaEnumInt8 ReadByteEnum(XmlNode node, int enumNameHash)
         {
             var byteEnum = new MetaEnumInt8();
@@ -573,7 +573,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
             arrayValue.Entries = new List<IMetaValue>();
             var items = StringParseHelpers.ParseItemsAsUInt8(innerText);
-            
+
             foreach (var item in items)
             {
                 arrayValue.Entries.Add(new MetaByte(item));
@@ -651,7 +651,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             var items = StringParseHelpers.ParseItemsAsFloat(innerText);
             Debug.Assert(items.Count % 3 == 0);
 
-            for (int i = 0; i < items.Count; i+=3)
+            for (int i = 0; i < items.Count; i += 3)
             {
                 arrayValue.Entries.Add(new MetaVector3(items[i], items[i + 1], items[i + 2]));
             }
@@ -792,7 +792,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
         public MetaStructureXml FindAndCheckStructure(XmlNode node)
         {
             int h = GetHashForName(node.Name);
-            foreach(var x in xmlInfos.Structures)
+            foreach (var x in xmlInfos.Structures)
             {
                 if (x.NameHash == h)
                 {

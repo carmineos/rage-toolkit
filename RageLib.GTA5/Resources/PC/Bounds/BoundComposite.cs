@@ -1,7 +1,7 @@
-// Copyright � Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Numerics;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -22,7 +22,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ulong OwnedTypeAndIncludeFlagsPointer;
         public ushort MaxNumBounds;
         public ushort NumBounds;
-        public uint Unknown_A4h; // 0x00000000
+        private uint Unknown_A4h; // 0x00000000
         public ulong BVHPointer;
 
         // reference data
@@ -191,9 +191,9 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         private void UpdateFlags()
         {
             BoundCompositeFlags flags = new BoundCompositeFlags()
-            { 
+            {
                 Flags1 = BoundFlags.NONE,
-                Flags2 = BoundFlags.NONE 
+                Flags2 = BoundFlags.NONE
             };
 
             BoundCompositeFlags[] flagsArray = new BoundCompositeFlags[NumBounds];

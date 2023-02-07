@@ -4,7 +4,7 @@ using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using RageLib.Hash;
 using RageLib.Helpers.Xml;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Meta;
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         public MetaStructure Import(Stream xmlFileStream)
         {
-            
+
             var reader = XmlReader.Create(xmlFileStream, new XmlReaderSettings() { IgnoreWhitespace = true });
 
             // Skip declaration
@@ -88,13 +88,13 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 var name = reader.Name;
                 var hash = GetHashForName(name);
-                
+
                 var xmlEntry = info.Entries[i];
                 var entryInfo = GetStructureEntryInfo(resultStructure.info, xmlEntry.NameHash);
-                
+
                 if (xmlEntry.NameHash != hash)
                     throw new Exception($"Expected:{xmlEntry.NameHash}, Current: {hash}({reader.Name})");
-                
+
                 var type = (StructureEntryDataType)xmlEntry.Type;
 
                 IMetaValue metaValue = null;
@@ -172,7 +172,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                         }
                     case StructureEntryDataType.UInt8:
                         {
-                            metaValue = new MetaByte() { Value= reader.GetAttributeValueAsByte() };
+                            metaValue = new MetaByte() { Value = reader.GetAttributeValueAsByte() };
 
                             if (reader.IsEmptyElement)
                             {
@@ -530,7 +530,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             }
 
                             break;
-                        }                   
+                        }
                     default: throw new Exception($"Unsupported DataType: {type}");
                 }
 
@@ -560,7 +560,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 return (int)Jenkins.Hash(hashName);
             }
         }
-        
+
         public int GetHashForEnumName(ReadOnlySpan<char> hashName)
         {
             if (hashName.StartsWith("enum_hash_", StringComparison.OrdinalIgnoreCase))
@@ -603,7 +603,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 if (!type.Equals("NULL"))
                 {
                     var hash = GetHashForName(type);
-                
+
                     var structure = GetMetaStructureXml(hash);
                     var metaValue = ParseStructure(reader.ReadSubtree(), structure);
                     pointer.Value = metaValue;
@@ -678,7 +678,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
                 var items = StringParseHelpers.ParseItemsAsFloat(content);
-                
+
                 foreach (var item in items)
                 {
                     entries.Add(new MetaFloat(item));

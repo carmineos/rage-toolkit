@@ -1,7 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Hash;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Simple;
 using System;
 using System.Collections.Generic;
 using System.Numerics;

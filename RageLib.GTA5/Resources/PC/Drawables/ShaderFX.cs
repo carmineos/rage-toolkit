@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Textures;
 using System;
 using System.Collections.Generic;
@@ -235,7 +235,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // write parameter infos
             foreach (var f in Parameters)
-                writer.WriteBlock(f); 
+                writer.WriteBlock(f);
             //writer.WriteBlock(Parameters);
 
             // write vector data

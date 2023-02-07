@@ -2,7 +2,7 @@
 
 using RageLib.Data;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5;
 using RageLib.Resources.GTA5.PC.Meta;
 using System.Collections.Generic;
@@ -208,11 +208,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 case StructureEntryDataType.Int8:
                 case StructureEntryDataType.UInt8:
                     return 1;
-                
+
                 case StructureEntryDataType.Int16:
                 case StructureEntryDataType.UInt16:
                     return 2;
-               
+
                 case StructureEntryDataType.Int32:
                 case StructureEntryDataType.UInt32:
                 case StructureEntryDataType.Float:
