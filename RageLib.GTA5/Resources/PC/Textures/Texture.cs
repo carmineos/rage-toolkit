@@ -23,9 +23,9 @@ namespace RageLib.Resources.GTA5.PC.Textures
         private uint Unknown_34h; // 0x00000000
         private uint Unknown_38h; // 0x00000000
         private uint Unknown_3Ch; // 0x00000000
-        public uint Unknown_40h;
+        public uint UsageData;
         private uint Unknown_44h; // 0x00000000
-        public uint Unknown_48h;
+        public uint ExtraFlags;
         private uint Unknown_4Ch; // 0x00000000
 
         // reference data
@@ -50,15 +50,15 @@ namespace RageLib.Resources.GTA5.PC.Textures
             Unknown_34h = reader.ReadUInt32();
             Unknown_38h = reader.ReadUInt32();
             Unknown_3Ch = reader.ReadUInt32();
-            this.Unknown_40h = reader.ReadUInt32();
+            UsageData = reader.ReadUInt32();
             Unknown_44h = reader.ReadUInt32();
-            this.Unknown_48h = reader.ReadUInt32();
+            ExtraFlags = reader.ReadUInt32();
             Unknown_4Ch = reader.ReadUInt32();
 
 
             // read reference data
-            this.Name = reader.ReadBlockAt<string_r>(
-                this.NamePointer // offset
+            Name = reader.ReadBlockAt<string_r>(
+                NamePointer // offset
             );
         }
 
@@ -70,7 +70,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
             base.Write(writer, parameters);
 
             // update structure data
-            this.NamePointer = (ulong)(this.Name?.BlockPosition ?? 0);
+            NamePointer = (ulong)(Name?.BlockPosition ?? 0);
 
             // write structure data
             writer.Write(Unknown_10h);
@@ -84,9 +84,9 @@ namespace RageLib.Resources.GTA5.PC.Textures
             writer.Write(Unknown_34h);
             writer.Write(Unknown_38h);
             writer.Write(Unknown_3Ch);
-            writer.Write(this.Unknown_40h);
+            writer.Write(UsageData);
             writer.Write(Unknown_44h);
-            writer.Write(this.Unknown_48h);
+            writer.Write(ExtraFlags);
             writer.Write(Unknown_4Ch);
         }
 
