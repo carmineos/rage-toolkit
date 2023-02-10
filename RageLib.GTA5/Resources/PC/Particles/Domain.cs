@@ -14,19 +14,19 @@ namespace RageLib.Resources.GTA5.PC.Particles
         // structure data
         public uint Index;
         public byte Type;
-        public byte Unknown_Dh;
-        public ushort Unknown_Eh;
-        public uint Unknown_10h;
-        public uint Unknown_14h; // 0x00000000
+        private byte Unknown_Dh;
+        private ushort Unknown_Eh;
+        private uint Unknown_10h;
+        private uint Unknown_14h; // 0x00000000
         public KeyframeProp KeyframeProp0;
         public KeyframeProp KeyframeProp1;
         public KeyframeProp KeyframeProp2;
         public KeyframeProp KeyframeProp3;
-        public float Unknown_258h;
-        public uint Unknown_25Ch; // 0x00000000
+        private float Unknown_258h;
+        private uint Unknown_25Ch; // 0x00000000
         public ResourcePointerList64<KeyframeProp> KeyframeProps;
-        public ulong Unknown_270h; // 0x0000000000000000
-        public ulong Unknown_278h; // 0x0000000000000000
+        private ulong Unknown_270h; // 0x0000000000000000
+        private ulong Unknown_278h; // 0x0000000000000000
 
         /// <summary>
         /// Reads the data-block from a stream.

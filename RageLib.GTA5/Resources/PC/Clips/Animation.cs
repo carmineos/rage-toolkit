@@ -12,20 +12,20 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x60;
 
         // structure data
-        public ushort Unknown_10h;
-        public ushort Unknown_12h;
-        public ushort Unknown_14h;
-        public ushort Unknown_16h;
-        public float Unknown_18h;
-        public uint Unknown_1Ch; // Signature?
-        public uint Unknown_20h; // 0x00000000
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
-        public uint Unknown_30h; // 0x00000000
-        public uint Unknown_34h; // 0x00000000
-        public uint Unknown_38h;
-        public uint Unknown_3Ch;
+        private ushort Unknown_10h;
+        private ushort Unknown_12h;
+        private ushort Unknown_14h;
+        private ushort Unknown_16h;
+        private float Unknown_18h;
+        private uint Unknown_1Ch; // Signature?
+        private uint Unknown_20h; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_30h; // 0x00000000
+        private uint Unknown_34h; // 0x00000000
+        private uint Unknown_38h;
+        private uint Unknown_3Ch;
         public ResourcePointerList64<Sequence> Sequences;
         public SimpleList64<AnimTrack> Tracks;
 

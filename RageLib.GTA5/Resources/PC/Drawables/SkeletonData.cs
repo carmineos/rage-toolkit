@@ -22,16 +22,16 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong DefaultPoseMatricesPointer;
         public ulong ParentIndicesPointer;
         public ulong ChildrenIndicesPointer;
-        public ulong Unknown_48h; // 0x0000000000000000
-        public uint Unknown_50h;
-        public uint Unknown_54h;
+        private ulong Unknown_48h; // 0x0000000000000000
+        private uint Unknown_50h;
+        private uint Unknown_54h;
         public uint DataCRC;
-        public ushort Unknown_5Ch; // 0x0001
+        private ushort Unknown_5Ch; // 0x0001
         public ushort BonesCount;
         public ushort ChildrenIndicesCount;
-        public ushort Unknown_62h; // 0x0000
-        public uint Unknown_64h; // 0x00000000
-        public ulong Unknown_68h; // 0x0000000000000000
+        private ushort Unknown_62h; // 0x0000
+        private uint Unknown_64h; // 0x00000000
+        private ulong Unknown_68h; // 0x0000000000000000
 
         // reference data
         public BoneData? BoneData { get; set; }

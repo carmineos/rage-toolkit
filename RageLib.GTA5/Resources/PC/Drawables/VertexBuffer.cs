@@ -14,23 +14,23 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // structure data
         public ushort VertexStride;
-        public ushort Unknown_Ah;
-        public uint Unknown_Ch; // 0x00000000
+        private ushort Unknown_Ah;
+        private uint Unknown_Ch; // 0x00000000
         public ulong DataPointer1;
         public uint VertexCount;
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
         public ulong DataPointer2;
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
         public ulong InfoPointer;
-        public ulong Unknown_38h; // 0x0000000000000000
-        public ulong Unknown_40h; // 0x0000000000000000
-        public ulong Unknown_48h; // 0x0000000000000000
-        public ulong Unknown_50h; // 0x0000000000000000
-        public ulong Unknown_58h; // 0x0000000000000000
-        public ulong Unknown_60h; // 0x0000000000000000
-        public ulong Unknown_68h; // 0x0000000000000000
-        public ulong Unknown_70h; // 0x0000000000000000
-        public ulong Unknown_78h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
+        private ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_48h; // 0x0000000000000000
+        private ulong Unknown_50h; // 0x0000000000000000
+        private ulong Unknown_58h; // 0x0000000000000000
+        private ulong Unknown_60h; // 0x0000000000000000
+        private ulong Unknown_68h; // 0x0000000000000000
+        private ulong Unknown_70h; // 0x0000000000000000
+        private ulong Unknown_78h; // 0x0000000000000000
 
         // reference data
         public VertexData_GTA5_pc? Data1 { get; set; }

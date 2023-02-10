@@ -7,8 +7,8 @@ namespace RageLib.Resources.GTA5.PC.Nodes
     public struct Unknown_ND_002 : IResourceStruct<Unknown_ND_002>
     {
         // structure data
-        public uint Unknown_0h;
-        public uint Unknown_4h;
+        private uint Unknown_0h;
+        private uint Unknown_4h;
 
         public Unknown_ND_002 ReverseEndianness()
         {

@@ -14,9 +14,9 @@ namespace RageLib.GTA5.Resources.PC.Drawables
 
         // structure data
         public uint BonesCount;
-        public uint Unknown_04h; // 0x00000000
-        public uint Unknown_08h; // 0x00000000
-        public uint Unknown_0Ch; // 0x00000000
+        private uint Unknown_04h; // 0x00000000
+        private uint Unknown_08h; // 0x00000000
+        private uint Unknown_0Ch; // 0x00000000
         public ResourceSimpleArray<Bone> Bones;
 
         public override void Read(ResourceDataReader reader, params object[] parameters)

@@ -10,10 +10,10 @@ namespace RageLib.Resources.GTA5.PC.WaypointRecords
         public float PositionX;
         public float PositionY;
         public float PositionZ;
-        public ushort Unknown_Ch;
-        public ushort Unknown_Eh;
-        public ushort Unknown_10h;
-        public ushort Unknown_12h;
+        private ushort Unknown_Ch;
+        private ushort Unknown_Eh;
+        private ushort Unknown_10h;
+        private ushort Unknown_12h;
 
         public WaypointRecordEntry ReverseEndianness()
         {

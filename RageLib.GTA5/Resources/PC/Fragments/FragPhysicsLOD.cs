@@ -16,15 +16,15 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0x130;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h;
-        public uint Unknown_18h;
-        public uint Unknown_1Ch;
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h;
+        private uint Unknown_18h;
+        private uint Unknown_1Ch;
         public ulong ArticulatedBodyTypePointer;
-        public ulong Unknown_28h_Pointer;
-        public Vector4 Unknown_30h;
-        public Vector4 Unknown_40h;
-        public Vector4 Unknown_50h; // unbrokenCGOffset ?
+        private ulong Unknown_28h_Pointer;
+        private Vector4 Unknown_30h;
+        private Vector4 Unknown_40h;
+        private Vector4 Unknown_50h; // unbrokenCGOffset ?
         public Vector4 DampingLinearC;
         public Vector4 DampingLinearV;
         public Vector4 DampingLinearV2;
@@ -40,18 +40,18 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong PristineAngInertiaPointer;
         public ulong DamagedAngInertiaPointer;
         public ulong ChildrenTransformsPointer;
-        public ulong Unknown_108h_Pointer;
-        public ulong Unknown_110h_Pointer;
+        private ulong Unknown_108h_Pointer;
+        private ulong Unknown_110h_Pointer;
         public byte Count1;
         public byte Count2;
         public byte GroupsCount;
-        public byte Unknown_11Bh;
-        public byte Unknown_11Ch;
+        private byte Unknown_11Bh;
+        private byte Unknown_11Ch;
         public byte ChildrenCount;
         public byte Count3;
-        public byte Unknown_11Fh; // 0x00
-        public ulong Unknown_120h; // 0x0000000000000000
-        public ulong Unknown_128h; // 0x0000000000000000
+        private byte Unknown_11Fh; // 0x00
+        private ulong Unknown_120h; // 0x0000000000000000
+        private ulong Unknown_128h; // 0x0000000000000000
 
         // reference data
         public ArticulatedBodyType? ArticulatedBodyType { get; set; }

@@ -15,21 +15,21 @@ namespace RageLib.Resources.GTA5.PC.Clips
 
         // structure data
         public byte Type;
-        public byte Unknown_11h;
-        public ushort Unknown_12h;
-        public uint Unknown_14h; // 0x00000000
+        private byte Unknown_11h;
+        private ushort Unknown_12h;
+        private uint Unknown_14h; // 0x00000000
         public ulong NamePointer;
         public ushort NameLength1;
         public ushort NameLength2;
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x50000000
-        public uint Unknown_2Ch; // 0x00000000
-        public uint Unknown_30h;
-        public uint Unknown_34h; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x50000000
+        private uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_30h;
+        private uint Unknown_34h; // 0x00000000
         public ulong TagsPointer;
         public ulong PropertiesPointer;
-        public uint Unknown_48h; // 0x00000001
-        public uint Unknown_4Ch; // 0x00000000       
+        private uint Unknown_48h; // 0x00000001
+        private uint Unknown_4Ch; // 0x00000000       
 
         // reference data
         public string_r? Name { get; set; }

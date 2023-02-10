@@ -4,7 +4,7 @@ namespace RageLib.Resources.GTA5.PC.Meta
 {
     public enum StructureEntryDataType : byte
     {
-        Bool = 0x01, 
+        Bool = 0x01,
         Structure = 0x05, // has structure name hash in info, OCCURS IN ARRAY
         StructurePointer = 0x07, // OCCURS IN ARRAY
         Int8 = 0x10,
@@ -15,9 +15,9 @@ namespace RageLib.Resources.GTA5.PC.Meta
         UInt32 = 0x15, // OCCURS IN ARRAY
         Float = 0x21, // OCCURS IN ARRAY
         Vector3 = 0x33, // OCCURS IN ARRAY
-        Vector4 = 0x34, 
+        Vector4 = 0x34,
         StringLocal = 0x40, // has length in info
-        StringPointer = 0x44, 
+        StringPointer = 0x44,
         StringHash = 0x4A, // OCCURS IN ARRAY
         ArrayLocal = 0x50, // has length in info
         Array = 0x52,

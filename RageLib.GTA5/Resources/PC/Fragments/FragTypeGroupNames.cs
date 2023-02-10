@@ -12,7 +12,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         // structure data
         public ResourcePointerArray64<string32_r> GroupNames;
-        public ulong Unknown_VFT;
+        private ulong Unknown_VFT;
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {

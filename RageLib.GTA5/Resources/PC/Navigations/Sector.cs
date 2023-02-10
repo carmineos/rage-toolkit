@@ -10,19 +10,19 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public override long BlockLength => 0x60;
 
         // structure data
-        public Vector4 Unknown_0h;
-        public Vector4 Unknown_10h;
-        public uint Unknown_20h;
-        public uint Unknown_24h;
-        public uint Unknown_28h;
+        private Vector4 Unknown_0h;
+        private Vector4 Unknown_10h;
+        private uint Unknown_20h;
+        private uint Unknown_24h;
+        private uint Unknown_28h;
         public ulong DataPointer;
         public ulong SubTree1Pointer;
         public ulong SubTree2Pointer;
         public ulong SubTree3Pointer;
         public ulong SubTree4Pointer;
-        public uint Unknown_54h; // 0x00000000
-        public uint Unknown_58h; // 0x00000000
-        public uint Unknown_5Ch; // 0x00000000
+        private uint Unknown_54h; // 0x00000000
+        private uint Unknown_58h; // 0x00000000
+        private uint Unknown_5Ch; // 0x00000000
 
         // reference data
         public SectorData? Data { get; set; }

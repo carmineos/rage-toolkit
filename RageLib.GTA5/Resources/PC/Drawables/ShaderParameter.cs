@@ -1,7 +1,5 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using System.Collections.Generic;
-
 namespace RageLib.Resources.GTA5.PC.Drawables
 {
     public class ShaderParameter : ResourceSystemBlock
@@ -11,8 +9,8 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public byte DataType;
         public byte RegisterIndex;
-        public ushort Unknown_2h;
-        public uint Unknown_4h;
+        private ushort Unknown_2h;
+        private uint Unknown_4h;
         public ulong DataPointer;
 
         public IResourceBlock Data;

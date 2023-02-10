@@ -12,23 +12,23 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x90;
 
         // structure data
-        public ulong Unknown_8h; // 0x0000000000000000
-        public ulong Unknown_10h; // 0x0000000000000000
-        public ulong Unknown_18h; // 0x0000000000000000
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
-        public ulong Unknown_30h; // 0x0000000000000000
-        public ulong Unknown_38h; // 0x0000000000000000
-        public ulong Unknown_40h; // 0x0000000000000000
-        public ulong Unknown_48h; // 0x0000000000000000
-        public ulong Unknown_50h; // 0x0000000000000000
-        public ulong Unknown_58h; // 0x0000000000000000
-        public ulong Unknown_60h; // 0x0000000000000000
-        public uint Unknown_68h;
-        public uint Unknown_6Ch;
-        public SimpleList64<Unknown_P_009> Unknown_70h;
-        public ulong Unknown_80h; // 0x0000000000000000
-        public ulong Unknown_88h; // 0x0000000000000000
+        private ulong Unknown_8h; // 0x0000000000000000
+        private ulong Unknown_10h; // 0x0000000000000000
+        private ulong Unknown_18h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_30h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
+        private ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_48h; // 0x0000000000000000
+        private ulong Unknown_50h; // 0x0000000000000000
+        private ulong Unknown_58h; // 0x0000000000000000
+        private ulong Unknown_60h; // 0x0000000000000000
+        private uint Unknown_68h;
+        private uint Unknown_6Ch;
+        private SimpleList64<Unknown_P_009> Unknown_70h;
+        private ulong Unknown_80h; // 0x0000000000000000
+        private ulong Unknown_88h; // 0x0000000000000000
 
         /// <summary>
         /// Reads the data-block from a stream.

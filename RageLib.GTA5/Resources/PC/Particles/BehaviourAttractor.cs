@@ -12,8 +12,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public ResourcePointerList64<KeyframeProp> KeyframeProps;
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
         public KeyframeProp KeyframeProp0;
 
         /// <summary>

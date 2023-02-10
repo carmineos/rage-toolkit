@@ -12,14 +12,14 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x40;
 
         // structure data
-        public uint Unknown_18h;
-        public uint Unknown_1Ch;
-        public uint Unknown_20h;
-        public uint Unknown_24h;
+        private uint Unknown_18h;
+        private uint Unknown_1Ch;
+        private uint Unknown_20h;
+        private uint Unknown_24h;
         public ulong TexturePointer;
         public ulong NamePointer;
         public uint NameHash;
-        public uint Unknown_3Ch;
+        private uint Unknown_3Ch;
 
         // reference data
         public TextureDX11? Texture { get; set; }

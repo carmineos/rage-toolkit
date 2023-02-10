@@ -13,10 +13,10 @@ namespace RageLib.Resources.GTA5.PC.Meta
         public int StructureNameHash { get; set; }
         public int StructureKey { get; set; }
         public int Unknown_8h { get; set; }
-        public int Unknown_Ch { get; set; } = 0x00000000;
+        private int Unknown_Ch { get; set; } = 0x00000000;
         public long EntriesPointer { get; private set; }
         public int StructureLength { get; set; }
-        public short Unknown_1Ch { get; set; } = 0x0000;
+        private short Unknown_1Ch { get; set; } = 0x0000;
         public short EntriesCount { get; private set; }
 
         // reference data

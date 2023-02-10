@@ -1,6 +1,5 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
 using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Bounds;
 using System.Collections.Generic;
@@ -18,32 +17,32 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0xE0;
 
         // structure data
-        public uint Unknown_10h; // 0x00000002 -> type=phArchetypeDamp
-        public uint Unknown_14h; // 0x00000000
+        private uint Unknown_10h; // 0x00000002 -> type=phArchetypeDamp
+        private uint Unknown_14h; // 0x00000000
         public ulong NamePointer;
         public ulong BoundPointer;
         public uint TypeFlags; // 0x00000001
         public uint IncludeFlags; // 0xFFFFFFFF
         public uint PropertyFlags; // 0x00010000
-        public uint Unknown_34h; // 0x00000000
-        public uint Unknown_38h; // 0x00000000
-        public uint Unknown_3Ch; // 0x00000000
+        private uint Unknown_34h; // 0x00000000
+        private uint Unknown_38h; // 0x00000000
+        private uint Unknown_3Ch; // 0x00000000
         public float Mass;
         public float InvMass;
-        public float Unknown_48h; // 1.0f
+        private float Unknown_48h; // 1.0f
         public float MaxSpeed; // 150.0f
         public float MaxAngSpeed; // 6.2831855f = 2*pi
-        public float Unknown_54h; // 1.0f
-        public uint Unknown_58h; // 0x00000000
-        public uint Unknown_5Ch; // 0x00000000
+        private float Unknown_54h; // 1.0f
+        private uint Unknown_58h; // 0x00000000
+        private uint Unknown_5Ch; // 0x00000000
         public Vector4 AngInertia;
         public Vector4 InvAngInertia;
-        public Vector4 Unknown_80h; // 0.0 0.0 0.0 NaN
-        public Vector4 Unknown_90h; // 0.0 0.0 0.0 NaN
-        public Vector4 Unknown_A0h; // 0.0 0.0 0.0 NaN
-        public Vector4 Unknown_B0h; // 0.0 0.0 0.0 NaN
-        public Vector4 Unknown_C0h; // 0.0 0.0 0.0 NaN
-        public Vector4 Unknown_D0h; // 0.0 0.0 0.0 NaN
+        private Vector4 Unknown_80h; // 0.0 0.0 0.0 NaN
+        private Vector4 Unknown_90h; // 0.0 0.0 0.0 NaN
+        private Vector4 Unknown_A0h; // 0.0 0.0 0.0 NaN
+        private Vector4 Unknown_B0h; // 0.0 0.0 0.0 NaN
+        private Vector4 Unknown_C0h; // 0.0 0.0 0.0 NaN
+        private Vector4 Unknown_D0h; // 0.0 0.0 0.0 NaN
 
         // reference data
         public string_r? Name { get; set; }

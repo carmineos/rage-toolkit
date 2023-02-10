@@ -11,15 +11,15 @@ namespace RageLib.Resources.GTA5.PC.Clips
 
         // structure data
         public uint VFT;
-        public uint Unknown_4h; // 0x00000001
+        private uint Unknown_4h; // 0x00000001
         public byte Type;
-        public byte Unknown_9h; // 0x00
-        public ushort Unknown_Ah; // 0x0000
-        public uint Unknown_Ch; // 0x00000000
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
+        private byte Unknown_9h; // 0x00
+        private ushort Unknown_Ah; // 0x0000
+        private uint Unknown_Ch; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
         public uint NameHash;
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

@@ -8,10 +8,10 @@ namespace RageLib.Resources.GTA5.PC.Drawables
     // CLightAttr
     public struct LightAttributes : IResourceStruct<LightAttributes>
     {
-        public uint Unknown_0h; // 0x00000000
-        public uint Unknown_4h; // 0x00000000
+        private uint Unknown_0h; // 0x00000000
+        private uint Unknown_4h; // 0x00000000
         public Vector3 Position;
-        public uint Unknown_14h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
         public byte ColorR;
         public byte ColorG;
         public byte ColorB;
@@ -27,9 +27,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public Vector3 CullingPlaneNormal;
         public float CullingPlaneOffset;
         public byte ShadowBlur;
-        public byte Unknown_45h;
-        public ushort Unknown_46h;
-        public uint Unknown_48h; // 0x00000000
+        private byte Unknown_45h;
+        private ushort Unknown_46h;
+        private uint Unknown_48h; // 0x00000000
         public float VolumeIntensity;
         public float VolumeSizeScale;
         public byte VolumeOuterColorR;
@@ -52,7 +52,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public float ConeOuterAngle;
         public Vector3 Extent;
         public uint ProjectedTextureHash;
-        public uint Unknown_A4h; // 0x00000000
+        private uint Unknown_A4h; // 0x00000000
 
         public LightAttributes ReverseEndianness()
         {

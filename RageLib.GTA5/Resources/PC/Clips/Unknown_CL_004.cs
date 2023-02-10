@@ -8,16 +8,16 @@ namespace RageLib.Resources.GTA5.PC.Clips
 
         // structure data
         public ulong VFT;
-        public uint Unknown_8h;
-        public uint Unknown_Ch; // 0x00000000
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h;
-        public uint Unknown_1Ch; // 0x00000000
-        public uint Unknown_20h;
-        public uint Unknown_24h;
-        public uint Unknown_28h;
-        public uint Unknown_2Ch;
+        private uint Unknown_8h;
+        private uint Unknown_Ch; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
+        private uint Unknown_18h;
+        private uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_20h;
+        private uint Unknown_24h;
+        private uint Unknown_28h;
+        private uint Unknown_2Ch;
 
         /// <summary>
         /// Reads the data-block from a stream.

@@ -16,18 +16,18 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public Quaternion Rotation;
         public Vector3 Translation;
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
         public Vector3 Scale;
-        public float Unknown_2Ch; // 1.0
+        private float Unknown_2Ch; // 1.0
         public short NextSiblingIndex;
         public short ParentIndex;
-        public uint Unknown_34h; // 0x00000000
+        private uint Unknown_34h; // 0x00000000
         public ulong NamePointer;
         public BoneFlags Flags;
         public short Index;
         public ushort BoneId;
-        public ushort Unknown_46h;
-        public ulong Unknown_48h; // 0x0000000000000000
+        private ushort Unknown_46h;
+        private ulong Unknown_48h; // 0x0000000000000000
 
         // reference data
         public string_r? Name { get; set; }

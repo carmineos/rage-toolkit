@@ -1,6 +1,5 @@
-// Copyright � Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
+// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
 
@@ -15,9 +14,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong SkeletonPointer;
         public LodGroup LodGroup;
         public ulong JointsPointer;
-        public ushort Unknown_98h;
-        public ushort Unknown_9Ah;
-        public uint Unknown_9Ch; // 0x00000000
+        private ushort Unknown_98h;
+        private ushort Unknown_9Ah;
+        private uint Unknown_9Ch; // 0x00000000
         public ulong PrimaryLodPointer;
 
         // reference data

@@ -12,69 +12,69 @@ namespace RageLib.Resources.GTA5.PC.Navigations
         public override long BlockLength => 0x170;
 
         // structure data
-        public uint Unknown_10h;
-        public uint Unknown_14h; // 0x00010011
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
-        public Matrix4x4 Unknown_20h;
-        public Vector4 Unknown_60h;
+        private uint Unknown_10h;
+        private uint Unknown_14h; // 0x00010011
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
+        private Matrix4x4 Unknown_20h;
+        private Vector4 Unknown_60h;
         public ulong VerticesPointer;
-        public uint Unknown_78h; // 0x00000000
-        public uint Unknown_7Ch; // 0x00000000
+        private uint Unknown_78h; // 0x00000000
+        private uint Unknown_7Ch; // 0x00000000
         public ulong IndicesPointer;
         public ulong AdjPolysPointer;
-        public uint Unknown_90h;
-        public uint Unknown_94h;
-        public uint Unknown_98h;
-        public uint Unknown_9Ch;
-        public uint Unknown_A0h;
-        public uint Unknown_A4h;
-        public uint Unknown_A8h;
-        public uint Unknown_ACh;
-        public uint Unknown_B0h; // 0x00000000
-        public uint Unknown_B4h; // 0x00000000
-        public uint Unknown_B8h; // 0x00000000  
-        public uint Unknown_BCh; // 0x00000000
-        public uint Unknown_C0h; // 0x00000000
-        public uint Unknown_C4h; // 0x00000000
-        public uint Unknown_C8h; // 0x00000000  
-        public uint Unknown_CCh; // 0x00000000
-        public uint Unknown_D0h; // 0x00000000
-        public uint Unknown_D4h; // 0x00000000
-        public uint Unknown_D8h; // 0x00000000 
-        public uint Unknown_DCh; // 0x00000000
-        public uint Unknown_E0h; // 0x00000000
-        public uint Unknown_E4h; // 0x00000000
-        public uint Unknown_E8h; // 0x00000000 
-        public uint Unknown_ECh; // 0x00000000
-        public uint Unknown_F0h; // 0x00000000
-        public uint Unknown_F4h; // 0x00000000
-        public uint Unknown_F8h; // 0x00000000 
-        public uint Unknown_FCh; // 0x00000000
-        public uint Unknown_100h; // 0x00000000
-        public uint Unknown_104h; // 0x00000000
-        public uint Unknown_108h; // 0x00000000
-        public uint Unknown_10Ch; // 0x00000000
-        public uint Unknown_110h; // 0x00000000
-        public uint Unknown_114h; // 0x00000000
+        private uint Unknown_90h;
+        private uint Unknown_94h;
+        private uint Unknown_98h;
+        private uint Unknown_9Ch;
+        private uint Unknown_A0h;
+        private uint Unknown_A4h;
+        private uint Unknown_A8h;
+        private uint Unknown_ACh;
+        private uint Unknown_B0h; // 0x00000000
+        private uint Unknown_B4h; // 0x00000000
+        private uint Unknown_B8h; // 0x00000000  
+        private uint Unknown_BCh; // 0x00000000
+        private uint Unknown_C0h; // 0x00000000
+        private uint Unknown_C4h; // 0x00000000
+        private uint Unknown_C8h; // 0x00000000  
+        private uint Unknown_CCh; // 0x00000000
+        private uint Unknown_D0h; // 0x00000000
+        private uint Unknown_D4h; // 0x00000000
+        private uint Unknown_D8h; // 0x00000000 
+        private uint Unknown_DCh; // 0x00000000
+        private uint Unknown_E0h; // 0x00000000
+        private uint Unknown_E4h; // 0x00000000
+        private uint Unknown_E8h; // 0x00000000 
+        private uint Unknown_ECh; // 0x00000000
+        private uint Unknown_F0h; // 0x00000000
+        private uint Unknown_F4h; // 0x00000000
+        private uint Unknown_F8h; // 0x00000000 
+        private uint Unknown_FCh; // 0x00000000
+        private uint Unknown_100h; // 0x00000000
+        private uint Unknown_104h; // 0x00000000
+        private uint Unknown_108h; // 0x00000000
+        private uint Unknown_10Ch; // 0x00000000
+        private uint Unknown_110h; // 0x00000000
+        private uint Unknown_114h; // 0x00000000
         public ulong PolysPointer;
         public ulong SectorTreePointer;
         public ulong PortalsPointer;
         public ulong p8;
-        public uint Unknown_138h;
-        public uint Unknown_13Ch;
-        public uint Unknown_140h;
-        public uint Unknown_144h;
-        public uint Unknown_148h;
+        private uint Unknown_138h;
+        private uint Unknown_13Ch;
+        private uint Unknown_140h;
+        private uint Unknown_144h;
+        private uint Unknown_148h;
         public uint PortalsCount;
         public uint c1;
-        public uint Unknown_154h; // 0x00000000
-        public uint Unknown_158h; // 0x00000000
-        public uint Unknown_15Ch; // 0x00000000
-        public uint Unknown_160h;
-        public uint Unknown_164h; // 0x00000000
-        public uint Unknown_168h; // 0x00000000
-        public uint Unknown_16Ch; // 0x00000000
+        private uint Unknown_154h; // 0x00000000
+        private uint Unknown_158h; // 0x00000000
+        private uint Unknown_15Ch; // 0x00000000
+        private uint Unknown_160h;
+        private uint Unknown_164h; // 0x00000000
+        private uint Unknown_168h; // 0x00000000
+        private uint Unknown_16Ch; // 0x00000000
 
         // reference data
         public SimpleSplitArray<CompressedVertex>? Vertices { get; set; }

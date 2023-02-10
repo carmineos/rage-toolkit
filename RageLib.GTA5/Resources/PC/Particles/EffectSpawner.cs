@@ -12,28 +12,28 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x70;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h;
-        public uint Unknown_1Ch;
-        public uint Unknown_20h;
-        public uint Unknown_24h;
-        public uint Unknown_28h;
-        public uint Unknown_2Ch; // 0x00000000
-        public uint Unknown_30h; // 0x00000000
-        public uint Unknown_34h; // 0x00000000
-        public uint Unknown_38h;
-        public uint Unknown_3Ch;
-        public uint Unknown_40h;
-        public uint Unknown_44h;
-        public uint Unknown_48h;
-        public uint Unknown_4Ch; // 0x00000000
-        public uint Unknown_50h; // 0x00000000
-        public uint Unknown_54h; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
+        private uint Unknown_18h;
+        private uint Unknown_1Ch;
+        private uint Unknown_20h;
+        private uint Unknown_24h;
+        private uint Unknown_28h;
+        private uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_30h; // 0x00000000
+        private uint Unknown_34h; // 0x00000000
+        private uint Unknown_38h;
+        private uint Unknown_3Ch;
+        private uint Unknown_40h;
+        private uint Unknown_44h;
+        private uint Unknown_48h;
+        private uint Unknown_4Ch; // 0x00000000
+        private uint Unknown_50h; // 0x00000000
+        private uint Unknown_54h; // 0x00000000
         public ulong EmitterRulePointer;
         public ulong NamePointer;
-        public uint Unknown_68h;
-        public uint Unknown_6Ch;
+        private uint Unknown_68h;
+        private uint Unknown_6Ch;
 
         // reference data
         public EffectRule? EmitterRule { get; set; }

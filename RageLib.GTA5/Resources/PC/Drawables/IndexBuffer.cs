@@ -1,6 +1,5 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
 
@@ -15,17 +14,17 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // structure data
         public uint IndicesCount;
-        public uint Unknown_Ch; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
         public ulong IndicesPointer;
-        public ulong Unknown_18h; // 0x0000000000000000
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
-        public ulong Unknown_30h; // 0x0000000000000000
-        public ulong Unknown_38h; // 0x0000000000000000
-        public ulong Unknown_40h; // 0x0000000000000000
-        public ulong Unknown_48h; // 0x0000000000000000
-        public ulong Unknown_50h; // 0x0000000000000000
-        public ulong Unknown_58h; // 0x0000000000000000
+        private ulong Unknown_18h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_30h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
+        private ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_48h; // 0x0000000000000000
+        private ulong Unknown_50h; // 0x0000000000000000
+        private ulong Unknown_58h; // 0x0000000000000000
 
         // reference data
         public IndexData_GTA5_pc? Indices { get; set; }

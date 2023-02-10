@@ -7,10 +7,10 @@ namespace RageLib.Resources.GTA5.PC.Navigations
     public struct SectorDataUnk : IResourceStruct<SectorDataUnk>
     {
         // structure data
-        public ushort Unknown_0h;
-        public ushort Unknown_2h;
-        public ushort Unknown_4h;
-        public ushort Unknown_6h;
+        private ushort Unknown_0h;
+        private ushort Unknown_2h;
+        private ushort Unknown_4h;
+        private ushort Unknown_6h;
 
         public SectorDataUnk ReverseEndianness()
         {

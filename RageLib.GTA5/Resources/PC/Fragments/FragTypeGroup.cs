@@ -31,10 +31,10 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0xB0;
 
         // structure data
-        public uint Unknown_0h; // 0x00000000
-        public uint Unknown_4h; // 0x00000000
-        public uint Unknown_8h; // 0x00000000
-        public uint Unknown_Ch; // 0x00000000
+        private uint Unknown_0h; // 0x00000000
+        private uint Unknown_4h; // 0x00000000
+        private uint Unknown_8h; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
         public float Strength;
         public float ForceTransmissionScaleUp;
         public float ForceTransmissionScaleDown;
@@ -49,30 +49,30 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public float RestoringMaxTorque;
         public float LatchStrength;
         public float Mass;
-        public float Unknown_48h; // 0x00000000
+        private float Unknown_48h; // 0x00000000
         public byte FirstChildGroupIndex;
         public byte ParentIndex;
         public byte Index;
         public byte ChildrenCount;
         public byte ChildrenGroupCount;
-        public byte Unknown_51h;
+        private byte Unknown_51h;
         public FragTypeGroupFlags GroupFlags;
         public float MinDamageForce;
         public float DamageHealth;
-        public float Unknown_5Ch;
-        public float Unknown_60h;
-        public float Unknown_64h;
-        public float Unknown_68h;
-        public float Unknown_6Ch;
-        public float Unknown_70h;
-        public float Unknown_74h;
-        public float Unknown_78h;
-        public float Unknown_7Ch; // 0x00000000
+        private float Unknown_5Ch;
+        private float Unknown_60h;
+        private float Unknown_64h;
+        private float Unknown_68h;
+        private float Unknown_6Ch;
+        private float Unknown_70h;
+        private float Unknown_74h;
+        private float Unknown_78h;
+        private float Unknown_7Ch; // 0x00000000
         public string32_r Name;
-        public float Unknown_A0h;
-        public float Unknown_A4h;
-        public float Unknown_A8h;
-        public float Unknown_ACh; // 0x00000000
+        private float Unknown_A0h;
+        private float Unknown_A4h;
+        private float Unknown_A8h;
+        private float Unknown_ACh; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

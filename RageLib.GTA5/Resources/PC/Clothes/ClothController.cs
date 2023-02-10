@@ -17,13 +17,13 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public ulong VerletCloth1Pointer;
         public ulong VerletCloth2Pointer;
         public ulong VerletCloth3Pointer;
-        public ulong Unknown_38h; // 0x0000000000000000
-        public ulong Unknown_40h; // 0x0000000000000000
-        public ulong Unknown_48h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
+        private ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_48h; // 0x0000000000000000
         public uint Type;
-        public uint Unknown_54h; // 0x00000000
+        private uint Unknown_54h; // 0x00000000
         public string32_r Name;
-        public ulong Unknown_78h; // 0x0000000000000000
+        private ulong Unknown_78h; // 0x0000000000000000
 
         // reference data
         public ClothBridgeSimGfx? BridgeSimGfx { get; set; }

@@ -14,9 +14,9 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public float StartTime;
         public float EndTime;
         public float Rate;
-        public uint Unknown_64h; // 0x00000000
-        public uint Unknown_68h; // 0x00000000
-        public uint Unknown_6Ch; // 0x00000000
+        private uint Unknown_64h; // 0x00000000
+        private uint Unknown_68h; // 0x00000000
+        private uint Unknown_6Ch; // 0x00000000
 
         // reference data
         public Animation? Animation { get; set; }

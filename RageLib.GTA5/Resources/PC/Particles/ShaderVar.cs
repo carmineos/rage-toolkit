@@ -11,11 +11,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 24;
 
         // structure data
-        public ulong Unknown_8h; // 0x0000000000000000
+        private ulong Unknown_8h; // 0x0000000000000000
         public uint Hash;
         public byte Type;
-        public byte Unknown_15h;
-        public ushort Unknown_16h;
+        private byte Unknown_15h;
+        private ushort Unknown_16h;
 
         /// <summary>
         /// Reads the data-block from a stream.

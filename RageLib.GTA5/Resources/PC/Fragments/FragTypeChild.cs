@@ -15,36 +15,36 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public float DamagedMass;
         public ushort GroupIndex;
         public ushort BoneId;
-        public uint Unknown_14h; // 0x00000000
-        public ulong Unknown_18h; // 0x0000000000000000
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
-        public ulong Unknown_30h; // 0x0000000000000000
-        public ulong Unknown_38h; // 0x0000000000000000
-        public ulong Unknown_40h; // 0x0000000000000000
-        public ulong Unknown_48h; // 0x0000000000000000
-        public ulong Unknown_50h; // 0x0000000000000000
-        public ulong Unknown_58h; // 0x0000000000000000
-        public ulong Unknown_60h; // 0x0000000000000000
-        public ulong Unknown_68h; // 0x0000000000000000
-        public ulong Unknown_70h; // 0x0000000000000000
-        public ulong Unknown_78h; // 0x0000000000000000
-        public ulong Unknown_80h; // 0x0000000000000000
-        public ulong Unknown_88h; // 0x0000000000000000
-        public ulong Unknown_90h; // 0x0000000000000000
-        public ulong Unknown_98h; // 0x0000000000000000
+        private uint Unknown_14h; // 0x00000000
+        private ulong Unknown_18h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_30h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
+        private ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_48h; // 0x0000000000000000
+        private ulong Unknown_50h; // 0x0000000000000000
+        private ulong Unknown_58h; // 0x0000000000000000
+        private ulong Unknown_60h; // 0x0000000000000000
+        private ulong Unknown_68h; // 0x0000000000000000
+        private ulong Unknown_70h; // 0x0000000000000000
+        private ulong Unknown_78h; // 0x0000000000000000
+        private ulong Unknown_80h; // 0x0000000000000000
+        private ulong Unknown_88h; // 0x0000000000000000
+        private ulong Unknown_90h; // 0x0000000000000000
+        private ulong Unknown_98h; // 0x0000000000000000
         public ulong PristineDrawablePointer;
         public ulong DamagedDrawablePointer;
         public ulong EvtSetPointer;
-        public ulong Unknown_B8h; // 0x0000000000000000
-        public ulong Unknown_C0h; // 0x0000000000000000
-        public ulong Unknown_C8h; // 0x0000000000000000
-        public ulong Unknown_D0h; // 0x0000000000000000
-        public ulong Unknown_D8h; // 0x0000000000000000
-        public ulong Unknown_E0h; // 0x0000000000000000
-        public ulong Unknown_E8h; // 0x0000000000000000
-        public ulong Unknown_F0h; // 0x0000000000000000
-        public ulong Unknown_F8h; // 0x0000000000000000
+        private ulong Unknown_B8h; // 0x0000000000000000
+        private ulong Unknown_C0h; // 0x0000000000000000
+        private ulong Unknown_C8h; // 0x0000000000000000
+        private ulong Unknown_D0h; // 0x0000000000000000
+        private ulong Unknown_D8h; // 0x0000000000000000
+        private ulong Unknown_E0h; // 0x0000000000000000
+        private ulong Unknown_E8h; // 0x0000000000000000
+        private ulong Unknown_F0h; // 0x0000000000000000
+        private ulong Unknown_F8h; // 0x0000000000000000
 
         // reference data
         public FragDrawable? PristineDrawable { get; set; }

@@ -16,40 +16,40 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x3C0;
 
         // structure data
-        public uint Unknown_10h; // 0x00000001
-        public uint Unknown_14h; // 0x00000000
-        public float Unknown_18h; // 0x40866666
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_10h; // 0x00000001
+        private uint Unknown_14h; // 0x00000000
+        private float Unknown_18h; // 0x40866666
+        private uint Unknown_1Ch; // 0x00000000
         public ulong NamePointer;
-        public ulong Unknown_28h; // 0x5000000000000000 -> ".?AVptxFxList@rage@@" pointer to itself
+        private ulong Unknown_28h; // 0x5000000000000000 -> ".?AVptxFxList@rage@@" pointer to itself
         public ulong VFTx2;
         public ResourcePointerList64<EventEmitter> EventEmitters;
         public ulong p4;
-        public uint Unknown_50h;
-        public uint Unknown_54h;
-        public uint Unknown_58h; // 0x00000000
-        public uint Unknown_5Ch; // 0x00000000
-        public Vector4 Unknown_60h;
-        public Vector4 Unknown_70h;
-        public float Unknown_80h;
-        public float Unknown_84h;
-        public uint Unknown_88h;
-        public uint Unknown_8Ch;
-        public Vector4 Unknown_90h;
-        public Vector4 Unknown_A0h;
-        public Vector4 Unknown_B0h;
+        private uint Unknown_50h;
+        private uint Unknown_54h;
+        private uint Unknown_58h; // 0x00000000
+        private uint Unknown_5Ch; // 0x00000000
+        private Vector4 Unknown_60h;
+        private Vector4 Unknown_70h;
+        private float Unknown_80h;
+        private float Unknown_84h;
+        private uint Unknown_88h;
+        private uint Unknown_8Ch;
+        private Vector4 Unknown_90h;
+        private Vector4 Unknown_A0h;
+        private Vector4 Unknown_B0h;
         public KeyframeProp KeyframeProp0;
         public KeyframeProp KeyframeProp1;
         public KeyframeProp KeyframeProp2;
         public KeyframeProp KeyframeProp3;
         public KeyframeProp KeyframeProp4;
         public ResourcePointerList64<KeyframeProp> KeyframeProps;
-        public uint Unknown_3A0h;
-        public uint Unknown_3A4h; // 0x00000000
-        public float Unknown_3A8h; // 0x42C80000
-        public uint Unknown_3ACh; // 0x00000000
-        public ulong Unknown_3B0h; // 0x0000000000000000
-        public ulong Unknown_3B8h; // 0x0000000000000000
+        private uint Unknown_3A0h;
+        private uint Unknown_3A4h; // 0x00000000
+        private float Unknown_3A8h; // 0x42C80000
+        private uint Unknown_3ACh; // 0x00000000
+        private ulong Unknown_3B0h; // 0x0000000000000000
+        private ulong Unknown_3B8h; // 0x0000000000000000
 
         // reference data
         public string_r? Name { get; set; }

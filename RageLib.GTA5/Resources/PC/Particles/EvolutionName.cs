@@ -11,8 +11,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public ulong NamePointer;
-        public ulong Unknown_8h; // 0x0000000000000000
-        public ulong Unknown_10h; // 0x0000000000000000
+        private ulong Unknown_8h; // 0x0000000000000000
+        private ulong Unknown_10h; // 0x0000000000000000
 
         // reference data
         public string_r? Name { get; set; }

@@ -46,7 +46,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             set => Data &= 0xFFFF00FFFFFFFFFFu | ((ulong)value << 40);
         }
 
-        public ushort Unknown
+        private ushort Unknown
         {
             get => (ushort)((Data >> 48) & 0xFFFFu);
             set => Data &= 0x0000FFFFFFFFFFFFu | ((ulong)value << 48);

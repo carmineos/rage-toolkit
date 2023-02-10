@@ -16,7 +16,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public ulong NamePointer;
         public SimpleList64<LightAttributes> LightAttributes;
-        public ulong Unknown_C0h; // 0x0000000000000000
+        private ulong Unknown_C0h; // 0x0000000000000000
         public ulong BoundPointer;
 
         // reference data

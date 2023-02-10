@@ -10,12 +10,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x30;
 
         // structure data
-        public SimpleList64<Unknown_P_009> Unknown_0h;
-        public ulong Unknown_10h; // 0x0000000000000000
-        public ulong Unknown_18h; // 0x0000000000000000
-        public uint Unknown_20h;
-        public uint Unknown_24h;
-        public ulong Unknown_28h; // 0x0000000000000000
+        private SimpleList64<Unknown_P_009> Unknown_0h;
+        private ulong Unknown_10h; // 0x0000000000000000
+        private ulong Unknown_18h; // 0x0000000000000000
+        private uint Unknown_20h;
+        private uint Unknown_24h;
+        private ulong Unknown_28h; // 0x0000000000000000
 
         /// <summary>
         /// Reads the data-block from a stream.

@@ -11,12 +11,12 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public override long BlockLength => 0x40;
 
         // structure data
-        public ulong Unknown_10h; // 0x0000000000000000
-        public ulong Unknown_18h_Pointer;
-        public ulong Unknown_20h_Pointer;
-        public ulong Unknown_28h_Pointer;
-        public ulong Unknown_30h; // 0x0000000000000000
-        public ulong Unknown_38h; // 0x0000000000000000
+        private ulong Unknown_10h; // 0x0000000000000000
+        private ulong Unknown_18h_Pointer;
+        private ulong Unknown_20h_Pointer;
+        private ulong Unknown_28h_Pointer;
+        private ulong Unknown_30h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
 
         // reference data
         public Unknown_C_006? Unknown_18h_Data { get; set; }

@@ -7,18 +7,18 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 {
     public struct JointRotationLimit : IResourceStruct<JointRotationLimit>
     {
-        public ulong Unknown_0h; // 0x0000000000000000
+        private ulong Unknown_0h; // 0x0000000000000000
         public ushort BoneId;
-        public ushort Unknown_Ah;
+        private ushort Unknown_Ah;
         public uint NumControlPoints; // 0x00000001
         public uint JointDOFs; // 0x00000003
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
-        public uint Unknown_20h; // 0x00000000
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public float Unknown_2Ch; // 1.0
+        private uint Unknown_14h; // 0x00000000
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_20h; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private float Unknown_2Ch; // 1.0
         public Vector4 ZeroRotationEulers; // 0.0; 0.0; 0.0;
         public Vector4 TwistAxis; // 1.0; 0.0; 0.0
         public float TwistLimitMin; // -pi
@@ -26,16 +26,16 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public float SoftLimitScale; // 1.0
         public Vector3 Min; // in rad
         public Vector3 Max; // in rad
-        public Vector3 Unknown_74h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
-        public Vector3 Unknown_80h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
-        public Vector3 Unknown_8Ch; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
-        public Vector3 Unknown_98h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
-        public Vector3 Unknown_A4h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
-        public Vector3 Unknown_B0h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        private Vector3 Unknown_74h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        private Vector3 Unknown_80h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        private Vector3 Unknown_8Ch; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        private Vector3 Unknown_98h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        private Vector3 Unknown_A4h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
+        private Vector3 Unknown_B0h; // pi; -pi; pi; MaxSwing; MinTwist; MaxTwist;
         public byte UseTwistLimits;
         public byte UseEulerAngles; // 0x01
         public byte UsePerControlTwistLimits;
-        public byte Unknown_BFh;
+        private byte Unknown_BFh;
 
         public JointRotationLimit ReverseEndianness()
         {

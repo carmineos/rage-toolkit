@@ -12,21 +12,21 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public ResourcePointerList64<KeyframeProp> KeyframeProps;
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
         public KeyframeProp KeyframeProp0;
-        public uint Unknown_C0h; // 0x00000000
-        public uint Unknown_C4h;
-        public uint Unknown_C8h;
-        public uint Unknown_CCh;
-        public uint Unknown_D0h; // 0x00000000
-        public uint Unknown_D4h;
-        public uint Unknown_D8h;
-        public uint Unknown_DCh;
-        public uint Unknown_E0h;
-        public uint Unknown_E4h;
-        public uint Unknown_E8h; // 0x00000000
-        public uint Unknown_ECh;
+        private uint Unknown_C0h; // 0x00000000
+        private uint Unknown_C4h;
+        private uint Unknown_C8h;
+        private uint Unknown_CCh;
+        private uint Unknown_D0h; // 0x00000000
+        private uint Unknown_D4h;
+        private uint Unknown_D8h;
+        private uint Unknown_DCh;
+        private uint Unknown_E0h;
+        private uint Unknown_E4h;
+        private uint Unknown_E8h; // 0x00000000
+        private uint Unknown_ECh;
 
         /// <summary>
         /// Reads the data-block from a stream.

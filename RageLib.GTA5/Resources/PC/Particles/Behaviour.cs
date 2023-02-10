@@ -39,7 +39,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
         // structure data
         public ulong VFT;
         public uint Type;
-        public uint Unknown_Ch; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

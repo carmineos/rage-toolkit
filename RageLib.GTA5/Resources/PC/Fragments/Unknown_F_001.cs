@@ -16,8 +16,8 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         // structure data
         public uint Count;
-        public uint Unknown_14h; // 0x00000000
-        public ulong Unknown_18h; // 0x0000000000000000
+        private uint Unknown_14h; // 0x00000000
+        private ulong Unknown_18h; // 0x0000000000000000
         public SimpleArray<Matrix4x4> Data;
 
         /// <summary>

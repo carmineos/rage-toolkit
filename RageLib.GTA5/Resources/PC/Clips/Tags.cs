@@ -11,10 +11,10 @@ namespace RageLib.Resources.GTA5.PC.Clips
 
         // structure data
         public ResourcePointerList64<Tag> TagList;
-        public uint Unknown_10h;
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_10h;
+        private uint Unknown_14h; // 0x00000000
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.
