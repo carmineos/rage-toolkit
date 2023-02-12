@@ -262,6 +262,8 @@ namespace DirectXTex
 				div *= 2;
 			}
 
+			delete[] buf;
+
 			pin_ptr<const wchar_t> wname = PtrToStringChars(fileName);
 
 			// save dds
