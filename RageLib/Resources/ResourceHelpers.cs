@@ -214,11 +214,11 @@ namespace RageLib.Resources
             {
                 if (block is IResourceSystemBlock)
                 {
-                    systemBlocks.Add(block);
+                    if (!systemBlocks.Contains(block)) systemBlocks.Add(block);
                 }
                 else if (block is IResourceGraphicsBlock)
                 {
-                    graphicBlocks.Add(block);
+                    if (!graphicBlocks.Contains(block)) graphicBlocks.Add(block);
                 }
             }
             void addChildren(IResourceBlock block)
@@ -228,7 +228,7 @@ namespace RageLib.Resources
                     var references = sblock.GetReferences();
                     foreach (var reference in references)
                     {
-                        if (processed.Add(reference))
+                        if (!processed.Contains(reference) && processed.Add(reference))
                         {
                             addBlock(reference);
                             addChildren(reference);
