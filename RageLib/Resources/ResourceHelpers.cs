@@ -245,8 +245,8 @@ namespace RageLib.Resources
             addBlock(rootBlock);
             addChildren(rootBlock);
 
-            sys = new List<IResourceBlock>(systemBlocks);
-            gfx = new List<IResourceBlock>(graphicBlocks);
+            sys = systemBlocks.ToList();
+            gfx = graphicBlocks.ToList();
         }
 
         public static void AssignPositions(IList<IResourceBlock> blocks, uint basePosition, out ResourceChunkFlags flags, uint usedPages)
@@ -322,6 +322,7 @@ namespace RageLib.Resources
                     baseSizeMaxTest *= 2;
                 }
 
+                flags = new ResourceChunkFlags(new uint[9], baseShift);
                 if (!flags.TryAddChunk(bucketIndex))
                     break;
 
