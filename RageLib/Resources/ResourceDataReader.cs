@@ -101,9 +101,8 @@ namespace RageLib.Resources
         {
             // make sure to return the same object if the same
             // block is read again...
-            if (blockPool.ContainsKey(Position))
+            if (blockPool.TryGetValue(Position, out List<IResourceBlock> blocks))
             {
-                var blocks = blockPool[Position];
                 foreach (var block in blocks)
                     if (block is T)
                     {
@@ -148,12 +147,14 @@ namespace RageLib.Resources
             }
             else
             {
-                var blocks = new List<IResourceBlock>();
-                blocks.Add(result);
+                blocks = new List<IResourceBlock>
+                {
+                    result
+                };
                 blockPool.Add(Position, blocks);
             }
 
-            var classPosition = Position;            
+            var classPosition = Position;
             result.Read(this, parameters);
             result.BlockPosition = classPosition;
             return (T)result;
@@ -178,6 +179,6 @@ namespace RageLib.Resources
             {
                 return default(T);
             }
-        }        
+        }
     }
 }
