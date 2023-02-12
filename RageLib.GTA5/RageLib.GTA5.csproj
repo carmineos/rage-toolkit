@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RageLib\RageLib.csproj" />
+    <EmbeddedResource Include="ResourceWrappers\PC\Meta\Definitions\MetaDefinitions.xml" />
+    <EmbeddedResource Include="PSOWrappers\Definitions\PsoDefinitions.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="ResourceWrappers\PC\Meta\Definitions\MetaDefinitions.xml" />
-    <EmbeddedResource Include="PSOWrappers\Definitions\PsoDefinitions.xml" />
+    <ProjectReference Include="..\RageLib\RageLib.csproj" />
   </ItemGroup>
 
 </Project>
