@@ -1,6 +1,5 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Compression;
 using RageLib.Data;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace RageLib.Resources.GTA5
         protected const int RESOURCE_IDENT = 0x37435352;
 
         public DatResourceFileHeader ResourceFileHeader;
-        
+
         public int Version { get; set; }
 
         public byte[] VirtualData { get; set; }
@@ -103,7 +102,7 @@ namespace RageLib.Resources.GTA5
             var resourceStream = new ResourceDataReader(systemStream, graphicsStream);
             resourceStream.Position = 0x50000000;
 
-            ResourceData = resourceStream.ReadBlock<T>();           
+            ResourceData = resourceStream.ReadBlock<T>();
         }
 
         public override void Save(Stream stream)
@@ -115,7 +114,7 @@ namespace RageLib.Resources.GTA5
             ////////////////////////////////////////////////////////////////////////////
             // data to byte-array
             ////////////////////////////////////////////////////////////////////////////
-            
+
             var resourceInfo = ResourceFileHeader.ResourceInfo;
 
             var virtualSize = (int)((ResourceChunkFlags)resourceInfo.VirtualFlags).Size;
@@ -165,7 +164,7 @@ namespace RageLib.Resources.GTA5
             physicalStream.Position = 0;
 
             base.Save(stream);
-        }        
+        }
 
         public void RemapBlocks(IList<IResourceBlock> systemBlocks, IList<IResourceBlock> graphicBlocks)
         {
@@ -173,7 +172,7 @@ namespace RageLib.Resources.GTA5
             var pgBase = (PgBase64)rootBlock;
 
             // If we are building a new resource
-            if(pgBase.PageMap is null)
+            if (pgBase.PageMap is null)
             {
                 pgBase.PageMap = new DatResourceMap(64, 64);
                 systemBlocks.Add(pgBase.PageMap);
