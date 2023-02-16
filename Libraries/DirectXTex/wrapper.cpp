@@ -267,6 +267,7 @@ namespace DirectXTex
 			// save dds
 			DirectX::SaveToDDSFile(images, image->MipMapLevels, meta, 0, wname);
 
+			delete[] buf;
 			delete[] images;
 		}
 	};
