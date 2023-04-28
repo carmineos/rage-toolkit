@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
@@ -15,12 +15,12 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong RotationLimitsPointer;
         public ulong TranslationLimitsPointer;
         public ulong ScaleLimitsPointer; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
         public ushort RotationLimitsCount;
         public ushort TranslationLimitsCount;
         public ushort ScaleLimitsCount; // 0x0000
-        public ushort Unknown_36h; // 0x0001
-        public ulong Unknown_38h; // 0x0000000000000000
+        private ushort Unknown_36h; // 0x0001
+        private ulong Unknown_38h; // 0x0000000000000000
 
         // reference data
         public SimpleArray<JointRotationLimit>? RotationLimits { get; set; }

@@ -30,18 +30,18 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public uint Data2;
         public uint Data3;
 
-        public BoundPrimitiveType PrimitiveType 
+        public BoundPrimitiveType PrimitiveType
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => (BoundPrimitiveType)(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1))[0] & 0x7); 
+            get => (BoundPrimitiveType)(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1))[0] & 0x7);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitiveTriangle AsTriangle() => ref MemoryMarshal.AsRef<BoundPrimitiveTriangle>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitiveSphere AsSphere() => ref MemoryMarshal.AsRef<BoundPrimitiveSphere>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitiveCapsule AsCapsule() => ref MemoryMarshal.AsRef<BoundPrimitiveCapsule>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
 
@@ -162,8 +162,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ushort Type;
         public ushort VertexIndex;
         public float Radius;
-        public uint Unknown_8h;
-        public uint Unknown_Ch;
+        private uint Unknown_8h;
+        private uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
@@ -189,8 +189,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ushort VertexIndex1;
         public float Radius;
         public ushort VertexIndex2;
-        public ushort Unknown_Ah;
-        public uint Unknown_Ch;
+        private ushort Unknown_Ah;
+        private uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
@@ -218,7 +218,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public short VertexIndex2;
         public short VertexIndex3;
         public short VertexIndex4;
-        public uint Unknown_Ch;
+        private uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));
@@ -245,8 +245,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public ushort VertexIndex1;
         public float Radius;
         public ushort VertexIndex2;
-        public ushort Unknown_Ah;
-        public uint Unknown_Ch;
+        private ushort Unknown_Ah;
+        private uint Unknown_Ch;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref BoundPrimitive AsRawData() => ref MemoryMarshal.AsRef<BoundPrimitive>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref this, 1)));

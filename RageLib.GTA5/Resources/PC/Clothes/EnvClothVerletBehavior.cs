@@ -11,20 +11,20 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public override long BlockLength => 0x40;
 
         // structure data
-        public uint Unknown_8h; // 0x00000000
-        public uint Unknown_Ch; // 0x00000000
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
-        public uint Unknown_20h; // 0x00000000
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
-        public uint Unknown_30h; // 0x00000000
-        public uint Unknown_34h; // 0x00000000
-        public uint Unknown_38h; // 0x00000000
-        public uint Unknown_3Ch; // 0x00000000
+        private uint Unknown_8h; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_20h; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_30h; // 0x00000000
+        private uint Unknown_34h; // 0x00000000
+        private uint Unknown_38h; // 0x00000000
+        private uint Unknown_3Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

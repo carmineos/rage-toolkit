@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Bounds
@@ -14,15 +14,15 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         // structure data
         public ulong MaterialsPointer;
         public ulong MaterialColoursPointer;
-        public ulong Unknown_100h; // 0x0000000000000000
-        public ulong Unknown_108h; // 0x0000000000000000
-        public ulong Unknown_110h; // 0x0000000000000000
+        private ulong Unknown_100h; // 0x0000000000000000
+        private ulong Unknown_108h; // 0x0000000000000000
+        private ulong Unknown_110h; // 0x0000000000000000
         public ulong PolygonMaterialIndicesPointer;
         public byte MaterialsCount;
         public byte MaterialColoursCount;
-        public ushort Unknown_122h; // 0x0000
-        public uint Unknown_124h; // 0x00000000
-        public ulong Unknown_128h; // 0x0000000000000000
+        private ushort Unknown_122h; // 0x0000
+        private uint Unknown_124h; // 0x00000000
+        private ulong Unknown_128h; // 0x0000000000000000
 
         // reference data
         public SimpleArray<BoundMaterial>? Materials { get; set; }

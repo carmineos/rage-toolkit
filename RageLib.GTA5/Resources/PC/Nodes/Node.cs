@@ -7,17 +7,17 @@ namespace RageLib.Resources.GTA5.PC.Nodes
     public struct Node : IResourceStruct<Node>
     {
         // structure data
-        public uint Unknown_0h; // 0x00000000
-        public uint Unknown_4h; // 0x00000000
-        public uint Unknown_8h; // 0x00000000
-        public uint Unknown_Ch; // 0x00000000
-        public ushort Unknown_10h;
-        public ushort Unknown_12h;
-        public uint Unknown_14h;
-        public uint Unknown_18h;
-        public uint Unknown_1Ch;
-        public uint Unknown_20h;
-        public uint Unknown_24h;
+        private uint Unknown_0h; // 0x00000000
+        private uint Unknown_4h; // 0x00000000
+        private uint Unknown_8h; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
+        private ushort Unknown_10h;
+        private ushort Unknown_12h;
+        private uint Unknown_14h;
+        private uint Unknown_18h;
+        private uint Unknown_1Ch;
+        private uint Unknown_20h;
+        private uint Unknown_24h;
 
         public Node ReverseEndianness()
         {

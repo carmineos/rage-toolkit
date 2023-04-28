@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 
 namespace RageLib.Resources.GTA5.PC.Filters
@@ -12,13 +12,13 @@ namespace RageLib.Resources.GTA5.PC.Filters
 
         // structure data
         public ulong VFT;
-        public uint Unknown_8h; // 0x00000001
-        public uint Unknown_Ch;
-        public uint Unknown_10h; // 0x00000004
-        public uint Unknown_14h; // 0x00000000
-        public SimpleList64<ulong> Unknown_18h;
-        public SimpleList64<float> Unknown_28h;
-        public ulong Unknown_38h; // 0x0000000000000000
+        private uint Unknown_8h; // 0x00000001
+        private uint Unknown_Ch;
+        private uint Unknown_10h; // 0x00000004
+        private uint Unknown_14h; // 0x00000000
+        private SimpleList64<ulong> Unknown_18h;
+        private SimpleList64<float> Unknown_28h;
+        private ulong Unknown_38h; // 0x0000000000000000
 
         /// <summary>
         /// Reads the data-block from a stream.

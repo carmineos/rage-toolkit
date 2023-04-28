@@ -10,7 +10,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public uint Hash;
-        public uint Unknown_4h; // 0x00000000
+        private uint Unknown_4h; // 0x00000000
         public ulong p1;
 
         // reference data

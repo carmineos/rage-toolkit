@@ -8,15 +8,15 @@ namespace RageLib.Resources.GTA5.PC.Navigations
     public struct Portal : IResourceStruct<Portal>
     {
         // structure data
-        public uint Unknown_0h;
-        public uint Unknown_4h;
-        public uint Unknown_8h;
-        public uint Unknown_Ch;
-        public ushort Unknown_10h;
-        public ushort Unknown_12h;
-        public ushort Unknown_14h;
-        public ushort Unknown_16h;
-        public uint Unknown_18h;
+        private uint Unknown_0h;
+        private uint Unknown_4h;
+        private uint Unknown_8h;
+        private uint Unknown_Ch;
+        private ushort Unknown_10h;
+        private ushort Unknown_12h;
+        private ushort Unknown_14h;
+        private ushort Unknown_16h;
+        private uint Unknown_18h;
 
         public Portal ReverseEndianness()
         {

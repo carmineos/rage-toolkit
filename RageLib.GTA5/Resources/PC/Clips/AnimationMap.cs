@@ -1,8 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
-using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Clips
 {
@@ -14,11 +13,11 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x30;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
         public ResourceHashMap<Animation> Animations;
-        public uint Unknown_28h; // 0x00000001
-        public uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_28h; // 0x00000001
+        private uint Unknown_2Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

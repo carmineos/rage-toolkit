@@ -13,7 +13,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         // structure data
         public float RotationRate;
         public float AngleThreshold;
-        public ulong Unknown_18h; // 0x0000000000000000
+        private ulong Unknown_18h; // 0x0000000000000000
         public Vector4 ExtraForce;
         public ClothTuneFlags Flags;
         public float Weight;
@@ -21,7 +21,7 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public byte PinVert;
         public byte NonPinVert0;
         public byte NonPinVert1;
-        public byte Unknown_3Eh; // 0x00000000
+        private byte Unknown_3Eh; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

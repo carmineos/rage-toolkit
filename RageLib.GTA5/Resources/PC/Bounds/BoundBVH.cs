@@ -11,11 +11,11 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         // structure data
         public ulong BvhPointer;
-        public ulong Unknown_138h; // 0x0000000000000000
-        public ushort Unknown_140h; // 0xFFFF
-        public ushort Unknown_142h; // 0x0000
-        public uint Unknown_144h; // 0x00000000
-        public ulong Unknown_148h; // 0x0000000000000000
+        private ulong Unknown_138h; // 0x0000000000000000
+        private ushort Unknown_140h; // 0xFFFF
+        private ushort Unknown_142h; // 0x0000
+        private uint Unknown_144h; // 0x00000000
+        private ulong Unknown_148h; // 0x0000000000000000
 
         // reference data
         public BVH? BVH { get; set; }

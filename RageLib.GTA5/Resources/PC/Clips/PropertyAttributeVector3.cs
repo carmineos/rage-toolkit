@@ -11,7 +11,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public float X;
         public float Y;
         public float Z;
-        public float Unknown_2Ch;
+        private float Unknown_2Ch;
 
         /// <summary>
         /// Reads the data-block from a stream.

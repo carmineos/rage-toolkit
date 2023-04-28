@@ -10,11 +10,11 @@ namespace RageLib.Resources.GTA5.PC.Expressions
         }
 
         // structure data
-        public uint Unknown_0h;
+        private uint Unknown_0h;
         public uint len1;
         public uint len2;
         public ushort len3;
-        public ushort Unknown_Eh;
+        private ushort Unknown_Eh;
         public byte[] Data1;
         public byte[] Data2;
         public byte[] Data3;

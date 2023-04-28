@@ -8,10 +8,10 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x30;
 
         // structure data
-        public uint Value; 
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
+        public uint Value;
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 
 namespace RageLib.Resources.GTA5.PC.Particles
@@ -11,12 +11,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public ResourceSimpleList64<EvolutionName> EvolutionNames;
-        public ResourceSimpleList64<Unknown_P_003> Unknown_10h;
-        public uint Unknown_20h; // 0x00000001
-        public uint Unknown_24h; // 0x00000000
-        public ResourceSimpleList64<Unknown_P_007> Unknown_28h;
-        public uint Unknown_38h; // 0x00000000
-        public uint Unknown_3Ch; // 0x00000000
+        private ResourceSimpleList64<Unknown_P_003> Unknown_10h;
+        private uint Unknown_20h; // 0x00000001
+        private uint Unknown_24h; // 0x00000000
+        private ResourceSimpleList64<Unknown_P_007> Unknown_28h;
+        private uint Unknown_38h; // 0x00000000
+        private uint Unknown_3Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

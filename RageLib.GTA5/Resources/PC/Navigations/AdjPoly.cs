@@ -8,8 +8,8 @@ namespace RageLib.Resources.GTA5.PC.Navigations
     public struct AdjPoly : IResourceStruct<AdjPoly>
     {
         // structure data
-        public uint Unknown_0h;
-        public uint Unknown_4h;
+        private uint Unknown_0h;
+        private uint Unknown_4h;
 
         public AdjPoly ReverseEndianness()
         {

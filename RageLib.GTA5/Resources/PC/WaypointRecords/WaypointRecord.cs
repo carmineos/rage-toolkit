@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.WaypointRecords
@@ -10,13 +10,13 @@ namespace RageLib.Resources.GTA5.PC.WaypointRecords
         public override long BlockLength => 0x30;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
         public ulong EntriesPointer;
         public uint EntriesCount;
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
 
         // reference data
         public SimpleArray<WaypointRecordEntry>? Entries { get; set; }

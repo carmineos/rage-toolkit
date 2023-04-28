@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Drawables;
 using RageLib.Resources.GTA5.PC.Textures;
 using System.Collections.Generic;
@@ -15,19 +16,19 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public ulong NamePointer;
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
         public ulong TextureDictionaryPointer;
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
         public ulong DrawableDictionaryPointer;
         public ulong ParticleRuleDictionaryPointer;
-        public uint Unknown_40h; // 0x00000000
-        public uint Unknown_44h; // 0x00000000
+        private uint Unknown_40h; // 0x00000000
+        private uint Unknown_44h; // 0x00000000
         public ulong EmitterRuleDictionaryPointer;
         public ulong EffectRuleDictionaryPointer;
-        public uint Unknown_58h; // 0x00000000
-        public uint Unknown_5Ch; // 0x00000000
+        private uint Unknown_58h; // 0x00000000
+        private uint Unknown_5Ch; // 0x00000000
 
         // reference data
         public string_r? Name;
@@ -67,16 +68,16 @@ namespace RageLib.Resources.GTA5.PC.Particles
             this.TextureDictionary = reader.ReadBlockAt<PgDictionary64<TextureDX11>>(
                 this.TextureDictionaryPointer // offset
             );
-            this.DrawableDictionary = reader.ReadBlockAt< PgDictionary64<Drawable>>(
+            this.DrawableDictionary = reader.ReadBlockAt<PgDictionary64<Drawable>>(
                 this.DrawableDictionaryPointer // offset
             );
-            this.ParticleRuleDictionary = reader.ReadBlockAt< PgDictionary64<ParticleRule>>(
+            this.ParticleRuleDictionary = reader.ReadBlockAt<PgDictionary64<ParticleRule>>(
                 this.ParticleRuleDictionaryPointer // offset
             );
-            this.EffectRuleDictionary = reader.ReadBlockAt< PgDictionary64<EffectRule>>(
+            this.EffectRuleDictionary = reader.ReadBlockAt<PgDictionary64<EffectRule>>(
                 this.EmitterRuleDictionaryPointer // offset
             );
-            this.EmitterRuleDictionary = reader.ReadBlockAt< PgDictionary64<EmitterRule>>(
+            this.EmitterRuleDictionary = reader.ReadBlockAt<PgDictionary64<EmitterRule>>(
                 this.EffectRuleDictionaryPointer // offset
             );
         }

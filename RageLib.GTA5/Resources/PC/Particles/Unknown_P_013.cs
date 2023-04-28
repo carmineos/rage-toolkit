@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using System;
 
 namespace RageLib.Resources.GTA5.PC.Particles
@@ -10,14 +11,14 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x58;
 
         // structure data
-        public string32_r Unknown_0h;
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
-        public ulong Unknown_30h; // 0x0000000000000000
-        public ulong Unknown_38h; // 0x0000000000000000
-        public SimpleList64<uint> Unknown_40h;
-        public uint Unknown_50h;
-        public uint Unknown_54h; // 0x00000000
+        private string32_r Unknown_0h;
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_30h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
+        private SimpleList64<uint> Unknown_40h;
+        private uint Unknown_50h;
+        private uint Unknown_54h; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

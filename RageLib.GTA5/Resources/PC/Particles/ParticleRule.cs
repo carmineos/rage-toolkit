@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using System;
 using System.Collections.Generic;
 
@@ -14,53 +15,53 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x240;
 
         // structure data
-        public uint Unknown_10h;
-        public uint Unknown_14h; // 0x00000000
-        public ulong Unknown_18h; // 0x0000000000000000
+        private uint Unknown_10h;
+        private uint Unknown_14h; // 0x00000000
+        private ulong Unknown_18h; // 0x0000000000000000
         public EffectSpawner emb1;
         public EffectSpawner emb2;
-        public uint Unknown_100h;
-        public uint Unknown_104h;
-        public uint Unknown_108h;
-        public uint Unknown_10Ch;
-        public uint Unknown_110h; // 0x00000000
-        public float Unknown_114h;
-        public uint Unknown_118h;
-        public uint Unknown_11Ch;
+        private uint Unknown_100h;
+        private uint Unknown_104h;
+        private uint Unknown_108h;
+        private uint Unknown_10Ch;
+        private uint Unknown_110h; // 0x00000000
+        private float Unknown_114h;
+        private uint Unknown_118h;
+        private uint Unknown_11Ch;
         public ulong NamePointer;
-        public ResourcePointerList64<Behaviour> Unknown_128h;
-        public ResourcePointerList64<Behaviour> Unknown_138h;
-        public ResourcePointerList64<Behaviour> Unknown_148h;
-        public ResourcePointerList64<Behaviour> Unknown_158h;
-        public ResourcePointerList64<Behaviour> Unknown_168h;
-        public ulong Unknown_178h; // 0x0000000000000000
-        public ulong Unknown_180h; // 0x0000000000000000
-        public ResourceSimpleList64<Unknown_P_013> Unknown_188h;
-        public ulong Unknown_198h; // 0x0000000000000000
-        public ulong Unknown_1A0h; // 0x0000000000000000
-        public ulong Unknown_1A8h; // 0x0000000000000000
+        private ResourcePointerList64<Behaviour> Unknown_128h;
+        private ResourcePointerList64<Behaviour> Unknown_138h;
+        private ResourcePointerList64<Behaviour> Unknown_148h;
+        private ResourcePointerList64<Behaviour> Unknown_158h;
+        private ResourcePointerList64<Behaviour> Unknown_168h;
+        private ulong Unknown_178h; // 0x0000000000000000
+        private ulong Unknown_180h; // 0x0000000000000000
+        private ResourceSimpleList64<Unknown_P_013> Unknown_188h;
+        private ulong Unknown_198h; // 0x0000000000000000
+        private ulong Unknown_1A0h; // 0x0000000000000000
+        private ulong Unknown_1A8h; // 0x0000000000000000
         public ulong VFTx3;
         public ulong ShaderNamePointer;
         public ulong ShaderTechniqueNamePointer;
-        public ulong Unknown_1C8h; // 0x0000000000000000
-        public uint Unknown_1D0h;
-        public uint Unknown_1D4h; // 0x00000000
+        private ulong Unknown_1C8h; // 0x0000000000000000
+        private uint Unknown_1D0h;
+        private uint Unknown_1D4h; // 0x00000000
         public ulong VFTx4;
-        public uint Unknown_1E0h;
-        public uint Unknown_1E4h;
-        public uint Unknown_1E8h;
-        public uint Unknown_1ECh;
+        private uint Unknown_1E0h;
+        private uint Unknown_1E4h;
+        private uint Unknown_1E8h;
+        private uint Unknown_1ECh;
         public ResourcePointerList64<ShaderVar> ShaderVars;
-        public uint Unknown_200h; // 0x00000001
-        public uint Unknown_204h; // 0x00000000
-        public uint ShaderNameHash;
-        public uint Unknown_20Ch; // 0x00000000
-        public ResourceSimpleList64<Unknown_P_012> Unknown_210h;
-        public uint Unknown_220h;
-        public uint Unknown_224h; // 0x00000000
-        public ulong Unknown_228h; // 0x0000000000000000
-        public ulong Unknown_230h; // 0x0000000000000000
-        public ulong Unknown_238h; // 0x0000000000000000
+        private uint Unknown_200h; // 0x00000001
+        private uint Unknown_204h; // 0x00000000
+        private uint ShaderNameHash;
+        private uint Unknown_20Ch; // 0x00000000
+        private ResourceSimpleList64<Unknown_P_012> Unknown_210h;
+        private uint Unknown_220h;
+        private uint Unknown_224h; // 0x00000000
+        private ulong Unknown_228h; // 0x0000000000000000
+        private ulong Unknown_230h; // 0x0000000000000000
+        private ulong Unknown_238h; // 0x0000000000000000
 
         // reference data
         public string_r? Name { get; set; }

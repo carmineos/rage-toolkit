@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Bounds;
 using System;
 using System.Collections.Generic;
@@ -15,83 +15,83 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public override long BlockLength => 0x180;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
         public ulong BoundPointer;
-        public uint Unknown_20h; // 0x00000000
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
-        public uint Unknown_30h;
-        public uint Unknown_34h;
-        public uint Unknown_38h;
-        public uint Unknown_3Ch;
-        public uint Unknown_40h;
-        public uint Unknown_44h;
-        public uint Unknown_48h;
-        public uint Unknown_4Ch;
-        public uint Unknown_50h;
-        public uint Unknown_54h; // 0x00000001
-        public uint Unknown_58h; // 0x00000000
-        public uint Unknown_5Ch; // 0x00000000
-        public uint Unknown_60h; // 0x00000000
-        public uint Unknown_64h; // 0x00000000
-        public uint Unknown_68h; // 0x00000000
-        public uint Unknown_6Ch; // 0x00000000
-        public SimpleList64<Vector4> Unknown_70h;
-        public SimpleList64<Vector4> Unknown_80h;
-        public uint Unknown_90h; // 0x00000000
-        public uint Unknown_94h; // 0x00000000
-        public uint Unknown_98h; // 0x00000000
-        public uint Unknown_9Ch; // 0x00000000
-        public uint Unknown_A0h; // 0x00000000
-        public uint Unknown_A4h; // 0x00000000
-        public uint Unknown_A8h;
-        public uint Unknown_ACh;
-        public uint Unknown_B0h; // 0x00000000
-        public uint Unknown_B4h; // 0x00000000
-        public uint Unknown_B8h; // 0x00000000
-        public uint Unknown_BCh; // 0x00000000
-        public uint Unknown_C0h; // 0x00000000
-        public uint Unknown_C4h; // 0x00000000
-        public uint Unknown_C8h; // 0x00000000
-        public uint Unknown_CCh; // 0x00000000
-        public uint Unknown_D0h; // 0x00000000
-        public uint Unknown_D4h; // 0x00000000
-        public uint Unknown_D8h; // 0x00000000
-        public uint Unknown_DCh; // 0x00000000
-        public uint Unknown_E0h; // 0x00000000
-        public uint Unknown_E4h; // 0x00000000
-        public uint Unknown_E8h;
+        private uint Unknown_20h; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_30h;
+        private uint Unknown_34h;
+        private uint Unknown_38h;
+        private uint Unknown_3Ch;
+        private uint Unknown_40h;
+        private uint Unknown_44h;
+        private uint Unknown_48h;
+        private uint Unknown_4Ch;
+        private uint Unknown_50h;
+        private uint Unknown_54h; // 0x00000001
+        private uint Unknown_58h; // 0x00000000
+        private uint Unknown_5Ch; // 0x00000000
+        private uint Unknown_60h; // 0x00000000
+        private uint Unknown_64h; // 0x00000000
+        private uint Unknown_68h; // 0x00000000
+        private uint Unknown_6Ch; // 0x00000000
+        private SimpleList64<Vector4> Unknown_70h;
+        private SimpleList64<Vector4> Unknown_80h;
+        private uint Unknown_90h; // 0x00000000
+        private uint Unknown_94h; // 0x00000000
+        private uint Unknown_98h; // 0x00000000
+        private uint Unknown_9Ch; // 0x00000000
+        private uint Unknown_A0h; // 0x00000000
+        private uint Unknown_A4h; // 0x00000000
+        private uint Unknown_A8h;
+        private uint Unknown_ACh;
+        private uint Unknown_B0h; // 0x00000000
+        private uint Unknown_B4h; // 0x00000000
+        private uint Unknown_B8h; // 0x00000000
+        private uint Unknown_BCh; // 0x00000000
+        private uint Unknown_C0h; // 0x00000000
+        private uint Unknown_C4h; // 0x00000000
+        private uint Unknown_C8h; // 0x00000000
+        private uint Unknown_CCh; // 0x00000000
+        private uint Unknown_D0h; // 0x00000000
+        private uint Unknown_D4h; // 0x00000000
+        private uint Unknown_D8h; // 0x00000000
+        private uint Unknown_DCh; // 0x00000000
+        private uint Unknown_E0h; // 0x00000000
+        private uint Unknown_E4h; // 0x00000000
+        private uint Unknown_E8h;
         public uint NumEdges;
-        public uint Unknown_F0h;
-        public uint Unknown_F4h; // 0x00000000
-        public uint Unknown_F8h;
-        public uint Unknown_FCh; // 0x00000000
+        private uint Unknown_F0h;
+        private uint Unknown_F4h; // 0x00000000
+        private uint Unknown_F8h;
+        private uint Unknown_FCh; // 0x00000000
         public SimpleList64<EdgeData> CustomEdgeData;
         public SimpleList64<EdgeData> EdgeData;
-        public uint Unknown_120h; // 0x00000000
-        public uint Unknown_124h; // 0x00000000
-        public uint Unknown_128h; // 0x00000000
-        public uint Unknown_12Ch; // 0x00000000
+        private uint Unknown_120h; // 0x00000000
+        private uint Unknown_124h; // 0x00000000
+        private uint Unknown_128h; // 0x00000000
+        private uint Unknown_12Ch; // 0x00000000
         public ulong BehaviorPointer;
-        public uint Unknown_138h; // 0x00100000
-        public uint Unknown_13Ch; // 0x00000000
-        public ulong Unknown_140h_Pointer;
-        public uint Unknown_148h;
-        public uint Unknown_14Ch; // 0x00000000
-        public uint Unknown_150h; // 0x00000000
-        public uint Unknown_154h; // 0x00000000
-        public uint Unknown_158h;
-        public uint Unknown_15Ch; // 0x00000000
-        public uint Unknown_160h; // 0x00000000
-        public uint Unknown_164h; // 0x00000000
-        public uint Unknown_168h; // 0x00000000
-        public uint Unknown_16Ch; // 0x00000000
-        public uint Unknown_170h; // 0x00000000
-        public uint Unknown_174h; // 0x00000000
-        public uint Unknown_178h; // 0x00000000
-        public uint Unknown_17Ch; // 0x00000000
+        private uint Unknown_138h; // 0x00100000
+        private uint Unknown_13Ch; // 0x00000000
+        private ulong Unknown_140h_Pointer;
+        private uint Unknown_148h;
+        private uint Unknown_14Ch; // 0x00000000
+        private uint Unknown_150h; // 0x00000000
+        private uint Unknown_154h; // 0x00000000
+        private uint Unknown_158h;
+        private uint Unknown_15Ch; // 0x00000000
+        private uint Unknown_160h; // 0x00000000
+        private uint Unknown_164h; // 0x00000000
+        private uint Unknown_168h; // 0x00000000
+        private uint Unknown_16Ch; // 0x00000000
+        private uint Unknown_170h; // 0x00000000
+        private uint Unknown_174h; // 0x00000000
+        private uint Unknown_178h; // 0x00000000
+        private uint Unknown_17Ch; // 0x00000000
 
         // reference data
         public Bound? Bound { get; set; }

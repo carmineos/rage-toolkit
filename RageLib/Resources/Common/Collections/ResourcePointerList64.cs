@@ -1,9 +1,8 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using System;
-using System.Collections.Generic;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     public class ResourcePointerList64<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
     {
@@ -19,23 +18,23 @@ namespace RageLib.Resources.Common
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
-            this.EntriesPointer = reader.ReadUInt64();
-            this.EntriesCount = reader.ReadUInt16();
-            this.EntriesCapacity = reader.ReadUInt16();
+            EntriesPointer = reader.ReadUInt64();
+            EntriesCount = reader.ReadUInt16();
+            EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
 
-            this.Entries = reader.ReadBlockAt<ResourcePointerArray64<T>>(
-                this.EntriesPointer, // offset
-                this.EntriesCount
+            Entries = reader.ReadBlockAt<ResourcePointerArray64<T>>(
+                EntriesPointer, // offset
+                EntriesCount
             );
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update...
-            this.EntriesPointer = (ulong)(this.Entries?.BlockPosition ?? 0);
-            this.EntriesCount = (ushort)(this.Entries?.Count ?? 0);
-            this.EntriesCapacity = (ushort)(this.Entries?.Count ?? 0);
+            EntriesPointer = (ulong)(Entries?.BlockPosition ?? 0);
+            EntriesCount = (ushort)(Entries?.Count ?? 0);
+            EntriesCapacity = (ushort)(Entries?.Count ?? 0);
 
             // write...
             writer.Write(EntriesPointer);

@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using System;
 using System.Collections.Generic;
 
@@ -14,21 +15,21 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x630;
 
         // structure data
-        public uint Unknown_10h;
-        public uint Unknown_14h; // 0x00000000
-        public float Unknown_18h; // 0x40833333 
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_10h;
+        private uint Unknown_14h; // 0x00000000
+        private float Unknown_18h; // 0x40833333 
+        private uint Unknown_1Ch; // 0x00000000
         public ulong NamePointer;
-        public ulong Unknown_28h; // 0x0000000000000000
-        public ulong Unknown_30h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_30h; // 0x0000000000000000
         public ulong p2;
-        public ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_40h; // 0x0000000000000000
         public ulong p3;
-        public ulong Unknown_50h; // 0x0000000000000000
+        private ulong Unknown_50h; // 0x0000000000000000
         public ulong p4;
-        public ulong Unknown_60h; // 0x0000000000000000
-        public ulong Unknown_68h; // 0x0000000000000000
-        public ulong Unknown_70h; // 0x0000000000000000
+        private ulong Unknown_60h; // 0x0000000000000000
+        private ulong Unknown_68h; // 0x0000000000000000
+        private ulong Unknown_70h; // 0x0000000000000000
         public KeyframeProp KeyframeProp0;
         public KeyframeProp KeyframeProp1;
         public KeyframeProp KeyframeProp2;
@@ -40,8 +41,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public KeyframeProp KeyframeProp8;
         public KeyframeProp KeyframeProp9;
         public ResourcePointerList64<KeyframeProp> KeyframeProps;
-        public uint Unknown_628h;
-        public uint Unknown_62Ch; // 0x00000000
+        private uint Unknown_628h;
+        private uint Unknown_62Ch; // 0x00000000
 
         // reference data
         public string_r? Name { get; set; }

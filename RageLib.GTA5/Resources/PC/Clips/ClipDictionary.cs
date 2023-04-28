@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Collections.Generic;
 
@@ -13,14 +13,14 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x40;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
         public ulong AnimationsPointer;
-        public uint Unknown_20h; // 0x00000101
-        public uint Unknown_24h; // 0x00000000
+        private uint Unknown_20h; // 0x00000101
+        private uint Unknown_24h; // 0x00000000
         public ResourceHashMap<Clip> Clips;
-        public uint Unknown_38h; // 0x00000000
-        public uint Unknown_3Ch; // 0x00000000
+        private uint Unknown_38h; // 0x00000000
+        private uint Unknown_3Ch; // 0x00000000
 
         // reference data
         public AnimationMap? Animations { get; set; }

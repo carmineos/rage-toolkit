@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using System;
 using System.Collections.Generic;
 
@@ -13,27 +14,27 @@ namespace RageLib.Resources.GTA5.PC.Expressions
         public override long BlockLength => 0x90;
 
         // structure data
-        public uint Unknown_10h;
-        public uint Unknown_14h;
-        public uint Unknown_18h;
-        public uint Unknown_1Ch;
-        public ResourcePointerList64<Unknown_E_001> Unknown_20h;
-        public SimpleList64<uint> Unknown_30h;
-        public ResourceSimpleList64<Unknown_E_002> Unknown_40h;
-        public SimpleList64<uint> Unknown_50h;
+        private uint Unknown_10h;
+        private uint Unknown_14h;
+        private uint Unknown_18h;
+        private uint Unknown_1Ch;
+        private ResourcePointerList64<Unknown_E_001> Unknown_20h;
+        private SimpleList64<uint> Unknown_30h;
+        private ResourceSimpleList64<Unknown_E_002> Unknown_40h;
+        private SimpleList64<uint> Unknown_50h;
         public ulong NamePointer;
         public ushort NameLength1;
         public ushort NameLength2;
-        public uint Unknown_6Ch;
-        public uint Unknown_70h;
-        public uint Unknown_74h;
+        private uint Unknown_6Ch;
+        private uint Unknown_70h;
+        private uint Unknown_74h;
         public ushort len;
-        public ushort Unknown_7Ah;
-        public uint Unknown_7Ch;
-        public uint Unknown_80h;
-        public uint Unknown_84h;
-        public uint Unknown_88h;
-        public uint Unknown_8Ch;
+        private ushort Unknown_7Ah;
+        private uint Unknown_7Ch;
+        private uint Unknown_80h;
+        private uint Unknown_84h;
+        private uint Unknown_88h;
+        private uint Unknown_8Ch;
 
         // reference data
         public string_r? Name { get; set; }

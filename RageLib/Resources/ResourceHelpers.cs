@@ -77,17 +77,17 @@ namespace RageLib.Resources
 
         public class ResourceBuilderBlockSet
         {
-            private readonly Dictionary<long,LinkedList<IResourceBlock>> buckets;
+            private readonly Dictionary<long, LinkedList<IResourceBlock>> buckets;
             private List<long> _orderedKeys;
             private int _count;
-            
+
             public IResourceBlock RootBlock = null;
             public int Count => _count;
 
             public IResourceBlock GetBestBlock(long size)
             {
                 if (size == 0) return null;
-                
+
                 long bucketKey = 0;
                 LinkedList<IResourceBlock> bucketValue = null;
 
@@ -245,8 +245,8 @@ namespace RageLib.Resources
             addBlock(rootBlock);
             addChildren(rootBlock);
 
-            sys = new List<IResourceBlock>(systemBlocks);
-            gfx = new List<IResourceBlock>(graphicBlocks);
+            sys = systemBlocks.ToList();
+            gfx = graphicBlocks.ToList();
         }
 
         public static void AssignPositions(IList<IResourceBlock> blocks, uint basePosition, out ResourceChunkFlags flags, uint usedPages)
@@ -311,8 +311,6 @@ namespace RageLib.Resources
                     if (baseShift >= 0xF) break;
                 }
 
-                flags = new ResourceChunkFlags(new uint[9], baseShift);
-
                 var baseSizeMax = baseSize << 8;
                 var baseSizeMaxTest = startPageSize;
 
@@ -322,6 +320,7 @@ namespace RageLib.Resources
                     baseSizeMaxTest *= 2;
                 }
 
+                flags = new ResourceChunkFlags(new uint[9], baseShift);
                 if (!flags.TryAddChunk(bucketIndex))
                     break;
 

@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Numerics;
 
@@ -11,70 +11,70 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public override long BlockLength => 0x190;
 
         // structure data
-        public uint Unknown_0h; // 0x00000000
-        public uint Unknown_4h; // 0x00000000
-        public uint Unknown_8h; // 0x00000000
-        public uint Unknown_Ch; // 0x00000000
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
-        public uint Unknown_20h; // 0x00000000
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
-        public uint Unknown_30h; // 0x00000000
-        public uint Unknown_34h; // 0x00000000
-        public uint Unknown_38h; // 0x00000000
-        public uint Unknown_3Ch; // 0x00000000
-        public uint Unknown_40h; // 0x00000000
-        public uint Unknown_44h; // 0x00000000
-        public uint Unknown_48h; // 0x00000000
-        public uint Unknown_4Ch; // 0x00000000
-        public SimpleList64<Vector4> Unknown_50h;
-        public SimpleList64<ushort> Unknown_60h;
-        public SimpleList64<ushort> Unknown_70h;
-        public SimpleList64<ushort> Unknown_80h;
-        public SimpleList64<ushort> Unknown_90h;
-        public SimpleList64<Vector4> Unknown_A0h;
-        public SimpleList64<ushort> Unknown_B0h;
-        public SimpleList64<ushort> Unknown_C0h;
-        public SimpleList64<ushort> Unknown_D0h;
-        public SimpleList64<ushort> Unknown_E0h;
-        public uint Unknown_F0h; // 0x00000000
-        public uint Unknown_F4h; // 0x00000000
-        public uint Unknown_F8h; // 0x00000000
-        public uint Unknown_FCh; // 0x00000000
-        public uint Unknown_100h; // 0x00000000
-        public uint Unknown_104h; // 0x00000000
-        public uint Unknown_108h; // 0x00000000
-        public uint Unknown_10Ch; // 0x00000000
-        public uint Unknown_110h; // 0x00000000
-        public uint Unknown_114h; // 0x00000000
-        public uint Unknown_118h; // 0x00000000
-        public uint Unknown_11Ch; // 0x00000000
-        public uint Unknown_120h; // 0x00000000
-        public uint Unknown_124h; // 0x00000000
-        public uint Unknown_128h; // 0x00000000
-        public uint Unknown_12Ch; // 0x00000000
-        public uint Unknown_130h; // 0x00000000
-        public uint Unknown_134h; // 0x00000000
-        public uint Unknown_138h; // 0x00000000
-        public uint Unknown_13Ch; // 0x00000000
-        public uint Unknown_140h; // 0x00000000
-        public uint Unknown_144h; // 0x00000000
-        public uint Unknown_148h; // 0x00000000
-        public uint Unknown_14Ch; // 0x00000000
-        public SimpleList64<ushort> Unknown_150h;
-        public SimpleList64<ushort> Unknown_160h;
-        public uint Unknown_170h; // 0x00000000
-        public uint Unknown_174h; // 0x00000000
-        public uint Unknown_178h; // 0x00000000
-        public uint Unknown_17Ch; // 0x00000000
-        public uint Unknown_180h;
-        public uint Unknown_184h; // 0x00000000
-        public uint Unknown_188h; // 0x00000000
-        public uint Unknown_18Ch; // 0x00000000
+        private uint Unknown_0h; // 0x00000000
+        private uint Unknown_4h; // 0x00000000
+        private uint Unknown_8h; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h; // 0x00000000
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_20h; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_30h; // 0x00000000
+        private uint Unknown_34h; // 0x00000000
+        private uint Unknown_38h; // 0x00000000
+        private uint Unknown_3Ch; // 0x00000000
+        private uint Unknown_40h; // 0x00000000
+        private uint Unknown_44h; // 0x00000000
+        private uint Unknown_48h; // 0x00000000
+        private uint Unknown_4Ch; // 0x00000000
+        private SimpleList64<Vector4> Unknown_50h;
+        private SimpleList64<ushort> Unknown_60h;
+        private SimpleList64<ushort> Unknown_70h;
+        private SimpleList64<ushort> Unknown_80h;
+        private SimpleList64<ushort> Unknown_90h;
+        private SimpleList64<Vector4> Unknown_A0h;
+        private SimpleList64<ushort> Unknown_B0h;
+        private SimpleList64<ushort> Unknown_C0h;
+        private SimpleList64<ushort> Unknown_D0h;
+        private SimpleList64<ushort> Unknown_E0h;
+        private uint Unknown_F0h; // 0x00000000
+        private uint Unknown_F4h; // 0x00000000
+        private uint Unknown_F8h; // 0x00000000
+        private uint Unknown_FCh; // 0x00000000
+        private uint Unknown_100h; // 0x00000000
+        private uint Unknown_104h; // 0x00000000
+        private uint Unknown_108h; // 0x00000000
+        private uint Unknown_10Ch; // 0x00000000
+        private uint Unknown_110h; // 0x00000000
+        private uint Unknown_114h; // 0x00000000
+        private uint Unknown_118h; // 0x00000000
+        private uint Unknown_11Ch; // 0x00000000
+        private uint Unknown_120h; // 0x00000000
+        private uint Unknown_124h; // 0x00000000
+        private uint Unknown_128h; // 0x00000000
+        private uint Unknown_12Ch; // 0x00000000
+        private uint Unknown_130h; // 0x00000000
+        private uint Unknown_134h; // 0x00000000
+        private uint Unknown_138h; // 0x00000000
+        private uint Unknown_13Ch; // 0x00000000
+        private uint Unknown_140h; // 0x00000000
+        private uint Unknown_144h; // 0x00000000
+        private uint Unknown_148h; // 0x00000000
+        private uint Unknown_14Ch; // 0x00000000
+        private SimpleList64<ushort> Unknown_150h;
+        private SimpleList64<ushort> Unknown_160h;
+        private uint Unknown_170h; // 0x00000000
+        private uint Unknown_174h; // 0x00000000
+        private uint Unknown_178h; // 0x00000000
+        private uint Unknown_17Ch; // 0x00000000
+        private uint Unknown_180h;
+        private uint Unknown_184h; // 0x00000000
+        private uint Unknown_188h; // 0x00000000
+        private uint Unknown_18Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

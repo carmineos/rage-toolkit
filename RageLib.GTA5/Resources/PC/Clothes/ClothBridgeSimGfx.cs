@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 
 namespace RageLib.Resources.GTA5.PC.Clothes
@@ -13,9 +13,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
 
         // structure data
         public uint Count;
-        public uint Unknown_14h;
-        public uint Unknown_18h;
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_14h;
+        private uint Unknown_18h;
+        private uint Unknown_1Ch; // 0x00000000
         public SimpleList64<float> PinRadius0;
         public SimpleList64<float> PinRadius1;
         public SimpleList64<float> PinRadius2;
@@ -32,9 +32,9 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public SimpleList64<ushort> ClothDisplayMap1;
         public SimpleList64<ushort> ClothDisplayMap2;
         public SimpleList64<ushort> ClothDisplayMap3;
-        public ulong Unknown_120h; // 0x0000000000000000
+        private ulong Unknown_120h; // 0x0000000000000000
         public SimpleList64<uint> Unknown_128h;
-        public ulong Unknown_138h; // 0x0000000000000000
+        private ulong Unknown_138h; // 0x0000000000000000
 
         /// <summary>
         /// Reads the data-block from a stream.

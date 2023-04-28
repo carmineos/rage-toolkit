@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Fragments;
 using System;
 using System.Collections.Generic;
@@ -17,18 +17,18 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         // structure data
         public ulong InstanceTuningPointer;
         public ulong DrawablePointer;
-        public ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
         public ulong ControllerPointer;
-        public ulong Unknown_30h; // 0x0000000000000000
-        public ulong Unknown_38h; // 0x0000000000000000
-        public ulong Unknown_40h; // 0x0000000000000000
-        public ulong Unknown_48h; // 0x0000000000000000
-        public ulong Unknown_50h; // 0x0000000000000000
-        public ulong Unknown_58h; // 0x0000000000000000
+        private ulong Unknown_30h; // 0x0000000000000000
+        private ulong Unknown_38h; // 0x0000000000000000
+        private ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_48h; // 0x0000000000000000
+        private ulong Unknown_50h; // 0x0000000000000000
+        private ulong Unknown_58h; // 0x0000000000000000
         public SimpleList64<uint> UserData;
-        public ulong Unknown_70h; // 0x0000000000000000
-        public uint Unknown_78h;
-        public uint Unknown_7Ch; // 0x00000000
+        private ulong Unknown_70h; // 0x0000000000000000
+        private uint Unknown_78h;
+        private uint Unknown_7Ch; // 0x00000000
 
         // reference data
         public ClothInstanceTuning? InstanceTuning { get; set; }

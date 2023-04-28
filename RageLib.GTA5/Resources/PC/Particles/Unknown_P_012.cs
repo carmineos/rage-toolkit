@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Drawables;
 using System.Collections.Generic;
 using System.Numerics;
@@ -12,12 +12,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public override long BlockLength => 0x30;
 
         // structure data
-        public Vector4 Unknown_0h;
+        private Vector4 Unknown_0h;
         public ulong NamePointer;
         public ulong DrawablePointer;
         public uint NameHash;
-        public uint Unknown_24h; // 0x00000000
-        public ulong Unknown_28h; // 0x0000000000000000
+        private uint Unknown_24h; // 0x00000000
+        private ulong Unknown_28h; // 0x0000000000000000
 
         // reference data
         public string_r? Name { get; set; }

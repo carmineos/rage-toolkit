@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Bounds;
 using RageLib.Resources.GTA5.PC.Drawables;
 using System;
@@ -15,18 +16,18 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0x150;
 
         // structure data
-        public ulong Unknown_A8h; // 0x0000000000000000
-        public Matrix4x4 Unknown_B0h;      
+        private ulong Unknown_A8h; // 0x0000000000000000
+        private Matrix4x4 Unknown_B0h;
         public ulong BoundPointer;
-        public SimpleList64<ulong> Unknown_F8h_Data;
-        public SimpleList64<Matrix4x4> Unknown_108h_Data;
-        public ulong Unknown_118h; // 0x0000000000000000
-        public ulong Unknown_120h; // 0x0000000000000000
-        public ulong Unknown_128h; // 0x0000000000000000
+        private SimpleList64<ulong> Unknown_F8h_Data;
+        private SimpleList64<Matrix4x4> Unknown_108h_Data;
+        private ulong Unknown_118h; // 0x0000000000000000
+        private ulong Unknown_120h; // 0x0000000000000000
+        private ulong Unknown_128h; // 0x0000000000000000
         public ulong NamePointer;
-        public ulong Unknown_138h; // 0x0000000000000000
-        public ulong Unknown_140h; // 0x0000000000000000
-        public ulong Unknown_148h; // 0x0000000000000000
+        private ulong Unknown_138h; // 0x0000000000000000
+        private ulong Unknown_140h; // 0x0000000000000000
+        private ulong Unknown_148h; // 0x0000000000000000
 
         // reference data
         public Bound? Bound { get; set; }

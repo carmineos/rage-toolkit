@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Simple;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Clips
@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public ulong ValuePointer;
         public ushort ValueLength1;
         public ushort ValueLength2;
-        public uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
 
         // reference data
         public string_r? Value { get; set; }

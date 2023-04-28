@@ -1,7 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Numerics;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 
 namespace RageLib.Resources.GTA5.PC.Fragments
@@ -15,16 +15,16 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         }
 
         // structure data
-        public uint Unknown_0h; // 0x00000000
-        public uint Unknown_4h; // 0x00000000
-        public uint Unknown_8h; // 0x00000000
-        public uint Unknown_Ch; // 0x00000000
+        private uint Unknown_0h; // 0x00000000
+        private uint Unknown_4h; // 0x00000000
+        private uint Unknown_8h; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
         public byte cnt1;
         public byte cnt2;
-        public ushort Unknown_12h;
-        public uint Unknown_14h; // 0x00000000
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
+        private ushort Unknown_12h;
+        private uint Unknown_14h; // 0x00000000
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
         public SimpleArray<Matrix3x4> Data;
 
         /// <summary>

@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 
 namespace RageLib.Resources.GTA5.PC.Particles
@@ -12,16 +12,16 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public ResourcePointerList64<KeyframeProp> KeyframeProps;
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
         public KeyframeProp KeyframeProp0;
         public KeyframeProp KeyframeProp1;
         public KeyframeProp KeyframeProp2;
         public KeyframeProp KeyframeProp3;
-        public uint Unknown_270h;
-        public uint Unknown_274h;
-        public uint Unknown_278h;
-        public uint Unknown_27Ch;
+        private uint Unknown_270h;
+        private uint Unknown_274h;
+        private uint Unknown_278h;
+        private uint Unknown_27Ch;
 
         /// <summary>
         /// Reads the data-block from a stream.

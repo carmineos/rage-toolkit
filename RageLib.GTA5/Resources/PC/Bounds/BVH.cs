@@ -1,7 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Numerics;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Numerics;
 
@@ -13,8 +13,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
 
         // structure data
         public SimpleBigList64<BVHNode> Nodes;
-        public ulong Unknown_10h; // 0x0000000000000000
-        public ulong Unknown_18h; // 0x0000000000000000
+        private ulong Unknown_10h; // 0x0000000000000000
+        private ulong Unknown_18h; // 0x0000000000000000
         public Vector4 BoundingBoxMin;
         public Vector4 BoundingBoxMax;
         public Vector4 BoundingBoxCenter;

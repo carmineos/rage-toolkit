@@ -2,7 +2,7 @@
 
 using System;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     public class SimpleBigList32<T> : ResourceSystemBlock where T : unmanaged
     {
@@ -29,7 +29,7 @@ namespace RageLib.Resources.Common
             Unknown_0Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Entries = reader.ReadBlockAt<SimpleArray<T>>(EntriesPointer, EntriesCapacity);
+            Entries = reader.ReadBlockAt<SimpleArray<T>>(EntriesPointer, EntriesCapacity);
 
             // TODO: see https://github.com/carmineos/gta-toolkit/issues/13
         }

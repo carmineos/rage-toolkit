@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Textures;
 using System;
 using System.Collections.Generic;
@@ -16,14 +16,14 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public ulong TextureDictionaryPointer;
         public ResourcePointerList64<ShaderFX> Shaders;
-        public uint Unknown_20h; // 0x00000000
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
-        public uint Unknown_30h;
-        public uint Unknown_34h; // 0x00000000
-        public uint Unknown_38h; // 0x00000000
-        public uint Unknown_3Ch; // 0x00000000
+        private uint Unknown_20h; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_30h;
+        private uint Unknown_34h; // 0x00000000
+        private uint Unknown_38h; // 0x00000000
+        private uint Unknown_3Ch; // 0x00000000
 
         // reference data
         public PgDictionary64<TextureDX11>? TextureDictionary { get; set; }

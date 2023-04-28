@@ -3,7 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     public abstract class ListBase<T> : ResourceSystemBlock, IList<T> where T : IResourceSystemBlock, new()
     {

@@ -2,10 +2,9 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     /// <summary>
     /// A <see cref="ResourceSystemBlock"/> which holds an array of unmanaged type.
@@ -55,8 +54,8 @@ namespace RageLib.Resources.Common
 
         public int Count => Data.Length;
 
-        public T this[int index] 
-        { 
+        public T this[int index]
+        {
             get => Data[index];
             set => Data[index] = value;
         }

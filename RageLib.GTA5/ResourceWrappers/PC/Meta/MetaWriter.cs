@@ -3,7 +3,7 @@
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Data;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Definitions;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5;
 using RageLib.Resources.GTA5.PC.Meta;
 using System.Collections.Generic;
@@ -104,7 +104,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
                 foreach (var structureEntryToCheck in structureToCheck.Values)
                 {
-                    if(structureEntryToCheck.Value is MetaEnumInt8 enumInt8)
+                    if (structureEntryToCheck.Value is MetaEnumInt8 enumInt8)
                         usedEnumKeys.Add(enumInt8.info.EnumKey);
                     else if (structureEntryToCheck.Value is MetaEnumInt16 enumInt16)
                         usedEnumKeys.Add(enumInt16.info.EnumKey);
@@ -143,18 +143,18 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     {
                         updateStack.Push(structureEntryToCheck.Value);
                     }
-                    else if(structureEntryToCheck.Value is MetaDataBlockPointer)
+                    else if (structureEntryToCheck.Value is MetaDataBlockPointer)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
                     }
-                    else if(structureEntryToCheck.Value is MetaGeneric)
+                    else if (structureEntryToCheck.Value is MetaGeneric)
                     {
                         updateStack.Push(structureEntryToCheck.Value);
 
                         var genericStructureEntryToCheck = structureEntryToCheck.Value as MetaGeneric;
                         structuresToCheck.Push((MetaStructure)genericStructureEntryToCheck.Value);
                     }
-                    else if(structureEntryToCheck.Value is MetaStructure)
+                    else if (structureEntryToCheck.Value is MetaStructure)
                     {
                         structuresToCheck.Push((MetaStructure)structureEntryToCheck.Value);
                     }

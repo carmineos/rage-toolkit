@@ -10,9 +10,9 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
         // structure data
         public VertexDeclarationFlags Flags;
-        public ushort Unknown_2h;
+        private ushort Unknown_2h;
         public ushort Stride;
-        public byte Unknown_6h;
+        private byte Unknown_6h;
         public byte ComponentsCount;
         public VertexDeclarationTypes Types;
 
@@ -73,7 +73,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         /// Used in most of GTA5 drawables
         /// </summary>
         GTA5_1 = 0x7755555555996996,
-        
+
         /// <summary>
         /// Used in GTA5 cloth drawables
         /// </summary>

@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Nodes
@@ -12,24 +12,24 @@ namespace RageLib.Resources.GTA5.PC.Nodes
         // structure data
         public ulong NodesPointer;
         public uint NodesCount;
-        public uint Unknown_1Ch;
-        public uint Unknown_20h;
-        public uint Unknown_24h; // 0x00000000
-        public ulong Unknown_28h_Pointer;
+        private uint Unknown_1Ch;
+        private uint Unknown_20h;
+        private uint Unknown_24h; // 0x00000000
+        private ulong Unknown_28h_Pointer;
         public uint DataPointer1Length;
-        public uint Unknown_34h; // 0x00000000
-        public ulong Unknown_38h_Pointer;
-        public ulong Unknown_40h_Pointer;
-        public uint Unknown_48h; // 0x00000001
-        public uint Unknown_4Ch; // 0x00000000
-        public ulong Unknown_50h_Pointer;
+        private uint Unknown_34h; // 0x00000000
+        private ulong Unknown_38h_Pointer;
+        private ulong Unknown_40h_Pointer;
+        private uint Unknown_48h; // 0x00000001
+        private uint Unknown_4Ch; // 0x00000000
+        private ulong Unknown_50h_Pointer;
         public ushort cnt5a;
         public ushort cnt5b; // same as cnt5a
-        public uint Unknown_5Ch; // 0x00000000
+        private uint Unknown_5Ch; // 0x00000000
         public uint len4; // same as cnt5a
         public uint len5;
-        public uint Unknown_68h; // 0x00000000
-        public uint Unknown_6Ch; // 0x00000000
+        private uint Unknown_68h; // 0x00000000
+        private uint Unknown_6Ch; // 0x00000000
 
         // reference data
         public SimpleArray<Node>? Nodes { get; set; }

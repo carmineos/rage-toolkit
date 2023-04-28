@@ -17,20 +17,20 @@ namespace RageLib.Resources.GTA5.PC.Textures
         public ushort Depth; // 0x0001
         public ushort Stride;
         public uint Format;
-        public byte Unknown_5Ch; // 0x00
+        private byte Unknown_5Ch; // 0x00
         public byte Levels;
-        public ushort Unknown_5Eh; // 0x0000
-        public uint Unknown_60h; // 0x00000000
-        public uint Unknown_64h; // 0x00000000
-        public uint Unknown_68h; // 0x00000000
-        public uint Unknown_6Ch; // 0x00000000
+        private ushort Unknown_5Eh; // 0x0000
+        private uint Unknown_60h; // 0x00000000
+        private uint Unknown_64h; // 0x00000000
+        private uint Unknown_68h; // 0x00000000
+        private uint Unknown_6Ch; // 0x00000000
         public ulong DataPointer;
-        public uint Unknown_78h; // 0x00000000
-        public uint Unknown_7Ch; // 0x00000000
-        public uint Unknown_80h; // 0x00000000
-        public uint Unknown_84h; // 0x00000000
-        public uint Unknown_88h; // 0x00000000
-        public uint Unknown_8Ch; // 0x00000000
+        private uint Unknown_78h; // 0x00000000
+        private uint Unknown_7Ch; // 0x00000000
+        private uint Unknown_80h; // 0x00000000
+        private uint Unknown_84h; // 0x00000000
+        private uint Unknown_88h; // 0x00000000
+        private uint Unknown_8Ch; // 0x00000000
 
         // reference data
         public TextureData_GTA5_pc? Data { get; set; }

@@ -1,9 +1,8 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
 using System;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     // pgBase
     // pgDictionaryBase
@@ -27,11 +26,11 @@ namespace RageLib.Resources.Common
             base.Read(reader, parameters);
 
             // read structure data
-            this.ParentPointer = reader.ReadUInt64();
-            this.Count = reader.ReadUInt32();
-            this.Unknown_1Ch = reader.ReadUInt32();
-            this.Hashes = reader.ReadBlock<SimpleList64<uint>>();
-            this.Values = reader.ReadBlock<ResourcePointerList64<T>>();
+            ParentPointer = reader.ReadUInt64();
+            Count = reader.ReadUInt32();
+            Unknown_1Ch = reader.ReadUInt32();
+            Hashes = reader.ReadBlock<SimpleList64<uint>>();
+            Values = reader.ReadBlock<ResourcePointerList64<T>>();
         }
 
         /// <summary>
@@ -42,11 +41,11 @@ namespace RageLib.Resources.Common
             base.Write(writer, parameters);
 
             // write structure data
-            writer.Write(this.ParentPointer);
-            writer.Write(this.Count);
-            writer.Write(this.Unknown_1Ch);
-            writer.WriteBlock(this.Hashes);
-            writer.WriteBlock(this.Values);
+            writer.Write(ParentPointer);
+            writer.Write(Count);
+            writer.Write(Unknown_1Ch);
+            writer.WriteBlock(Hashes);
+            writer.WriteBlock(Values);
         }
 
         public override Tuple<long, IResourceBlock>[] GetParts()

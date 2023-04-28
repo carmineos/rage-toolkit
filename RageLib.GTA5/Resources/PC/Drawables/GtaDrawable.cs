@@ -1,6 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
+using RageLib.Resources.Common.Simple;
 using RageLib.Resources.GTA5.PC.Bounds;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public ulong NamePointer;
         public SimpleList64<LightAttributes> LightAttributes;
-        public ulong Unknown_C0h; // 0x0000000000000000
+        private ulong Unknown_C0h; // 0x0000000000000000
         public ulong BoundPointer;
 
         // reference data

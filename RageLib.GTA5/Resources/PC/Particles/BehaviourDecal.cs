@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 
 namespace RageLib.Resources.GTA5.PC.Particles
@@ -12,22 +12,22 @@ namespace RageLib.Resources.GTA5.PC.Particles
 
         // structure data
         public ResourcePointerList64<KeyframeProp> KeyframeProps;
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
         public KeyframeProp KeyframeProp0;
         public KeyframeProp KeyframeProp1;
-        public uint Unknown_150h;
-        public float Unknown_154h;
-        public float Unknown_158h;
-        public float Unknown_15Ch;
-        public float Unknown_160h;
-        public float Unknown_164h;
-        public float Unknown_168h;
-        public float Unknown_16Ch;
-        public uint Unknown_170h;
-        public float Unknown_174h; // 0x3E99999A
-        public float Unknown_178h; // 0x3F800000
-        public uint Unknown_17Ch; // 0x00000000
+        private uint Unknown_150h;
+        private float Unknown_154h;
+        private float Unknown_158h;
+        private float Unknown_15Ch;
+        private float Unknown_160h;
+        private float Unknown_164h;
+        private float Unknown_168h;
+        private float Unknown_16Ch;
+        private uint Unknown_170h;
+        private float Unknown_174h; // 0x3E99999A
+        private float Unknown_178h; // 0x3F800000
+        private uint Unknown_17Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

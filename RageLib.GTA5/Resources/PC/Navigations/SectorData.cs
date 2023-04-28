@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Navigations
@@ -11,12 +11,12 @@ namespace RageLib.Resources.GTA5.PC.Navigations
 
         // structure data
         public uint c1;
-        public uint Unknown_4h; // 0x00000000
+        private uint Unknown_4h; // 0x00000000
         public ulong p1;
         public ulong p2;
         public ushort c2;
         public ushort c3;
-        public uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
 
         // reference data
         public SimpleArray<ushort>? p1data { get; set; }

@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public ulong PhysicsLOD1Pointer;
         public ulong PhysicsLOD2Pointer;
         public ulong PhysicsLOD3Pointer;
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
 
         // reference data
         public FragPhysicsLOD? PhysicsLOD1 { get; set; }

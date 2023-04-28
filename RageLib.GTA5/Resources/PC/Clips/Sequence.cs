@@ -10,15 +10,15 @@ namespace RageLib.Resources.GTA5.PC.Clips
         }
 
         // structure data
-        public uint Unknown_0h;
+        private uint Unknown_0h;
         public uint DataLength;
-        public uint Unknown_8h; // 0x00000000
-        public uint Unknown_Ch;
-        public uint Unknown_10h;
-        public uint Unknown_14h;
-        public uint Unknown_18h;
-        public ushort Unknown_1Ch;
-        public ushort Unknown_1Eh;
+        private uint Unknown_8h; // 0x00000000
+        private uint Unknown_Ch;
+        private uint Unknown_10h;
+        private uint Unknown_14h;
+        private uint Unknown_18h;
+        private ushort Unknown_1Ch;
+        private ushort Unknown_1Eh;
         public byte[] Data;
 
         /// <summary>

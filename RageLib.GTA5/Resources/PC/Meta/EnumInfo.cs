@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 
 namespace RageLib.Resources.GTA5.PC.Meta
@@ -14,7 +14,7 @@ namespace RageLib.Resources.GTA5.PC.Meta
         public int EnumKey { get; set; }
         public long EntriesPointer { get; private set; }
         public int EntriesCount { get; private set; }
-        public int Unknown_14h { get; set; } = 0x00000000;
+        private int Unknown_14h { get; set; } = 0x00000000;
 
         // reference data
         public ResourceSimpleArray<EnumEntryInfo> Entries;

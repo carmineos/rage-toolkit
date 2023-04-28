@@ -2,7 +2,7 @@
 
 using System;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     public class ResourcePointerList32<T> : ResourceSystemBlock where T : IResourceSystemBlock, new()
     {
@@ -18,22 +18,22 @@ namespace RageLib.Resources.Common
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
-            this.EntriesPointer = reader.ReadUInt32();
-            this.EntriesCount = reader.ReadUInt16();
-            this.EntriesCapacity = reader.ReadUInt16();
+            EntriesPointer = reader.ReadUInt32();
+            EntriesCount = reader.ReadUInt16();
+            EntriesCapacity = reader.ReadUInt16();
 
-            this.Entries = reader.ReadBlockAt<ResourcePointerArray32<T>>(
-                this.EntriesPointer, // offset
-                this.EntriesCount
+            Entries = reader.ReadBlockAt<ResourcePointerArray32<T>>(
+                EntriesPointer, // offset
+                EntriesCount
             );
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update...
-            this.EntriesPointer = (uint)Entries.BlockPosition;
-            this.EntriesCount = (ushort)Entries.Count;
-            this.EntriesCapacity = (ushort)Entries.Count;
+            EntriesPointer = (uint)Entries.BlockPosition;
+            EntriesCount = (ushort)Entries.Count;
+            EntriesCapacity = (ushort)Entries.Count;
 
             // write...
             writer.Write(EntriesPointer);

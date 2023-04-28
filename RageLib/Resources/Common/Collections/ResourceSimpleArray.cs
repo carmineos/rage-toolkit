@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     /// <summary>
     /// Represents an array of type T.

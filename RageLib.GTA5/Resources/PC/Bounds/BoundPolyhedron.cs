@@ -1,7 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Numerics;
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -15,25 +15,25 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public override long BlockLength => 0xF0;
 
         // structure data
-        public uint Unknown_70h;
-        public uint Unknown_74h;
+        private uint Unknown_70h;
+        private uint Unknown_74h;
         public ulong ShrunkVerticesPointer;
-        public uint Unknown_80h;
+        private uint Unknown_80h;
         public uint VerticesCount1;
         public ulong PrimitivesPointer;
         public Vector3 Quantum;
-        public float Unknown_9Ch;
+        private float Unknown_9Ch;
         public Vector3 Offset;
-        public float Unknown_ACh;
+        private float Unknown_ACh;
         public ulong VerticesPointer;
         public ulong VerticesColorsPointer;
-        public ulong Unknown_C0h_Pointer;
-        public ulong Unknown_C8h_Pointer;
+        private ulong Unknown_C0h_Pointer;
+        private ulong Unknown_C8h_Pointer;
         public uint VerticesCount2;
         public uint PrimitivesCount;
-        public ulong Unknown_D8h; // 0x0000000000000000
-        public ulong Unknown_E0h; // 0x0000000000000000
-        public ulong Unknown_E8h; // 0x0000000000000000
+        private ulong Unknown_D8h; // 0x0000000000000000
+        private ulong Unknown_E0h; // 0x0000000000000000
+        private ulong Unknown_E8h; // 0x0000000000000000
 
         // reference data
         public SimpleArray<BoundVertex>? ShrunkVertices { get; set; }
@@ -153,7 +153,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
             if (Unknown_C8h_Data != null) list.Add(Unknown_C8h_Data);
             return list.ToArray();
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector3 GetVertex(BoundVertex quantizedVertex)
         {
@@ -210,7 +210,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             base.Rebuild();
 
-            if(Vertices is null || Primitives is null)
+            if (Vertices is null || Primitives is null)
             {
                 return;
             }
@@ -249,7 +249,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
                     continue;
 
                 ref BoundPrimitiveTriangle triangle = ref primitivesSpan[i].AsTriangle();
-                
+
                 var vertex1 = GetVertex(Vertices[triangle.VertexIndex1]);
                 var vertex2 = GetVertex(Vertices[triangle.VertexIndex2]);
                 var vertex3 = GetVertex(Vertices[triangle.VertexIndex3]);
@@ -262,7 +262,7 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         {
             // Key: (vertex1, vertex2) 
             // Value: (triangle1, triangle2)
-            Dictionary <ValueTuple<ushort, ushort>, ValueTuple<int, int>> edgesMap = new();
+            Dictionary<ValueTuple<ushort, ushort>, ValueTuple<int, int>> edgesMap = new();
             ValueTuple<ushort, ushort>[] edges = new (ushort, ushort)[3];
 
             var primitivesSpan = Primitives.AsSpan();
@@ -283,9 +283,9 @@ namespace RageLib.Resources.GTA5.PC.Bounds
                     if (edgesMap.ContainsKey(edges[e]))
                     {
                         var triangles = edgesMap[edges[e]];
-                        
+
                         edgesMap[edges[e]] = (triangles.Item1, i);
-                    }   
+                    }
                     else
                         edgesMap[edges[e]] = (i, -1);
                 }

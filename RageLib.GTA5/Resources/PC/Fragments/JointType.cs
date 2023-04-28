@@ -11,12 +11,12 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0x20;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public byte Unknown_14h; // 0x3F533333
+        private uint Unknown_10h; // 0x00000000
+        private byte Unknown_14h; // 0x3F533333
         public byte Type;
-        public ushort Unknown_16h;
-        public uint Unknown_18h; // 0x00000000
-        public uint Unknown_1Ch; // 0x00000000
+        private ushort Unknown_16h;
+        private uint Unknown_18h; // 0x00000000
+        private uint Unknown_1Ch; // 0x00000000
 
         /// <summary>
         /// Reads the data-block from a stream.

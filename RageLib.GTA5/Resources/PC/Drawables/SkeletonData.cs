@@ -1,12 +1,11 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.GTA5.Resources.PC.Drawables;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
-using RageLib.GTA5.Resources.PC.Drawables;
-using RageLib.Helpers;
-using RageLib.Resources.Common;
 
 namespace RageLib.Resources.GTA5.PC.Drawables
 {
@@ -23,16 +22,16 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         public ulong DefaultPoseMatricesPointer;
         public ulong ParentIndicesPointer;
         public ulong ChildrenIndicesPointer;
-        public ulong Unknown_48h; // 0x0000000000000000
-        public uint Unknown_50h;
-        public uint Unknown_54h;
+        private ulong Unknown_48h; // 0x0000000000000000
+        private uint Unknown_50h;
+        private uint Unknown_54h;
         public uint DataCRC;
-        public ushort Unknown_5Ch; // 0x0001
+        private ushort Unknown_5Ch; // 0x0001
         public ushort BonesCount;
         public ushort ChildrenIndicesCount;
-        public ushort Unknown_62h; // 0x0000
-        public uint Unknown_64h; // 0x00000000
-        public ulong Unknown_68h; // 0x0000000000000000
+        private ushort Unknown_62h; // 0x0000
+        private uint Unknown_64h; // 0x00000000
+        private ulong Unknown_68h; // 0x0000000000000000
 
         // reference data
         public BoneData? BoneData { get; set; }
@@ -149,7 +148,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         {
             base.Rebuild();
 
-            if(BoneData?.Bones is null)
+            if (BoneData?.Bones is null)
             {
                 BonesCount = 0;
                 ChildrenIndicesCount = 0;
@@ -225,7 +224,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             List<short> childrenIndices = new List<short>();
             for (int i = 0; i < BonesCount; i++)
             {
-                if(ParentIndices[i] != -1)
+                if (ParentIndices[i] != -1)
                 {
                     childrenIndices.Add((short)i);
                     childrenIndices.Add(ParentIndices[i]);
@@ -249,7 +248,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
                 // Get Local Transform Matrix
                 var localMatrix = GetLocalMatrix(bone);
-                
+
                 // Get World Transform Matrix
                 var worldMatrix = GetWorldMatrix(bone);
                 Matrix4x4.Invert(worldMatrix, out Matrix4x4 worldMatrixInverted);

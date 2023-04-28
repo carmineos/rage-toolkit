@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -13,46 +13,46 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0xB0;
 
         // structure data
-        public uint Unknown_10h; // 0x00000000
-        public uint Unknown_14h;
-        public uint Unknown_18h;
-        public uint Unknown_1Ch;
-        public uint Unknown_20h;
-        public uint Unknown_24h;
-        public uint Unknown_28h;
-        public uint Unknown_2Ch;
-        public uint Unknown_30h;
-        public uint Unknown_34h;
-        public uint Unknown_38h;
-        public uint Unknown_3Ch;
-        public uint Unknown_40h;
-        public uint Unknown_44h;
-        public uint Unknown_48h;
-        public uint Unknown_4Ch;
-        public uint Unknown_50h;
-        public uint Unknown_54h;
-        public uint Unknown_58h;
-        public uint Unknown_5Ch;
-        public uint Unknown_60h;
-        public uint Unknown_64h;
-        public uint Unknown_68h; // 0x00000000
-        public uint Unknown_6Ch; // 0x3F800000
-        public uint Unknown_70h; // 0x00000000
-        public uint Unknown_74h; // 0x00000000
+        private uint Unknown_10h; // 0x00000000
+        private uint Unknown_14h;
+        private uint Unknown_18h;
+        private uint Unknown_1Ch;
+        private uint Unknown_20h;
+        private uint Unknown_24h;
+        private uint Unknown_28h;
+        private uint Unknown_2Ch;
+        private uint Unknown_30h;
+        private uint Unknown_34h;
+        private uint Unknown_38h;
+        private uint Unknown_3Ch;
+        private uint Unknown_40h;
+        private uint Unknown_44h;
+        private uint Unknown_48h;
+        private uint Unknown_4Ch;
+        private uint Unknown_50h;
+        private uint Unknown_54h;
+        private uint Unknown_58h;
+        private uint Unknown_5Ch;
+        private uint Unknown_60h;
+        private uint Unknown_64h;
+        private uint Unknown_68h; // 0x00000000
+        private uint Unknown_6Ch; // 0x3F800000
+        private uint Unknown_70h; // 0x00000000
+        private uint Unknown_74h; // 0x00000000
         public ulong JointTypesPointer;
         public ulong p2;
         public byte c1;
         public byte JointTypesCount;
         public ushort Unknown_8Ah;
-        public uint Unknown_8Ch;
-        public uint Unknown_90h;
-        public uint Unknown_94h;
-        public uint Unknown_98h;
-        public uint Unknown_9Ch;
-        public uint Unknown_A0h; // 0x00000000
-        public uint Unknown_A4h; // 0x00000000
-        public uint Unknown_A8h; // 0x00000000
-        public uint Unknown_ACh; // 0x00000000
+        private uint Unknown_8Ch;
+        private uint Unknown_90h;
+        private uint Unknown_94h;
+        private uint Unknown_98h;
+        private uint Unknown_9Ch;
+        private uint Unknown_A0h; // 0x00000000
+        private uint Unknown_A4h; // 0x00000000
+        private uint Unknown_A8h; // 0x00000000
+        private uint Unknown_ACh; // 0x00000000
 
         // reference data
         public ResourcePointerArray64<JointType>? JointTypes { get; set; }

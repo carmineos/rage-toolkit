@@ -8,11 +8,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
     public struct JointTranslationLimit : IResourceStruct<JointTranslationLimit>
     {
         // structure data
-        public ulong Unknown_0h; // 0x0000000000000000
+        private ulong Unknown_0h; // 0x0000000000000000
         public uint BoneId;
-        public uint Unknown_Ch; // 0x00000000
-        public ulong Unknown_10h; // 0x0000000000000000
-        public ulong Unknown_18h; // 0x0000000000000000
+        private uint Unknown_Ch; // 0x00000000
+        private ulong Unknown_10h; // 0x0000000000000000
+        private ulong Unknown_18h; // 0x0000000000000000
         public Vector4 LimitMin;
         public Vector4 LimitMax;
 

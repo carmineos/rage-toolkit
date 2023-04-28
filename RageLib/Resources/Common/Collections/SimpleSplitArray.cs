@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace RageLib.Resources.Common
+namespace RageLib.Resources.Common.Collections
 {
     // aiSplitArray<T, C>
     // C is used as max capacity of each SplitArrayPart<T>
@@ -19,13 +19,13 @@ namespace RageLib.Resources.Common
         // structure data
         public ulong VFT;
         public uint EntriesCount;
-        public uint Unknown_Ch; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
         public ulong PartsPointer;
         public ulong OffsetsPointer;
         public uint PartsCount;
-        public uint Unknown_24h; // 0x00000000
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_24h; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
 
         // reference data
         public ResourceSimpleArray<SimpleSplitArrayPart<T>>? Parts { get; set; }
@@ -37,24 +37,24 @@ namespace RageLib.Resources.Common
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.VFT = reader.ReadUInt64();
-            this.EntriesCount = reader.ReadUInt32();
-            this.Unknown_Ch = reader.ReadUInt32();
-            this.PartsPointer = reader.ReadUInt64();
-            this.OffsetsPointer = reader.ReadUInt64();
-            this.PartsCount = reader.ReadUInt32();
-            this.Unknown_24h = reader.ReadUInt32();
-            this.Unknown_28h = reader.ReadUInt32();
-            this.Unknown_2Ch = reader.ReadUInt32();
+            VFT = reader.ReadUInt64();
+            EntriesCount = reader.ReadUInt32();
+            Unknown_Ch = reader.ReadUInt32();
+            PartsPointer = reader.ReadUInt64();
+            OffsetsPointer = reader.ReadUInt64();
+            PartsCount = reader.ReadUInt32();
+            Unknown_24h = reader.ReadUInt32();
+            Unknown_28h = reader.ReadUInt32();
+            Unknown_2Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Parts = reader.ReadBlockAt<ResourceSimpleArray<SimpleSplitArrayPart<T>>>(
-                this.PartsPointer, // offset
-                this.PartsCount
+            Parts = reader.ReadBlockAt<ResourceSimpleArray<SimpleSplitArrayPart<T>>>(
+                PartsPointer, // offset
+                PartsCount
             );
-            this.Offsets = reader.ReadBlockAt<SimpleArray<uint>>(
-                this.OffsetsPointer, // offset
-                this.PartsCount
+            Offsets = reader.ReadBlockAt<SimpleArray<uint>>(
+                OffsetsPointer, // offset
+                PartsCount
             );
         }
 
@@ -64,20 +64,20 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.PartsPointer = (ulong)(this.Parts?.BlockPosition ?? 0);
-            this.OffsetsPointer = (ulong)(this.Offsets?.BlockPosition ?? 0);
-            this.PartsCount = (uint)(this.Parts?.Count ?? 0);
+            PartsPointer = (ulong)(Parts?.BlockPosition ?? 0);
+            OffsetsPointer = (ulong)(Offsets?.BlockPosition ?? 0);
+            PartsCount = (uint)(Parts?.Count ?? 0);
 
             // write structure data
-            writer.Write(this.VFT);
-            writer.Write(this.EntriesCount);
-            writer.Write(this.Unknown_Ch);
-            writer.Write(this.PartsPointer);
-            writer.Write(this.OffsetsPointer);
-            writer.Write(this.PartsCount);
-            writer.Write(this.Unknown_24h);
-            writer.Write(this.Unknown_28h);
-            writer.Write(this.Unknown_2Ch);
+            writer.Write(VFT);
+            writer.Write(EntriesCount);
+            writer.Write(Unknown_Ch);
+            writer.Write(PartsPointer);
+            writer.Write(OffsetsPointer);
+            writer.Write(PartsCount);
+            writer.Write(Unknown_24h);
+            writer.Write(Unknown_28h);
+            writer.Write(Unknown_2Ch);
         }
 
         /// <summary>
@@ -110,14 +110,14 @@ namespace RageLib.Resources.Common
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
-            this.Pointer = reader.ReadUInt64();
-            this.Count = reader.ReadUInt32();
-            this.Unknown_Ch = reader.ReadUInt32();
+            Pointer = reader.ReadUInt64();
+            Count = reader.ReadUInt32();
+            Unknown_Ch = reader.ReadUInt32();
 
             // read reference data
-            this.Entries = reader.ReadBlockAt<SimpleArray<T>>(
-                this.Pointer, // offset
-                this.Count
+            Entries = reader.ReadBlockAt<SimpleArray<T>>(
+                Pointer, // offset
+                Count
             );
         }
 
@@ -127,13 +127,13 @@ namespace RageLib.Resources.Common
         public override void Write(ResourceDataWriter writer, params object[] parameters)
         {
             // update structure data
-            this.Pointer = (ulong)(this.Entries?.BlockPosition ?? 0);
-            this.Count = (uint)(this.Entries?.Count ?? 0);
+            Pointer = (ulong)(Entries?.BlockPosition ?? 0);
+            Count = (uint)(Entries?.Count ?? 0);
 
             // write structure data
-            writer.Write(this.Pointer);
-            writer.Write(this.Count);
-            writer.Write(this.Unknown_Ch);
+            writer.Write(Pointer);
+            writer.Write(Count);
+            writer.Write(Unknown_Ch);
         }
 
         /// <summary>

@@ -12,10 +12,10 @@ namespace RageLib.Resources.GTA5.PC.Fragments
 
         // structure data
         public uint Id; // VGWH: 0x56475748
-        public ushort Unknown_4h;
+        private ushort Unknown_4h;
         public ushort Count;
         public uint ChunkSize;
-        public uint Unknown_Ch;
+        private uint Unknown_Ch;
         public byte[] Chunk;
 
         public VehicleGlassWindow[] Windows { get; private set; }
@@ -84,19 +84,19 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public Matrix4x4 ProjectionMatrix;
         public uint Id; // VGWC: 0x56475743
         public ushort GroupIndex;
-        public ushort Unknown_46h;
-        public ushort Unknown_48h;
-        public ushort Unknown_4Ah;
+        private ushort Unknown_46h;
+        private ushort Unknown_48h;
+        private ushort Unknown_4Ah;
         public ushort ChunkSize;
-        public ushort Unknown_4Eh;
-        public uint Unknown_50h;
-        public uint Unknown_54h;
-        public float Unknown_58h;
-        public float Unknown_5Ch;
-        public uint Unknown_60h;
-        public float Unknown_64h;
-        public uint Unknown_68h;
-        public uint Unknown_6Ch;
+        private ushort Unknown_4Eh;
+        private uint Unknown_50h;
+        private uint Unknown_54h;
+        private float Unknown_58h;
+        private float Unknown_5Ch;
+        private uint Unknown_60h;
+        private float Unknown_64h;
+        private uint Unknown_68h;
+        private uint Unknown_6Ch;
         public byte[] Chunk;
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
@@ -142,7 +142,7 @@ namespace RageLib.Resources.GTA5.PC.Fragments
             writer.Write(Unknown_68h);
             writer.Write(Unknown_6Ch);
             writer.Write(Chunk);
-            
+
             // write padding
             var padding = (16 - (ChunkSize % 16)) % 16;
             for (int i = 0; i < padding; i++)

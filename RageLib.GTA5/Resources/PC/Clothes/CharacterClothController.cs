@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using System;
 using System.Numerics;
 
@@ -14,18 +14,18 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         // structure data      
         public SimpleList64<ushort> TriIndices;
         public SimpleList64<Vector4> OriginalPos;
-        public float Unknown_A0h; // 0x3D23D70A
-        public uint Unknown_A4h; // 0x00000000
-        public uint Unknown_A8h; // 0x00000000
-        public uint Unknown_ACh; // 0x00000000
+        private float Unknown_A0h; // 0x3D23D70A
+        private uint Unknown_A4h; // 0x00000000
+        private uint Unknown_A8h; // 0x00000000
+        private uint Unknown_ACh; // 0x00000000
         public SimpleList64<uint> BoneIndexMap;
         public SimpleList64<BindingInfo> BindingInfo;
-        public uint Unknown_D0h; // 0x00000000
-        public uint Unknown_D4h; // 0x00000000
-        public uint Unknown_D8h; // 0x00000000
-        public float Unknown_DCh; // 0x3F800000
+        private uint Unknown_D0h; // 0x00000000
+        private uint Unknown_D4h; // 0x00000000
+        private uint Unknown_D8h; // 0x00000000
+        private float Unknown_DCh; // 0x3F800000
         public SimpleList64<uint> BoneIDMap;
-        
+
         /// <summary>
         /// Reads the data-block from a stream.
         /// </summary>

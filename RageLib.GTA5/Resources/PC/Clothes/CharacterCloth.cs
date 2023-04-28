@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Bounds;
 using System;
 using System.Collections.Generic;
@@ -19,18 +19,18 @@ namespace RageLib.Resources.GTA5.PC.Clothes
         public SimpleList64<DataVec3V> Poses;
         public ulong ControllerPointer;
         public ulong BoundCompositePointer;
-        public SimpleList64<uint> Unknown_30h;
-        public ulong Unknown_40h; // 0x0000000000000000
-        public ulong Unknown_48h; // 0x0000000000000000
-        public Matrix4x4 Unknown_50h;
+        private SimpleList64<uint> Unknown_30h;
+        private ulong Unknown_40h; // 0x0000000000000000
+        private ulong Unknown_48h; // 0x0000000000000000
+        private Matrix4x4 Unknown_50h;
         public SimpleList64<uint> BoneIndex;
-        public ulong Unknown_A0h; // 0x0000000000000000
-        public ulong Unknown_A8h; // 0x0000000000000000
-        public ulong Unknown_B0h; // 0x0000000000000000
-        public ulong Unknown_B8h; // 0x0000000000000000
-        public uint Unknown_C0h; // 0x00000001
-        public uint Unknown_C4h; // 0x00000000
-        public ulong Unknown_C8h; // 0x0000000000000000
+        private ulong Unknown_A0h; // 0x0000000000000000
+        private ulong Unknown_A8h; // 0x0000000000000000
+        private ulong Unknown_B0h; // 0x0000000000000000
+        private ulong Unknown_B8h; // 0x0000000000000000
+        private uint Unknown_C0h; // 0x00000001
+        private uint Unknown_C4h; // 0x00000000
+        private ulong Unknown_C8h; // 0x0000000000000000
 
         // reference data
         public CharacterClothController? Controller { get; set; }

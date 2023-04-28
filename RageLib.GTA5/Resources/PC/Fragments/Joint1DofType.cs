@@ -10,16 +10,16 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0xB0;
 
         // structure data
-        public Vector4 Unknown_20h;
-        public Vector4 Unknown_30h;
-        public Vector4 Unknown_40h;
-        public Vector4 Unknown_50h;
-        public Vector4 Unknown_60h;
-        public Vector4 Unknown_70h;
-        public Vector4 Unknown_80h;
-        public Vector4 Unknown_90h;
-        public Vector2 Unknown_A0h;
-        public Vector2 Unknown_A8h;
+        private Vector4 Unknown_20h;
+        private Vector4 Unknown_30h;
+        private Vector4 Unknown_40h;
+        private Vector4 Unknown_50h;
+        private Vector4 Unknown_60h;
+        private Vector4 Unknown_70h;
+        private Vector4 Unknown_80h;
+        private Vector4 Unknown_90h;
+        private Vector2 Unknown_A0h;
+        private Vector2 Unknown_A8h;
 
         /// <summary>
         /// Reads the data-block from a stream.

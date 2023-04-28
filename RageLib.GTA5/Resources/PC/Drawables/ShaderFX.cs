@@ -1,6 +1,6 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Collections;
 using RageLib.Resources.GTA5.PC.Textures;
 using System;
 using System.Collections.Generic;
@@ -15,20 +15,20 @@ namespace RageLib.Resources.GTA5.PC.Drawables
         // structure data
         public ulong ParametersPointer;
         public uint ShaderHash;
-        public uint Unknown_Ch; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
         public byte ParameterCount;
         public byte DrawBucket;
-        public ushort Unknown_12h;
+        private ushort Unknown_12h;
         public ushort ParametersSize; // Header + Data size
         public ushort ParametersTotalSize; // Header + Data + Hashes(aligned to 16) + 32 size
         public uint SpsHash;
-        public uint Unknown_1Ch; // 0x00000000
-        public uint Unknown_20h;
-        public ushort Unknown_24h;
-        public byte Unknown_26h;
+        private uint Unknown_1Ch; // 0x00000000
+        private uint Unknown_20h;
+        private ushort Unknown_24h;
+        private byte Unknown_26h;
         public byte TextureParametersCount;
-        public uint Unknown_28h; // 0x00000000
-        public uint Unknown_2Ch; // 0x00000000
+        private uint Unknown_28h; // 0x00000000
+        private uint Unknown_2Ch; // 0x00000000
 
         // reference data
         public ShaderParametersBlock_GTA5_pc? ParametersList { get; set; }
@@ -235,7 +235,7 @@ namespace RageLib.Resources.GTA5.PC.Drawables
 
             // write parameter infos
             foreach (var f in Parameters)
-                writer.WriteBlock(f); 
+                writer.WriteBlock(f);
             //writer.WriteBlock(Parameters);
 
             // write vector data

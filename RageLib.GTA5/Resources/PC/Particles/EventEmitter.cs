@@ -1,8 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using RageLib.Resources.Common;
+using RageLib.Resources.Common.Simple;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace RageLib.Resources.GTA5.PC.Particles
 {
@@ -15,12 +14,12 @@ namespace RageLib.Resources.GTA5.PC.Particles
         // structure data
         public ulong VFT;
         public uint Index;
-        public uint Unknown_Ch; // 0x00000000
-        public uint Unknown_10h;
-        public float Unknown_14h; // 0x00000000
+        private uint Unknown_Ch; // 0x00000000
+        private uint Unknown_10h;
+        private float Unknown_14h; // 0x00000000
         public ulong EvolutionParamsPointer;
-        public ulong Unknown_20h; // 0x0000000000000000
-        public ulong Unknown_28h; // 0x0000000000000000
+        private ulong Unknown_20h; // 0x0000000000000000
+        private ulong Unknown_28h; // 0x0000000000000000
         public ulong EmitterNamePointer;
         public ulong ParticleNamePointer;
         public ulong EmitterRulePointer;
@@ -29,9 +28,9 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public float MoveSpeedScaleModifier;
         public float ParticleScale;
         public float ParticleScaleModifier;
-        public uint Unknown_60h;
-        public uint Unknown_64h;
-        public ulong Unknown_68h; // 0x0000000000000000
+        private uint Unknown_60h;
+        private uint Unknown_64h;
+        private ulong Unknown_68h; // 0x0000000000000000
 
         // reference data
         public EvolutionParameters? EvolutionParams { get; set; }

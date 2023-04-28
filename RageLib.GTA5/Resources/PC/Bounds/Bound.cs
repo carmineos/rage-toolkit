@@ -29,8 +29,8 @@ namespace RageLib.Resources.GTA5.PC.Bounds
         public byte Flags;
         public ushort PartIndex;
         public float RadiusAroundCentroid;
-        public uint Unknown_18h;
-        public uint Unknown_1Ch;
+        private uint Unknown_18h;
+        private uint Unknown_1Ch;
         public Vector3 BoundingBoxMax;
         public float Margin;
         public Vector3 BoundingBoxMin;

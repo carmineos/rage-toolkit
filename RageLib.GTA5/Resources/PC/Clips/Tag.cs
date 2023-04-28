@@ -10,8 +10,8 @@ namespace RageLib.Resources.GTA5.PC.Clips
         public override long BlockLength => 0x50;
 
         // structure data
-        public uint Unknown_40h;
-        public uint Unknown_44h;
+        private uint Unknown_40h;
+        private uint Unknown_44h;
         public ulong TagsPointer;
 
         // reference data

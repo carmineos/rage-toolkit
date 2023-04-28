@@ -1,9 +1,8 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Resources.GTA5.PC.Drawables;
 using System;
 using System.Numerics;
-using RageLib.Resources.Common;
-using RageLib.Resources.GTA5.PC.Drawables;
 
 namespace RageLib.Resources.GTA5.PC.Fragments
 {
@@ -12,17 +11,17 @@ namespace RageLib.Resources.GTA5.PC.Fragments
         public override long BlockLength => 0x70;
 
         // structure data
-        public Vector4 Unknown_0h;
-        public Vector4 Unknown_10h;
-        public Vector4 Unknown_20h;
-        public Vector2 Unknown_30h;
-        public Vector2 Unknown_38h;
+        private Vector4 Unknown_0h;
+        private Vector4 Unknown_10h;
+        private Vector4 Unknown_20h;
+        private Vector2 Unknown_30h;
+        private Vector2 Unknown_38h;
         public VertexDeclaration VertexDeclaration;
-        public float Unknown_50h;
-        public ushort Unknown_54h;
-        public ushort Unknown_56h;
-        public Vector2 Unknown_58h;
-        public Vector4 Unknown_60h;
+        private float Unknown_50h;
+        private ushort Unknown_54h;
+        private ushort Unknown_56h;
+        private Vector2 Unknown_58h;
+        private Vector4 Unknown_60h;
 
         /// <summary>
         /// Reads the data-block from a stream.
