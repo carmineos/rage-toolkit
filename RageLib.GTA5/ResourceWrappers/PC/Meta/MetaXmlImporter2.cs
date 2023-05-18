@@ -488,19 +488,19 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                                 {
 
                                     case StructureEntryDataType.UInt8:
-                                        metaValue = new MetaArrayLocal<byte>(entryInfo) { Value = StringParseHelpers.ParseItemsAsUInt8(content).ToArray() };
+                                        metaValue = new MetaArrayLocal<byte>(entryInfo) { Value = StringParseHelpers.ParseItems<byte>(content).ToArray() };
                                         break;
 
                                     case StructureEntryDataType.UInt16:
-                                        metaValue = new MetaArrayLocal<ushort>(entryInfo) { Value = StringParseHelpers.ParseItemsAsUInt16(content).ToArray() };
+                                        metaValue = new MetaArrayLocal<ushort>(entryInfo) { Value = StringParseHelpers.ParseItems<ushort>(content).ToArray() };
                                         break;
 
                                     case StructureEntryDataType.UInt32:
-                                        metaValue = new MetaArrayLocal<uint>(entryInfo) { Value = StringParseHelpers.ParseItemsAsUInt32(content).ToArray() };
+                                        metaValue = new MetaArrayLocal<uint>(entryInfo) { Value = StringParseHelpers.ParseItems<uint>(content).ToArray() };
                                         break;
 
                                     case StructureEntryDataType.Float:
-                                        metaValue = new MetaArrayLocal<float>(entryInfo) { Value = StringParseHelpers.ParseItemsAsFloat(content).ToArray() };
+                                        metaValue = new MetaArrayLocal<float>(entryInfo) { Value = StringParseHelpers.ParseItems<float>(content).ToArray() };
                                         break;
 
                                     default:
@@ -525,7 +525,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             {
                                 reader.ReadStartElement();
                                 var content = reader.ReadContentAsString();
-                                (metaValue as MetaDataBlockPointer).Data = StringParseHelpers.ParseItemsAsUInt8(content).ToArray();
+                                (metaValue as MetaDataBlockPointer).Data = StringParseHelpers.ParseItems<byte>(content).ToArray();
                                 reader.ReadEndElement();
                             }
 
@@ -677,7 +677,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
-                var items = StringParseHelpers.ParseItemsAsFloat(content);
+                var items = StringParseHelpers.ParseItems<float>(content);
                 
                 foreach (var item in items)
                 {
@@ -701,7 +701,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
-                var items = StringParseHelpers.ParseItemsAsFloat(content);
+                var items = StringParseHelpers.ParseItems<float>(content);
 
                 Debug.Assert(items.Count % 3 == 0);
 
@@ -728,7 +728,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
-                var items = StringParseHelpers.ParseItemsAsUInt8(content);
+                var items = StringParseHelpers.ParseItems<byte>(content);
 
                 foreach (var item in items)
                 {
@@ -753,7 +753,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
-                var items = StringParseHelpers.ParseItemsAsUInt16(content);
+                var items = StringParseHelpers.ParseItems<ushort>(content);
 
                 foreach (var item in items)
                 {
@@ -778,7 +778,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
             {
                 reader.ReadStartElement();
                 var content = reader.ReadContentAsString();
-                var items = StringParseHelpers.ParseItemsAsUInt32(content);
+                var items = StringParseHelpers.ParseItems<uint>(content);
 
                 foreach (var item in items)
                 {

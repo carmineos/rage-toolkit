@@ -3,15 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Numerics;
 
 namespace RageLib.Helpers.Xml
 {
-    // Refactor once https://github.com/dotnet/designs/pull/205 is available
     public static class StringParseHelpers
     {
-        public static List<byte> ParseItemsAsUInt8(ReadOnlySpan<char> span)
+        public static List<T> ParseItems<T>(ReadOnlySpan<char> span, IFormatProvider? formatProvider = null) where T : ISpanParsable<T>
         {
-            List<byte> items = new List<byte>();
+            formatProvider ??= NumberFormatInfo.InvariantInfo;
+
+            List<T> items = new List<T>();
             int start = 0;
             int count = 0;
 
@@ -24,7 +26,7 @@ namespace RageLib.Helpers.Xml
                     if (count > 0)
                     {
                         var item = span.Slice(start, count);
-                        items.Add(byte.Parse(item, provider: NumberFormatInfo.InvariantInfo));
+                        items.Add(T.Parse(item, provider: formatProvider));
                         count = 0;
                     }
 
@@ -40,118 +42,7 @@ namespace RageLib.Helpers.Xml
             if (count > 0)
             {
                 var item = span.Slice(start, count);
-                items.Add(byte.Parse(item, provider: NumberFormatInfo.InvariantInfo));
-            }
-
-            return items;
-        }
-
-        public static List<ushort> ParseItemsAsUInt16(ReadOnlySpan<char> span)
-        {
-            List<ushort> items = new List<ushort>();
-            int start = 0;
-            int count = 0;
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                var c = span[i];
-
-                if (char.IsWhiteSpace(c))
-                {
-                    if (count > 0)
-                    {
-                        var item = span.Slice(start, count);
-                        items.Add(ushort.Parse(item, provider: NumberFormatInfo.InvariantInfo));
-                        count = 0;
-                    }
-
-                    start = i + 1;
-                }
-                else
-                {
-                    count++;
-                }
-            }
-
-            // Collect last item
-            if (count > 0)
-            {
-                var item = span.Slice(start, count);
-                items.Add(ushort.Parse(item, provider: NumberFormatInfo.InvariantInfo));
-            }
-
-            return items;
-        }
-
-        public static List<uint> ParseItemsAsUInt32(ReadOnlySpan<char> span)
-        {
-            List<uint> items = new List<uint>();
-            int start = 0;
-            int count = 0;
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                var c = span[i];
-
-                if (char.IsWhiteSpace(c))
-                {
-                    if (count > 0)
-                    {
-                        var item = span.Slice(start, count);
-                        items.Add(uint.Parse(item, provider: NumberFormatInfo.InvariantInfo));
-                        count = 0;
-                    }
-
-                    start = i + 1;
-                }
-                else
-                {
-                    count++;
-                }
-            }
-
-            // Collect last item
-            if (count > 0)
-            {
-                var item = span.Slice(start, count);
-                items.Add(uint.Parse(item, provider: NumberFormatInfo.InvariantInfo));
-            }
-
-            return items;
-        }
-
-        public static List<float> ParseItemsAsFloat(ReadOnlySpan<char> span)
-        {
-            List<float> items = new List<float>();
-            int start = 0;
-            int count = 0;
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                var c = span[i];
-
-                if (char.IsWhiteSpace(c))
-                {
-                    if (count > 0)
-                    {
-                        var item = span.Slice(start, count);
-                        items.Add(float.Parse(item, provider: NumberFormatInfo.InvariantInfo));
-                        count = 0;
-                    }
-
-                    start = i + 1;
-                }
-                else
-                {
-                    count++;
-                }
-            }
-
-            // Collect last item
-            if (count > 0)
-            {
-                var item = span.Slice(start, count);
-                items.Add(float.Parse(item, provider: NumberFormatInfo.InvariantInfo));
+                items.Add(T.Parse(item, provider: formatProvider));
             }
 
             return items;

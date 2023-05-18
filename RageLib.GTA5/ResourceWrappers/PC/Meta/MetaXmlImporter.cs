@@ -205,19 +205,19 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                             {
                                 case StructureEntryDataType.UInt8:
                                     entryValue = new MetaArrayLocal<byte>(entryInfo);
-                                    ((MetaArrayLocal<byte>)entryValue).Value = StringParseHelpers.ParseItemsAsUInt8(xmlNode.InnerText).ToArray();
+                                    ((MetaArrayLocal<byte>)entryValue).Value = StringParseHelpers.ParseItems<byte>(xmlNode.InnerText).ToArray();
                                     break;
                                 case StructureEntryDataType.UInt16:
                                     entryValue = new MetaArrayLocal<ushort>(entryInfo);
-                                    ((MetaArrayLocal<ushort>)entryValue).Value = StringParseHelpers.ParseItemsAsUInt16(xmlNode.InnerText).ToArray();
+                                    ((MetaArrayLocal<ushort>)entryValue).Value = StringParseHelpers.ParseItems<ushort>(xmlNode.InnerText).ToArray();
                                     break;
                                 case StructureEntryDataType.UInt32:
                                     entryValue = new MetaArrayLocal<uint>(entryInfo);
-                                    ((MetaArrayLocal<uint>)entryValue).Value = StringParseHelpers.ParseItemsAsUInt32(xmlNode.InnerText).ToArray();
+                                    ((MetaArrayLocal<uint>)entryValue).Value = StringParseHelpers.ParseItems<uint>(xmlNode.InnerText).ToArray();
                                     break;
                                 case StructureEntryDataType.Float:
                                     entryValue = new MetaArrayLocal<float>(entryInfo);
-                                    ((MetaArrayLocal<float>)entryValue).Value = StringParseHelpers.ParseItemsAsFloat(xmlNode.InnerText).ToArray();
+                                    ((MetaArrayLocal<float>)entryValue).Value = StringParseHelpers.ParseItems<float>(xmlNode.InnerText).ToArray();
                                     break;
                                 default:
                                     throw new Exception($"Unsupported ArrayType: {arrayType} for Type: {type}");
@@ -256,7 +256,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                     case StructureEntryDataType.DataBlockPointer:
                         {
                             var dataBlockValue = new MetaDataBlockPointer(entryInfo);
-                            dataBlockValue.Data = StringParseHelpers.ParseItemsAsUInt8(xmlNode.InnerText).ToArray();
+                            dataBlockValue.Data = StringParseHelpers.ParseItems<byte>(xmlNode.InnerText).ToArray();
                             if (dataBlockValue.Data.Length == 0)
                                 dataBlockValue.Data = null;
                             resultStructure.Values.Add(xmlEntry.NameHash, dataBlockValue);
@@ -572,7 +572,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 return arrayValue;
 
             arrayValue.Entries = new List<IMetaValue>();
-            var items = StringParseHelpers.ParseItemsAsUInt8(innerText);
+            var items = StringParseHelpers.ParseItems<byte>(innerText);
             
             foreach (var item in items)
             {
@@ -591,7 +591,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 return arrayValue;
 
             arrayValue.Entries = new List<IMetaValue>();
-            var items = StringParseHelpers.ParseItemsAsUInt16(innerText);
+            var items = StringParseHelpers.ParseItems<ushort>(innerText);
 
             foreach (var item in items)
             {
@@ -610,7 +610,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 return arrayValue;
 
             arrayValue.Entries = new List<IMetaValue>();
-            var items = StringParseHelpers.ParseItemsAsUInt32(innerText);
+            var items = StringParseHelpers.ParseItems<uint>(innerText);
 
             foreach (var item in items)
             {
@@ -629,7 +629,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 return arrayValue;
 
             arrayValue.Entries = new List<IMetaValue>();
-            var items = StringParseHelpers.ParseItemsAsFloat(innerText);
+            var items = StringParseHelpers.ParseItems<float>(innerText);
 
             foreach (var item in items)
             {
@@ -648,7 +648,7 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
                 return arrayValue;
 
             arrayValue.Entries = new List<IMetaValue>();
-            var items = StringParseHelpers.ParseItemsAsFloat(innerText);
+            var items = StringParseHelpers.ParseItems<float>(innerText);
             Debug.Assert(items.Count % 3 == 0);
 
             for (int i = 0; i < items.Count; i+=3)

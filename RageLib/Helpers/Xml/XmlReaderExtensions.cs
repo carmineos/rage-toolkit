@@ -9,6 +9,11 @@ namespace RageLib.Helpers.Xml
 {
     public static class XmlReaderExtensions
     {
+        public static T GetAttributeValue<T>(this XmlReader reader, IFormatProvider? formatProvider = null) where T : IParsable<T>
+        {
+            return T.Parse(reader.GetAttribute("value"), formatProvider ?? NumberFormatInfo.InvariantInfo);
+        }
+
         public static bool GetAttributeValueAsBool(this XmlReader reader)
         {
             return bool.Parse(reader.GetAttribute("value"));
