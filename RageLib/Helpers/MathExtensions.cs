@@ -7,6 +7,14 @@ namespace RageLib.Helpers;
 
 public static class MathHelpers
 {
+    public static bool WithinEpsilon(Vector3 v1, Vector3 v2, float epsilon = 0.001f)
+    {
+        return
+            (MathF.Abs(v1.X - v2.X) < epsilon) &&
+            (MathF.Abs(v1.Y - v2.Y) < epsilon) &&
+            (MathF.Abs(v1.Z - v2.Z) < epsilon);
+    }
+
     public static bool WithinEpsilon(Vector4 v1, Vector4 v2, float epsilon = 0.001f)
     {
         return
