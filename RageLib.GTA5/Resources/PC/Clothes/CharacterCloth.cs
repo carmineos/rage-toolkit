@@ -1,17 +1,20 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Hash;
+using RageLib.Numerics;
 using RageLib.Resources.Common;
 using RageLib.Resources.GTA5.PC.Bounds;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Xml.Linq;
 
 namespace RageLib.Resources.GTA5.PC.Clothes
 {
     // pgBase
     // clothBase (TODO)
     // characterCloth
-    public class CharacterCloth : PgBase64
+    public class CharacterCloth : PgBase64, IHashable
     {
         public override long BlockLength => 0xD0;
 
@@ -116,6 +119,11 @@ namespace RageLib.Resources.GTA5.PC.Clothes
                 new Tuple<long, IResourceBlock>(0x30, Unknown_30h),
                 new Tuple<long, IResourceBlock>(0x90, BoneIndex)
             };
+        }
+
+        public JoaatHash GetJoaatHash()
+        {
+            return Jenkins.Hash(Controller?.Name?.Value ?? string.Empty);
         }
     }
 }

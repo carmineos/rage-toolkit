@@ -1,5 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Hash;
+using RageLib.Numerics;
 using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace RageLib.Resources.GTA5.PC.Particles
     // pgBase
     // pgBaseRefCounted
     // ptxEffectRule
-    public class EffectRule : PgBase64
+    public class EffectRule : PgBase64, IHashable
     {
         public override long BlockLength => 0x3C0;
 
@@ -178,6 +180,11 @@ namespace RageLib.Resources.GTA5.PC.Particles
                 new Tuple<long, IResourceBlock>(768, KeyframeProp4),
                 new Tuple<long, IResourceBlock>(912, KeyframeProps)
             };
+        }
+
+        public JoaatHash GetJoaatHash()
+        {
+            return Jenkins.Hash(Name?.Value ?? string.Empty);
         }
     }
 }

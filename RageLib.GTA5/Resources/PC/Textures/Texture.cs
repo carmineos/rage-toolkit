@@ -1,5 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Hash;
+using RageLib.Numerics;
 using RageLib.Resources.Common;
 using System.Collections.Generic;
 
@@ -7,7 +9,7 @@ namespace RageLib.Resources.GTA5.PC.Textures
 {
     // pgBase
     // grcTexture
-    public class Texture : PgBase64
+    public class Texture : PgBase64, IHashable
     {
         public override long BlockLength => 0x50;
 
@@ -98,6 +100,11 @@ namespace RageLib.Resources.GTA5.PC.Textures
             var list = new List<IResourceBlock>(base.GetReferences());
             if (Name != null) list.Add(Name);
             return list.ToArray();
+        }
+
+        public JoaatHash GetJoaatHash()
+        {
+            return Jenkins.Hash(Name?.Value ?? string.Empty);
         }
     }
 }

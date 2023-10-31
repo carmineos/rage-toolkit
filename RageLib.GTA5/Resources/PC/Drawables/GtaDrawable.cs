@@ -1,5 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Hash;
+using RageLib.Numerics;
 using RageLib.Resources.Common;
 using RageLib.Resources.GTA5.PC.Bounds;
 using System;
@@ -8,7 +10,7 @@ using System.Collections.Generic;
 namespace RageLib.Resources.GTA5.PC.Drawables
 {
     // gtaDrawable
-    public class GtaDrawable : Drawable
+    public class GtaDrawable : Drawable, IHashable
     {
         public override long BlockLength => 0xD0;
 
@@ -78,6 +80,11 @@ namespace RageLib.Resources.GTA5.PC.Drawables
             var list = new List<Tuple<long, IResourceBlock>>(base.GetParts());
             list.Add(new Tuple<long, IResourceBlock>(0xB0, LightAttributes));
             return list.ToArray();
+        }
+
+        public JoaatHash GetJoaatHash()
+        {
+            return Jenkins.Hash(Name?.Value ?? string.Empty);
         }
     }
 }

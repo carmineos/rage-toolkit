@@ -1,5 +1,7 @@
 // Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using RageLib.Hash;
+using RageLib.Numerics;
 using RageLib.Resources.Common;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ namespace RageLib.Resources.GTA5.PC.Expressions
 {
     // pgBase
     // crExpressions
-    public class Expression : PgBase64
+    public class Expression : PgBase64, IHashable
     {
         public override long BlockLength => 0x90;
 
@@ -126,6 +128,11 @@ namespace RageLib.Resources.GTA5.PC.Expressions
                 new Tuple<long, IResourceBlock>(0x40, Unknown_40h),
                 new Tuple<long, IResourceBlock>(0x50, Unknown_50h)
             };
+        }
+
+        public JoaatHash GetJoaatHash()
+        {
+            return Jenkins.Hash(Name?.Value ?? string.Empty);
         }
     }
 }
