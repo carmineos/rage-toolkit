@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace RageLib.Resources.Common
 {
@@ -12,6 +13,11 @@ namespace RageLib.Resources.Common
     //          aiSplitArray<TAdjPoly,2048>
     //          aiSplitArray<ushort,8192>
     //          aiSplitArray<TNavMeshPoly,341>
+
+    public interface ISplitArrayCapacity<T> where T : unmanaged
+    {
+        public static int Capacity => 16384 / Unsafe.SizeOf<T>();
+    }
     public class SimpleSplitArray<T> : ResourceSystemBlock where T : unmanaged
     {
         public override long BlockLength => 0x30;
@@ -103,6 +109,8 @@ namespace RageLib.Resources.Common
 
         // reference data
         public SimpleArray<T>? Entries { get; set; }
+
+        public int Capacity => ISplitArrayCapacity<T>.Capacity;
 
         /// <summary>
         /// Reads the data-block from a stream.
