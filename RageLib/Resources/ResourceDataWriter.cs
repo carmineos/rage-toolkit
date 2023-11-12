@@ -105,9 +105,9 @@ namespace RageLib.Resources
         /// <summary>
         /// Writes a block.
         /// </summary>
-        public void WriteBlock(IResourceBlock value)
+        public void WriteBlock(IResourceBlock value, params object[] parameters)
         {
-            value.Write(this);
+            value.Write(this, parameters);
         }
     }
 }
