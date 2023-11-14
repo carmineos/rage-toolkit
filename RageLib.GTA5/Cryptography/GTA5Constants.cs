@@ -428,7 +428,7 @@ namespace RageLib.GTA5.Cryptography
             PC_AES_KEY = HashSearch.SearchHash(exeStr, GTA5HashConstants.PC_AES_KEY_HASH, length: 0x20);
             if (PC_AES_KEY == null)
             {
-                throw new KeyNotFoundException("AES key not found.");
+                throw new Exceptions.KeyNotFoundException("AES key not found.");
             }
             Console.WriteLine("aes key found");
 
@@ -437,7 +437,7 @@ namespace RageLib.GTA5.Cryptography
             {
                 if (PC_NG_KEYS[i] == null)
                 {
-                    throw new KeyNotFoundException("NG key not found.");
+                    throw new Exceptions.KeyNotFoundException("NG key not found.");
                 }
             }
             Console.WriteLine("ng keys found");
@@ -447,7 +447,7 @@ namespace RageLib.GTA5.Cryptography
             {
                 if (tabs[i] == null)
                 {
-                    throw new KeyNotFoundException("NG decryption table not found.");
+                    throw new Exceptions.KeyNotFoundException("NG decryption table not found.");
                 }
             }
             Console.WriteLine("ng decrypt tables found");
@@ -469,7 +469,7 @@ namespace RageLib.GTA5.Cryptography
             PC_LUT = HashSearch.SearchHash(exeStr, GTA5HashConstants.PC_LUT_HASH, length: 0x100);
             if (PC_LUT == null)
             {
-                throw new KeyNotFoundException("LUT not found.");
+                throw new Exceptions.KeyNotFoundException("LUT not found.");
             }
             Console.WriteLine("ng hash LUTs found");
         }

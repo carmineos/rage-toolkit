@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>ExtractKeysFromDump</RootNamespace>
     <AssemblyName>ExtractKeysFromDump</AssemblyName>
   </PropertyGroup>
