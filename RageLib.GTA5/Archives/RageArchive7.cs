@@ -116,6 +116,8 @@ namespace RageLib.GTA5.Archives
             entries_reader.Position -= 8;
 
             var entries = new List<IRageArchiveEntry7>();
+            Span<byte> largeResourceHeader = stackalloc byte[16];
+
             for (var index = 0; index < header_entriesCount; index++)
             {
                 uint y = entries_reader.ReadUInt32();
@@ -151,8 +153,8 @@ namespace RageLib.GTA5.Archives
                         if (e.FileSize == 0xFFFFFF)
                         {
                             reader.Position = 512 * e.FileOffset;
-                            var buf = reader.ReadBytes(16);
-                            e.FileSize = ((uint)buf[7] << 0) | ((uint)buf[14] << 8) | ((uint)buf[5] << 16) | ((uint)buf[2] << 24);
+                            reader.ReadBytes(largeResourceHeader);
+                            e.FileSize = ((uint)largeResourceHeader[7] << 0) | ((uint)largeResourceHeader[14] << 8) | ((uint)largeResourceHeader[5] << 16) | ((uint)largeResourceHeader[2] << 24);
                         }
 
                         entries.Add(e);
@@ -277,22 +279,23 @@ namespace RageLib.GTA5.Archives
             // there are sometimes resources with length>=0xffffff which actually
             // means length=0xffffff
             // -> we therefore just cut the file size
+            Span<byte> largeResourceHeader = stackalloc byte[16];
             foreach (var entry in entries)
                 if (entry is RageArchiveResourceFile7)
                 {
                     var resource = entry as RageArchiveResourceFile7;
                     if (resource.FileSize > 0xFFFFFF)
                     {
-                        var buf = new byte[16];
-                        buf[7] = (byte)((resource.FileSize >> 0) & 0xFF);
-                        buf[14] = (byte)((resource.FileSize >> 8) & 0xFF);
-                        buf[5] = (byte)((resource.FileSize >> 16) & 0xFF);
-                        buf[2] = (byte)((resource.FileSize >> 24) & 0xFF);
+                        largeResourceHeader.Clear();
+                        largeResourceHeader[7] = (byte)((resource.FileSize >> 0) & 0xFF);
+                        largeResourceHeader[14] = (byte)((resource.FileSize >> 8) & 0xFF);
+                        largeResourceHeader[5] = (byte)((resource.FileSize >> 16) & 0xFF);
+                        largeResourceHeader[2] = (byte)((resource.FileSize >> 24) & 0xFF);
 
                         if (writer.Length > 512 * resource.FileOffset)
                         {
                             writer.Position = 512 * resource.FileOffset;
-                            writer.Write(buf);
+                            writer.Write(largeResourceHeader);
                         }                     
 
                         resource.FileSize = 0xFFFFFF;
@@ -445,10 +448,12 @@ namespace RageLib.GTA5.Archives
         {
             NameOffset = reader.ReadUInt16();
 
-            var buf1 = reader.ReadBytes(3);
+            Span<byte> buf1 = stackalloc byte[3];
+            reader.ReadBytes(buf1);
             FileSize = (uint)buf1[0] + (uint)(buf1[1] << 8) + (uint)(buf1[2] << 16);
 
-            var buf2 = reader.ReadBytes(3);
+            Span<byte> buf2 = stackalloc byte[3];
+            reader.ReadBytes(buf2);
             FileOffset = (uint)buf2[0] + (uint)(buf2[1] << 8) + (uint)(buf2[2] << 16);
 
             FileUncompressedSize = reader.ReadUInt32();
@@ -462,14 +467,16 @@ namespace RageLib.GTA5.Archives
         {
             writer.Write((ushort)NameOffset);
 
-            var buf1 = new byte[] {
+            Span<byte> buf1 = stackalloc byte[3] 
+            {
                 (byte)((FileSize >> 0) & 0xFF),
                 (byte)((FileSize >> 8) & 0xFF),
                 (byte)((FileSize >> 16) & 0xFF)
             };
             writer.Write(buf1);
 
-            var buf2 = new byte[] {
+            Span<byte> buf2 = stackalloc byte[3] 
+            {
                 (byte)((FileOffset >> 0) & 0xFF),
                 (byte)((FileOffset >> 8) & 0xFF),
                 (byte)((FileOffset >> 16) & 0xFF)
@@ -501,10 +508,12 @@ namespace RageLib.GTA5.Archives
         {
             NameOffset = reader.ReadUInt16();
 
-            var buf1 = reader.ReadBytes(3);
+            Span<byte> buf1 = stackalloc byte[3];
+            reader.ReadBytes(buf1);
             FileSize = (uint)buf1[0] + (uint)(buf1[1] << 8) + (uint)(buf1[2] << 16);
 
-            var buf2 = reader.ReadBytes(3);
+            Span<byte> buf2 = stackalloc byte[3];
+            reader.ReadBytes(buf2);
             FileOffset = ((uint)buf2[0] + (uint)(buf2[1] << 8) + (uint)(buf2[2] << 16)) & 0x7FFFFF;
 
             var VirtualFlags = reader.ReadUInt32();
@@ -520,18 +529,22 @@ namespace RageLib.GTA5.Archives
         {
             writer.Write((ushort)NameOffset);
 
-            var buf1 = new byte[] {
+            Span<byte> buf1 = stackalloc byte[3] 
+            { 
                 (byte)((FileSize >> 0) & 0xFF),
                 (byte)((FileSize >> 8) & 0xFF),
                 (byte)((FileSize >> 16) & 0xFF)
             };
+
             writer.Write(buf1);
 
-            var buf2 = new byte[] {
+            Span<byte> buf2 = stackalloc byte[3]  
+            {
                 (byte)((FileOffset >> 0) & 0xFF),
                 (byte)((FileOffset >> 8) & 0xFF),
                 (byte)(((FileOffset >> 16) & 0xFF) | 0x80)
             };
+
             writer.Write(buf2);
 
             writer.Write(ResourceInfo.VirtualFlags);

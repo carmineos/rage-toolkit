@@ -43,6 +43,12 @@ namespace RageLib.GTA5.Cryptography
             return Decrypt(data, Key);
         }
 
+        public static void DecryptData(Span<byte> data, string name, uint length)
+        {
+            var indexKey = GetKeyIndex(name, length);
+            DecryptData(data, GTA5Constants.PC_NG_KEYS[indexKey]);
+        }
+
         /// <summary>
         /// Decrypts data.
         /// </summary>
@@ -186,6 +192,12 @@ namespace RageLib.GTA5.Cryptography
             }
 
             return encryptedData;
+        }
+
+        public static void EncryptData(Span<byte> data, string name, uint length)
+        {
+            var indexKey = GetKeyIndex(name, length);
+            EncryptData(data, GTA5Constants.PC_NG_KEYS[indexKey]);
         }
 
         public static void EncryptData(Span<byte> data, ReadOnlySpan<byte> key)

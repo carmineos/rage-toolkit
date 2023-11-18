@@ -145,6 +145,14 @@ namespace RageLib.Data
         }
 
         /// <summary>
+        /// Reads a sequence of bytes.
+        /// </summary>
+        public void ReadBytes(Span<byte> span)
+        {
+            ReadFromStreamRaw(span);
+        }
+
+        /// <summary>
         /// Reads a signed 16-bit value.
         /// </summary>
         public short ReadInt16()
