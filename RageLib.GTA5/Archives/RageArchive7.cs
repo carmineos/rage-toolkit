@@ -116,8 +116,6 @@ namespace RageLib.GTA5.Archives
             entries_reader.Position -= 8;
 
             var entries = new List<IRageArchiveEntry7>();
-            Span<byte> largeResourceHeader = stackalloc byte[16];
-
             for (var index = 0; index < header_entriesCount; index++)
             {
                 uint y = entries_reader.ReadUInt32();
@@ -147,15 +145,7 @@ namespace RageLib.GTA5.Archives
                         // resource file
                         var e = new RageArchiveResourceFile7();
                         e.Read(entries_reader);
-
-                        // there are sometimes resources with length=0xffffff which actually
-                        // means length>=0xffffff
-                        if (e.FileSize == 0xFFFFFF)
-                        {
-                            reader.Position = 512 * e.FileOffset;
-                            reader.ReadBytes(largeResourceHeader);
-                            e.FileSize = ((uint)largeResourceHeader[7] << 0) | ((uint)largeResourceHeader[14] << 8) | ((uint)largeResourceHeader[5] << 16) | ((uint)largeResourceHeader[2] << 24);
-                        }
+                        PatchLargeResourceFile(e, reader);
 
                         entries.Add(e);
                     }
@@ -281,26 +271,8 @@ namespace RageLib.GTA5.Archives
             // -> we therefore just cut the file size
             Span<byte> largeResourceHeader = stackalloc byte[16];
             foreach (var entry in entries)
-                if (entry is RageArchiveResourceFile7)
-                {
-                    var resource = entry as RageArchiveResourceFile7;
-                    if (resource.FileSize > 0xFFFFFF)
-                    {
-                        largeResourceHeader.Clear();
-                        largeResourceHeader[7] = (byte)((resource.FileSize >> 0) & 0xFF);
-                        largeResourceHeader[14] = (byte)((resource.FileSize >> 8) & 0xFF);
-                        largeResourceHeader[5] = (byte)((resource.FileSize >> 16) & 0xFF);
-                        largeResourceHeader[2] = (byte)((resource.FileSize >> 24) & 0xFF);
-
-                        if (writer.Length > 512 * resource.FileOffset)
-                        {
-                            writer.Position = 512 * resource.FileOffset;
-                            writer.Write(largeResourceHeader);
-                        }                     
-
-                        resource.FileSize = 0xFFFFFF;
-                    }                        
-                }
+                if (entry is RageArchiveResourceFile7 rsc7)
+                    PatchLargeResourceFile(rsc7, writer);
 
 
             // entries...
@@ -373,6 +345,42 @@ namespace RageLib.GTA5.Archives
 
             BaseStream = null;
             Root = null;
+        }
+
+        private static void PatchLargeResourceFile(RageArchiveResourceFile7 resource, DataReader reader)
+        {
+            // there are sometimes resources with length=0xffffff which actually
+            // means length>=0xffffff
+            if (resource.FileSize == 0xFFFFFF)
+            {
+                Span<byte> buffer = stackalloc byte[16];
+                reader.Position = 512 * resource.FileOffset;
+                reader.ReadBytes(buffer);
+                resource.FileSize = ((uint)buffer[7] << 0) | ((uint)buffer[14] << 8) | ((uint)buffer[5] << 16) | ((uint)buffer[2] << 24);
+            }
+        }
+
+        private static void PatchLargeResourceFile(RageArchiveResourceFile7 resource, DataWriter writer)
+        {
+            // there are sometimes resources with length>=0xffffff which actually
+            // means length=0xffffff
+            // -> we therefore just cut the file size
+            if (resource.FileSize > 0xFFFFFF)
+            {
+                Span<byte> buffer = stackalloc byte[16];
+                buffer[7] = (byte)((resource.FileSize >> 0) & 0xFF);
+                buffer[14] = (byte)((resource.FileSize >> 8) & 0xFF);
+                buffer[5] = (byte)((resource.FileSize >> 16) & 0xFF);
+                buffer[2] = (byte)((resource.FileSize >> 24) & 0xFF);
+
+                if (writer.Length > 512 * resource.FileOffset)
+                {
+                    writer.Position = 512 * resource.FileOffset;
+                    writer.Write(buffer);
+                }
+
+                resource.FileSize = 0xFFFFFF;
+            }
         }
     }
 
