@@ -106,8 +106,8 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
 
 
@@ -207,29 +207,46 @@
                 </BreadcrumbBar.ItemTemplate>
             </BreadcrumbBar>
 
-            <AutoSuggestBox
-                x:Name="autoSuggestBox"
-                Grid.Column="2"
-                Margin="8"
-                PlaceholderText="Search"
-                QueryIcon="Find">
-                <AutoSuggestBox.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="F" Modifiers="Control" />
-                </AutoSuggestBox.KeyboardAccelerators>
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="10*"/>
+                </Grid.ColumnDefinitions>
 
-                <Interactivity:Interaction.Behaviors>
-                    <Interactions:EventTriggerBehavior EventName="TextChanged">
-                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SearchCommand, Mode=OneWay}" 
-                                                          CommandParameter="{Binding Path=Text, ElementName=autoSuggestBox}"/>
-                    </Interactions:EventTriggerBehavior>
+                <ToggleButton Grid.Column="0" IsChecked="{x:Bind ViewModel.IsEditMode, Mode=TwoWay}">
+                    <ToggleButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Edit Mode" />
+                            <FontIcon Glyph="&#xE783;" Margin="4, 0, 0, 0"/>
+                        </StackPanel>
+                    </ToggleButton.Content>
+                </ToggleButton>
 
-                    <Interactions:EventTriggerBehavior EventName="QuerySubmitted">
-                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxQuerySubmittedCommand}"
-                                                          InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
-                    </Interactions:EventTriggerBehavior>
-                </Interactivity:Interaction.Behaviors>
+                <AutoSuggestBox
+                    x:Name="autoSuggestBox"
+                    Grid.Column="1"
+                    Margin="8"
+                    PlaceholderText="Search"
+                    QueryIcon="Find">
+                    <AutoSuggestBox.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F" Modifiers="Control" />
+                    </AutoSuggestBox.KeyboardAccelerators>
 
-            </AutoSuggestBox>
+                    <Interactivity:Interaction.Behaviors>
+                        <Interactions:EventTriggerBehavior EventName="TextChanged">
+                            <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SearchCommand, Mode=OneWay}" 
+                                              CommandParameter="{Binding Path=Text, ElementName=autoSuggestBox}"/>
+                        </Interactions:EventTriggerBehavior>
+
+                        <Interactions:EventTriggerBehavior EventName="QuerySubmitted">
+                            <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxQuerySubmittedCommand}"
+                                              InputConverter="{StaticResource WinUIControlEventArgsConverter}"/>
+                        </Interactions:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+
+                </AutoSuggestBox>
+            </Grid>
+            
         </Grid>
 
         <Grid Grid.Row="2">

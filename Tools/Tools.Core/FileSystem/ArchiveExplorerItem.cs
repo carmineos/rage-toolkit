@@ -76,12 +76,12 @@ public class ArchiveExplorerItem : ContainerExplorerItem
 
         // Search the IArchiveFile (as binary file not as archive)
         IArchiveFile? selfBinaryFile = null;
-        
+
         if (Parent is ArchiveExplorerItem parentArchive)
         {
             selfBinaryFile = parentArchive.GetArchive().Root.GetFile(Name);
         }
-        else if(Parent is ArchiveDirectoryExplorerItem parentDirectory)
+        else if (Parent is ArchiveDirectoryExplorerItem parentDirectory)
         {
             selfBinaryFile = parentDirectory.GetArchiveDirectory().GetFile(Name);
         }
@@ -92,25 +92,50 @@ public class ArchiveExplorerItem : ContainerExplorerItem
 
     internal IArchive GetArchive() => _archive;
 
+
+    public void Save()
+    {
+        // Save this archive
+        _archive.Flush();
+
+        // If embedded save the owner
+        GetParentArchive()?.Save();
+    }
+
     public override void ImportFile(string filePath)
     {
         // TODO: Reset Archive Encryption
         ((RageArchiveWrapper7)_archive).Encryption = RageLib.GTA5.Archives.RageArchiveEncryption7.None;
         ArchiveUtilities.ImportFile(_archive.Root, filePath);
-        _archive.Flush();
+        Save();
     }
 
     public override void ImportDirectory(string directoryPath)
     {
         // TODO: Reset Archive Encryption
         ((RageArchiveWrapper7)_archive).Encryption = RageLib.GTA5.Archives.RageArchiveEncryption7.None;
-        ArchiveUtilities.ImportDirectory(_archive.Root, directoryPath, false, RageLib.GTA5.Archives.RageArchiveEncryption7.None);      
-        _archive.Flush();
+        ArchiveUtilities.ImportDirectory(_archive.Root, directoryPath, false, RageLib.GTA5.Archives.RageArchiveEncryption7.None);
+        Save();
     }
 
     public void Extract(string directoryPath, bool recursive)
     {
         // TODO: Refactor ArchiveUtilities, create game agnostic service
         ArchiveUtilities.UnpackArchive(_archive, directoryPath, recursive);
+    }
+
+    public ArchiveExplorerItem? GetParentArchive()
+    {
+        var parent = Parent;
+        
+        while (parent is not null)
+        {
+            if (parent is ArchiveExplorerItem parentArchive)
+                return parentArchive;
+
+            parent = parent.Parent;
+        }
+
+        return null;
     }
 }

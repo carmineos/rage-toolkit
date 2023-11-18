@@ -25,6 +25,9 @@ namespace ArchiveTool.ViewModels
         private readonly List<ContainerExplorerItem> _models;
 
         [ObservableProperty]
+        private bool isEditMode;
+
+        [ObservableProperty]
         private ObservableCollection<TreeViewItemViewModel> treeViewItems;
 
         [ObservableProperty]
@@ -62,7 +65,7 @@ namespace ArchiveTool.ViewModels
         public void OpenArchive(string path)
         {
             FileInfo file = new FileInfo(path);
-            var archive = RageArchiveWrapper7.Open(new FileStream(file.FullName, FileMode.Open, FileAccess.Read), file.Name);
+            var archive = RageArchiveWrapper7.Open(new FileStream(file.FullName, FileMode.Open, IsEditMode ? FileAccess.ReadWrite : FileAccess.Read), file.Name);
             var item = new ArchiveExplorerItem(archive, null);
             item.LoadChildren(true);
             _models.Add(item);
