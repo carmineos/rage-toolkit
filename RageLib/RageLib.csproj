@@ -4,8 +4,13 @@
     <RootNamespace>RageLib</RootNamespace>
     <AssemblyName>RageLib</AssemblyName>
   </PropertyGroup>
-  
-  <ItemGroup>
+
+  <PropertyGroup>
+    <!--<DefineConstants>DIRECTXTEX</DefineConstants>-->
+  </PropertyGroup>	
+	
+  <ItemGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch(
+         $(DefineConstants), '^(.*;)*DIRECXTEX(;.*)*$'))">
     <ProjectReference Include="..\Libraries\DirectXTex\DirectXTex.vcxproj" />
   </ItemGroup>
 

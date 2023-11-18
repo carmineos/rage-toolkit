@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace TextureTool
 {
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
     }
 }
