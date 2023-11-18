@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Archives;
+using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Utilities;
 
 namespace Tools.Core.FileSystem;
@@ -12,7 +13,7 @@ public class ArchiveExplorerItem : ContainerExplorerItem
     private readonly List<ExplorerItem> _children;
 
     public override string Name => _archive.Name;
-    public override string? PhysicalPath =>
+    public override string? PhysicalPath => _parent is null ? string.Empty :
         _parent.ItemType == ExplorerItemType.Root || _parent.ItemType == ExplorerItemType.Directory
         ? Path.Combine(_parent.PhysicalPath!, Name) : null;
     public override ExplorerItemType ItemType => ExplorerItemType.Archive;
@@ -73,30 +74,38 @@ public class ArchiveExplorerItem : ContainerExplorerItem
             return;
         }
 
-        // If it's embedded into another archive
-        var parent = Parent;
-        while (string.IsNullOrEmpty(parent?.PhysicalPath))
+        // Search the IArchiveFile (as binary file not as archive)
+        IArchiveFile? selfBinaryFile = null;
+        
+        if (Parent is ArchiveExplorerItem parentArchive)
         {
-            parent = parent?.Parent;
+            selfBinaryFile = parentArchive.GetArchive().Root.GetFile(Name);
+        }
+        else if(Parent is ArchiveDirectoryExplorerItem parentDirectory)
+        {
+            selfBinaryFile = parentDirectory.GetArchiveDirectory().GetFile(Name);
         }
 
-        // Now parent is a physicalFile (likely an archive)
-        if (parent is ArchiveExplorerItem physicalParent)
-        {
-            // Search the IArchiveFile (as binary file not as archive)
-
-            // Export it
-        }
+        // Export it
+        selfBinaryFile?.Export(exportPath);
     }
+
+    internal IArchive GetArchive() => _archive;
 
     public override void ImportFile(string filePath)
     {
-        throw new NotImplementedException();
+        // TODO: Reset Archive Encryption
+        ((RageArchiveWrapper7)_archive).Encryption = RageLib.GTA5.Archives.RageArchiveEncryption7.None;
+        ArchiveUtilities.ImportFile(_archive.Root, filePath);
+        _archive.Flush();
     }
 
     public override void ImportDirectory(string directoryPath)
     {
-        throw new NotImplementedException();
+        // TODO: Reset Archive Encryption
+        ((RageArchiveWrapper7)_archive).Encryption = RageLib.GTA5.Archives.RageArchiveEncryption7.None;
+        ArchiveUtilities.ImportDirectory(_archive.Root, directoryPath, false, RageLib.GTA5.Archives.RageArchiveEncryption7.None);      
+        _archive.Flush();
     }
 
     public void Extract(string directoryPath, bool recursive)

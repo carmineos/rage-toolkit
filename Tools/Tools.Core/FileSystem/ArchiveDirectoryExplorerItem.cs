@@ -1,6 +1,8 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using RageLib.Archives;
+using RageLib.GTA5.ArchiveWrappers;
+using RageLib.GTA5.Utilities;
 
 namespace Tools.Core.FileSystem;
 
@@ -60,18 +62,29 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
         }
     }
 
+    internal IArchiveDirectory GetArchiveDirectory() => _archiveDirectory;
+
     public override void ExportItem(string exportPath)
     {
         // TODO: Refactor RageLib.GTA5.Utilities.ArchiveUtilities.UnpackDirectory
+        ArchiveUtilities.UnpackDirectory(_archiveDirectory, exportPath, false);
     }
 
     public override void ImportFile(string filePath)
     {
-        throw new NotImplementedException();
+        // TODO: Reset Archive Encryption
+        //((RageArchiveWrapper7)_archive).Encryption = RageLib.GTA5.Archives.RageArchiveEncryption7.None;
+        ArchiveUtilities.ImportFile(_archiveDirectory, filePath);
+        // TODO: Flush Archive
+        //_archive.Flush();
     }
 
     public override void ImportDirectory(string directoryPath)
     {
-        throw new NotImplementedException();
+        // TODO: Reset Archive Encryption
+        //((RageArchiveWrapper7)_archive).Encryption = RageLib.GTA5.Archives.RageArchiveEncryption7.None;
+        ArchiveUtilities.ImportDirectory(_archiveDirectory, directoryPath, false, RageLib.GTA5.Archives.RageArchiveEncryption7.None);
+        // TODO: Flush Archive
+        // _archive.Flush();
     }
 }

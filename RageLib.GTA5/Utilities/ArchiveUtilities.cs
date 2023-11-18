@@ -131,55 +131,64 @@ namespace RageLib.GTA5.Utilities
             archive.Dispose();
         }
 
+        public static void ImportFile(IArchiveDirectory directory, string inputFilePath)
+        {
+            var fileName = Path.GetFileName(inputFilePath);
+
+            if (Resource7.IsResourceFile(inputFilePath))
+            {
+                IArchiveResourceFile archiveResourceFile = directory.CreateResourceFile();
+                archiveResourceFile.Name = fileName;
+                archiveResourceFile.Import(inputFilePath);
+            }
+            else
+            {
+                IArchiveBinaryFile archiveBinaryFile = directory.CreateBinaryFile();
+                archiveBinaryFile.Name = fileName;
+                archiveBinaryFile.ImportCompressed(inputFilePath);
+            }
+        }
+
+        public static void ImportDirectory(IArchiveDirectory directory, string inputDirectoryPath, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None)
+        {
+            var directoryName = new DirectoryInfo(inputDirectoryPath).Name;
+
+            if (Path.GetExtension(inputDirectoryPath) == ".rpf" && recursive)
+            {
+                // TODO: Add API to create a RageArchiveWrapper7 from a RageArchiveBinaryFileWrapper7 and viceversa
+                using var archiveStream = new MemoryStream();
+                var archive = RageArchiveWrapper7.Create(archiveStream, directoryName);
+                archive.Encryption = encryption;
+                PackDirectory(archive.Root, inputDirectoryPath, recursive, encryption);
+                archive.Flush();
+                archiveStream.Position = 0;
+
+                var binaryFile = directory.CreateBinaryFile();
+                binaryFile.Name = directoryName;
+                binaryFile.Import(archiveStream);
+
+                archive.Dispose();
+            }
+            else
+            {
+                var archiveSubdirectory = directory.CreateDirectory();
+                archiveSubdirectory.Name = directoryName;
+                PackDirectory(archiveSubdirectory, inputDirectoryPath, recursive, encryption);
+            }
+        }
+
         public static void PackDirectory(IArchiveDirectory directory, string inputFolderPath, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None)
         {
             var files = Directory.EnumerateFiles(inputFolderPath);
             foreach (var file in files)
             {
-                var fileName = Path.GetFileName(file);
-
-                if (Resource7.IsResourceFile(file))
-                {
-                    IArchiveResourceFile archiveResourceFile = directory.CreateResourceFile();
-                    archiveResourceFile.Name = fileName;
-                    archiveResourceFile.Import(file);
-                }
-                else
-                {
-                    IArchiveBinaryFile archiveBinaryFile = directory.CreateBinaryFile();
-                    archiveBinaryFile.Name = fileName;
-                    archiveBinaryFile.ImportCompressed(file);
-                }
-                
+                ImportFile(directory, file);
             }
 
             var directories = Directory.EnumerateDirectories(inputFolderPath);
             foreach (var subDirectory in directories)
             {
-                var directoryName = new DirectoryInfo(subDirectory).Name;
-
-                if(Path.GetExtension(subDirectory) == ".rpf" && recursive)
-                {
-                    // TODO: Add API to create a RageArchiveWrapper7 from a RageArchiveBinaryFileWrapper7 and viceversa
-                    using var archiveStream = new MemoryStream();
-                    var archive = RageArchiveWrapper7.Create(archiveStream, directoryName);
-                    archive.Encryption = encryption;
-                    PackDirectory(archive.Root, subDirectory, recursive, encryption);
-                    archive.Flush();
-                    archiveStream.Position = 0;
-
-                    var binaryFile = directory.CreateBinaryFile();
-                    binaryFile.Name = directoryName;
-                    binaryFile.Import(archiveStream);
-
-                    archive.Dispose();
-                }
-                else
-                {
-                    var archiveSubdirectory = directory.CreateDirectory();
-                    archiveSubdirectory.Name = directoryName;
-                    PackDirectory(archiveSubdirectory, subDirectory, recursive, encryption);
-                }
+                ImportDirectory(directory, subDirectory, recursive, encryption);
             }
         }
     }
