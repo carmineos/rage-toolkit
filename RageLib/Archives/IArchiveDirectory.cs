@@ -21,12 +21,12 @@ namespace RageLib.Archives
         /// <summary>
         /// Returns a directory list from the current directory. 
         /// </summary>
-        IReadOnlyList<IArchiveDirectory> GetDirectories();
+        IEnumerable<IArchiveDirectory> GetDirectories();
 
         /// <summary>
         /// Returns a directory from the current directory. 
         /// </summary>
-        IArchiveDirectory GetDirectory(string name);
+        IArchiveDirectory? GetDirectory(string name);
 
         /// <summary>
         /// Creates a new directory inside this directory.
@@ -45,12 +45,12 @@ namespace RageLib.Archives
         /// <summary>
         /// Returns a file list from the current directory. 
         /// </summary>
-        IReadOnlyList<IArchiveFile> GetFiles();
+        IEnumerable<IArchiveFile> GetFiles();
 
         /// <summary>
         /// Returns a file from the current directory. 
         /// </summary>
-        IArchiveFile GetFile(string name);
+        IArchiveFile? GetFile(string name);
 
         /// <summary>
         /// Creates a new binary file inside this directory.

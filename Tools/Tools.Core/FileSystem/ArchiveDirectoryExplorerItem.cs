@@ -29,9 +29,7 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
 
     public override void LoadChildren(bool recursive)
     {
-        var files = _archiveDirectory.GetFiles();
-
-        foreach (var file in files)
+        foreach (var file in _archiveDirectory.GetFiles())
         {
             if (Path.GetExtension(file.Name) == ".rpf")
             {
@@ -49,9 +47,7 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
             }
         }
 
-        var directories = _archiveDirectory.GetDirectories();
-
-        foreach (var directory in directories)
+        foreach (var directory in _archiveDirectory.GetDirectories())
         {
             var archiveFolderExplorerItem = new ArchiveDirectoryExplorerItem(directory, this);
 
@@ -67,6 +63,7 @@ public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
     public override void ExportItem(string exportPath)
     {
         // TODO: Refactor RageLib.GTA5.Utilities.ArchiveUtilities.UnpackDirectory
+        _ = Directory.CreateDirectory(exportPath);
         ArchiveUtilities.UnpackDirectory(_archiveDirectory, exportPath, false);
     }
 

@@ -31,9 +31,7 @@ public class ArchiveExplorerItem : ContainerExplorerItem
 
     public override void LoadChildren(bool recursive)
     {
-        var files = _archive.Root.GetFiles();
-
-        foreach (var file in files)
+        foreach (var file in _archive.Root.GetFiles())
         {
             if (Path.GetExtension(file.Name) == ".rpf")
             {
@@ -51,9 +49,7 @@ public class ArchiveExplorerItem : ContainerExplorerItem
             }
         }
 
-        var directories = _archive.Root.GetDirectories();
-
-        foreach (var directory in directories)
+        foreach (var directory in _archive.Root.GetDirectories())
         {
             var archiveFolderExplorerItem = new ArchiveDirectoryExplorerItem(directory, this);
 

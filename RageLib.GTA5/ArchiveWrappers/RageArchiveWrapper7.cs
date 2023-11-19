@@ -16,6 +16,15 @@ using System.IO.Compression;
 
 namespace RageLib.GTA5.ArchiveWrappers
 {
+    // TODO: Check input stream based on mode
+    // Use leaveOpen param to determine if the stream owner is the archive (in that case it should take care of disposing it, otherwise shouldn't)
+    public enum RageArchiveMode
+    {
+        Read = 0,
+        Create = 1,
+        Update = 2,
+    }
+
     /// <summary>
     /// Represents a wrapper for an RPFv7 archive.
     /// </summary>
@@ -81,9 +90,9 @@ namespace RageLib.GTA5.ArchiveWrappers
                 long maxheaderlength = ArchiveHelpers.FindSpace(blocks, blocks[0]);
                 if (maxheaderlength < headerSize)
                 {
-                    long newpos = ArchiveHelpers.FindOffset(blocks, blocks[1].Length, 512);
+                    long newpos = ArchiveHelpers.FindOffset(blocks, blocks[1].Length, BLOCK_SIZE);
                     ArchiveHelpers.MoveBytes(archive.BaseStream, blocks[1].Offset, newpos, blocks[1].Length);
-                    ((IRageArchiveFileEntry7)blocks[1].Tag).FileOffset = (uint)(newpos / 512);
+                    ((IRageArchiveFileEntry7)blocks[1].Tag).FileOffset = (uint)(newpos / BLOCK_SIZE);
 
                     blocks = GetBlocks();
                     maxheaderlength = ArchiveHelpers.FindSpace(blocks, blocks[0]);
@@ -206,7 +215,7 @@ namespace RageLib.GTA5.ArchiveWrappers
 
             List<DataBlock> blocks = GetBlocks();
 
-            long offset = ArchiveHelpers.FindOffset(blocks, length, 512);
+            long offset = ArchiveHelpers.FindOffset(blocks, length, BLOCK_SIZE);
             return offset;
         }
 
@@ -240,7 +249,7 @@ namespace RageLib.GTA5.ArchiveWrappers
                         else
                             l = fff.FileSize;
 
-                        blocks.Add(new DataBlock(q.FileOffset * 512, l, q));
+                        blocks.Add(new DataBlock(q.FileOffset * BLOCK_SIZE, l, q));
                     }
                     else
                     {
@@ -249,7 +258,7 @@ namespace RageLib.GTA5.ArchiveWrappers
 
                         long l = fff.FileSize;
 
-                        blocks.Add(new DataBlock(q.FileOffset * 512, l, q));
+                        blocks.Add(new DataBlock(q.FileOffset * BLOCK_SIZE, l, q));
                     }
                 }
             }
@@ -285,9 +294,9 @@ namespace RageLib.GTA5.ArchiveWrappers
             {
                 // move...
 
-                long offset = ArchiveHelpers.FindOffset(blocks, newLength, 512);
+                long offset = ArchiveHelpers.FindOffset(blocks, newLength, BLOCK_SIZE);
                 ArchiveHelpers.MoveBytes(archive.BaseStream, thisBlock.Offset, offset, thisBlock.Length);
-                ((IRageArchiveFileEntry7)thisBlock.Tag).FileOffset = (uint)offset / 512;
+                ((IRageArchiveFileEntry7)thisBlock.Tag).FileOffset = (uint)offset / BLOCK_SIZE;
 
             }
 
@@ -313,9 +322,9 @@ namespace RageLib.GTA5.ArchiveWrappers
             {
                 // move...
 
-                long offset = ArchiveHelpers.FindOffset(blocks, newLength, 512);
+                long offset = ArchiveHelpers.FindOffset(blocks, newLength, BLOCK_SIZE);
                 ArchiveHelpers.MoveBytes(archive.BaseStream, thisBlock.Offset, offset, thisBlock.Length);
-                ((IRageArchiveFileEntry7)thisBlock.Tag).FileOffset = (uint)offset / 512;
+                ((IRageArchiveFileEntry7)thisBlock.Tag).FileOffset = (uint)offset / BLOCK_SIZE;
 
             }
 
@@ -451,13 +460,13 @@ namespace RageLib.GTA5.ArchiveWrappers
             throw new Exception();
         }
 
-        public static bool IsRPF7(string fileName)
+        public static bool IsArchive(string fileName)
         {
             using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                return IsRPF7(fileStream);
+                return IsArchive(fileStream);
         }
 
-        public static bool IsRPF7(Stream stream)
+        public static bool IsArchive(Stream stream)
         {
             return RageArchive7.IsRPF7(stream);
         }
@@ -466,48 +475,44 @@ namespace RageLib.GTA5.ArchiveWrappers
     /// <summary>
     /// Represents a wrapper for a directory in an RPFv7 archive.
     /// </summary>
-    public class RageArchiveDirectoryWrapper7 : IArchiveDirectory, IDisposable
+    public class RageArchiveDirectoryWrapper7 : IArchiveDirectory
     {
-        private RageArchiveWrapper7 archiveWrapper;
-        private RageArchiveDirectory7 directory;
+        private readonly RageArchiveWrapper7 _archiveWrapper;
+        private readonly RageArchiveDirectory7 _directory;
 
         /// <summary>
         /// Gets or sets the name of the directory.
         /// </summary>
         public string Name
         {
-            get => directory.Name;
-            set => directory.Name = value;
+            get => _directory.Name;
+            set => _directory.Name = value;
         }
 
         internal RageArchiveDirectoryWrapper7(RageArchiveWrapper7 archiveWrapper, RageArchiveDirectory7 directory)
         {
-            this.archiveWrapper = archiveWrapper;
-            this.directory = directory;
+            _archiveWrapper = archiveWrapper;
+            _directory = directory;
         }
 
         /// <summary>
         /// Returns a directory list from the current directory. 
         /// </summary>
-        public IReadOnlyList<IArchiveDirectory> GetDirectories()
+        public IEnumerable<IArchiveDirectory> GetDirectories()
         {
-            var directoryList = new List<IArchiveDirectory>();
-            
-            foreach (var directory in directory.Directories)
-                directoryList.Add(new RageArchiveDirectoryWrapper7(archiveWrapper, directory));
-
-            return directoryList.AsReadOnly();
+            foreach (var directory in _directory.Directories)
+                yield return new RageArchiveDirectoryWrapper7(_archiveWrapper, directory);
         }
 
         /// <summary>
         /// Returns a directory from the current directory. 
         /// </summary>
-        public IArchiveDirectory GetDirectory(string name)
+        public IArchiveDirectory? GetDirectory(string name)
         {
-            foreach (var directory in directory.Directories)
+            foreach (var directory in _directory.Directories)
             {
                 if (directory.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                    return new RageArchiveDirectoryWrapper7(archiveWrapper, directory);
+                    return new RageArchiveDirectoryWrapper7(_archiveWrapper, directory);
             }
             return null;
         }
@@ -518,9 +523,9 @@ namespace RageLib.GTA5.ArchiveWrappers
         public IArchiveDirectory CreateDirectory()
         {
             var newDirectory = new RageArchiveDirectory7();
-            var newDirectoryWrapper = new RageArchiveDirectoryWrapper7(archiveWrapper, newDirectory);
+            var newDirectoryWrapper = new RageArchiveDirectoryWrapper7(_archiveWrapper, newDirectory);
 
-            this.directory.Directories.Add(newDirectory);
+            this._directory.Directories.Add(newDirectory);
 
             return newDirectoryWrapper;
         }
@@ -530,37 +535,35 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void DeleteDirectory(IArchiveDirectory directory)
         {
-            this.directory.Directories.Remove(((RageArchiveDirectoryWrapper7)directory).directory);
+            this._directory.Directories.Remove(((RageArchiveDirectoryWrapper7)directory)._directory);
         }
 
         /// <summary>
         /// Returns a file list from the current directory. 
         /// </summary>
-        public IReadOnlyList<IArchiveFile> GetFiles()
+        public IEnumerable<IArchiveFile> GetFiles()
         {
-            var fileList = new List<IArchiveFile>();
-            foreach (var file in directory.Files)
+            foreach (var file in _directory.Files)
             {
-                if (file is RageArchiveResourceFile7)
-                    fileList.Add(new RageArchiveResourceFileWrapper7(archiveWrapper, (RageArchiveResourceFile7)file));
+                if (file is RageArchiveResourceFile7 rsc7)
+                    yield return new RageArchiveResourceFileWrapper7(_archiveWrapper, rsc7);
                 else
-                    fileList.Add(new RageArchiveBinaryFileWrapper7(archiveWrapper, (RageArchiveBinaryFile7)file));
+                    yield return new RageArchiveBinaryFileWrapper7(_archiveWrapper, (RageArchiveBinaryFile7)file);
             }
-            return fileList.AsReadOnly();
         }
 
         /// <summary>
         /// Returns a file from the current directory. 
         /// </summary>
-        public IArchiveFile GetFile(string name)
+        public IArchiveFile? GetFile(string name)
         {
-            foreach (var f in directory.Files)
+            foreach (var f in _directory.Files)
             {
                 if (f.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                    if (f is RageArchiveResourceFile7)
-                        return new RageArchiveResourceFileWrapper7(archiveWrapper, (RageArchiveResourceFile7)f);
+                    if (f is RageArchiveResourceFile7 rsc7)
+                        return new RageArchiveResourceFileWrapper7(_archiveWrapper, rsc7);
                     else
-                        return new RageArchiveBinaryFileWrapper7(archiveWrapper, (RageArchiveBinaryFile7)f);
+                        return new RageArchiveBinaryFileWrapper7(_archiveWrapper, (RageArchiveBinaryFile7)f);
             }
             return null;
         }
@@ -571,14 +574,14 @@ namespace RageLib.GTA5.ArchiveWrappers
         public IArchiveBinaryFile CreateBinaryFile()
         {
             RageArchiveBinaryFile7 realF = new RageArchiveBinaryFile7();
-            RageArchiveBinaryFileWrapper7 wrD = new RageArchiveBinaryFileWrapper7(archiveWrapper, realF);
+            RageArchiveBinaryFileWrapper7 wrD = new RageArchiveBinaryFileWrapper7(_archiveWrapper, realF);
 
 
             realF.Name = "";
-            var offset = archiveWrapper.FindSpace(64);
-            realF.FileOffset = (uint)(offset / 512);
+            var offset = _archiveWrapper.FindSpace(64);
+            realF.FileOffset = (uint)(offset / RageArchiveWrapper7.BLOCK_SIZE);
 
-            directory.Files.Add(realF);
+            _directory.Files.Add(realF);
 
             return wrD;
         }
@@ -589,14 +592,14 @@ namespace RageLib.GTA5.ArchiveWrappers
         public IArchiveResourceFile CreateResourceFile()
         {
             RageArchiveResourceFile7 realF = new RageArchiveResourceFile7();
-            RageArchiveResourceFileWrapper7 wrD = new RageArchiveResourceFileWrapper7(archiveWrapper, realF);
+            RageArchiveResourceFileWrapper7 wrD = new RageArchiveResourceFileWrapper7(_archiveWrapper, realF);
 
 
             realF.Name = "";
-            var offset = archiveWrapper.FindSpace(64);
-            realF.FileOffset = (uint)(offset / 512);
+            var offset = _archiveWrapper.FindSpace(64);
+            realF.FileOffset = (uint)(offset / RageArchiveWrapper7.BLOCK_SIZE);
 
-            directory.Files.Add(realF);
+            _directory.Files.Add(realF);
 
             return wrD;
         }
@@ -606,13 +609,12 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void DeleteFile(IArchiveFile file)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            this.archiveWrapper = null;
-            this.directory = null;
+            if (file is RageArchiveResourceFileWrapper7 rsc7)
+                _directory.Files.Remove(rsc7.GetFile());
+            else if (file is RageArchiveBinaryFileWrapper7 binaryFile)
+                _directory.Files.Remove(binaryFile.GetFile());
+            else
+                throw new NotSupportedException();
         }
     }
 
@@ -621,16 +623,18 @@ namespace RageLib.GTA5.ArchiveWrappers
     /// </summary>
     public class RageArchiveBinaryFileWrapper7 : IArchiveBinaryFile
     {
-        private RageArchiveWrapper7 archiveWrapper;
-        private RageArchiveBinaryFile7 file;
+        private readonly RageArchiveWrapper7 _archiveWrapper;
+        private readonly RageArchiveBinaryFile7 _binaryFile;
+
+        internal RageArchiveBinaryFile7 GetFile() => _binaryFile;
 
         /// <summary>
         /// Gets or sets the name of the file.
         /// </summary>
         public string Name
         {
-            get => file.Name;
-            set => file.Name = value;
+            get => _binaryFile.Name;
+            set => _binaryFile.Name = value;
         }
 
         /// <summary>
@@ -638,31 +642,31 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public bool IsEncrypted
         {
-            get => file.IsEncrypted;
-            set => file.IsEncrypted = value;
+            get => _binaryFile.IsEncrypted;
+            set => _binaryFile.IsEncrypted = value;
         }
 
         /// <summary>
         /// Gets the encryption type.
         /// </summary>
-        public RageArchiveEncryption7 Encryption => archiveWrapper.Encryption;
+        public RageArchiveEncryption7 Encryption => _archiveWrapper.Encryption;
 
         /// <summary>
         /// Gets or sets a value indicating whether the file is compressed.
         /// </summary>
         public bool IsCompressed
         {
-            get => file.FileSize != 0;
+            get => _binaryFile.FileSize != 0;
             set
             {
                 if (value)
                 {
-                    file.FileSize = file.FileUncompressedSize;
+                    _binaryFile.FileSize = _binaryFile.FileUncompressedSize;
                 }
                 else
                 {
-                    file.FileUncompressedSize = file.FileSize;
-                    file.FileSize = 0;
+                    _binaryFile.FileUncompressedSize = _binaryFile.FileSize;
+                    _binaryFile.FileSize = 0;
                 }
             }
         }
@@ -673,21 +677,21 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public long UncompressedSize
         {
-            get => file.FileUncompressedSize;
-            set => file.FileUncompressedSize = (uint)value;
+            get => _binaryFile.FileUncompressedSize;
+            set => _binaryFile.FileUncompressedSize = (uint)value;
         }
 
         /// <summary>
         /// Gets the compressed size of the file or 0 if not compressed.
         /// </summary>
-        public long CompressedSize => file.FileSize;
+        public long CompressedSize => _binaryFile.FileSize;
 
-        public long Size => file.FileSize != 0 ? file.FileSize : file.FileUncompressedSize;
+        public long Size => _binaryFile.FileSize != 0 ? _binaryFile.FileSize : _binaryFile.FileUncompressedSize;
 
         internal RageArchiveBinaryFileWrapper7(RageArchiveWrapper7 archiveWrapper, RageArchiveBinaryFile7 file)
         {
-            this.archiveWrapper = archiveWrapper;
-            this.file = file;
+            _archiveWrapper = archiveWrapper;
+            _binaryFile = file;
         }
 
         /// <summary>
@@ -695,7 +699,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public Stream GetStream()
         {
-            return archiveWrapper.GetStream(file);
+            return _archiveWrapper.GetStream(_binaryFile);
         }
 
 
@@ -772,7 +776,7 @@ namespace RageLib.GTA5.ArchiveWrappers
                 }
                 else if (Encryption == RageArchiveEncryption7.NG)
                 {
-                    var indexKey = GTA5Crypto.GetKeyIndex(file.Name, uncompressedSize);
+                    var indexKey = GTA5Crypto.GetKeyIndex(_binaryFile.Name, uncompressedSize);
                     GTA5Crypto.DecryptData(span, GTA5Constants.PC_NG_KEYS[indexKey]);
                 }
             }
@@ -844,27 +848,29 @@ namespace RageLib.GTA5.ArchiveWrappers
     /// </summary>
     public class RageArchiveResourceFileWrapper7 : IArchiveResourceFile
     {
-        private RageArchiveWrapper7 archiveWrapper;
-        private RageArchiveResourceFile7 file;
+        private readonly RageArchiveWrapper7 _archiveWrapper;
+        private readonly RageArchiveResourceFile7 _resourceFile;
+
+        internal RageArchiveResourceFile7 GetFile() => _resourceFile;
 
         /// <summary>
         /// Gets or sets the name of the file.
         /// </summary>
         public string Name
         {
-            get => file.Name;
-            set => file.Name = value;
+            get => _resourceFile.Name;
+            set => _resourceFile.Name = value;
         }
 
         /// <summary>
         /// Gets the size of the file.
         /// </summary>
-        public long Size => file.FileSize;
+        public long Size => _resourceFile.FileSize;
 
         internal RageArchiveResourceFileWrapper7(RageArchiveWrapper7 archiveWrapper, RageArchiveResourceFile7 file)
         {
-            this.archiveWrapper = archiveWrapper;
-            this.file = file;
+            _archiveWrapper = archiveWrapper;
+            _resourceFile = file;
         }
 
         /// <summary>
@@ -881,7 +887,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public void Import(Stream stream)
         {
-            var resourceStream = archiveWrapper.GetStream(file);
+            var resourceStream = _archiveWrapper.GetStream(_resourceFile);
             resourceStream.SetLength(stream.Length);
 
             // read resource
@@ -893,7 +899,7 @@ namespace RageLib.GTA5.ArchiveWrappers
             var graphicsFlags = reader.ReadUInt32();
 
             reader.Position = 0;
-            file.ResourceInfo = new DatResourceInfo(systemFlags, graphicsFlags);
+            _resourceFile.ResourceInfo = new DatResourceInfo(systemFlags, graphicsFlags);
 
             stream.CopyTo(resourceStream);
         }
@@ -914,11 +920,11 @@ namespace RageLib.GTA5.ArchiveWrappers
         {
             var writer = new DataWriter(stream);
             writer.Write((uint)0x37435352);
-            writer.Write((uint)file.ResourceInfo.Version);
-            writer.Write(file.ResourceInfo.VirtualFlags);
-            writer.Write(file.ResourceInfo.PhysicalFlags);
+            writer.Write((uint)_resourceFile.ResourceInfo.Version);
+            writer.Write(_resourceFile.ResourceInfo.VirtualFlags);
+            writer.Write(_resourceFile.ResourceInfo.PhysicalFlags);
 
-            var resourceStream = archiveWrapper.GetStream(file);
+            var resourceStream = _archiveWrapper.GetStream(_resourceFile);
             resourceStream.Position = 16;
 
             resourceStream.CopyTo(stream, (int)resourceStream.Length - 16);
@@ -929,7 +935,7 @@ namespace RageLib.GTA5.ArchiveWrappers
         /// </summary>
         public Stream GetStream()
         {
-            return archiveWrapper.GetStream(file);
+            return _archiveWrapper.GetStream(_resourceFile);
         }
 
         public void ExportResourceContent(string directoryPath)
