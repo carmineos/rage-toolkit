@@ -24,8 +24,8 @@ namespace RageLib.Resources.GTA5.PC.Particles
         public ulong ParticleRuleDictionaryPointer;
         public uint Unknown_40h; // 0x00000000
         public uint Unknown_44h; // 0x00000000
-        public ulong EmitterRuleDictionaryPointer;
         public ulong EffectRuleDictionaryPointer;
+        public ulong EmitterRuleDictionaryPointer;
         public uint Unknown_58h; // 0x00000000
         public uint Unknown_5Ch; // 0x00000000
 
@@ -74,10 +74,10 @@ namespace RageLib.Resources.GTA5.PC.Particles
                 this.ParticleRuleDictionaryPointer // offset
             );
             this.EffectRuleDictionary = reader.ReadBlockAt< PgDictionary64<EffectRule>>(
-                this.EmitterRuleDictionaryPointer // offset
+                this.EffectRuleDictionaryPointer // offset
             );
             this.EmitterRuleDictionary = reader.ReadBlockAt< PgDictionary64<EmitterRule>>(
-                this.EffectRuleDictionaryPointer // offset
+                this.EmitterRuleDictionaryPointer // offset
             );
         }
 
