@@ -26,6 +26,18 @@ namespace RageLib.GTA5.Cryptography
             return (hash + length + (101 - 40)) % 0x65;
         }
 
+        public static byte[] GetKey(string name, uint length)
+        {
+            var keyIndex = GetKeyIndex(name, length);
+            return GTA5Constants.PC_NG_KEYS[keyIndex];
+        }
+
+        public static IEnumerable<byte[]> EnumerateKeys()
+        {
+            foreach(var key in GTA5Constants.PC_NG_KEYS)
+                yield return key;
+        }
+
         public byte[] Encrypt(byte[] data)
         {
             return Encrypt(data, Key);
@@ -45,8 +57,8 @@ namespace RageLib.GTA5.Cryptography
 
         public static void DecryptData(Span<byte> data, string name, uint length)
         {
-            var indexKey = GetKeyIndex(name, length);
-            DecryptData(data, GTA5Constants.PC_NG_KEYS[indexKey]);
+            var ngKey = GetKey(name, length);
+            DecryptData(data, ngKey);
         }
 
         /// <summary>
@@ -196,8 +208,8 @@ namespace RageLib.GTA5.Cryptography
 
         public static void EncryptData(Span<byte> data, string name, uint length)
         {
-            var indexKey = GetKeyIndex(name, length);
-            EncryptData(data, GTA5Constants.PC_NG_KEYS[indexKey]);
+            var ngKey = GetKey(name, length);
+            EncryptData(data, ngKey);
         }
 
         public static void EncryptData(Span<byte> data, ReadOnlySpan<byte> key)

@@ -106,10 +106,8 @@ namespace RageLib.GTA5.ArchiveWrappers
 
 
             // calculate key...
-            var indexKey = GTA5Crypto.GetKeyIndex(Name, (uint)archive.BaseStream.Length);
-
-            //  archive_.key_ = GTA5Crypto.key_gta5;
-            archive.WriteHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]);
+            var key = GTA5Crypto.GetKey(Name, (uint)archive.BaseStream.Length);
+            archive.WriteHeader(GTA5Constants.PC_AES_KEY, key);
             archive.BaseStream.Flush();
 
         }
@@ -363,20 +361,9 @@ namespace RageLib.GTA5.ArchiveWrappers
             var arch = new RageArchiveWrapper7(fs, finfo.Name, false);
             try
             {
+                var ngKey = GTA5Crypto.GetKey(arch.Name, (uint)finfo.Length);
+                arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, ngKey); // read...
 
-                if (GTA5Constants.PC_LUT != null && GTA5Constants.PC_NG_KEYS != null)
-                {
-                    // calculate key...
-                    var indexKey = GTA5Crypto.GetKeyIndex(arch.Name, (uint)finfo.Length);
-
-                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
-                }
-                else
-                {
-                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, null); // read...
-                }
-
-                
                 return arch;
             }
             catch
@@ -393,17 +380,8 @@ namespace RageLib.GTA5.ArchiveWrappers
             var arch = new RageArchiveWrapper7(stream, fileName, leaveOpen);
             try
             {
-                if (GTA5Constants.PC_LUT != null && GTA5Constants.PC_NG_KEYS != null)
-                {
-                    // calculate key...
-                    var indexKey = GTA5Crypto.GetKeyIndex(arch.Name, (uint)stream.Length);
-
-                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[indexKey]); // read...
-                }
-                else
-                {
-                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, null); // read...
-                }
+                var ngKey = GTA5Crypto.GetKey(arch.Name, (uint)stream.Length);
+                arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, ngKey); // read...
 
                 return arch;
             }
@@ -419,14 +397,14 @@ namespace RageLib.GTA5.ArchiveWrappers
         // We could make it faster to detect a wrong key by just checking if the root entry of a rpf is a folder
         private static RageArchiveWrapper7 InternalOpenWithUnknownNGKey(string fileName)
         {
-            for (int i = 0; i < GTA5Constants.PC_NG_KEYS.Length; i++)
+            foreach(var key in GTA5Crypto.EnumerateKeys())
             {
                 var finfo = new FileInfo(fileName);
                 var fs = new FileStream(fileName, FileMode.Open);
                 var arch = new RageArchiveWrapper7(fs, finfo.Name, false);
                 try
                 {
-                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[i]);
+                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, key);
                     return arch;
                 }
                 catch
@@ -443,12 +421,12 @@ namespace RageLib.GTA5.ArchiveWrappers
         // We could make it faster to detect a wrong key by just checking if the root entry of a rpf is a folder
         private static RageArchiveWrapper7 InternalOpenWithUnknownNGKey(Stream stream, string fileName, bool leaveOpen = false)
         {
-            for (int i = 0; i < GTA5Constants.PC_NG_KEYS.Length; i++)
+            foreach (var key in GTA5Crypto.EnumerateKeys())
             {
                 var arch = new RageArchiveWrapper7(stream, fileName, leaveOpen);
                 try
                 {
-                    arch.archive.ReadHeader(GTA5Constants.PC_AES_KEY, GTA5Constants.PC_NG_KEYS[i]);
+                    arch.archive.ReadHeader(key);
                     return arch;
                 }
                 catch
@@ -776,8 +754,8 @@ namespace RageLib.GTA5.ArchiveWrappers
                 }
                 else if (Encryption == RageArchiveEncryption7.NG)
                 {
-                    var indexKey = GTA5Crypto.GetKeyIndex(_binaryFile.Name, uncompressedSize);
-                    GTA5Crypto.DecryptData(span, GTA5Constants.PC_NG_KEYS[indexKey]);
+                    var ngKey = GTA5Crypto.GetKey(_binaryFile.Name, uncompressedSize);
+                    GTA5Crypto.DecryptData(span, ngKey);
                 }
             }
 
