@@ -218,58 +218,34 @@ namespace RageLib.GTA5.Archives
                 directory.EntriesIndex = (uint)entries.Count;
                 directory.EntriesCount = (uint)directory.Directories.Count + (uint)directory.Files.Count;
 
-                var theList = new List<IRageArchiveEntry7>();
+                var theList = new List<IRageArchiveEntry7>((int)directory.EntriesCount);
 
-                foreach (var xd in directory.Directories)
+                theList.AddRange(directory.Directories);
+                theList.AddRange(directory.Files);
+                theList.Sort(static (a, b) => string.CompareOrdinal(a.Name, b.Name));
+
+                foreach (var xd in theList)
                 {
-                    if (!nameDict.ContainsKey(xd.Name))
+                    if (!nameDict.TryGetValue(xd.Name, out uint value))
                     {
-                        nameDict.Add(xd.Name, (uint)nameOffset);
+                        value = (uint)nameOffset;
+                        nameDict.Add(xd.Name, value);
                         nameOffset += xd.Name.Length + 1;
                     }
-                    xd.NameOffset = nameDict[xd.Name];
-
-                    //xd.NameOffset = (ushort)nameOffset;
-                    //nameOffset += xd.Name.Length + 1;
-                    //entries.Add(xd);
-                    //stack.Push(xd);
-                    theList.Add(xd);
+                    xd.NameOffset = value;
                 }
 
-                foreach (var xf in directory.Files)
-                {
-                    if (!nameDict.ContainsKey(xf.Name))
-                    {
-                        nameDict.Add(xf.Name, (uint)nameOffset);
-                        nameOffset += xf.Name.Length + 1;
-                    }
-                    xf.NameOffset = nameDict[xf.Name];
-
-                    //xf.NameOffset = (ushort)nameOffset;
-                    //nameOffset += xf.Name.Length + 1;
-                    //entries.Add(xf);
-                    theList.Add(xf);
-                }
-
-                theList.Sort(
-                    delegate (IRageArchiveEntry7 a, IRageArchiveEntry7 b)
-                    {
-                        return string.CompareOrdinal(a.Name, b.Name);
-                    }
-                    );
-                foreach (var xx in theList)
-                    entries.Add(xx);
-                theList.Reverse();
-                foreach (var xx in theList)
-                    if (xx is RageArchiveDirectory7)
-                        stack.Push((RageArchiveDirectory7)xx);
+                entries.AddRange(theList);
+                theList.Reverse(); // Required?
+                foreach (var entry in theList)
+                    if (entry is RageArchiveDirectory7 dir)
+                        stack.Push(dir);
             }
 
 
             // there are sometimes resources with length>=0xffffff which actually
             // means length=0xffffff
             // -> we therefore just cut the file size
-            Span<byte> largeResourceHeader = stackalloc byte[16];
             foreach (var entry in entries)
                 if (entry is RageArchiveResourceFile7 rsc7)
                     PatchLargeResourceFile(rsc7, writer);
