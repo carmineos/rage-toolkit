@@ -119,6 +119,15 @@ namespace RageLib.Data
         }
 
         /// <summary>
+        /// Advances reader by specified amount of bytes.
+        /// </summary>
+        /// <param name="byteCount"></param>
+        public void ReadPadding(int byteCount)
+        {
+            Position += byteCount;
+        }
+
+        /// <summary>
         /// Reads a byte.
         /// </summary>
         public byte ReadByte()
@@ -222,6 +231,15 @@ namespace RageLib.Data
         public double ReadDouble()
         {
             return ReadFromStream<double>();
+        }
+
+        /// <summary>
+        /// Reads a boolean value (single byte)
+        /// </summary>
+        /// <returns></returns>
+        public bool ReadBool()
+        {
+            return ReadFromStream<byte>() == 1 ? true : false;
         }
 
         /// <summary>

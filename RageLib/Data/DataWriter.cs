@@ -61,11 +61,31 @@ namespace RageLib.Data
         }
 
         /// <summary>
+        /// Fills amount of bytes with zeroes.
+        /// </summary>
+        /// <param name="byteCount"></param>
+        public void WritePadding(int byteCount)
+        {
+            byte[] array = new byte[byteCount];
+            Array.Fill<byte>(array, 0x00);
+            WriteToStreamRaw(array.AsSpan());
+        }
+
+        /// <summary>
         /// Writes a byte.
         /// </summary>
         public void Write(byte value)
         {
             WriteToStreamRaw(value);
+        }
+
+        /// <summary>
+        /// Writes boolean value (single byte)
+        /// </summary>
+        /// <param name="value"></param>
+        public void Write(bool value)
+        {
+            WriteToStreamRaw(value ? (byte)1 : (byte)0);
         }
 
         /// <summary>
