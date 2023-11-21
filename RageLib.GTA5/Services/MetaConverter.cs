@@ -42,8 +42,7 @@ namespace RageLib.GTA5.Services
 
             var reader = new MetaReader();
             var meta = reader.Read(inputFileName);
-            var exporter = new MetaXmlExporter();
-            exporter.HashMapping = joaatDictionary;
+            var exporter = new MetaXmlExporter(joaatDictionary);
             exporter.Export(meta, outputFileName);
         }
 
@@ -54,8 +53,7 @@ namespace RageLib.GTA5.Services
 
             var reader = new PsoReader();
             var meta = reader.Read(inputFileName);
-            var exporter = new PsoXmlExporter();
-            exporter.HashMapping = joaatDictionary;
+            var exporter = new PsoXmlExporter(joaatDictionary);
             exporter.Export(meta, outputFileName);
         }
 

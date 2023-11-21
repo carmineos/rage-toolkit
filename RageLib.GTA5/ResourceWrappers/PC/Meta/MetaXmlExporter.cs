@@ -3,6 +3,7 @@
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Types;
 using RageLib.Helpers.Xml;
 using RageLib.Resources.GTA5.PC.Meta;
+using RageLib.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,11 +15,11 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 {
     public class MetaXmlExporter
     {
-        public IDictionary<int, string> HashMapping { get; set; }
+        private readonly IJenkinsResolver _jenkinsResolver;
 
-        public MetaXmlExporter()
+        public MetaXmlExporter(IJenkinsResolver jenkinsResolver)
         {
-            HashMapping = new Dictionary<int, string>();
+            _jenkinsResolver = jenkinsResolver ?? JenkinsDictionary.Shared;
         }
 
         public void Export(IMetaValue value, string xmlFileName)
@@ -473,17 +474,17 @@ namespace RageLib.GTA5.ResourceWrappers.PC.Meta
 
         private string GetNameForHash(int hash)
         {
-            return HashMapping.TryGetValue(hash, out string resolved) ? resolved : $"hash_{hash:X8}";
+            return _jenkinsResolver.TryGetValue(hash, out string resolved) ? resolved : $"hash_{hash:X8}";
         }
 
         private string GetEnumNameForHash(int hash)
         {
-            return HashMapping.TryGetValue(hash, out string resolved) ? resolved : $"enum_hash_{hash:X8}";
+            return _jenkinsResolver.TryGetValue(hash, out string resolved) ? resolved : $"enum_hash_{hash:X8}";
         }
 
         private string GetFlagNameForHash(int hash)
         {
-            return HashMapping.TryGetValue(hash, out string resolved) ? resolved : $"flag_hash_{hash:X8}";
+            return _jenkinsResolver.TryGetValue(hash, out string resolved) ? resolved : $"flag_hash_{hash:X8}";
         }
 
         public string ByteArrayToString(byte[] b)

@@ -3,6 +3,7 @@
 using RageLib.GTA5.PSO;
 using RageLib.GTA5.PSOWrappers.Types;
 using RageLib.Helpers.Xml;
+using RageLib.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,11 +15,11 @@ namespace RageLib.GTA5.PSOWrappers
 {
     public class PsoXmlExporter
     {
-        public IDictionary<int, string> HashMapping { get; set; }
+        private readonly IJenkinsResolver _jenkinsResolver;
 
-        public PsoXmlExporter()
+        public PsoXmlExporter(IJenkinsResolver jenkinsResolver)
         {
-            HashMapping = new Dictionary<int, string>();
+            _jenkinsResolver = jenkinsResolver ?? JenkinsDictionary.Shared;
         }
 
         public void Export(IPsoValue value, string xmlFileName)
@@ -537,10 +538,9 @@ namespace RageLib.GTA5.PSOWrappers
 
         private string GetNameForHash(int hash)
         {
-            if (HashMapping.ContainsKey(hash))
+            if (_jenkinsResolver.TryGetValue(hash, out string? value))
             {
-                var ss = HashMapping[hash];
-                return ss;
+                return value;
             }
             else
             {

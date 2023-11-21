@@ -19,7 +19,7 @@ namespace RageLib.Data
     {
         private readonly Stream baseStream;
         protected readonly bool endiannessEqualsHostArchitecture;
-        private readonly IJenkinsDictionary jenkinsDictionary;
+        private readonly IStringCollector stringCollector;
 
         /// <summary>
         /// Gets or sets the endianness of the underlying stream.
@@ -48,7 +48,7 @@ namespace RageLib.Data
             this.baseStream = stream;
             this.Endianness = endianness;
             this.endiannessEqualsHostArchitecture = endianness.EqualsHostArchitecture();
-            this.jenkinsDictionary = jenkinsDictionary ?? JenkinsDictionary.Shared;
+            this.stringCollector = jenkinsDictionary ?? JenkinsDictionary.Shared;
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace RageLib.Data
             }
 
             string str = Encoding.ASCII.GetString(span.Slice(0, i));
-            jenkinsDictionary?.TryAdd(str);
+            stringCollector?.TryAdd(str);
 
             return str;
         }
@@ -272,7 +272,7 @@ namespace RageLib.Data
             using Buffer<byte> buffer = ReadFromStreamBuffer<byte>(length);
             string str = Encoding.ASCII.GetString(buffer.Span);
 
-            jenkinsDictionary?.TryAdd(str);
+            stringCollector?.TryAdd(str);
 
             return str;
         }
