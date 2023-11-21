@@ -64,11 +64,12 @@ namespace RageLib.Data
         /// Fills amount of bytes with zeroes.
         /// </summary>
         /// <param name="byteCount"></param>
-        public void WritePadding(int byteCount)
+        public void WritePadding(int byteCount, byte b = 0x00)
         {
-            byte[] array = new byte[byteCount];
-            Array.Fill<byte>(array, 0x00);
-            WriteToStreamRaw(array.AsSpan());
+            using Buffer<byte> buffer = new Buffer<byte>(byteCount);
+            var span = buffer.BytesSpan;
+            span.Fill(b);
+            WriteToStreamRaw(span);
         }
 
         /// <summary>
