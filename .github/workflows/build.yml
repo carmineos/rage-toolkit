@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SolutionName: Toolkit.Libraries.slnf
+      SOLUTION_NAME: Toolkit.Libraries.slnf
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -23,8 +23,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore $SolutionName
+      run: dotnet restore $SOLUTION_NAME
     - name: Build
-      run: dotnet build --no-restore $SolutionName
+      run: dotnet build --no-restore $SOLUTION_NAME
     - name: Test
-      run: dotnet test --no-build --verbosity normal $SolutionName
+      run: dotnet test --no-build --verbosity normal $SOLUTION_NAME
