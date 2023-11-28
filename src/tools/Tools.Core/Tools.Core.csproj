@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\RageLib.GTA5\RageLib.GTA5.csproj" />
+    <ProjectReference Include="..\..\libraries\RageLib\RageLib.csproj" />
+  </ItemGroup>
+
+</Project>

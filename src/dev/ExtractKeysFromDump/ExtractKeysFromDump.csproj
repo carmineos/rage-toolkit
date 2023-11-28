@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ExtractKeysFromDump</RootNamespace>
+    <AssemblyName>ExtractKeysFromDump</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\RageLib.GTA5\RageLib.GTA5.csproj" />
+  </ItemGroup>
+
+</Project>

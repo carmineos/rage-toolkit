@@ -2,10 +2,10 @@
   "solution": {
     "path": "Toolkit.sln",
     "projects": [
-      "RageLib.GTA4\\RageLib.GTA4.csproj",
-      "RageLib.GTA5\\RageLib.GTA5.csproj",
-      "RageLib.RDR2\\RageLib.RDR2.csproj",
-      "RageLib\\RageLib.csproj"
+      "src\\libraries\\RageLib.GTA4\\RageLib.GTA4.csproj",
+      "src\\libraries\\RageLib.GTA5\\RageLib.GTA5.csproj",
+      "src\\libraries\\RageLib.RDR2\\RageLib.RDR2.csproj",
+      "src\\libraries\\RageLib\\RageLib.csproj"
     ]
   }
 }
