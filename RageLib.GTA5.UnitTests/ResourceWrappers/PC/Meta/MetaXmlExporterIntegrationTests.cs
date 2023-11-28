@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RageLib.GTA5.ResourceWrappers.PC.Meta;
+using RageLib.Services;
 using System;
 using System.Globalization;
 using System.IO;
@@ -21,7 +22,7 @@ namespace RageLib.GTA5.Tests.ResourceWrappers.PC.Meta
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            var exporter = new MetaXmlExporter();
+            var exporter = new MetaXmlExporter(JenkinsDictionary.Shared);
             var xmlStream = new MemoryStream();
 
             var rootStructure = TestDataset.MakeDataset();
