@@ -242,17 +242,8 @@ namespace RageLib.GTA5.Cryptography
             // Here we could edit data directly
             Span<byte> x = stackalloc byte[16];
 
-            if (Vector.IsHardwareAccelerated)
-            {
-                Vector<byte> x1 = new Vector<byte>(data);
-                Vector<byte> x2 = new Vector<byte>(key);
-                Vector.Xor(x1, x2).CopyTo(x);
-            }
-            else
-            {
-                for (int i = 0; i < 16; i++)
-                    x[i] = (byte)(data[i] ^ key[i]);
-            }
+            for (int i = 0; i < 16; i++)
+                x[i] = (byte)(data[i] ^ key[i]);
 
             Span<uint> encrypted = MemoryMarshal.Cast<byte, uint>(x);
 
@@ -284,17 +275,8 @@ namespace RageLib.GTA5.Cryptography
         {
             Span<byte> x = stackalloc byte[16];
 
-            if (Vector.IsHardwareAccelerated)
-            {
-                Vector<byte> x1 = new Vector<byte>(data);
-                Vector<byte> x2 = new Vector<byte>(key);
-                Vector.Xor(x1, x2).CopyTo(x);
-            }
-            else
-            {
-                for (int i = 0; i < 16; i++)
-                    x[i] = (byte)(data[i] ^ key[i]);
-            }
+            for (int i = 0; i < 16; i++)
+                x[i] = (byte)(data[i] ^ key[i]);
 
             Span<uint> y = MemoryMarshal.Cast<byte, uint>(x);
 
