@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>RageLib.RDR2</RootNamespace>
     <AssemblyName>RageLib.RDR2</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
