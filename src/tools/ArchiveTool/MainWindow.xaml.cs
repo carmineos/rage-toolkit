@@ -30,6 +30,7 @@ namespace ArchiveTool
         {
             this.InitializeComponent();
             this.Content = new MainPage();
+            this.ExtendsContentIntoTitleBar = true;
         }
     }
 }

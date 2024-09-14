@@ -150,9 +150,11 @@ namespace ArchiveTool.ViewModels
 
             //AppNotificationManager.Default.Show(notification);
 
+            var progress = new Progress<ArchiveUtilities.PackingProgress>((p) => Debug.WriteLine($"Packed {p}"));
+
             await Task.Run(() =>
             {
-                ArchiveUtilities.PackArchive(path, savePath, true, RageLib.GTA5.Archives.RageArchiveEncryption7.NG);
+                ArchiveUtilities.PackArchive(path, savePath, true, RageLib.GTA5.Archives.RageArchiveEncryption7.NG, progress);
 
                 //AppNotificationManager.Default.UpdateAsync(new AppNotificationProgressData(2)
                 //{

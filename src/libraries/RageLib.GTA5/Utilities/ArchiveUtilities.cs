@@ -122,11 +122,13 @@ namespace RageLib.GTA5.Utilities
             }
         }
 
-        public static void PackArchive(string inputFolderPath, string outputFileName, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None)
+        public readonly record struct PackingProgress(string Current);
+
+        public static void PackArchive(string inputFolderPath, string outputFileName, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None, IProgress<PackingProgress> progress = null)
         {
             var archive = RageArchiveWrapper7.Create(outputFileName);
             archive.Encryption = encryption;
-            PackDirectory(archive.Root, Path.Combine(inputFolderPath, archive.Root.Name), recursive, encryption);
+            PackDirectory(archive.Root, Path.Combine(inputFolderPath, archive.Root.Name), recursive, encryption, progress);
             archive.Flush();
             archive.Dispose();
         }
@@ -177,18 +179,20 @@ namespace RageLib.GTA5.Utilities
             }
         }
 
-        public static void PackDirectory(IArchiveDirectory directory, string inputFolderPath, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None)
+        public static void PackDirectory(IArchiveDirectory directory, string inputFolderPath, bool recursive, RageArchiveEncryption7 encryption = RageArchiveEncryption7.None, IProgress<PackingProgress> progress = null)
         {
             var files = Directory.EnumerateFiles(inputFolderPath);
             foreach (var file in files)
             {
                 ImportFile(directory, file);
+                progress.Report(new PackingProgress(file));
             }
 
             var directories = Directory.EnumerateDirectories(inputFolderPath);
             foreach (var subDirectory in directories)
             {
                 ImportDirectory(directory, subDirectory, recursive, encryption);
+                progress.Report(new PackingProgress(subDirectory));
             }
         }
     }

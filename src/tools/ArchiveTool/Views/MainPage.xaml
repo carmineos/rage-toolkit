@@ -13,8 +13,7 @@
     xmlns:ctcontrols="using:CommunityToolkit.WinUI.UI.Controls"
     d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
     mc:Ignorable="d"
-    DataContext="{x:Bind ViewModel}"
-    Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+    DataContext="{x:Bind ViewModel}">
 
     <Page.Resources>
         <ResourceDictionary>
