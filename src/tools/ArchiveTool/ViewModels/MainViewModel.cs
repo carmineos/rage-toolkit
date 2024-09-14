@@ -31,7 +31,7 @@ namespace ArchiveTool.ViewModels
         private ObservableCollection<TreeViewItemViewModel> treeViewItems;
 
         [ObservableProperty]
-        private TreeViewItemViewModel selectedTreeViewItem;
+        private TreeViewItemViewModel? selectedTreeViewItem;
 
         [ObservableProperty]
         private ContainerDetailsViewModel childrenDetailsViewModel;

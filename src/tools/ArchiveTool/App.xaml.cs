@@ -24,6 +24,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using RageLib.GTA5.Services;
 using Microsoft.Extensions.Hosting;
+using ArchiveTool.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,12 +36,19 @@ namespace ArchiveTool
     /// </summary>
     public partial class App : Application
     {
+        private Window m_window;
+        
+        public Window MainWindow => m_window;
+
+        public new static App Current => (App)Application.Current;
+
         public IHost Host { get; }
 
-        private Window m_window;
-
-        public static IntPtr WindowHandle { get; private set; }
-
+        /// <summary>
+        /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
+        /// </summary>
+        public IServiceProvider Services => Host.Services;
+        
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -57,10 +65,11 @@ namespace ArchiveTool
                 {
                     services.AddSingleton<IJenkinsDictionary, JenkinsDictionary>();
                     services.AddSingleton<MetaConverter>();
+
+
+                    services.AddTransient<MainViewModel>();
                 })
                 .Build();
-
-            Ioc.Default.ConfigureServices(Host.Services);
 
             UnhandledException += App_UnhandledException;
         }
@@ -79,9 +88,6 @@ namespace ArchiveTool
         {
             m_window = new MainWindow();
             m_window.Activate();
-
-            WindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(m_window);
-            //m_window.ExtendsContentIntoTitleBar = true;
         }
     }
 }

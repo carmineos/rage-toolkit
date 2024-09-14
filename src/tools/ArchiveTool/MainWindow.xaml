@@ -10,5 +10,5 @@
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
-    <StackPanel />
+
 </Window>

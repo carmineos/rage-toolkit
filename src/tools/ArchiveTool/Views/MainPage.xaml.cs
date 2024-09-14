@@ -1,6 +1,7 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
 using ArchiveTool.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 
 namespace ArchiveTool.Views
@@ -10,10 +11,12 @@ namespace ArchiveTool.Views
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public MainViewModel ViewModel { get; set; } = new MainViewModel();
+        public MainViewModel ViewModel => (MainViewModel)this.DataContext;
 
         public MainPage()
         {
+            this.DataContext = App.Current.Services.GetRequiredService<MainViewModel>();
+
             this.InitializeComponent();
         }
     }

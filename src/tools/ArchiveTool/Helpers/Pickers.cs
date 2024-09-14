@@ -1,5 +1,6 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,10 @@ namespace ArchiveTool.Helpers
         public static async Task<string> ShowSingleFilePicker(params string[] filters)
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
+
+            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(App.Current.MainWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
 
@@ -34,7 +38,10 @@ namespace ArchiveTool.Helpers
         public static async Task<string> ShowSingleFolderPicker()
         {
             var picker = new Windows.Storage.Pickers.FolderPicker();
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
+
+            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(App.Current.MainWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
             picker.FileTypeFilter.Add("*");
@@ -46,7 +53,10 @@ namespace ArchiveTool.Helpers
         public static async Task<string> ShowFileSavePicker(string suggestedFileName, params KeyValuePair<string,List<string>>[] choices)
         {
             var picker = new Windows.Storage.Pickers.FileSavePicker();
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
+
+            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(App.Current.MainWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle)
+                ;
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
             
             if (choices.Length is 0)
