@@ -18,24 +18,22 @@ namespace ArchiveTool.ViewModels;
 
 public partial class ContainerDetailsViewModel : ObservableObject
 {
-    private readonly ContainerExplorerItem _model;
+    private ContainerExplorerItem _model = null!;
 
     [ObservableProperty]
-    private ObservableCollection<DataGridItemViewModel> children;
+    private ObservableCollection<DataGridItemViewModel> children = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanExport))]
-    private ObservableCollection<DataGridItemViewModel> selectedChildren;
+    private ObservableCollection<DataGridItemViewModel> selectedChildren = [];
 
     public bool CanImportFile => _model is IImportFile;
     public bool CanImportDirectory => _model is IImportDirectory;
-    public bool CanExport => _model is IExport && selectedChildren.Count > 0;
+    public bool CanExport => _model is IExport && SelectedChildren.Count > 0;
 
-    public ContainerDetailsViewModel(ContainerExplorerItem model)
+    public void SetModel(ContainerExplorerItem model)
     {
         _model = model;
-        children = new ObservableCollection<DataGridItemViewModel>();
-        selectedChildren = new ObservableCollection<DataGridItemViewModel>();
 
         LoadChildren();
     }
@@ -93,7 +91,7 @@ public partial class ContainerDetailsViewModel : ObservableObject
             return;
 
         // TODO: Consider using Parallel Tasks
-        foreach(var item in selectedChildren)
+        foreach(var item in SelectedChildren)
             await item.ExportAt(destinationPath, token);
     }
 

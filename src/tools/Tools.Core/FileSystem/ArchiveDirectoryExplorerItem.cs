@@ -31,7 +31,7 @@ public record ArchiveDirectoryExplorerItem : ContainerExplorerItem
     {
         foreach (var file in _archiveDirectory.GetFiles())
         {
-            if (Path.GetExtension(file.Name) == ".rpf")
+            if (Path.GetExtension(file.Name) == FileTypes.Rage.RagePackFile.Extension)
             {
                 var archive = ArchiveHelpers.Open(file.GetStream(), file.Name);
                 var archiveExplorerItem = new ArchiveExplorerItem(archive, this);

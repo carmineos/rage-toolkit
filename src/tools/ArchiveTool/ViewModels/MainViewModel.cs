@@ -5,18 +5,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Tools.Core;
 using Tools.Core.FileSystem;
-using Microsoft.Windows.AppNotifications.Builder;
-using Microsoft.Windows.AppNotifications;
 
 namespace ArchiveTool.ViewModels
 {
@@ -33,6 +25,7 @@ namespace ArchiveTool.ViewModels
         [ObservableProperty]
         private TreeViewItemViewModel? selectedTreeViewItem;
 
+        // unrequired
         [ObservableProperty]
         private ContainerDetailsViewModel childrenDetailsViewModel;
 
@@ -42,7 +35,7 @@ namespace ArchiveTool.ViewModels
         public MainViewModel()
         {
             _models = new List<ContainerExplorerItem>();
-            childrenDetailsViewModel = new ContainerDetailsViewModel(null);
+            childrenDetailsViewModel = new ContainerDetailsViewModel();
             treeViewItems = new ObservableCollection<TreeViewItemViewModel>();
             breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
         }
@@ -177,7 +170,7 @@ namespace ArchiveTool.ViewModels
         partial void OnSelectedTreeViewItemChanged(TreeViewItemViewModel value)
         {
             UpdateBreadcrumbs();
-            ChildrenDetailsViewModel = new ContainerDetailsViewModel(value.Model);
+            ChildrenDetailsViewModel.SetModel(value.Model);
             value.IsSelected = true;
             value.IsExpanded = true;
         }
