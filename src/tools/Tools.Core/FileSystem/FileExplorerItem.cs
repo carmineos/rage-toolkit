@@ -2,7 +2,7 @@
 
 namespace Tools.Core.FileSystem;
 
-public class FileExplorerItem : ExplorerItem
+public record FileExplorerItem : ExplorerItem
 {
     private readonly FileInfo _file;
     private readonly DirectoryExplorerItem _parent;
@@ -12,6 +12,7 @@ public class FileExplorerItem : ExplorerItem
     public override ExplorerItemType ItemType => ExplorerItemType.File;
     public override ContainerExplorerItem Parent => _parent;
     public override long? Size => _file.Length;
+
     public FileExplorerItem(FileInfo file, DirectoryExplorerItem parent)
     {
         _file = file;

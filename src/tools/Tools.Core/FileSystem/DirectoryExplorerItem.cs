@@ -2,7 +2,7 @@
 
 namespace Tools.Core.FileSystem;
 
-public class DirectoryExplorerItem : ContainerExplorerItem
+public record DirectoryExplorerItem : ContainerExplorerItem
 {
     private readonly DirectoryInfo _directory;
     private readonly DirectoryExplorerItem _parent;
@@ -29,7 +29,7 @@ public class DirectoryExplorerItem : ContainerExplorerItem
 
         foreach (var file in files)
         {
-            if (file.Extension == ".rpf")
+            if (file.Extension == FileTypes.Rage.RagePackFile.Extension)
             {
                 var archive = ArchiveHelpers.Open(new FileStream(file.FullName, FileMode.Open, FileAccess.Read), file.Name);
                 var archiveExplorerItem = new ArchiveExplorerItem(archive, this);

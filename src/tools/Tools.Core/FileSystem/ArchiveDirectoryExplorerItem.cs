@@ -6,7 +6,7 @@ using RageLib.GTA5.Utilities;
 
 namespace Tools.Core.FileSystem;
 
-public class ArchiveDirectoryExplorerItem : ContainerExplorerItem
+public record ArchiveDirectoryExplorerItem : ContainerExplorerItem
 {
     private readonly IArchiveDirectory _archiveDirectory;
     private readonly ContainerExplorerItem _parent;

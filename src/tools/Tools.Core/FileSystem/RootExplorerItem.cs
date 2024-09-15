@@ -2,7 +2,7 @@
 
 namespace Tools.Core.FileSystem;
 
-public class RootExplorerItem : DirectoryExplorerItem
+public record RootExplorerItem : DirectoryExplorerItem
 {
     public override ExplorerItemType ItemType => ExplorerItemType.Root;
 

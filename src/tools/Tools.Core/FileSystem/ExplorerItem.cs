@@ -4,7 +4,7 @@ using Tools.Core.FileSystem.Abstractions;
 
 namespace Tools.Core.FileSystem;
 
-public abstract class ExplorerItem : IExport
+public abstract record ExplorerItem : IExport
 {
     public abstract string Name { get; }
     public abstract string? PhysicalPath { get; }

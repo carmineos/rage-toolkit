@@ -6,7 +6,7 @@ using RageLib.GTA5.Utilities;
 
 namespace Tools.Core.FileSystem;
 
-public class ArchiveExplorerItem : ContainerExplorerItem
+public record ArchiveExplorerItem : ContainerExplorerItem
 {
     private readonly IArchive _archive;
     private readonly ContainerExplorerItem _parent;
@@ -33,7 +33,7 @@ public class ArchiveExplorerItem : ContainerExplorerItem
     {
         foreach (var file in _archive.Root.GetFiles())
         {
-            if (Path.GetExtension(file.Name) == ".rpf")
+            if (Path.GetExtension(file.Name) == FileTypes.Rage.RagePackFile.Extension)
             {
                 var archive = ArchiveHelpers.Open(file.GetStream(), file.Name);
                 var archiveExplorerItem = new ArchiveExplorerItem(archive, this);

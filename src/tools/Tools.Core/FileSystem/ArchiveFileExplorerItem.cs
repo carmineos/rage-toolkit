@@ -4,7 +4,7 @@ using RageLib.Archives;
 
 namespace Tools.Core.FileSystem;
 
-public class ArchiveFileExplorerItem : ExplorerItem
+public record ArchiveFileExplorerItem : ExplorerItem
 {
     private readonly IArchiveFile _archiveFile;
     private readonly ContainerExplorerItem _parent;

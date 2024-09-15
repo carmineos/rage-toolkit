@@ -4,7 +4,7 @@ namespace Tools.Core;
 
 public static class FileTypes
 {
-    public sealed class FileType
+    public sealed record FileType
     {
         public string Name { get; }
         public string Extension { get; }

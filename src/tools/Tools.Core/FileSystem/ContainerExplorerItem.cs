@@ -4,7 +4,7 @@ using Tools.Core.FileSystem.Abstractions;
 
 namespace Tools.Core.FileSystem;
 
-public abstract class ContainerExplorerItem : ExplorerItem, IImportFile, IImportDirectory
+public abstract record ContainerExplorerItem : ExplorerItem, IImportFile, IImportDirectory
 {
     public abstract List<ExplorerItem> Children { get; }
 
