@@ -15,13 +15,13 @@ namespace ArchiveTool.ViewModels
         private readonly ObservableCollection<TreeViewItemViewModel> _children;
 
         [ObservableProperty]
-        private bool isSelected;
+        public partial bool IsSelected { get; set; }
 
         [ObservableProperty]
-        private bool isExpanded;
+        public partial bool IsExpanded { get; set; }
 
         [ObservableProperty]
-        private bool hasUnrealizedChildren;
+        public partial bool HasUnrealizedChildren { get; set; }
 
         public ContainerExplorerItem Model => _model;
 

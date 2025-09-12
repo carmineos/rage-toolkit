@@ -1,24 +1,17 @@
 ﻿// Copyright © Neodymium, carmineos and contributors. See LICENSE.md in the repository root for more information.
 
-using Microsoft.UI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.Windows.Storage.Pickers;
 
 namespace ArchiveTool.Helpers
 {
     public static class Pickers
     {
-        public static async Task<string> ShowSingleFilePicker(params string[] filters)
+        public static async Task<string?> ShowSingleFilePicker(params string[] filters)
         {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            var picker = new FileOpenPicker(App.Current.MainWindow.AppWindow.Id);
 
-            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(App.Current.MainWindow);
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
-
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+            picker.ViewMode = PickerViewMode.List;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
 
             if (filters.Length is 0)
             {
@@ -30,38 +23,32 @@ namespace ArchiveTool.Helpers
                     picker.FileTypeFilter.Add(item);
             }
 
-            Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+            var file = await picker.PickSingleFileAsync();
 
             return file?.Path;
         }
 
-        public static async Task<string> ShowSingleFolderPicker()
+        public static async Task<string?> ShowSingleFolderPicker()
         {
-            var picker = new Windows.Storage.Pickers.FolderPicker();
+            var picker = new FolderPicker(App.Current.MainWindow.AppWindow.Id);
 
-            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(App.Current.MainWindow);
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+            picker.ViewMode = PickerViewMode.List;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
 
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
-            picker.FileTypeFilter.Add("*");
-            Windows.Storage.StorageFolder folder = await picker.PickSingleFolderAsync();
+            var folder = await picker.PickSingleFolderAsync();
 
             return folder?.Path;
         }
 
-        public static async Task<string> ShowFileSavePicker(string suggestedFileName, params KeyValuePair<string,List<string>>[] choices)
+        public static async Task<string?> ShowFileSavePicker(string suggestedFileName, params KeyValuePair<string,List<string>>[] choices)
         {
-            var picker = new Windows.Storage.Pickers.FileSavePicker();
+            var picker = new FileSavePicker(App.Current.MainWindow.AppWindow.Id);
 
-            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(App.Current.MainWindow);
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle)
-                ;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
             
             if (choices.Length is 0)
             {
-                picker.FileTypeChoices.Add("All Types (*.*)", new List<string> { Path.GetExtension(suggestedFileName) });
+                picker.FileTypeChoices.Add("All Types (*.*)", [Path.GetExtension(suggestedFileName)]);
             }
             else
             {
@@ -70,7 +57,7 @@ namespace ArchiveTool.Helpers
             }
 
             picker.SuggestedFileName = suggestedFileName;
-            Windows.Storage.StorageFile file = await picker.PickSaveFileAsync();
+            var file = await picker.PickSaveFileAsync();
 
             return file?.Path;
         }

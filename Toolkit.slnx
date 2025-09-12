@@ -1,0 +1,37 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/" Id="8ec462fd-d22e-90a8-e5ce-7e832ba40c5d">
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/dev/" Id="d2956ba6-1817-c0db-5fbc-fefb97b115f9">
+    <Project Path="src/dev/ExtractKeysFromDump/ExtractKeysFromDump.csproj" />
+    <Project Path="src/dev/StructsDumper/StructsDumper.csproj" />
+  </Folder>
+  <Folder Name="/src/libraries/" Id="5e7ec0af-e837-5b7a-fb41-a4dcca877d1f">
+    <Project Path="src/libraries/RageLib.GTA4/RageLib.GTA4.csproj" />
+    <Project Path="src/libraries/RageLib.GTA5/RageLib.GTA5.csproj" />
+    <Project Path="src/libraries/RageLib.RDR2/RageLib.RDR2.csproj" />
+    <Project Path="src/libraries/RageLib/RageLib.csproj" />
+  </Folder>
+  <Folder Name="/src/tests/" Id="cea09484-30f6-4d44-02f6-822e06dbc57c">
+    <Project Path="src/tests/RageLib.GTA5.UnitTests/RageLib.GTA5.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/src/tools/" Id="dcb6fcb8-ff92-ac57-0842-1f72a354d6b1">
+    <Project Path="src/tools/ArchiveTool/ArchiveTool.csproj">
+      <Platform Solution="*|Any CPU" Project="x86" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="src/tools/MetaTool/MetaTool.csproj" />
+    <Project Path="src/tools/TextureTool/TextureTool.csproj" />
+    <Project Path="src/tools/Tools.Core/Tools.Core.csproj" />
+  </Folder>
+  <Properties Name="Performance">
+    <Property Name="HasPerformanceSessions" Value="true" />
+  </Properties>
+</Solution>

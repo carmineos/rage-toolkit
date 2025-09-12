@@ -17,34 +17,39 @@ namespace ArchiveTool.ViewModels
         private readonly List<ContainerExplorerItem> _models;
 
         [ObservableProperty]
-        private bool isEditMode;
+        public partial bool IsEditMode { get; set; }
 
         [ObservableProperty]
-        private ObservableCollection<TreeViewItemViewModel> treeViewItems;
+        public partial ObservableCollection<TreeViewItemViewModel> TreeViewItems { get; set; }
 
         [ObservableProperty]
-        private TreeViewItemViewModel? selectedTreeViewItem;
+        public partial TreeViewItemViewModel? SelectedTreeViewItem { get; set; }
 
         // unrequired
         [ObservableProperty]
-        private ContainerDetailsViewModel childrenDetailsViewModel;
+        public partial ContainerDetailsViewModel ChildrenDetailsViewModel { get; set; }
 
         [ObservableProperty]
-        private ObservableCollection<BreadcrumbItemViewModel> breadcrumbs;
+        public partial ObservableCollection<BreadcrumbItemViewModel> Breadcrumbs { get; set; }
 
         public MainViewModel()
         {
             _models = new List<ContainerExplorerItem>();
-            childrenDetailsViewModel = new ContainerDetailsViewModel();
-            treeViewItems = new ObservableCollection<TreeViewItemViewModel>();
-            breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
+            ChildrenDetailsViewModel = new ContainerDetailsViewModel();
+            TreeViewItems = new ObservableCollection<TreeViewItemViewModel>();
+            Breadcrumbs = new ObservableCollection<BreadcrumbItemViewModel>();
         }
 
-        public void OpenFolder(string path)
+        public async Task OpenFolder(string path, CancellationToken cancellationToken)
         {
             var item = new RootExplorerItem(path);
-            item.LoadChildren(true);
+            
             _models.Add(item);
+
+            await Task.Run(() =>
+            {
+                item.LoadChildren(true);
+            });
 
             var treeRoot = new TreeViewItemViewModel(item, null)
             {
@@ -90,7 +95,7 @@ namespace ArchiveTool.ViewModels
         }
 
         [RelayCommand]
-        public async Task OpenFolder()
+        public async Task OpenFolder(CancellationToken cancellationToken)
         {
             string path = await Pickers.ShowSingleFolderPicker();
 
@@ -103,7 +108,7 @@ namespace ArchiveTool.ViewModels
                 return;
             }
 
-            OpenFolder(path);
+            await OpenFolder(path, cancellationToken);
         }
 
         [RelayCommand]
@@ -167,7 +172,7 @@ namespace ArchiveTool.ViewModels
                 SelectedTreeViewItem = SelectedTreeViewItem.Parent;
         }
 
-        partial void OnSelectedTreeViewItemChanged(TreeViewItemViewModel value)
+        partial void OnSelectedTreeViewItemChanged(TreeViewItemViewModel? value)
         {
             UpdateBreadcrumbs();
             ChildrenDetailsViewModel.SetModel(value.Model);

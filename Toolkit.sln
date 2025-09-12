@@ -35,16 +35,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextureTool", "src\tools\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.Core", "src\tools\Tools.Core\Tools.Core.csproj", "{64BA5A9A-C258-44D8-AE21-1D6572D4ACEB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F1E9A3DA-C1E1-4817-BC2E-0BB89F6328FD}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -187,6 +183,9 @@ Global
 		{64BA5A9A-C258-44D8-AE21-1D6572D4ACEB}.Release|x86.ActiveCfg = Release|Any CPU
 		{64BA5A9A-C258-44D8-AE21-1D6572D4ACEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B8495AB-E7FF-4A95-9BCC-E39AB3C3FAEF} = {F06CDC44-07F3-4A9B-A9EF-5170DA2B2134}
 		{68F1EEF6-2001-4F49-9422-D7C7F130CD1C} = {0B8495AB-E7FF-4A95-9BCC-E39AB3C3FAEF}
@@ -203,5 +202,11 @@ Global
 		{664F658B-2732-4FE0-93C6-A3A0198D6E61} = {CF114B14-746C-484E-8B65-65910C7C7513}
 		{EBBE7062-5D19-4762-B4F6-A969C2876788} = {CF114B14-746C-484E-8B65-65910C7C7513}
 		{64BA5A9A-C258-44D8-AE21-1D6572D4ACEB} = {CF114B14-746C-484E-8B65-65910C7C7513}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1E9A3DA-C1E1-4817-BC2E-0BB89F6328FD}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

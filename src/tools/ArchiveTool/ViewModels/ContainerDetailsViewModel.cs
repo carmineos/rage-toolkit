@@ -3,14 +3,8 @@
 using ArchiveTool.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Tools.Core.FileSystem;
 using Tools.Core.FileSystem.Abstractions;
 
@@ -21,11 +15,11 @@ public partial class ContainerDetailsViewModel : ObservableObject
     private ContainerExplorerItem _model = null!;
 
     [ObservableProperty]
-    private ObservableCollection<DataGridItemViewModel> children = [];
+    public partial ObservableCollection<DataGridItemViewModel> Children { get; set; } = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanExport))]
-    private ObservableCollection<DataGridItemViewModel> selectedChildren = [];
+    public partial ObservableCollection<DataGridItemViewModel> SelectedChildren { get; set; } = [];
 
     public bool CanImportFile => _model is IImportFile;
     public bool CanImportDirectory => _model is IImportDirectory;

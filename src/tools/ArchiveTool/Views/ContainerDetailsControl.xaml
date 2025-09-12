@@ -3,7 +3,6 @@
     x:Class="ArchiveTool.Views.ContainerDetailsControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
@@ -86,9 +85,9 @@
                         </controls:DataRow.ContextFlyout>
 
                         <Interactivity:Interaction.Behaviors>
-                            <Interactions:EventTriggerBehavior EventName="DoubleTapped">
-                                <Interactions:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}" />
-                            </Interactions:EventTriggerBehavior>
+                            <Interactivity:EventTriggerBehavior EventName="DoubleTapped">
+                                <Interactivity:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}" />
+                            </Interactivity:EventTriggerBehavior>
                         </Interactivity:Interaction.Behaviors>
                     </controls:DataRow>
 
@@ -122,12 +121,12 @@
             </ListView.ContextFlyout>
 
             <!--<Interactivity:Interaction.Behaviors>
-            <Interactions:EventTriggerBehavior EventName="SelectionChanged">
-                <Interactions:InvokeCommandAction
+            <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                <Interactivity:InvokeCommandAction
                     Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SetSelectedItemsCommand, Mode=OneWay}"
                     InputConverter="{StaticResource SelectionChangedConverter}"
                     InputConverterParameter="{Binding ElementName=detailsGridView}" />
-            </Interactions:EventTriggerBehavior>
+            </Interactivity:EventTriggerBehavior>
         </Interactivity:Interaction.Behaviors>-->
         </ListView>
 
@@ -149,9 +148,9 @@
                                    Text="{x:Bind Name}" />
 
                         <Interactivity:Interaction.Behaviors>
-                            <Interactions:EventTriggerBehavior EventName="DoubleTapped">
-                                <Interactions:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}"/>
-                            </Interactions:EventTriggerBehavior>
+                            <Interactivity:EventTriggerBehavior EventName="DoubleTapped">
+                                <Interactivity:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}"/>
+                            </Interactivity:EventTriggerBehavior>
                         </Interactivity:Interaction.Behaviors>
                         <StackPanel.ContextFlyout>
                             <MenuFlyout>
@@ -198,11 +197,11 @@
         </ListView.ContextFlyout>
 
         <Interactivity:Interaction.Behaviors>
-            <Interactions:EventTriggerBehavior EventName="SelectionChanged">
-                <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SetSelectedItemsCommand}"
+            <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SetSelectedItemsCommand}"
                                                   InputConverter="{StaticResource SelectionChangedConverter}"
                                                   InputConverterParameter="{Binding ElementName=detailsListView}"/>
-            </Interactions:EventTriggerBehavior>
+            </Interactivity:EventTriggerBehavior>
         </Interactivity:Interaction.Behaviors>
     </ListView>-->
         <!--<ctcontrols:DataGrid ItemsSource="{x:Bind ViewModel.ChildrenDetailsViewModel.Children, Mode=OneWay}"
@@ -232,9 +231,9 @@
                                    Text="{x:Bind Name}" />
 
                             <Interactivity:Interaction.Behaviors>
-                                <Interactions:EventTriggerBehavior EventName="DoubleTapped">
-                                    <Interactions:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}"/>
-                                </Interactions:EventTriggerBehavior>
+                                <Interactivity:EventTriggerBehavior EventName="DoubleTapped">
+                                    <Interactivity:InvokeCommandAction Command="{x:Bind ItemDoubleTappedCommand}"/>
+                                </Interactivity:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                             <StackPanel.ContextFlyout>
                                 <MenuFlyout>
@@ -291,11 +290,11 @@
         </ctcontrols:DataGrid.ContextFlyout>
 
         <Interactivity:Interaction.Behaviors>
-            <Interactions:EventTriggerBehavior EventName="SelectionChanged">
-                <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SetSelectedItemsCommand, Mode=OneWay}"
+            <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SetSelectedItemsCommand, Mode=OneWay}"
                                                   InputConverter="{StaticResource SelectionChangedConverter}"
                                                   InputConverterParameter="{Binding ElementName=detailsGridView}"/>
-            </Interactions:EventTriggerBehavior>
+            </Interactivity:EventTriggerBehavior>
         </Interactivity:Interaction.Behaviors>
     </ctcontrols:DataGrid>-->
 

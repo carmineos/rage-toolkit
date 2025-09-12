@@ -2,7 +2,6 @@
     x:Class="ArchiveTool.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
@@ -167,9 +166,9 @@
                 VerticalAlignment="Center"
                 ItemsSource="{x:Bind ViewModel.Breadcrumbs}">
                 <Interactivity:Interaction.Behaviors>
-                    <Interactions:EventTriggerBehavior EventName="ItemClicked">
-                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.BreadcrumbBarItemClickedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
-                    </Interactions:EventTriggerBehavior>
+                    <Interactivity:EventTriggerBehavior EventName="ItemClicked">
+                        <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.BreadcrumbBarItemClickedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
+                    </Interactivity:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
 
                 <BreadcrumbBar.ItemTemplate>
@@ -233,13 +232,13 @@
                     </AutoSuggestBox.KeyboardAccelerators>
 
                     <Interactivity:Interaction.Behaviors>
-                        <Interactions:EventTriggerBehavior EventName="TextChanged">
-                            <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SearchCommand, Mode=OneWay}" CommandParameter="{Binding Path=Text, ElementName=autoSuggestBox}" />
-                        </Interactions:EventTriggerBehavior>
+                        <Interactivity:EventTriggerBehavior EventName="TextChanged">
+                            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.ChildrenDetailsViewModel.SearchCommand, Mode=OneWay}" CommandParameter="{Binding Path=Text, ElementName=autoSuggestBox}" />
+                        </Interactivity:EventTriggerBehavior>
 
-                        <Interactions:EventTriggerBehavior EventName="QuerySubmitted">
-                            <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxQuerySubmittedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
-                        </Interactions:EventTriggerBehavior>
+                        <Interactivity:EventTriggerBehavior EventName="QuerySubmitted">
+                            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxQuerySubmittedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
+                        </Interactivity:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
 
                 </AutoSuggestBox>
@@ -266,17 +265,17 @@
                 SelectionMode="Single">
 
                 <Interactivity:Interaction.Behaviors>
-                    <Interactions:EventTriggerBehavior EventName="ItemInvoked">
-                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewItemInvokedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
-                    </Interactions:EventTriggerBehavior>
+                    <Interactivity:EventTriggerBehavior EventName="ItemInvoked">
+                        <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewItemInvokedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
+                    </Interactivity:EventTriggerBehavior>
 
-                    <Interactions:EventTriggerBehavior EventName="Collapsed">
-                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewCollapsedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
-                    </Interactions:EventTriggerBehavior>
+                    <Interactivity:EventTriggerBehavior EventName="Collapsed">
+                        <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewCollapsedCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
+                    </Interactivity:EventTriggerBehavior>
 
-                    <Interactions:EventTriggerBehavior EventName="Expanding">
-                        <Interactions:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewExpandingCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
-                    </Interactions:EventTriggerBehavior>
+                    <Interactivity:EventTriggerBehavior EventName="Expanding">
+                        <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewExpandingCommand}" InputConverter="{StaticResource WinUIControlEventArgsConverter}" />
+                    </Interactivity:EventTriggerBehavior>
 
                 </Interactivity:Interaction.Behaviors>
 

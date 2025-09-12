@@ -2,6 +2,7 @@
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
@@ -10,6 +11,8 @@
     Name="045d74fd-a47a-4bc1-a5df-c0c55f108ea5"
     Publisher="CN=neos7"
     Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="ee1b2f2a-06ac-4c73-a0cc-b0e17bb46e52" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>ArchiveTool</DisplayName>
